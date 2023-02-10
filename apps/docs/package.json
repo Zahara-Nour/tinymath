@@ -12,11 +12,11 @@
     "format": "prettier --write --ignore-path=../../.prettierignore ."
   },
   "dependencies": {
-    "@sveltejs/adapter-vercel": "^2.0.2",
     "ui": "workspace:*"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "latest",
+    "@sveltejs/adapter-vercel": "^2.0.2",
     "@sveltejs/kit": "latest",
     "eslint-config-custom": "workspace:*",
     "svelte": "^3.55.1",
