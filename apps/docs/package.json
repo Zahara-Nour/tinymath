@@ -12,6 +12,7 @@
     "format": "prettier --write --ignore-path=../../.prettierignore ."
   },
   "dependencies": {
+    "@sveltejs/adapter-vercel": "^2.0.2",
     "ui": "workspace:*"
   },
   "devDependencies": {
