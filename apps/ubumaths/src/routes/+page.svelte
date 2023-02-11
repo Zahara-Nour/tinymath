@@ -12,7 +12,7 @@
 
 		<figure>
 			<section class="img-bg" />
-			<a href="/pere-ubu">
+			<a href="/pere-ubu" aria-label="Qui est Père Ubu ?">
 				<svg
 					height="100%"
 					stroke-miterlimit="10"
