@@ -1,22 +1,6 @@
 <script lang="ts">
 	import math from 'tinycas'
-	import type { MathfieldElement } from 'tinymathlive'
-	import { afterUpdate } from 'svelte'
-	import { touchDevice, mathliveReady, mathfieldElement } from '$lib/stores'
 	const e = math('1+2/4')
-	let mfe: MathfieldElement
-	afterUpdate(() => {
-		if (!mfe && $mathfieldElement) {
-			mfe = new $mathfieldElement()
-			mfe.value = e.latex
-			if (document.getElementById('formula')) {
-				console.log('found')
-				document.getElementById('formula')?.appendChild(mfe)
-			} else {
-				console.log('not found')
-			}
-		}
-	})
 </script>
 
 <div class="container h-full mx-auto flex justify-center items-center">
