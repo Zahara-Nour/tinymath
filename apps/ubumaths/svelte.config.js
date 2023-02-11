@@ -10,7 +10,7 @@ const config = {
 		vitePreprocess({
 			postcss: true
 		})
-	],
+	]
 };
 
 export default config;
