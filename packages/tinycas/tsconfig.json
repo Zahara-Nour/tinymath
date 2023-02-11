@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"emitDeclarationOnly": true,
+		"declaration": true,
+		"target": "ES6",
+		"esModuleInterop": true,
+		"moduleResolution": "node",
+		"strict": true
+		// "noImplicitThis": true
+		// "allowJs": true
+	},
+	"include": ["src/**/*"],
+	"exclude": ["node_modules", "**/*.spec.ts"]
+}
