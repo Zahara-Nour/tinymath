@@ -1,8 +1,10 @@
 <script>
-	import '@skeletonlabs/skeleton/themes/theme-hamlindigo.css';
-	import '@skeletonlabs/skeleton/styles/all.css';
-	import '../app.postcss';
-	import { AppShell, AppBar } from '@skeletonlabs/skeleton';
+	// import '@skeletonlabs/skeleton/themes/theme-hamlindigo.css';
+	import '../theme.postcss'
+	import '@skeletonlabs/skeleton/styles/all.css'
+	import '../app.postcss'
+	import { AppShell, AppBar } from '@skeletonlabs/skeleton'
+	import { LightSwitch } from '@skeletonlabs/skeleton'
 </script>
 
 <!-- App Shell -->
@@ -30,14 +32,7 @@
 				>
 					Twitter
 				</a>
-				<a
-					class="btn btn-sm variant-ghost-surface"
-					href="https://github.com/skeletonlabs/skeleton"
-					target="_blank"
-					rel="noreferrer"
-				>
-					GitHub
-				</a>
+				<LightSwitch />
 			</svelte:fragment>
 		</AppBar>
 	</svelte:fragment>
