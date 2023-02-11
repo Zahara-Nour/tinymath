@@ -1,10 +1,10 @@
 <script lang="ts">
 	import math from 'tinycas'
-	import type { MathfieldElement } from 'mathlive'
+	import type { MathfieldElement } from 'tinymathlive'
 	import { afterUpdate } from 'svelte'
 	import { touchDevice, mathliveReady, mathfieldElement } from '$lib/stores'
 	const e = math('1+2/4')
-	let mfe: MathfieldElement | null
+	let mfe: MathfieldElement
 	afterUpdate(() => {
 		if (!mfe && $mathfieldElement) {
 			mfe = new $mathfieldElement()

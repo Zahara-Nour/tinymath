@@ -19,7 +19,7 @@
 			false,
 		)
 
-		import('mathlive')
+		import('tinymathlive')
 			.then((m) => {
 				mathliveReady.set(true)
 				console.log('m', m)

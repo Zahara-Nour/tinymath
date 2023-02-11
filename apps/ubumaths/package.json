@@ -15,7 +15,7 @@
 	},
 	"dependencies": {
 		"tinycas": "workspace:*",
-		"mathlive": "workspace:*"
+		"tinymathlive": "^0.87.1"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.28.1",
