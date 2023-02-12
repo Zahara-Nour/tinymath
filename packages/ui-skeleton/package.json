@@ -1,32 +1,19 @@
 {
-	"name": "ubumaths",
+	"name": "ui-skeleton",
 	"version": "0.0.1",
 	"private": true,
+	"main": "src/lib/index.ts",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
-		"test": "playwright test",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"test:unit": "vitest",
-		"lint": "prettier --plugin-search-dir . --check . && eslint .",
-		"format": "prettier --plugin-search-dir . --write ."
-	},
-	"dependencies": {
-		"ajv": "^8.12.0",
-		"better-ajv-errors": "^1.2.0",
-		"tinycas": "workspace:*",
-		"tinymathlive": "^0.85.1",
-		"ts-node": "^10.9.1",
-		"ui2":"workspace:*",
-		"ui-skeleton":"workspace:*"
+		"test:unit": "vitest"
 	},
 	"devDependencies": {
-		"@playwright/test": "^1.28.1",
 		"@skeletonlabs/skeleton": "^0.124.2",
 		"@sveltejs/adapter-auto": "^2.0.0",
-		"@sveltejs/adapter-vercel": "^2.0.2",
 		"@sveltejs/kit": "^1.5.0",
 		"@tailwindcss/forms": "^0.5.3",
 		"@tailwindcss/typography": "^0.5.9",

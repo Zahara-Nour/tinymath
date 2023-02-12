@@ -43,4 +43,5 @@
 
 <svelte:head>
 	<title>UbuMaths - Les maths de la chandelle verte</title>
+	<meta />
 </svelte:head>

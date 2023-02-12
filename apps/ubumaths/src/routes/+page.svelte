@@ -1,8 +1,15 @@
 <script lang="ts">
 	import math from 'tinycas'
+	import q from '$lib/questions'
+	import Button from 'ui2'
+	import { Comp } from 'ui-skeleton'
+	const questions = q.questions
+	console.log('q', questions)
 	const e = math('1+2/4')
 </script>
 
+<Button />
+<Comp />
 <div class="container h-full mx-auto flex justify-center items-center">
 	<div class="space-y-10 text-center">
 		<h2 class="font-bold">
@@ -12,7 +19,7 @@
 
 		<figure>
 			<section class="img-bg" />
-			<a href="/pere-ubu" aria-label="Qui est Père Ubu ?">
+			<a href="/pere-ubu" aria-label="Découvre qui est Père Ubu.">
 				<svg
 					height="100%"
 					stroke-miterlimit="10"
