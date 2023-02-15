@@ -108,7 +108,8 @@ export type Choice = {
 	text?: string
 	image?: string
 	imageBase64?: string
-	base64?: string
+	base64?: string // pourquoi les 2
+	imageBase64P?: Promise<string>
 }
 
 export type CorrectionDetail = {
@@ -179,7 +180,7 @@ export function isQuestionResult(q: Question): q is QuestionResult {
 }
 
 export type QuestionChoice = Question & {
-	choices: string[]
+	choices: Choice[]
 	solutions: number[]
 }
 
@@ -188,7 +189,7 @@ export function isQuestionChoice(q: Question): q is QuestionChoice {
 }
 
 export type QuestionChoices = Question & {
-	choices: string[]
+	choices: Choice[]
 	solutions: number[]
 }
 
@@ -206,6 +207,7 @@ export type GeneratedQuestion = Question & {
 	expression?: string
 	answerField?: string
 	image?: string
+	imageBase64P?: Promise<string>
 	unit?: string
 	expression_latex?: string
 	expression2_latex?: string
@@ -214,11 +216,13 @@ export type GeneratedQuestion = Question & {
 	expression2?: string
 	testAnswers?: string[]
 	imageCorrection?: string
+	imageCorrectionBase64P?: Promise<string>
 	points: number
+	order_elements: string[]
 }
 
 export type AnsweredQuestion = GeneratedQuestion & {
-	answers?: (string | number)[] // pas de réponse en mode projection
+	answers: (string | number)[] // pas de réponse en mode projection
 	options: Option[]
 }
 
@@ -244,12 +248,13 @@ export type CorrectedQuestion = AnsweredQuestion & {
 	choices: Choice[]
 	correctionDetails: CorrectionDetail[]
 	simpleCorrection: Line[]
+	detailedCorrection: Line[]
 }
 
 export type ObjectWithText = { text: string }
 export type FormatToLatexArg = null | object | string | Array<object | string>
 export type FormatToTexmacsArg = null | object | string | Array<object | string>
-export type FormatToHtml = null | object | string | Array<object | string>
+export type FormatToHtmlArg = null | object | string | Array<object | string>
 
 export type LineChoice = Choice & {
 	solution?: boolean

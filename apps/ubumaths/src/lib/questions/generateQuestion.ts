@@ -204,7 +204,7 @@ export default function generateQuestion(
 		if (elements && Array.isArray(elements) && elements.length) {
 			const length = elements.length
 			return elements[length === 1 ? 0 : i]
-		} else throw Error(`nothing to take for field ${field}`)
+		}
 	}
 
 	function toLatex(
@@ -498,7 +498,7 @@ export default function generateQuestion(
 
 	let correct: string[] = correctionFormat?.correct || []
 	let uncorrect: string[] = correctionFormat?.uncorrect || []
-	let answer: string = correctionFormat.answer || ''
+	let answer: string = correctionFormat?.answer || ''
 
 	rawSolutions = replaceVariables(rawSolutions) as string[]
 	testAnswers = replaceVariables(testAnswers) as string[]

@@ -747,22 +747,7 @@ export function assessItem(item: AnsweredQuestion) {
 	// console.log('correcting', item)
 
 	// TODO : vérifier que les options sont intialisées à [] dans generateQuestion
-	const correctedItem: CorrectedQuestion = {
-		answers: [],
-		answers_latex: [],
-		testAnswers: [],
-		solutions: [],
-		choices: [],
-		correctionDetails: [],
-		...item,
-		status: STATUS_CORRECT,
-		statuss: [],
-		coms: [],
-		unoptimals: [],
-		solutionsIndexs: {},
-		solutionsUsed: [],
-		simpleCorrection: [],
-	}
+	const correctedItem: CorrectedQuestion = prepareCorrectedQuestion(item)
 	// essentiellement pour les tests
 	if (!correctedItem.answers_latex.length && correctedItem.answers.length) {
 		correctedItem.answers_latex = correctedItem.answers.map((answer) =>
@@ -1029,4 +1014,35 @@ export function assessItem(item: AnsweredQuestion) {
 	console.log('assessed item', correctedItem)
 	createCorrection(correctedItem)
 	return correctedItem
+}
+
+export function prepareAnsweredQuestion(
+	q: GeneratedQuestion,
+): AnsweredQuestion {
+	return {
+		...q,
+		answers: [],
+		options: q.options || [],
+	}
+}
+
+export function prepareCorrectedQuestion(
+	q: AnsweredQuestion,
+): CorrectedQuestion {
+	return {
+		answers_latex: [],
+		testAnswers: [],
+		solutions: [],
+		choices: [],
+		correctionDetails: [],
+		...q,
+		status: STATUS_CORRECT,
+		statuss: [],
+		coms: [],
+		unoptimals: [],
+		solutionsIndexs: {},
+		solutionsUsed: [],
+		simpleCorrection: [],
+		detailedCorrection: [],
+	}
 }

@@ -1,74 +1,74 @@
 <script lang="ts">
 	// import Spinner from './Spinner.svelte'
 	import math from 'tinycas'
-	import { mdiOrbitVariant } from '@mdi/js'
-	import Fab, { Icon } from '@smui/fab'
-	import { Svg } from '@smui/common'
-	import Paper from '@smui/paper'
+	import 'iconify-icon'
 	import { formatToHtml } from '$lib/stores'
 	import { mdc_colors, correct_color } from '$lib/colors'
 	import CorrectionLine from './CorrectionLine.svelte'
-	import type { Card, Question } from '$lib/type'
+	import {
+		isQuestionChoice,
+		isQuestionChoices,
+		type Choice,
+		type CorrectedQuestion,
+		type GeneratedQuestion,
+		type Question,
+	} from '$lib/type'
 
-	export let card: Card
+	export let card: CorrectedQuestion
 	export let toggleFlip = () => {}
 	export let h = 0
 	export let w = 0
 	export let height = 0
 	export let width = 0
-	export let magnify
-	export let correction: boolean
+	export let correction = false
 	export let detailedCorrection = card.detailedCorrection
 	export let masked = false
 
-	function getSolution(card: Question) {
+	function getSolution(card: CorrectedQuestion) {
 		let nSol = -1
-		let s
+		let s: string | Choice
 
 		function replaceSol() {
 			nSol += 1
 			return math(card.solutions[nSol]).latex
 		}
 
-		if (card.choices) {
-			if (card.type === 'choices') {
-				s = '<div class="flex flex-wrap justify-start">'
-				card.choices.forEach((choice, i) => {
-					let color = 'grey'
-					if (card.solutions.includes(i)) {
-						color = correct_color
-					}
+		if (isQuestionChoices(card)) {
+			s = '<div class="flex flex-wrap justify-start">'
+			card.choices.forEach((choice, i) => {
+				let color = 'grey'
+				if (card.solutions.includes(i)) {
+					color = correct_color
+				}
 
-					s += `<span
+				s += `<span
 					class="rounded-lg  m-2 p-1"
 					style="border: 4px solid ${color}"
 				>`
 
-					if (choice.image) {
-						s += `<img src="${choice.base64}" style="max-width:min(400px,80%);max-height:40vh;" alt="choice ${i}"/>`
-					} else {
-						s += `<div class="text-base " style="{font-size:1rem}">`
-						s += choice.text
-						s += '</div>'
-					}
-					s += '</span>'
-				})
-
-				s += '</div>'
-			} else {
-				s = card.solutions[0]
-				s = card.choices[s]
-				if (s.text) {
-					s = s.text
-				} else if (s.image) {
-					s = `<img src=${s.image}>`
+				if (choice.image) {
+					s += `<img src="${choice.base64}" style="max-width:min(400px,80%);max-height:40vh;" alt="choice ${i}"/>`
+				} else {
+					s += `<div class="text-base " style="{font-size:1rem}">`
+					s += choice.text as string
+					s += '</div>'
 				}
+				s += '</span>'
+			})
+
+			s += '</div>'
+		} else if (isQuestionChoice(card)) {
+			s = card.choices[card.solutions[0]]
+			if (s.text) {
+				s = s.text
+			} else if (s.image) {
+				s = `<img src=${s.image}>`
 			}
 		} else {
-			if (card.answerFields && card.type !== 'equation') {
-				s = $formatToHtml(card.answerFields.replace(/\?/g, replaceSol))
+			if (card.answerField && card.type !== 'equation') {
+				s = $formatToHtml(card.answerField.replace(/\?/g, replaceSol)) as string
 			} else {
-				s = card.solutions[0]
+				s = card.solutions[0] as string
 				s = '$$' + math(s).latex + '$$'
 			}
 		}
@@ -80,7 +80,7 @@
 	$: details = detailedCorrection || []
 </script>
 
-<div bind:clientHeight={h} bind:clientWidth={w}>
+<div bind:clientHeight={h} bind:clientWidth={w} class={`${$$props.class}`}>
 	<div
 		class="card"
 		style={height
@@ -94,40 +94,24 @@
 
 			<!-- si mode correction, on affiche la correction détaillée -->
 			{#if correction}
-				<div
-					class="correction-title"
-					style={` color:${mdc_colors['lime-500']};  position:absolute;top:1em; left:0px`}
-				>
-					Détails
-				</div>
-				<div class="z-0 relative" style={`font-size:${magnify}rem`}>
-					<!-- {#each details as detail}
-						<div class="correction-line">
-							{@html detail.text ? detail.text : detail}
-						</div>
-					{/each} -->
+				<div class="correction-title">Détails</div>
+				<div class="relative">
 					{#each details as line}
-						<div class="correction-line z-0">
+						<div class="correction-line">
 							<CorrectionLine {line} />
 						</div>
 					{/each}
 				</div>
 
 				<div class=" w-full flex justify-end">
-					<Fab color="secondary" on:click={toggleFlip} mini>
-						<Icon component={Svg} viewBox="2 2 20 20">
-							<path fill="currentColor" d={mdiOrbitVariant} />
-						</Icon>
-					</Fab>
+					<button on:click={toggleFlip} class="btn-icon variant-filled-primary"
+						><iconify-icon icon="mdi:orbit-variant" /></button
+					>
 				</div>
 			{:else}
 				<!-- solution générique -->
-				<div
-					style={` color:${mdc_colors['lime-500']}; font-size:${magnify}rem`}
-				>
-					Réponse :
-				</div>
-				<div class="my-5 z-O relative" style={`font-size:${2 * magnify}rem`}>
+				<div>Réponse :</div>
+				<div class="my-5 relative">
 					{@html solution}
 				</div>
 				{#if card.imageCorrection}
@@ -147,12 +131,7 @@
 					{/await}
 				{/if}
 				{#if details}
-					<div class="my-2 z-0 relative" style={`font-size:${magnify}rem`}>
-						<!-- {#each details as detail}
-							<p>
-								{@html detail.text ? detail.text : detail}
-							</p>
-						{/each} -->
+					<div class="my-2 relative">
 						{#each details as line}
 							<div class=" correction-line z-0">
 								<CorrectionLine {line} />
@@ -161,29 +140,15 @@
 					</div>
 				{/if}
 				<div class="mt-3 w-full flex justify-end">
-					<Fab color="secondary" on:click={toggleFlip} mini>
-						<Icon component={Svg} viewBox="2 2 20 20">
-							<path fill="currentColor" d={mdiOrbitVariant} />
-						</Icon>
-					</Fab>
+					<button on:click={toggleFlip} class="btn-icon variant-filled-primary"
+						><iconify-icon icon="mdi:orbit-variant" /></button
+					>
 				</div>
 			{/if}
 		</div>
 	</div>
 </div>
 
-<!-- <div class="card">
-  <div class="content">
-    Back
-  </div>
-	<div class="buttons">
-		<Fab color="secondary" on:click="{toggleFlip}" mini>
-			<Icon component="{Svg}" viewBox="2 2 20 20">
-				<path fill="currentColor" d="{mdiOrbitVariant}"></path>
-			</Icon>
-		</Fab>
-	</div>
-</div> -->
 <style>
 	.correction-line {
 		margin-top: 9px;

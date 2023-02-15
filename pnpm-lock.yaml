@@ -45,6 +45,7 @@ importers:
 
   apps/ubumaths:
     specifiers:
+      '@histoire/plugin-svelte': ^0.14.2
       '@playwright/test': ^1.28.1
       '@skeletonlabs/skeleton': ^0.124.2
       '@sveltejs/adapter-auto': ^2.0.0
@@ -55,6 +56,8 @@ importers:
       ajv: ^8.12.0
       autoprefixer: ^10.4.13
       better-ajv-errors: ^1.2.0
+      histoire: ^0.14.2
+      iconify-icon: ^1.0.5
       postcss: ^8.4.21
       svelte: ^3.54.0
       svelte-check: ^3.0.1
@@ -72,12 +75,14 @@ importers:
     dependencies:
       ajv: 8.12.0
       better-ajv-errors: 1.2.0_ajv@8.12.0
+      iconify-icon: 1.0.5
       tinycas: link:../../packages/tinycas
       tinymathlive: 0.85.1
       ts-node: 10.9.1_4bewfcp2iebiwuold25d6rgcsy
       ui-skeleton: link:../../packages/ui-skeleton
       ui2: link:../../packages/ui2
     devDependencies:
+      '@histoire/plugin-svelte': 0.14.2_q72nmw3a5anfuiiy2wlqfvosfu
       '@playwright/test': 1.30.0
       '@skeletonlabs/skeleton': 0.124.2
       '@sveltejs/adapter-auto': 2.0.0_@sveltejs+kit@1.5.3
@@ -86,6 +91,7 @@ importers:
       '@tailwindcss/forms': 0.5.3_tailwindcss@3.2.6
       '@tailwindcss/typography': 0.5.9_tailwindcss@3.2.6
       autoprefixer: 10.4.13_postcss@8.4.21
+      histoire: 0.14.2_rgy4fnry75xg7rw6lgswyd3x2m
       postcss: 8.4.21
       svelte: 3.55.1
       svelte-check: 3.0.3_pehl75e5jsy22vp33udjja4soi
@@ -1076,7 +1082,7 @@ packages:
       '@histoire/shared': 0.14.2_vite@4.1.1
       '@histoire/vendors': 0.14.2
       change-case: 4.1.2
-      histoire: 0.14.2_vite@4.1.1
+      histoire: 0.14.2_rgy4fnry75xg7rw6lgswyd3x2m
       launch-editor: 2.6.0
       pathe: 0.2.0
       svelte: 3.55.1
@@ -1095,7 +1101,7 @@ packages:
       chokidar: 3.5.3
       pathe: 0.2.0
       picocolors: 1.0.0
-      vite: 4.1.1
+      vite: 4.1.1_@types+node@18.13.0
     dev: true
 
   /@histoire/vendors/0.14.2:
@@ -1123,6 +1129,10 @@ packages:
 
   /@humanwhocodes/object-schema/1.2.1:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
+
+  /@iconify/types/2.0.0:
+    resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
+    dev: false
 
   /@istanbuljs/load-nyc-config/1.1.0:
     resolution: {integrity: sha512-VjeHSlIzpv/NyD3N0YuHfXOPDIixcA1q2ZV98wsMqcYlPmv2n3Yb2lYP9XMElnaFVXg5A7YLTeLu6V84uQDjmQ==}
@@ -1626,7 +1636,7 @@ packages:
       magic-string: 0.27.0
       svelte: 3.55.1
       svelte-hmr: 0.15.1_svelte@3.55.1
-      vite: 4.1.1
+      vite: 4.1.1_@types+node@18.13.0
       vitefu: 0.2.4_vite@4.1.1
     transitivePeerDependencies:
       - supports-color
@@ -3320,6 +3330,57 @@ packages:
       tslib: 2.5.0
     dev: true
 
+  /histoire/0.14.2_rgy4fnry75xg7rw6lgswyd3x2m:
+    resolution: {integrity: sha512-nY9O5sIbtlUsGsLQqMGi601I09OKH7aZamYPcDlW7g1fmkf7IMb15xiREboMunQEIpDrpAH+9aWBxGIN+iQ5eA==}
+    hasBin: true
+    peerDependencies:
+      vite: ^2.9.0 || ^3.0.0 || ^4.0.0
+    dependencies:
+      '@histoire/app': 0.14.2_vite@4.1.1
+      '@histoire/controls': 0.14.2
+      '@histoire/shared': 0.14.2_vite@4.1.1
+      '@histoire/vendors': 0.14.2
+      '@types/flexsearch': 0.7.3
+      '@types/markdown-it': 12.2.3
+      birpc: 0.1.1
+      change-case: 4.1.2
+      chokidar: 3.5.3
+      connect: 3.7.0
+      defu: 6.1.2
+      diacritics: 1.3.0
+      flexsearch: 0.7.21
+      fs-extra: 10.1.0
+      globby: 13.1.3
+      gray-matter: 4.0.3
+      jiti: 1.17.0
+      jsdom: 20.0.3
+      markdown-it: 12.3.2
+      markdown-it-anchor: 8.6.6_2zb4u3vubltivolgu556vv4aom
+      markdown-it-attrs: 4.1.6_markdown-it@12.3.2
+      markdown-it-emoji: 2.0.2
+      micromatch: 4.0.5
+      mrmime: 1.0.1
+      pathe: 0.2.0
+      picocolors: 1.0.0
+      sade: 1.8.1
+      shiki-es: 0.2.0
+      sirv: 2.0.2
+      tinypool: 0.1.3
+      vite: 4.1.1_@types+node@18.13.0
+      vite-node: 0.28.4_@types+node@18.13.0
+    transitivePeerDependencies:
+      - '@types/node'
+      - bufferutil
+      - canvas
+      - less
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - utf-8-validate
+    dev: true
+
   /histoire/0.14.2_vite@4.1.1:
     resolution: {integrity: sha512-nY9O5sIbtlUsGsLQqMGi601I09OKH7aZamYPcDlW7g1fmkf7IMb15xiREboMunQEIpDrpAH+9aWBxGIN+iQ5eA==}
     hasBin: true
@@ -3407,6 +3468,12 @@ packages:
     resolution: {integrity: sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==}
     engines: {node: '>=10.17.0'}
     dev: true
+
+  /iconify-icon/1.0.5:
+    resolution: {integrity: sha512-vr5IzIy30MQ2n/2M8Aw7jP/IaDmGUwMvDx64S77Zm5elSECYXIzNc3m8ktqbSFfp2XvyfNZk4jJhz1hN3+xKYg==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: false
 
   /iconv-lite/0.6.3:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
@@ -5977,6 +6044,29 @@ packages:
       - terser
     dev: true
 
+  /vite-node/0.28.4_@types+node@18.13.0:
+    resolution: {integrity: sha512-KM0Q0uSG/xHHKOJvVHc5xDBabgt0l70y7/lWTR7Q0pR5/MrYxadT+y32cJOE65FfjGmJgxpVEEY+69btJgcXOQ==}
+    engines: {node: '>=v14.16.0'}
+    hasBin: true
+    dependencies:
+      cac: 6.7.14
+      debug: 4.3.4
+      mlly: 1.1.0
+      pathe: 1.1.0
+      picocolors: 1.0.0
+      source-map: 0.6.1
+      source-map-support: 0.5.21
+      vite: 4.1.1_@types+node@18.13.0
+    transitivePeerDependencies:
+      - '@types/node'
+      - less
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+    dev: true
+
   /vite/4.1.1:
     resolution: {integrity: sha512-LM9WWea8vsxhr782r9ntg+bhSFS06FJgCvvB0+8hf8UWtvaiDagKYWXndjfX6kGl74keHJUcpzrQliDXZlF5yg==}
     engines: {node: ^14.18.0 || >=16.0.0}
@@ -6052,7 +6142,7 @@ packages:
       vite:
         optional: true
     dependencies:
-      vite: 4.1.1
+      vite: 4.1.1_@types+node@18.13.0
     dev: true
 
   /vitest/0.25.8:

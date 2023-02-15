@@ -1,13 +1,65 @@
 <script lang="ts">
 	import math from 'tinycas'
-	import q from '$lib/questions/questions'
+	import qs from '$lib/questions/questions'
 	import Button from 'ui2'
 	import { Comp } from 'ui-skeleton'
-	const questions = q.questions
+	import CorrectionLine from '$lib/ui/CorrectionLine.svelte'
+	import type { LineChoice } from '$lib/type'
+	import BackCard from '$lib/ui/BackCard.svelte'
+	import generateQuestion from '$lib/questions/generateQuestion'
+	import {
+		assessItem,
+		prepareAnsweredQuestion,
+		prepareCorrectedQuestion,
+	} from '$lib/questions/correction'
+	const questions = qs.questions
 	console.log('q', questions)
+	const q = assessItem(
+		prepareCorrectedQuestion(
+			prepareAnsweredQuestion(
+				generateQuestion(questions['Entiers']['Additionner']['Tables'][1]),
+			),
+		),
+	)
+	console.log('q', q)
+
 	const e = math('1+2/4')
+	const choices: LineChoice[] = [
+		{
+			solution: true,
+			badge: 'correct',
+			html: 'text plus long',
+		},
+		{
+			solution: true,
+			badge: 'incorrect',
+			html: 'text plus long',
+		},
+		{
+			solution: false,
+			badge: 'correct',
+			html: 'text plus long',
+		},
+		{
+			solution: false,
+			badge: 'incorrect',
+			html: 'text plus long',
+		},
+		{
+			solution: true,
+			html: 'text plus long',
+		},
+		{
+			solution: false,
+			html: 'text plus long',
+		},
+	]
 </script>
 
+<div class="mt-4">
+	<CorrectionLine line={{ choices }} />
+</div>
+<BackCard class="my-10" card={q} />
 <Button />
 <Comp />
 <div class="container h-full mx-auto flex justify-center items-center">

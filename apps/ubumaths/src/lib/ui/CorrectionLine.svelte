@@ -1,67 +1,52 @@
 <script lang="ts">
-	import Badge from '@smui-extra/badge'
 	import { correct_color } from '$lib/colors'
-	export let line
+	import type { Line } from '$lib/type'
+	export let line: Line
+
+	const classBadgeCorrect =
+		'badge variant-filled-success absolute -top-5 -right-2 z-10 text-success-500'
+	const classBadgeIncorrect =
+		'badge variant-filled-error absolute -top-5 -right-2 z-10 text-error-500'
+
+	const classAnswerSolution = 'p-2 border-4 border-success-500 rounded-lg'
+	const classAnswerNotSolution = 'p-2 border-4 border-grey-500 rounded-lg'
 </script>
 
 {#if line}
-	{#if line.html}
-		<span style="word-break:break-word;white-space:normal;">
-			{@html line.html}
-		</span>
-	{:else if line.choices}
-		{#each line.choices as choice, i}
-			{#if choice.solution}
-				<span
-					class="rounded-lg m-2 p-2"
-					style={`display:inline-block;text-align: center;min-width:2em;position:relative; border: 6px solid ${correct_color}`}
-				>
-					{#if choice.html}
-						{@html choice.html}
-					{:else if choice.image}
-						<img
-							class="white"
-							src={choice.image}
-							style="max-width:min(400px,80%);max-height:40vh;"
-							alt={`choice ${i}`}
-						/>
-					{/if}
+	{#if typeof line === 'object'}
+		{#if line.html}
+			<span style="word-break:break-word;white-space:normal;">
+				{@html line.html}
+			</span>
+		{:else if line.choices}
+			{#each line.choices as choice, i}
+				<div class="relative inline-block">
 					{#if choice.badge}
-						<Badge
-							pos="middle"
-							color={choice.badge === 'correct'
-								? 'custom-correct'
-								: 'custom-incorrect'}
-							aria-label={`choice ${i}`}
-							style="min-height: 1.5rem; min-width: 1.5rem; padding: 0;"
-						/>
+						<span
+							class={choice.badge === 'correct'
+								? classBadgeCorrect
+								: classBadgeIncorrect}
+							><span
+								class={choice.badge === 'correct'
+									? 'text-success-500'
+									: 'text-error-500'}>..</span
+							></span
+						>
 					{/if}
-				</span>
-			{:else}
-				<span
-					class="rounded-lg m-2 p-2"
-					style="display:inline-block;text-align:center;min-width:2em;position:relative; border:4px solid grey"
-				>
-					{#if choice.html}
-						{@html choice.html}
-					{:else if choice.image}
-						<img
-							class="white"
-							src={choice.image}
-							style="max-width:min(400px,80%);max-height:40vh;"
-							alt={`choice ${i}`}
-						/>
-					{/if}
-					{#if choice.badge}
-						<Badge
-							color="custom-incorrect"
-							aria-label={`choice ${i}`}
-							style="min-height: 1.5rem; min-width: 1.5rem; padding: 0;"
-						/>
-					{/if}
-				</span>
-			{/if}
-		{/each}
+					<span
+						class={choice.solution
+							? classAnswerSolution
+							: classAnswerNotSolution}
+					>
+						{#if choice.html}
+							{@html choice.html}
+						{:else if choice.image}
+							<img src={choice.image} alt={`choice ${i}`} />
+						{/if}
+					</span>
+				</div>
+			{/each}
+		{/if}
 	{:else}
 		<span
 			style="display:inline-block;word-break:break-word;white-space:normal;"

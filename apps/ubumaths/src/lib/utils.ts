@@ -128,7 +128,7 @@ const replacementLatex = (_: unknown, p1: string) =>
 const replacementTexmacs = (_: unknown, p1: string) =>
 	'$' + math(p1).texmacs + '$'
 
-function isObjectWithText(o: any): o is ObjectWithText {
+export function isObjectWithText(o: any): o is ObjectWithText {
 	return typeof o === 'object' && !!(o as ObjectWithText).text
 }
 
@@ -140,7 +140,7 @@ export const formatToLatex = (
 	} else if (Array.isArray(o)) {
 		return (o as Array<object | string>).map((elmt) => formatToLatex(elmt))
 	} else if (isObjectWithText(o)) {
-		return { ...o, text: formatToLatex(o.text) as string }
+		return { ...o, text: formatToLatex(o.text) }
 	} else if (typeof o === 'string') {
 		return o.replace(regex, replacementLatex)
 	} else {
@@ -157,7 +157,7 @@ export const formatToTexmacs = (
 	if (Array.isArray(o)) {
 		return (o as Array<object | string>).map((elmt) => formatToTexmacs(elmt))
 	} else if (isObjectWithText(o)) {
-		return { ...o, text: formatToTexmacs(o.text) as string }
+		return { ...o, text: formatToTexmacs(o.text) }
 	} else if (typeof o === 'string') {
 		return o.replace(regex, replacementTexmacs)
 	} else {
