@@ -1,6 +1,6 @@
 <script lang="ts">
 	import math from 'tinycas'
-	import q from '$lib/questions'
+	import q from '$lib/questions/questions'
 	import Button from 'ui2'
 	import { Comp } from 'ui-skeleton'
 	const questions = q.questions

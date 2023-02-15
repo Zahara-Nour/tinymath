@@ -1,4 +1,9 @@
 import math from 'tinycas'
+import type {
+	FormatToLatexArg,
+	FormatToTexmacsArg,
+	ObjectWithText,
+} from './type'
 // loggers
 type Level = 'trace' | 'debug' | 'info' | 'warn' | 'fail'
 type Noop = () => void
@@ -123,21 +128,19 @@ const replacementLatex = (_: unknown, p1: string) =>
 const replacementTexmacs = (_: unknown, p1: string) =>
 	'$' + math(p1).texmacs + '$'
 
-type ObjectWithText = { text: string }
-type FormatToLatexArg = null | ObjectWithText | string | Array<FormatToLatexArg>
-type FormatToTexmacsArg =
-	| null
-	| ObjectWithText
-	| string
-	| Array<FormatToTexmacsArg>
-export const formatToLatex = (o: FormatToLatexArg): unknown => {
+function isObjectWithText(o: any): o is ObjectWithText {
+	return typeof o === 'object' && !!(o as ObjectWithText).text
+}
+
+export const formatToLatex = (
+	o: FormatToLatexArg,
+): NonNullable<FormatToLatexArg> => {
 	if (!o) {
 		return ''
-	}
-	if (Array.isArray(o)) {
-		return o.map((elmt) => formatToLatex(elmt))
-	} else if (typeof o === 'object') {
-		return { ...o, text: formatToLatex(o.text) }
+	} else if (Array.isArray(o)) {
+		return (o as Array<object | string>).map((elmt) => formatToLatex(elmt))
+	} else if (isObjectWithText(o)) {
+		return { ...o, text: formatToLatex(o.text) as string }
 	} else if (typeof o === 'string') {
 		return o.replace(regex, replacementLatex)
 	} else {
@@ -145,14 +148,16 @@ export const formatToLatex = (o: FormatToLatexArg): unknown => {
 	}
 }
 
-export const formatToTexmacs = (o: FormatToTexmacsArg): unknown => {
+export const formatToTexmacs = (
+	o: FormatToTexmacsArg,
+): NonNullable<FormatToTexmacsArg> => {
 	if (!o) {
 		return ''
 	}
 	if (Array.isArray(o)) {
-		return o.map((elmt) => formatToTexmacs(elmt))
-	} else if (typeof o === 'object') {
-		return { ...o, text: formatToTexmacs(o.text) }
+		return (o as Array<object | string>).map((elmt) => formatToTexmacs(elmt))
+	} else if (isObjectWithText(o)) {
+		return { ...o, text: formatToTexmacs(o.text) as string }
 	} else if (typeof o === 'string') {
 		return o.replace(regex, replacementTexmacs)
 	} else {
@@ -174,6 +179,15 @@ export function objectMap<S, T>(
 		},
 		init ? init : ({} as { [index: string]: T }),
 	)
+}
+
+// https://stackoverflow.com/questions/23437476/in-typescript-how-to-check-if-a-string-is-numeric#:~:text=Most%20of%20the%20time%20the,%26%26%20isFinite(Number(n))%3B
+export function isNumeric(str: number | string) {
+	return !isNaN(+str)
+}
+
+export function isInteger(str: number | string) {
+	return !isNaN(+str) && Number.isInteger(+str)
 }
 
 export {
