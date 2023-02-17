@@ -132,7 +132,10 @@ type Subdomain = Question[]
 type Domain = Record<string, Subdomain>
 type Theme = Record<string, Domain>
 export type Questions = Record<string, Theme>
-
+export type AvailableLevels = Record<
+	string,
+	Record<string, Record<string, number[]>>
+>
 export type Question = {
 	id?: string
 	description: string
@@ -197,7 +200,11 @@ export function isQuestionChoices(q: Question): q is QuestionChoices {
 	return q.type === QUESTION_TYPE_CHOICES
 }
 
-export type GeneratedQuestion = Question & {
+export type QuestionWithID = Question & {
+	id: string
+}
+
+export type GeneratedQuestion = QuestionWithID & {
 	generatedVariables: Variables
 	choices?: Choice[]
 	solutions?: (string | number)[]
@@ -208,6 +215,8 @@ export type GeneratedQuestion = Question & {
 	answerField?: string
 	image?: string
 	imageBase64P?: Promise<string>
+	imageCorrection?: string
+	imageCorrectionBase64P?: Promise<string>
 	unit?: string
 	expression_latex?: string
 	expression2_latex?: string
@@ -215,8 +224,6 @@ export type GeneratedQuestion = Question & {
 	correctionDetails?: CorrectionDetail[]
 	expression2?: string
 	testAnswers?: string[]
-	imageCorrection?: string
-	imageCorrectionBase64P?: Promise<string>
 	points: number
 	order_elements: string[]
 }
@@ -252,7 +259,12 @@ export type CorrectedQuestion = AnsweredQuestion & {
 }
 
 export type ObjectWithText = { text: string }
-export type FormatToLatexArg = null | object | string | Array<object | string>
+export type FormatToLatexArg =
+	| undefined
+	| null
+	| object
+	| string
+	| Array<object | string>
 export type FormatToTexmacsArg = null | object | string | Array<object | string>
 export type FormatToHtmlArg = null | object | string | Array<object | string>
 
@@ -263,10 +275,34 @@ export type LineChoice = Choice & {
 	image?: string
 	html?: string
 }
-export type Line =
-	| string
-	| {
-			html?: string
-			texmacs?: string
-			choices?: LineChoice[]
-	  }
+export type Line = {
+	text?: string
+	latex?: string
+	html?: string
+	texmacs?: string
+	choices?: LineChoice[]
+}
+
+export type Links = Array<{
+	url: string
+	tooltip: string
+	text: string
+}>
+
+export type BasketItem = {
+	count: number
+	enounceAlone?: boolean
+	delay?: number
+	id: string
+}
+export type Basket = Array<BasketItem>
+
+export type Ids = Record<
+	string,
+	{
+		theme: string
+		domain: string
+		subdomain: string
+		level: number
+	}
+>

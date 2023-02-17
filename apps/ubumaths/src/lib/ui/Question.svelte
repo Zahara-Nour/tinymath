@@ -19,7 +19,6 @@
 		type Line,
 	} from '$lib/type'
 	import type { MathfieldElement } from 'tinymathlive'
-	import { browser, building, dev, version } from '$app/environment'
 
 	export let question: CorrectedQuestion
 	export let interactive = false
@@ -32,7 +31,7 @@
 		exec: () => {},
 		hook: () => {},
 	}
-	export let immediateCommit: boolean
+	export let immediateCommit = true
 
 	type Commit = {
 		hook: () => void
@@ -493,7 +492,7 @@
 	}
 </script>
 
-<div class="flex flex-col items-center justify-around">
+<div class={`flex flex-col items-center justify-around ${$$props.class}`}>
 	{#each question.order_elements as element}
 		{#if element === 'enounce' && enounce}
 			<div

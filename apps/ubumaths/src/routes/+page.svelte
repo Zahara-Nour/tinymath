@@ -12,6 +12,9 @@
 		prepareAnsweredQuestion,
 		prepareCorrectedQuestion,
 	} from '$lib/questions/correction'
+	import FrontCard from '$lib/ui/FrontCard.svelte'
+	import Question from '$lib/ui/Question.svelte'
+	import QuestionCard from '$lib/ui/QuestionCard.svelte'
 	const questions = qs.questions
 	console.log('q', questions)
 	const q = assessItem(
@@ -60,6 +63,8 @@
 	<CorrectionLine line={{ choices }} />
 </div>
 <BackCard class="my-10" card={q} />
+<FrontCard class="my-10" card={q} />
+<QuestionCard class="my-10" card={q} />
 <Button />
 <Comp />
 <div class="container h-full mx-auto flex justify-center items-center">

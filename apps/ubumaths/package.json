@@ -17,6 +17,7 @@
 		"story:preview": "histoire preview"
 	},
 	"dependencies": {
+		"@supabase/supabase-js": "^2.8.0",
 		"ajv": "^8.12.0",
 		"better-ajv-errors": "^1.2.0",
 		"iconify-icon": "^1.0.5",

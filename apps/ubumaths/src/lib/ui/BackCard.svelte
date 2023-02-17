@@ -82,70 +82,64 @@
 
 <div bind:clientHeight={h} bind:clientWidth={w} class={`${$$props.class}`}>
 	<div
-		class="card"
-		style={height
-			? `height:${height}px;`
-			: '' + width
-			? `width:${width - 48}px;`
-			: ''}
+		class="card p-4 flex flex-col items-center justify-between"
+		style={height ? `height:${height}px;` : width ? `width:${width}px;` : ''}
 	>
-		<div class="h-full flex flex-col items-center justify-between">
-			<!-- correction des réponses de l'utilisateur -->
+		<!-- correction des réponses de l'utilisateur -->
 
-			<!-- si mode correction, on affiche la correction détaillée -->
-			{#if correction}
-				<div class="correction-title">Détails</div>
-				<div class="relative">
+		<!-- si mode correction, on affiche la correction détaillée -->
+		{#if correction}
+			<div class="correction-title">Détails</div>
+			<div class="relative">
+				{#each details as line}
+					<div class="correction-line">
+						<CorrectionLine {line} />
+					</div>
+				{/each}
+			</div>
+
+			<div class=" w-full flex justify-end">
+				<button on:click={toggleFlip} class="btn-icon variant-filled-primary"
+					><iconify-icon icon="mdi:orbit-variant" /></button
+				>
+			</div>
+		{:else}
+			<!-- solution générique -->
+			<div>Réponse :</div>
+			<div class="my-5 relative">
+				{@html solution}
+			</div>
+			{#if card.imageCorrection}
+				{#await card.imageCorrectionBase64P}
+					loading image
+				{:then base64}
+					<div style="display:inline-block;background-color:white;">
+						<img
+							src={base64}
+							class="my-3 w-full max-w-lg"
+							style="max-height:40vh; object-fit: contain;"
+							alt="Alright Buddy!"
+						/>
+					</div>
+				{:catch error}
+					{error}
+				{/await}
+			{/if}
+			{#if details}
+				<div class="my-2 relative">
 					{#each details as line}
-						<div class="correction-line">
+						<div class=" correction-line z-0">
 							<CorrectionLine {line} />
 						</div>
 					{/each}
 				</div>
-
-				<div class=" w-full flex justify-end">
-					<button on:click={toggleFlip} class="btn-icon variant-filled-primary"
-						><iconify-icon icon="mdi:orbit-variant" /></button
-					>
-				</div>
-			{:else}
-				<!-- solution générique -->
-				<div>Réponse :</div>
-				<div class="my-5 relative">
-					{@html solution}
-				</div>
-				{#if card.imageCorrection}
-					{#await card.imageCorrectionBase64P}
-						loading image
-					{:then base64}
-						<div style="display:inline-block;background-color:white;">
-							<img
-								src={base64}
-								class="my-3 w-full max-w-lg"
-								style="max-height:40vh; object-fit: contain;"
-								alt="Alright Buddy!"
-							/>
-						</div>
-					{:catch error}
-						{error}
-					{/await}
-				{/if}
-				{#if details}
-					<div class="my-2 relative">
-						{#each details as line}
-							<div class=" correction-line z-0">
-								<CorrectionLine {line} />
-							</div>
-						{/each}
-					</div>
-				{/if}
-				<div class="mt-3 w-full flex justify-end">
-					<button on:click={toggleFlip} class="btn-icon variant-filled-primary"
-						><iconify-icon icon="mdi:orbit-variant" /></button
-					>
-				</div>
 			{/if}
-		</div>
+			<footer class="footermt-3 w-full flex justify-end">
+				<button on:click={toggleFlip} class="btn-icon variant-filled-primary"
+					><iconify-icon icon="mdi:orbit-variant" /></button
+				>
+			</footer>
+		{/if}
 	</div>
 </div>
 

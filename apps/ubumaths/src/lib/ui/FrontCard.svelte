@@ -4,23 +4,23 @@
 	import { formatToHtml } from '$lib/stores'
 	import { formatToLatex } from '$lib/utils'
 	import { mdc_colors } from '$lib/colors'
+	import type { CorrectedQuestion } from '$lib/type'
 
 	export let toggleFlip = () => {}
-	export let card
-	export let showDescription
+	export let card: CorrectedQuestion
+	export let showDescription = true
 	export let height = 0
 	export let width = 0
 	export let h = 0
 	export let w = 0
 	export let masked = false
-	export let interactive
-	export let commit = null
-	export let magnify
-	export let correction
-	export let simpleCorrection = null
-	export let detailedCorrection = null
+	export let interactive = false
+	// export let commit = null
+	export let correction = false
+	export let simpleCorrection = card.simpleCorrection
+	export let detailedCorrection = card.detailedCorrection
 	export let immediateCommit = false
-	export let flashcard
+	export let flashcard = true
 
 	$: description = $formatToHtml(formatToLatex(card.description))
 	$: subdescription = $formatToHtml(formatToLatex(card.subdescription))
@@ -28,93 +28,68 @@
 		console.log('front card detailedCorrection', card.num, detailedCorrection)
 </script>
 
-<div bind:clientHeight={h} bind:clientWidth={w}>
-	<Paper elevation={12}>
-		<div
-			class="flex flex-col  justify-between"
-			style={height
-				? `height:${height - 48}px;`
-				: '' + width
-				? `width:${width - 48}px;`
-				: ''}
-		>
-			{#if showDescription}
-				<div>
-					<div class="flex items-center justify-between">
-						<div class="flex justify-left items-center">
-							<div style="margin-left:3rem">
-								<Title>
-									<span
-										class="z-0 relative"
-										style={'color:var(--mdc-theme-primary'}
-									>
-										{@html $formatToHtml(description)}
-									</span>
-								</Title>
-								{#if subdescription}
-									<Subtitle>
-										<span
-											class="z-0 relative"
-											style={'color:var(--mdc-theme-on-surface'}
-											>{@html $formatToHtml(subdescription)}</span
-										>
-									</Subtitle>
-								{/if}
-							</div>
-							<Button
-								color={correction ? 'primary' : 'secondary'}
-								class="ml-3"
-								on:click={() => (correction = !correction)}
-								variant="raised"
+<div bind:clientHeight={h} bind:clientWidth={w} class={`${$$props.class}`}>
+	<div
+		class="card variant-filled-soft p-4 flex flex-col  justify-between"
+		style={height ? `height:${height}px;` : width ? `width:${width}px;` : ''}
+	>
+		{#if showDescription}
+			<header class="header flex items-center justify-between">
+				<div class="flex justify-left items-center">
+					<div style="margin-left:3rem">
+						<span class="relative" style={'color:var(--mdc-theme-primary'}>
+							{@html $formatToHtml(description)}
+						</span>
+
+						{#if subdescription}
+							<span class="relative" style={'color:var(--mdc-theme-on-surface'}
+								>{@html $formatToHtml(subdescription)}</span
 							>
-								<Label>C</Label>
-							</Button>
-							<Button
-								color={interactive ? 'primary' : 'secondary'}
-								class="ml-3"
-								on:click={() => (interactive = !interactive)}
-								variant="raised"
-							>
-								<Label>I</Label>
-							</Button>
-						</div>
-						<span>{card.id}</span>
+						{/if}
 					</div>
-					<hr class="my-3 mx-0" />
+					<button
+						on:click={() => (correction = !correction)}
+						class={correction
+							? 'variant-filled-primary'
+							: 'variant-filled-secondary'}>C</button
+					>
+					<button
+						on:click={() => (interactive = !interactive)}
+						class={correction
+							? 'variant-filled-primary'
+							: 'variant-filled-secondary'}>I</button
+					>
 				</div>
-			{/if}
-			{#if correction}
-				<div
-					class="correction-title"
-					style={` color:${mdc_colors['lime-500']}; font-size:1rem; position:absolute;top:1.5em;left:-6px`}
+				<span>{card.id}</span>
+			</header>
+		{/if}
+		{#if correction}
+			<div
+				class="correction-title"
+				style={` color:${mdc_colors['lime-500']}; font-size:1rem; position:absolute;top:1.5em;left:-6px`}
+			>
+				Correction
+			</div>
+		{/if}
+
+		<Question
+			question={card}
+			{masked}
+			{correction}
+			{interactive}
+			bind:simpleCorrection
+			bind:detailedCorrection
+			{immediateCommit}
+		/>
+
+		{#if flashcard}
+			<footer class="footer flex justify-end">
+				<button on:click={toggleFlip} class="btn-icon variant-filled-primary"
+					><iconify-icon icon="mdi:orbit-variant" /></button
 				>
-					Correction
-				</div>
-			{/if}
-			<Content>
-				<Question
-					question={card}
-					{masked}
-					{magnify}
-					{correction}
-					{interactive}
-					{commit}
-					bind:simpleCorrection
-					bind:detailedCorrection
-					{immediateCommit}
-				/>
-			</Content>
-			{#if flashcard}
-				<div class=" flex justify-end">
-					<Fab color="secondary" on:click={toggleFlip} mini>
-						<Icon component={Svg} viewBox="2 2 20 20">
-							<path fill="currentColor" d={mdiOrbitVariant} />
-						</Icon>
-					</Fab>
-				</div>
-			{/if}
-		</div>
-	</Paper>
+			</footer>
+		{/if}
+	</div>
 </div>
 
 <style>

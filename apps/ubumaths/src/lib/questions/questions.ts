@@ -20,7 +20,7 @@ import {
 	incorrect_color,
 } from '$lib/colors'
 import { objectMap } from '../utils'
-import type { Question, Questions } from '../type'
+import type { Ids, Question, Questions, QuestionWithID } from '../type'
 
 export const QUESTION_TYPE_FILL_IN = 'fill in'
 export const QUESTION_TYPE_EQUATION = 'equation'
@@ -22631,9 +22631,6 @@ const questions: Questions = {
 	},
 }
 
-type QuestionWithID = Question & {
-	id: string
-}
 // const defaultQuestionsWithID: QuestionWithID = {
 // 	description: '',
 // 	defaultDelay: 20,
@@ -22641,7 +22638,7 @@ type QuestionWithID = Question & {
 // 	grade: UNKNOWN,
 // 	id: '',
 // }
-
+const ids: Ids = {}
 const questionsWithID: Record<
 	string,
 	Record<string, Record<string, QuestionWithID[]>>
@@ -22650,38 +22647,41 @@ const questionsWithID: Record<
 		objectMap(
 			domain,
 			(subdomain, subdomain_name, k) => {
-				const new_subdomain = subdomain.map(
-					(q, l) =>
-						({
-							...q,
-							id:
-								code[i as number] +
-								code[j as number] +
-								code[k as number] +
-								code[l],
-						} as QuestionWithID),
-				)
+				const new_subdomain = subdomain.map((q, l) => {
+					const id = code[i!] + code[j!] + code[k!] + code[l]
+					ids[id] = {
+						theme: theme_name,
+						domain: domain_name,
+						subdomain: subdomain_name,
+						level: l + 1,
+					}
+					return {
+						...q,
+						id,
+					} as QuestionWithID
+				})
 				return new_subdomain
 			},
 			// defaultQuestionsWithID,
 		),
 	),
 )
-const ids = {}
 
 export function getQuestion(
 	theme: string,
 	domain: string,
 	subdomain: string,
-	level: string,
-) {
+	level: number,
+): QuestionWithID {
 	// on retourne une copie car on doit modifier les questions à la volée
-	return {
-		...questionsWithID[theme][domain][subdomain].find(
-			(q) =>
-				questionsWithID[theme][domain][subdomain].indexOf(q) + 1 ===
-				parseInt(level, 10),
-		),
+	const qs = questionsWithID[theme][domain][subdomain]
+	const q = qs.find(
+		(q) => questionsWithID[theme][domain][subdomain].indexOf(q) + 1 === level,
+	)
+	if (q) {
+		return q
+	} else {
+		throw new Error('question not found')
 	}
 }
 
