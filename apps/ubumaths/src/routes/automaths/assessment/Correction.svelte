@@ -1,32 +1,35 @@
-<script>
+<script lang="ts">
 	import CorrectionListItems from './CorrectionListItems.svelte'
-	import { mdiHome, mdiReload, mdiScanHelper } from '@mdi/js'
-	import Fab from '@smui/fab'
-	import { Icon, Svg } from '@smui/common'
 	import { onMount } from 'svelte'
 	import { correct_color, incorrect_color, unoptimal_color } from '$lib/colors'
 	import { Confetti } from 'svelte-confetti'
 	import { getLogger } from '$lib/utils'
 	import { goto } from '$app/navigation'
 	import math from 'tinycas'
-	import { STATUS_CORRECT, STATUS_UNOPTIMAL_FORM } from '$lib/questions/correction'
+	import {
+		STATUS_CORRECT,
+		STATUS_UNOPTIMAL_FORM,
+	} from '$lib/questions/correction'
+	import type { CorrectedQuestion } from '$lib/type'
 
-	export let items
+	export let items: CorrectedQuestion[]
 	export let restart
-	export let query
-	export let classroom
+	export let query: string
+	export let classroom = false
 
 	const { info, fail } = getLogger('Correction', 'info')
-	let percent
+	let percent: number
 	let displayDetails = false
 	const toggleDetails = () => (displayDetails = !displayDetails)
-	let colorResult
-	let messageResult
+	let colorResult:
+		| typeof correct_color
+		| typeof incorrect_color
+		| typeof unoptimal_color
+	let messageResult: string
 
 	let total = 0
 	let score = 0
 
-	
 	items.forEach((item) => {
 		console.log('item', item)
 		total += item.points
@@ -86,9 +89,9 @@ pointer-events: none;
 z-index:100"
 		>
 			<Confetti
-				x="{[-5, 5]}"
-				y="{[0, 0.1]}"
-				delay="{[500, 2000]}"
+				x={[-5, 5]}
+				y={[0, 0.1]}
+				delay={[500, 2000]}
 				infinite
 				size="15"
 				duration="5000"
@@ -98,66 +101,52 @@ z-index:100"
 		</div>
 	{/if}
 	<div class="my-3 flex justify-end">
-		<Fab class="mx-1" color="secondary" on:click="{toggleDetails}" mini>
-			<Icon component="{Svg}" viewBox="2 2 20 20">
-				<path fill="currentColor" d="{mdiScanHelper}"></path>
-			</Icon>
-		</Fab>
+		<button on:click={toggleDetails} class="btn-icon variant-filled-primary"
+			><iconify-icon icon="mdi:scan-helper" /></button
+		>
 	</div>
 
 	{#if classroom}
 		<div class="flex  justify-around w-full" style="overflow-x:auto;">
 			<div class="w-full">
-				<CorrectionListItems
-					items="{items.filter((_, i) => i % 2 === 0)}"
-					displayDetails="{displayDetails}"
-					magnify="{classroom ? 2.5 : 1}"
-				/>
+				<CorrectionListItems items={items.filter((_, i) => i % 2 === 0)} />
 			</div>
 			<div class="ml-12 w-full">
-				<CorrectionListItems
-					items="{items.filter((_, i) => i % 2 === 1)}"
-					displayDetails="{displayDetails}"
-					magnify="{classroom ? 2.5 : 1}"
-				/>
+				<CorrectionListItems items={items.filter((_, i) => i % 2 === 1)} />
 			</div>
 		</div>
 	{:else}
 		<div class="flex w-full justify-center">
 			<div style="width:650px">
-				<CorrectionListItems
-					items="{items}"
-					displayDetails="{displayDetails}"
-					magnify="{classroom ? 2.5 : 1}"
-				/>
+				<CorrectionListItems {items} />
 			</div>
 		</div>
 	{/if}
 
 	{#if !classroom}
 		<div
-			class="{'p-2 flex items-center  justify-around'}"
-			style="{`background:${colorResult}`}"
+			class={'p-2 flex items-center  justify-around'}
+			style={`background:${colorResult}`}
 		>
 			<div class="flex flex-col items-center justify-around h-full">
 				<Fab
 					class="mx-1 my-3"
-					color="{classroom ? 'primary' : 'secondary'}"
-					on:click="{() => (restart = true)}"
+					color={classroom ? 'primary' : 'secondary'}
+					on:click={() => (restart = true)}
 					mini
 				>
-					<Icon component="{Svg}" viewBox="2 2 20 20">
-						<path fill="currentColor" d="{mdiReload}"></path>
+					<Icon component={Svg} viewBox="2 2 20 20">
+						<path fill="currentColor" d={mdiReload} />
 					</Icon>
 				</Fab>
 				<Fab
 					class="mx-1 my-3"
-					color="{classroom ? 'primary' : 'secondary'}"
-					on:click="{() => goto('/automaths' + query)}"
+					color={classroom ? 'primary' : 'secondary'}
+					on:click={() => goto('/automaths' + query)}
 					mini
 				>
-					<Icon component="{Svg}" viewBox="2 2 20 20">
-						<path fill="currentColor" d="{mdiHome}"></path>
+					<Icon component={Svg} viewBox="2 2 20 20">
+						<path fill="currentColor" d={mdiHome} />
 					</Icon>
 				</Fab>
 			</div>

@@ -137,34 +137,24 @@ export type AvailableLevels = Record<
 	Record<string, Record<string, number[]>>
 >
 export type Question = {
-	id?: string
-	description: string
-	subdescription?: string
-	enounces: string[]
-	enounces2?: string[]
-	variabless?: { [index: VariableName]: string }[]
-	solutionss?: (string | number)[][]
-	options?: Option[]
-	correctionFormats?: CorrectionFormat[]
-	defaultDelay: number
-	grade: Grade
-	expressions?: string[]
-	expressions2?: string[]
-	choicess?: Choice[][]
-	correctionDetailss?: CorrectionDetail[][]
-	images?: string[]
-	imagesCorrection?: string[]
-	conditions?: string[]
-	type?: QuestionType
-	units?: string[]
 	'result-type'?: 'decimal'
 	answerFields?: string[]
-	testAnswerss?: string[][]
-	letterss?: Letters[]
-	help?: string
+	choicess?: Choice[][]
+	conditions?: string[]
+	correctionDetailss?: CorrectionDetail[][]
+	correctionFormats?: CorrectionFormat[]
+	defaultDelay: number
+	description: string
+	enounces: string[]
+	enounces2?: string[]
+	expressions?: string[]
+	expressions2?: string[]
 	formats?: string[]
-	order_elements?: string[]
-	num?: number
+	grade: Grade
+	help?: string
+	images?: string[]
+	imagesCorrection?: string[]
+	letterss?: Letters[]
 	limits?: {
 		limits: { count?: number; limit?: number }[]
 		nbuniques?: number
@@ -172,6 +162,15 @@ export type Question = {
 		nbmax?: number
 		reached?: number
 	}
+	num?: number
+	options?: Option[]
+	order_elements?: string[]
+	solutionss?: (string | number)[][]
+	subdescription?: string
+	testAnswerss?: string[][]
+	type?: QuestionType
+	units?: string[]
+	variabless?: { [index: VariableName]: string }[]
 }
 
 export type QuestionResult = Question & {
@@ -205,32 +204,34 @@ export type QuestionWithID = Question & {
 }
 
 export type GeneratedQuestion = QuestionWithID & {
-	generatedVariables: Variables
+	answerField?: string
 	choices?: Choice[]
-	solutions?: (string | number)[]
-	i: number
+	correctionDetails?: CorrectionDetail[]
+	correctionFormat?: CorrectionFormat
+	delay: number
 	enounce: string
 	enounce2?: string
+	expression_latex?: string
 	expression?: string
-	answerField?: string
+	expression2_latex?: string
+	expression2?: string
+	generatedVariables: Variables
+	i: number
 	image?: string
 	imageBase64P?: Promise<string>
 	imageCorrection?: string
 	imageCorrectionBase64P?: Promise<string>
-	unit?: string
-	expression_latex?: string
-	expression2_latex?: string
-	correctionFormat?: CorrectionFormat
-	correctionDetails?: CorrectionDetail[]
-	expression2?: string
-	testAnswers?: string[]
-	points: number
 	order_elements: string[]
+	points: number
+	solutions?: (string | number)[]
+	testAnswers?: string[]
+	unit?: string
 }
 
 export type AnsweredQuestion = GeneratedQuestion & {
 	answers: (string | number)[] // pas de réponse en mode projection
 	options: Option[]
+	time?: number
 }
 
 export type CorrectionStatus =
@@ -242,20 +243,20 @@ export type CorrectionStatus =
 	| typeof STATUS_UNOPTIMAL_FORM
 
 export type CorrectedQuestion = AnsweredQuestion & {
-	statuss: CorrectionStatus[]
-	status: CorrectionStatus
-	coms: string[]
-	unoptimals: string[]
-	answers: (string | number)[]
 	answers_latex: string[]
-	testAnswers: string[]
-	solutions: (string | number)[]
-	solutionsUsed: number[]
-	solutionsIndexs: Record<number, number>
+	answers: (string | number)[]
 	choices: Choice[]
+	coms: string[]
 	correctionDetails: CorrectionDetail[]
-	simpleCorrection: Line[]
 	detailedCorrection: Line[]
+	simpleCorrection: Line[]
+	solutions: (string | number)[]
+	solutionsIndexs: Record<number, number>
+	solutionsUsed: number[]
+	status: CorrectionStatus
+	statuss: CorrectionStatus[]
+	testAnswers: string[]
+	unoptimals: string[]
 }
 
 export type ObjectWithText = { text: string }
@@ -306,3 +307,29 @@ export type Ids = Record<
 		level: number
 	}
 >
+
+export type Timer = {
+	status(): string
+	start(): void
+	pause(): void
+	stop(): void
+	resume(): void
+	getTime(): {
+		days: number
+		hours: number
+		minutes: number
+		seconds: number
+	}
+}
+
+export type Time = {
+	days: number
+	hours: number
+	minutes: number
+	seconds: number
+}
+
+export type Commit = {
+	hook?: () => void
+	exec: () => void
+}

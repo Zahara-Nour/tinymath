@@ -15,6 +15,7 @@
 	import { assessItem } from '$lib/questions/correction'
 	import {
 		isQuestionChoices,
+		type Commit,
 		type CorrectedQuestion,
 		type Line,
 	} from '$lib/type'
@@ -33,10 +34,6 @@
 	}
 	export let immediateCommit = true
 
-	type Commit = {
-		hook: () => void
-		exec: () => void
-	}
 	let { fail, trace, info } = getLogger('correction', 'trace')
 
 	let enounce: string | undefined

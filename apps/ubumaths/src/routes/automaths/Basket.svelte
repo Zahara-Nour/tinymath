@@ -3,10 +3,12 @@
 	import datas, { getQuestion } from '$lib/questions/questions'
 	import Question from '$lib/ui/Question.svelte'
 	import {
+		assessItem,
 		prepareAnsweredQuestion,
 		prepareCorrectedQuestion,
 	} from '$lib/questions/correction'
 	import type { Basket } from '$lib/type'
+	import QuestionCard from '$lib/ui/QuestionCard.svelte'
 
 	const ids = datas.ids
 
@@ -54,25 +56,17 @@
 {#if basket.length}
 	{#each basket as item, i}
 		{@const { theme, domain, subdomain, level } = ids[item.id]}
-		{@const question = getQuestion(theme, domain, subdomain, level)}
+		{@const card = assessItem(
+			prepareCorrectedQuestion(
+				prepareAnsweredQuestion(
+					generate(getQuestion(theme, domain, subdomain, level)),
+				),
+			),
+		)}
 		<div class="my-4 flex flex-row">
-			<div class="card" style="width:80%;max-width:500px">
-				<header class="header">
-					{@html question.description}
+			<QuestionCard showDescription class="mx-4 max-w-sm" {card} />
 
-					{#if question.subdescription}
-						{@html question.subdescription}
-					{/if}
-				</header>
-
-				<Question
-					question={prepareCorrectedQuestion(
-						prepareAnsweredQuestion(generate(question)),
-					)}
-				/>
-			</div>
-
-			<div class="ma-2 flex flex-col">
+			<div class="mx-4 flex flex-col">
 				{#if !courseAuxNombres}
 					<div class="flex flex-row justify-center">
 						<div class="mt-2">
@@ -83,13 +77,13 @@
 				<div class="ml-2 flex flex-row justify-center">
 					<button
 						on:click={() => removeItem(i)}
-						class="btn-icon variant-filled-primary"
+						class="mx-1 btn-icon variant-filled-primary"
 						><iconify-icon icon="mdi:minus" /></button
 					>
 					{#if !courseAuxNombres}
 						<button
 							on:click={() => addItem(i)}
-							class="btn-icon variant-filled-primary"
+							class="mx-1 btn-icon variant-filled-primary"
 							><iconify-icon icon="mdi:plus" /></button
 						>
 					{/if}
@@ -104,31 +98,29 @@
 					<div class="ml-2 flex flex-row justify-center">
 						<button
 							on:click={() => lessTime(i)}
-							class="btn-icon variant-filled-primary"
+							class="mx-1 btn-icon variant-filled-primary"
 							><iconify-icon icon="mdi:minus" /></button
 						>
 						<button
 							on:click={() => moreTime(i)}
-							class="btn-icon variant-filled-primary"
+							class="mx-1 btn-icon variant-filled-primary"
 							><iconify-icon icon="mdi:plus" /></button
 						>
 					</div>
 				{/if}
 			</div>
-			<div>
-				<div class="label">
-					<strong>Options</strong>
-					<div class="space-y-2">
-						<label class="flex items-center space-x-2">
-							<input
-								class="checkbox"
-								type="checkbox"
-								on:change={() => toggleEnounceAlone(i)}
-								bind:checked={enounceAlone}
-							/>
-							<p>Enoncé séparé</p>
-						</label>
-					</div>
+			<div class="mx-4 label">
+				<strong>Options</strong>
+				<div class="space-y-2">
+					<label class="flex items-center space-x-2">
+						<input
+							class="checkbox"
+							type="checkbox"
+							on:change={() => toggleEnounceAlone(i)}
+							bind:checked={enounceAlone}
+						/>
+						<p>Enoncé séparé</p>
+					</label>
 				</div>
 			</div>
 		</div>

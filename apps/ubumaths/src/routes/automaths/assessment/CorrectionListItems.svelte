@@ -1,10 +1,13 @@
-<script>
-	import { STATUS_CORRECT, STATUS_UNOPTIMAL_FORM } from '../../../../lib/questions/correction'
-	import CorrectionItem from '$lib/components/questions/CorrectionItem.svelte'
+<script lang="ts">
 	import { correct_color, incorrect_color, unoptimal_color } from '$lib/colors'
+	import {
+		STATUS_CORRECT,
+		STATUS_UNOPTIMAL_FORM,
+	} from '$lib/questions/correction'
+	import type { CorrectedQuestion } from '$lib/type'
+	import CorrectionItem from '$lib/ui/CorrectionItem.svelte'
 
-	export let items
-	export let magnify = 1
+	export let items: CorrectedQuestion[]
 </script>
 
 {#each items as item}
@@ -14,13 +17,10 @@
 			: item.status === STATUS_UNOPTIMAL_FORM
 			? unoptimal_color
 			: incorrect_color}
-	<div
-		class="w-full flex justify-start items-start mb-5"
-		
-	>
+	<div class="w-full flex justify-start items-start mb-5">
 		<div
 			class="relative mr-0"
-			style="{`font-size:${magnify*1.5}rem;font-family:'pacifico';color:white;background:${color}; border-radius: 50%;width:4.5rem; height:4.5rem`}"
+			style={`font-family:'pacifico';color:white;background:${color}; border-radius: 50%;width:4.5rem; height:4.5rem`}
 		>
 			<span
 				class="absolute"
@@ -29,6 +29,6 @@
 				{item.num}
 			</span>
 		</div>
-		<CorrectionItem item="{item}" magnify={magnify}/>
+		<CorrectionItem {item} />
 	</div>
 {/each}

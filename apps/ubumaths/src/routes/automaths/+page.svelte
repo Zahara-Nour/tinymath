@@ -17,13 +17,11 @@
 	import { page } from '$app/stores'
 	import math from 'tinycas'
 	import type {
-		GeneratedQuestion,
 		Basket as BasketType,
 		BasketItem,
 		CorrectedQuestion,
 		AvailableLevels,
 	} from '$lib/type'
-	import Question from '$lib/ui/Question.svelte'
 	import {
 		Accordion,
 		AccordionItem,
@@ -35,45 +33,46 @@
 
 	let { info, fail, warn } = getLogger('Automaths', 'info')
 	const questions = data.questions
+	const grade_url_params = decodeURI($page.url.searchParams.get('grade') || '')
+	const theme_url_params = decodeURI($page.url.searchParams.get('theme') || '')
+	const domain_url_params = decodeURI(
+		$page.url.searchParams.get('domain') || '',
+	)
+	const subdomain_url_params = decodeURI(
+		$page.url.searchParams.get('subdomain') || '',
+	)
+	const level_url_params = parseInt(
+		decodeURI($page.url.searchParams.get('level') || '') || '0',
+		10,
+	)
 
-	let domain: string
-	let subdomain: string
-	let level: number
-	let levels: number[] = []
-	let domains: string[] = []
-	let subdomains: string[] = []
-	let grade = grades[grades.length - 1]
+	let grade = grade_url_params
 	let availableLevels: AvailableLevels
-	let themes: string[] = Object.keys(questions)
-	let theme: string = themes[0]
+	let themes: string[]
+	let theme = theme_url_params
+	let domains: string[]
+	let domain = domain_url_params
+	let subdomains: string[]
+	let subdomain = subdomain_url_params
+	let levels: number[]
+	let level = level_url_params
 	let displayExemple = false
 	let generated: CorrectedQuestion
 	let showBasket = false
 	let classroom = false
 	let flash = false
-	let basket: BasketType = []
 	let courseAuxNombres = false
 	let correction = false
+	let basket: BasketType = []
+	let interactive = true // mode interactif pour l'exemple
+	let selectedGrade = grade
 
-	// mode interactif pour l'exemple
-	let interactive = true
 	const ids = data.ids
-	const first_theme = decodeURI($page.url.searchParams.get('theme') || '')
-	const first_domain = decodeURI($page.url.searchParams.get('domain') || '')
-	const first_subdomain = decodeURI(
-		$page.url.searchParams.get('subdomain') || '',
-	)
-	const first_level = parseInt(
-		decodeURI($page.url.searchParams.get('level') || '1'),
-		10,
-	)
 
 	// $: console.log('theme', theme)
 	// $: console.log('domain', domain)
 	// $: console.log('subdomain', subdomain)
 	// $: console.log('level', level)
-
-	// $ changeDomain(domain)
 
 	function generateExoTexmacs() {
 		let questions: BasketItem[] = []
@@ -210,50 +209,52 @@
 		theme = '',
 		domain = '',
 		subdomain = '',
-		level = 1,
+		level = 0,
 	) {
 		// console.log('-change grade')
-		grade = new_grade
+		grade = grades.includes(new_grade) ? new_grade : grades[grades.length - 1]
 		console.log('grade', grade)
 		availableLevels = getAvailablesLevels(grade)
+		// console.log('availableLevels', availableLevels)
 		themes = Object.keys(availableLevels)
-		changeThemeDomainSubdomainLevel(
-			theme || themes[0],
-			domain,
-			subdomain,
-			(level = 1),
-		)
+		console.log('themes', themes)
+		changeThemeDomainSubdomainLevel(theme, domain, subdomain, level)
 	}
 
 	function changeThemeDomainSubdomainLevel(
 		new_theme: string,
 		domain = '',
 		subdomain = '',
-		level = 1,
+		level = 0,
 	) {
-		theme = new_theme
-		domains = Object.keys(questions[theme])
-		changeDomainSubdomainLevel(domain || domains[0], subdomain, level)
+		console.log('theme 1', theme)
+		theme = themes.includes(new_theme) ? new_theme : themes[0]
+		console.log('theme', theme)
+		domains = Object.keys(availableLevels[theme])
+		console.log('domains', domains)
+		changeDomainSubdomainLevel(domain, subdomain, level)
 	}
 
 	function changeDomainSubdomainLevel(
 		new_domain: string,
 		subdomain = '',
-		level = 1,
+		level = 0,
 	) {
-		domain = new_domain
+		domain = domains.includes(new_domain) ? new_domain : domains[0]
 		console.log('domain', domain)
-		subdomains = Object.keys(questions[theme][domain])
+		subdomains = Object.keys(availableLevels[theme][domain])
 		console.log('subdomains', subdomains)
-		changeSubdomainLevel(subdomain || subdomains[0], level)
+		changeSubdomainLevel(subdomain, level)
 	}
 
-	function changeSubdomainLevel(new_subdomain: string, new_level = 1) {
-		subdomain = new_subdomain
-		level = new_level
+	function changeSubdomainLevel(new_subdomain: string, new_level: number) {
+		subdomain = subdomains.includes(new_subdomain)
+			? new_subdomain
+			: subdomains[0]
 		console.log('subdomain', subdomain)
 		levels = availableLevels[theme][domain][subdomain]
 		console.log('levels', levels)
+		level = levels.includes(new_level) ? new_level : 1
 		console.log('level', level)
 		generated = prepareCorrectedQuestion(
 			prepareAnsweredQuestion(generateExemple(theme, domain, subdomain, level)),
@@ -383,8 +384,11 @@
 	// $: changeGrade(grade)
 	// $: changeTheme(theme)
 
-	$: changeGradeThemeDomainSubdomainLevel(grade)
-
+	function changeGrade(grade: string) {
+		console.log('update grade', grade)
+		changeGradeThemeDomainSubdomainLevel(grade, theme, domain, subdomain, level)
+	}
+	$: changeGrade(selectedGrade)
 	$: if (courseAuxNombres) {
 		basket.forEach((item) => {
 			item.count = 1
@@ -418,21 +422,25 @@
 />
 
 {#if !showBasket}
-	<label class="label">
-		<span>Niveau</span>
-		<select class="select" bind:value={grade}>
+	<div class="my-8 label">
+		<span>Niveau : </span>
+		<select class="select max-w-xs" bind:value={selectedGrade}>
 			{#each grades as grade, i}
 				<option value={grade}>{grade}</option>
 			{/each}
 		</select>
-	</label>
+	</div>
 {/if}
 
 {#if showBasket}
 	<!-- {#if isTeacher && showBasket} -->
 	<Basket bind:basket {courseAuxNombres} />
 {:else if theme}
-	<TabGroup>
+	<TabGroup
+		justify="justify-start flex-wrap"
+		active="border-b-4 border-primary-500"
+		hover="hover:variant-soft-primary"
+	>
 		{#each themes as t (t)}
 			<Tab
 				on:click={() => changeThemeDomainSubdomainLevel(t)}
@@ -449,23 +457,24 @@
 						on:click={() => changeDomainSubdomainLevel(d)}
 					>
 						<svelte:fragment slot="summary"
-							><p class="font-bold">{d}</p></svelte:fragment
+							><p
+								class={'font-bold ' + (domain === d ? 'text-primary-500' : '')}
+							>
+								{d}
+							</p></svelte:fragment
 						>
-						<svelte:fragment slot="content">
+						<div slot="content" class="pl-14 border-l-2 border-primary-500">
 							{#each subdomains as subd (theme + d + subd)}
 								<div class="my-5 flex items-center">
-									<span>{subd}</span>
+									<span class="mb-2">{subd}</span>
 									<div class="flex flex-wrap">
 										{#if Array.isArray(availableLevels[theme][d][subd])}
 											{#each availableLevels[theme][d][subd] as l (theme + d + subd + l)}
-												{@const buttonClass =
-													'ml-2 mb-2 btn-icon ' +
-													(subdomain === subd && level === l
-														? 'variant-filled-primary'
-														: 'variant-filled-secondary')}
 												<button
 													on:click={() => changeSubdomainLevel(subd, l)}
-													class={buttonClass}>{l}</button
+													class={subdomain === subd && level === l
+														? 'selected'
+														: 'not-selected'}>{l}</button
 												>
 											{/each}
 										{/if}
@@ -473,7 +482,7 @@
 									<div style="flex-grow:1;" />
 								</div>
 							{/each}
-						</svelte:fragment>
+						</div>
 					</AccordionItem>
 				{/each}
 			</Accordion>
@@ -483,7 +492,7 @@
 
 {#if displayExemple}
 	<div
-		class=" w-full bg-surface-50-900-token px-2 py-5 sticky bottom-0 z-10 flex items-center justify-center"
+		class=" border-t-2 w-full bg-surface-50-900-token px-2 py-5 sticky bottom-0 z-10 flex items-center justify-center"
 	>
 		<hl />
 		<QuestionCard
@@ -496,3 +505,12 @@
 		/>
 	</div>
 {/if}
+
+<style lang="postcss">
+	.selected {
+		@apply ml-1 mb-2 btn-icon variant-filled-primary;
+	}
+	.not-selected {
+		@apply ml-1 mb-2 btn-icon variant-filled-surface;
+	}
+</style>

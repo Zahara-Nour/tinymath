@@ -6,7 +6,7 @@
 
 	export let card: CorrectedQuestion
 	export let interactive = false
-	export let flashcard = true
+	export let flashcard = false
 	export let showDescription = false
 	export let correction = false
 	export let immediateCommit = false

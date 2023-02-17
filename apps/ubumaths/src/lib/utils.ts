@@ -174,7 +174,14 @@ export function objectMap<S, T>(
 		function (result: { [index: string]: T }, key, idx) {
 			const value = object[key]
 			const new_value = mapFn(value, key, idx)
-			result[key] = new_value
+			if (
+				!(
+					isEmptyObject(new_value) ||
+					(Array.isArray(new_value) && new_value.length === 0) ||
+					!new_value
+				)
+			)
+				result[key] = new_value
 			return result
 		},
 		init ? init : ({} as { [index: string]: T }),
@@ -188,6 +195,18 @@ export function isNumeric(str: number | string) {
 
 export function isInteger(str: number | string) {
 	return !isNaN(+str) && Number.isInteger(+str)
+}
+
+export function convertToTime(nseconds: number) {
+	const days = Math.floor((nseconds * 1000) / (1000 * 60 * 60 * 24))
+	const hours = Math.floor(
+		((nseconds * 1000) % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+	)
+	const minutes = Math.floor(
+		((nseconds * 1000) % (1000 * 60 * 60)) / (1000 * 60),
+	)
+	const seconds = Math.floor(((nseconds * 1000) % (1000 * 60)) / 1000)
+	return { days, hours, minutes, seconds }
 }
 
 export {

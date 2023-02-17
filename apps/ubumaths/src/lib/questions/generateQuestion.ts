@@ -11,6 +11,7 @@ import {
 	type Option,
 	type Question,
 	type QuestionType,
+	type QuestionWithID,
 	type VariableName,
 	type Variables,
 } from '$lib/type'
@@ -21,11 +22,12 @@ import {
 } from './questions'
 import type { Bool, Node, Numbr } from 'tinycas/dist/math/types'
 import type { EvalArg } from 'tinycas'
+import { fetchImage } from '$lib/images'
 
 let { warn, trace } = getLogger('generateQuestion', 'warn')
 
 export default function generateQuestion(
-	question: Question,
+	question: QuestionWithID,
 	generateds: GeneratedQuestion[] = [],
 	nbquestions = 1,
 	offset = 0,
@@ -673,6 +675,8 @@ export default function generateQuestion(
 		type: type as QuestionType,
 		generatedVariables: variables,
 		enounce: '',
+		delay: question.defaultDelay,
+		// delay:question.defaultDelay
 		...question,
 		// TODO: le mettre ailleurs ça alourdit ici
 		order_elements: question.order_elements || [
@@ -700,11 +704,19 @@ export default function generateQuestion(
 
 	if (image) {
 		generated.image = image
-		// generated.imageBase64P = fetchImage(image)
+		generated.imageBase64P = fetchImage(image)
 	}
 	if (imageCorrection) {
 		generated.imageCorrection = imageCorrection
-		// generated.imageCorrectionBase64P = fetchImage(imageCorrection)
+		generated.imageCorrectionBase64P = fetchImage(imageCorrection)
+	}
+
+	if (choices) {
+		choices.forEach(async (choice) => {
+			if (choice.image) {
+				choice.imageBase64P = fetchImage(choice.image)
+			}
+		})
 	}
 
 	return generated

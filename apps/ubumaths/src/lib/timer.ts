@@ -1,34 +1,25 @@
+import type { Time } from './type'
+import { convertToTime } from './utils'
+
 export function createTimer(
 	delay: number,
-	tick: () => void,
+	tick: (remaining: number) => any,
 	timeout: () => void,
 ) {
 	let ticker: NodeJS.Timer | null
 	let status = 'done'
-	let days: number
-	let hours: number
-	let minutes: number
-	let seconds: number
 	let remaining = delay
-	calculate(remaining)
-
-	function calculate(remaining: number) {
-		days = Math.floor((remaining * 1000) / (1000 * 60 * 60 * 24))
-		hours = Math.floor(
-			((remaining * 1000) % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
-		)
-		minutes = Math.floor(((remaining * 1000) % (1000 * 60 * 60)) / (1000 * 60))
-		seconds = Math.floor(((remaining * 1000) % (1000 * 60)) / 1000)
-	}
+	let time = convertToTime(remaining)
 
 	const callback = () => {
 		remaining -= 1
-		calculate(remaining)
-		tick()
-		if (remaining <= 0) {
-			status === 'done'
+		if (remaining < 0) {
+			status = 'done'
 			if (ticker) clearInterval(ticker)
 			timeout()
+		} else {
+			time = convertToTime(remaining)
+			tick(remaining)
 		}
 	}
 
@@ -38,7 +29,7 @@ export function createTimer(
 		},
 		start() {
 			remaining = delay
-			calculate(remaining)
+			time = convertToTime(remaining)
 			if (ticker) clearInterval(ticker)
 			ticker = setInterval(callback, 1000)
 			status = 'running'
@@ -63,9 +54,17 @@ export function createTimer(
 				status = 'running'
 			}
 		},
+		changeDelay(newDelay: number) {
+			remaining = remaining + newDelay - delay
+			delay = newDelay
+		},
 
 		getTime() {
-			return { days, hours, minutes, seconds }
+			return time
+		},
+
+		getSeconds() {
+			return remaining
 		},
 	}
 	return timer

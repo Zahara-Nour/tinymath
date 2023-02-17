@@ -8,7 +8,7 @@
 
 	export let toggleFlip = () => {}
 	export let card: CorrectedQuestion
-	export let showDescription = true
+	export let showDescription = false
 	export let height = 0
 	export let width = 0
 	export let h = 0
@@ -20,7 +20,7 @@
 	export let simpleCorrection = card.simpleCorrection
 	export let detailedCorrection = card.detailedCorrection
 	export let immediateCommit = false
-	export let flashcard = true
+	export let flashcard = false
 
 	$: description = $formatToHtml(formatToLatex(card.description))
 	$: subdescription = $formatToHtml(formatToLatex(card.subdescription))

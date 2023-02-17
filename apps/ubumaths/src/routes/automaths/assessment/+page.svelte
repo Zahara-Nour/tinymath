@@ -1,10 +1,5 @@
-<script>
-	import Fab, { Icon } from '@smui/fab'
-	import Slider from '@smui/slider'
-	import { Svg } from '@smui/common'
-	import Button, { Label } from '@smui/button'
+<script lang="ts">
 	import generate from '$lib/questions/generateQuestion'
-	import CircularProgress from '$lib/components/CircularProgress.svelte'
 	import { afterUpdate, onDestroy, onMount, setContext } from 'svelte'
 	import datas, { getQuestion } from '$lib/questions/questions.js'
 	import { getLogger, shuffle } from '$lib/utils'
@@ -12,60 +7,81 @@
 	import { page } from '$app/stores'
 	import { virtualKeyboardMode, touchDevice, mathliveReady } from '$lib/stores'
 	import { goto } from '$app/navigation'
-	import { mdiHome } from '@mdi/js'
 
-
-	import {
-		mdiRocketLaunchOutline,
-		mdiRestart,
-		mdiKeyboard,
-		mdiLaunch,
-	} from '@mdi/js'
 	import { fetchImage } from '$lib/images'
 	import Correction from './Correction.svelte'
-	import QuestionCard from '$lib/components/questions/QuestionCard.svelte'
-	import Spinner from '$lib/components/Spinner.svelte'
+	import type {
+		AnsweredQuestion,
+		Basket,
+		Commit,
+		CorrectedQuestion,
+		GeneratedQuestion,
+		QuestionWithID,
+		Time,
+		Timer,
+	} from '$lib/type'
+	import CorrectionItem from '$lib/ui/CorrectionItem.svelte'
+	import Spinner from '$lib/ui/Spinner.svelte'
+	import QuestionCard from '$lib/ui/QuestionCard.svelte'
+	import { RangeSlider } from '@skeletonlabs/skeleton'
+	import CircularProgress from '$lib/ui/CircularProgress.svelte'
+	import {
+		prepareAnsweredQuestion,
+		prepareCorrectedQuestion,
+	} from '$lib/questions/correction'
 
 	const ids = datas.ids
 	let { info, fail, trace } = getLogger('Assessment', 'trace')
-	let current
-	let delay
-	let elapsed
-	let start
-	let percentage
-	let timer
+	let current: number
+	let delay: number
+	let elapsed: number
+	let start: number
+	let percentage: number
+	let timer: Timer
 	let finish = false
-	let subdomain
-	let domain
-	let theme
-	let level
+	let subdomain: string
+	let domain: string
+	let theme: string
+	let level: number
 	// let choices
 	let correct = false
 	let restart = false
-	let classroom
+	let classroom = false
 	let flash = false
-	let courseAuxNombres
+	let courseAuxNombres = false
 	let pause = false
-	let previous
+	let previous: number
 	let showExemple = false
 	let showCorrection = false
-	let alert
+	let alert = false
 	let slider = 0
 	let min = 5,
 		max = 60
-	let cards, card
-	let generatedExemple
-	let basket
+	let cards: AnsweredQuestion[]
+	let card: AnsweredQuestion
+	let generatedExemple: CorrectedQuestion
+	let basket: Basket
 	let go = false
-	const testParams = {}
-	let commit
-	let ref
-	let fontSize
-	let remaining
-	let commits = []
-	let query
+	const testParams: TestParams = {}
+	let commit: Commit
+	let ref: HTMLElement
+	let fontSize: number
+	let remaining: Time
+	let commits: Commit[] = []
+	let query: string
 
+	type TestParams = {
+		courseAuxNombres?: boolean
+		flash?: boolean
+		classroom?: boolean
+	}
 	setContext('test-params', testParams)
+
+	function decodeUrlParam(param: string): any {
+		const urlParam = $page.url.searchParams.get(param)
+		if (urlParam === null) return null
+		return JSON.parse(decodeURI(urlParam))
+	}
 
 	onMount(() => {
 		if (ref) {
@@ -87,27 +103,13 @@
 		}
 	})
 
-	function countDown() {
-		if (!pause) {
-			elapsed = Date.now() - start + previous
-			if (delay >= elapsed) {
-				percentage = ((delay - elapsed) * 100) / delay
-				alert = delay - elapsed < 5000
-			} else {
-				commit.exec()
-			}
-		}
+	function countDown(remaining: number) {
+		percentage = (remaining * 100) / delay
+		alert = remaining < 5000
 	}
 
 	onDestroy(() => {
-		if (timer) {
-			if (timer.stop) {
-				timer.stop()
-			} else {
-				clearInterval(timer)
-			}
-		}
-		// if (timeout) clearTimeout(timeout)
+		timer.stop()
 	})
 
 	function initTest() {
@@ -118,18 +120,14 @@
 		go = false
 
 		cards = []
-
-		classroom = JSON.parse(decodeURI($page.url.searchParams.get('classroom')))
-		flash = JSON.parse(decodeURI($page.url.searchParams.get('flash'))) || false
-		courseAuxNombres = JSON.parse(
-			decodeURI($page.url.searchParams.get('courseAuxNombres')),
-		)
+		classroom = decodeUrlParam('classroom') === true
+		flash = decodeUrlParam('flash') === true
+		courseAuxNombres = decodeUrlParam('courseAuxNombres') === true
 		testParams.courseAuxNombres = courseAuxNombres
 		testParams.classroom = classroom
 		testParams.flash = flash
 
-
-		basket = JSON.parse(decodeURI($page.url.searchParams.get('questions')))
+		basket = decodeUrlParam('questions')
 
 		showCorrection = !classroom
 
@@ -137,15 +135,16 @@
 		basket.forEach((q) => {
 			const { theme, domain, subdomain, level } = ids[q.id]
 			const question = getQuestion(theme, domain, subdomain, level)
-			question.delay = q.delay || question.delay || question.defaultDelay
+			let delay = q.delay || question.defaultDelay
 			//  check that delay is a multiple of five
-			const rest = question.delay % 5
-			question.delay = question.delay + 5 - rest
+			const rest = delay % 5
+			delay = delay + 5 - rest
 
 			for (let i = 0; i < q.count; i++) {
 				const generated = generate(question, cards, q.count, offset)
+				generated.delay = delay
 
-				cards.push(generated)
+				cards.push(prepareAnsweredQuestion(generated))
 			}
 			offset += q.count
 		})
@@ -158,7 +157,6 @@
 		shuffle(cards)
 
 		cards.forEach((q, i) => {
-			q.results = {}
 			q.num = i + 1
 			if (q.image) {
 				q.imageBase64P = fetchImage(q.image)
@@ -192,20 +190,9 @@
 	function generateExemple() {
 		const { theme, domain, subdomain, level } = ids[basket[0].id]
 		const question = getQuestion(theme, domain, subdomain, level)
-		generatedExemple = generate(question)
-		if (generatedExemple.image) {
-			generatedExemple.imageBase64P = fetchImage(generatedExemple.image)
-		}
-		if (generatedExemple.imageCorrection) {
-			generatedExemple.imageCorrectionBase64P = fetchImage(generatedExemple.imageCorrection)
-		}
-		if (generatedExemple.choices) {
-			generatedExemple.choices.forEach(async (choice) => {
-				if (choice.image) {
-					choice.imageBase64P = fetchImage(choice.image)
-				}
-			})
-		}
+		generatedExemple = prepareCorrectedQuestion(
+			prepareAnsweredQuestion(generate(question)),
+		)
 	}
 
 	function beginTest() {
@@ -213,12 +200,9 @@
 		go = true
 		if (courseAuxNombres) {
 			const tick = () => {
-				remaining = timer.getTime()
+				remaining = 
 			}
-			if (timer && timer.stop) {
-				timer.stop()
-			}
-			timer = createTimer(7 * 60, tick, commit)
+			timer = createTimer(7 * 60, tick, commit.exec)
 			remaining = timer.getTime()
 			timer.start()
 		} else {
@@ -235,10 +219,9 @@
 	}
 	// on passe à la question suivante
 	async function change() {
-		if (timer) clearInterval(timer)
-		// if (timeout) clearTimeout(timeout)
+		if (timer) timer.stop()
 
-		if (current < cards.length-1) {
+		if (current < cards.length - 1) {
 			current++
 			card = cards[current]
 
@@ -262,25 +245,10 @@
 				alert = false
 				start = Date.now()
 				previous = 0
-				timer = setInterval(countDown, 10)
+				timer = createTimer(delay, countDown, commit)
 			}
 		} else if (!flash) {
 			finish = true
-		}
-	}
-
-	function cardIn(node, { delay = 0, duration = 400 }) {
-		return {
-			delay,
-			duration,
-			css: (t, u) => `left: ${u * 100}%`,
-		}
-	}
-	function cardOut(node, { delay = 0, duration = 400 }) {
-		return {
-			delay,
-			duration,
-			css: (t, u) => `left: ${t * 100}%`,
 		}
 	}
 
@@ -336,7 +304,7 @@
 	}
 </script>
 
-<svelte:window on:keydown="{handleKeydown}" />
+<svelte:window on:keydown={handleKeydown} />
 
 {#if !$mathliveReady}
 	<div class="flex justify-center items-center" style="height:75vh">
@@ -348,55 +316,38 @@
 		style=" min-height: calc(100vh - 146px);"
 	>
 		<div style="width:900px">
-			<QuestionCard
-				card="{generatedExemple}"
-				flashcard="{true}"
-				magnify="{2.5}"
-			/>
+			<QuestionCard card={generatedExemple} flashcard />
 		</div>
 		<div class="mt-2 flex justify-end">
-			<Fab class="m-2" color="primary" on:click="{generateExemple}" mini>
-				<Icon component="{Svg}" viewBox="2 2 20 20">
-					<path fill="currentColor" d="{mdiRestart}"></path>
-				</Icon>
-			</Fab>
-			<Fab class="m-2" color="primary" on:click="{beginTest}" mini>
-				<Icon component="{Svg}" viewBox="2 2 20 20">
-					<path fill="currentColor" d="{mdiRocketLaunchOutline}"></path>
-				</Icon>
-			</Fab>
+			<button on:click={generateExemple} class="btn-icon variant-filled-primary"
+				><iconify-icon icon="mdi:restart" /></button
+			>
+			<button on:click={beginTest} class="btn-icon variant-filled-primary"
+				><iconify-icon icon="mdi:rocket-launch-outline" /></button
+			>
 		</div>
 	</div>
 {:else if finish}
 	{#if showCorrection}
-		<Correction
-			items="{cards}"
-			query="{query}"
-			classroom="{classroom}"
-			bind:restart
-		/>
+		<Correction items={cards} {query} {classroom} bind:restart />
 	{:else}
 		<div style="height:90vh" class="flex justify-center items-center">
-			<Button
-				on:click="{() => {
+			<button
+				on:click={() => {
 					showCorrection = true
-				}}"
-				variant="raised"
+				}}
+				class="variant-filled-primary">Afficher la correction</button
 			>
-				<Label>Afficher la correction</Label>
-			</Button>
 		</div>
 	{/if}
 {:else if !go}
 	<div style="height:90vh" class="flex justify-center items-center">
-		<Button
-			on:click="{() => {
+		<button
+			on:click={() => {
 				beginTest()
-			}}"
-			variant="raised"
+			}}
+			class="variant-filled-primary">Let's go !</button
 		>
-			<Label>Let's go !</Label>
-		</Button>
 	</div>
 {:else if courseAuxNombres}
 	Course aux nombres
@@ -406,18 +357,18 @@
 		}`}
 	{/if}
 	<div class="flex justify-center">
-		<div id="cards-container" style="{`width:600px`}">
+		<div id="cards-container" style={`width:600px`}>
 			{#each cards as card}
 				<div class="card">
 					<div class=" p-2 elevation-{4} rounded-lg">
 						<QuestionCard
-							card="{card}"
-							interactive="{true}"
-							commit="{(() => {
+							{card}
+							interactive={true}
+							commit={(() => {
 								const c = { ...commit }
 								commits.push(c)
 								return c
-							})()}"
+							})()}
 						/>
 					</div>
 				</div>
@@ -425,85 +376,71 @@
 		</div>
 	</div>
 	<div class="flex justify-center items-center">
-		<Button
-			on:click="{() => {
+		<button
+			on:click={() => {
 				timer.stop()
 				commits.forEach((commit) => commit.exec())
 				finish = true
-			}}"
-			variant="raised"
+			}}
+			class="variant-filled-primary">Valider</button
 		>
-			<Label>Valider</Label>
-		</Button>
 	</div>
 {:else if card}
-	<div bind:this="{ref}">
+	<div bind:this={ref}>
 		{#if !flash}
-			<div class="{' my-1 flex justify-start items-center'}">
+			<div class={' my-1 flex justify-start items-center'}>
 				{#if classroom}
-					<Slider
-						bind:value="{slider}"
-						min="{min}"
-						max="{max}"
-						step="{5}"
-						discrete
-						tickMarks
-						input$aria-label="Discrete slider"
-						style="width:150px;"
-					/>
+					<RangeSlider
+						name="range-slider"
+						bind:value={slider}
+						{max}
+						{min}
+						step={5}
+						ticked>Label</RangeSlider
+					>
 				{/if}
 				{#if !classroom && card.type !== 'choice' && card.type !== 'choices'}
-					<Fab
-						class="mx-1"
-						color="{$virtualKeyboardMode ? 'primary' : 'secondary'}"
-						on:click="{() => {
+					<button
+						on:click={() => {
 							virtualKeyboardMode.update((state) => {
 								return !state
 							})
-						}}"
-						mini
+						}}
+						class="btn-icon variant-filled-primary"
+						><iconify-icon icon="mdi:keyboard" /></button
 					>
-						<Icon component="{Svg}" viewBox="2 2 20 20">
-							<path fill="currentColor" d="{mdiKeyboard}"></path>
-						</Icon>
-					</Fab>
 				{/if}
-				<div class="flex grow"></div>
+				<div class="flex grow" />
 
 				<CircularProgress
-					number="{current + 1}"
-					fontSize="{classroom ? 2.5 * fontSize : fontSize * 1.8}"
-					percentage="{percentage}"
-					pulse="{alert}"
+					number={current + 1}
+					fontSize={classroom ? 2.5 * fontSize : fontSize * 1.8}
+					{percentage}
+					pulse={alert}
 				/>
 			</div>
 		{/if}
 
 		<div class="flex justify-center">
-			<div id="cards-container" style="{`width:${classroom ? 1000 : 600}px`}">
+			<div id="cards-container" style={`width:${classroom ? 1000 : 600}px`}>
 				{#each [cards[current]] as card (current)}
 					<QuestionCard
-						card="{card}"
-						interactive="{!classroom && !flash}"
-						commit="{commit}"
-						magnify="{classroom ? 2.5 : 1}"
-						immediateCommit="{true}"
-						flashcard="{flash}"
+						{card}
+						interactive={!classroom && !flash}
+						{commit}
+						magnify={classroom ? 2.5 : 1}
+						immediateCommit={true}
+						flashcard={flash}
 					/>
 				{/each}
 			</div>
 		</div>
 		<div>
-			<Fab
-					class="mx-1 my-3"
-					color="{classroom ? 'primary' : 'secondary'}"
-					on:click="{() => goto('/automaths' + query)}"
-					mini
+			<a href={`/automaths + ${query}`}>
+				<button class="btn-icon variant-filled-primary"
+					><iconify-icon icon="mdi:home" /></button
 				>
-					<Icon component="{Svg}" viewBox="2 2 20 20">
-						<path fill="currentColor" d="{mdiHome}"></path>
-					</Icon>
-				</Fab>
+			</a>
 		</div>
 	</div>
 {:else}
