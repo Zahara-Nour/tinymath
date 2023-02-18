@@ -714,7 +714,10 @@ export default function generateQuestion(
 	if (choices) {
 		choices.forEach(async (choice) => {
 			if (choice.image) {
-				choice.imageBase64P = fetchImage(choice.image)
+				choice.imageBase64P = fetchImage(choice.image).then((base64) => {
+					choice.imageBase64 = base64
+					return base64
+				})
 			}
 		})
 	}

@@ -129,26 +129,16 @@ z-index:100"
 			style={`background:${colorResult}`}
 		>
 			<div class="flex flex-col items-center justify-around h-full">
-				<Fab
-					class="mx-1 my-3"
-					color={classroom ? 'primary' : 'secondary'}
+				<button
 					on:click={() => (restart = true)}
-					mini
+					class="btn-icon variant-filled-primary"
+					><iconify-icon icon="mdi:reload" /></button
 				>
-					<Icon component={Svg} viewBox="2 2 20 20">
-						<path fill="currentColor" d={mdiReload} />
-					</Icon>
-				</Fab>
-				<Fab
-					class="mx-1 my-3"
-					color={classroom ? 'primary' : 'secondary'}
-					on:click={() => goto('/automaths' + query)}
-					mini
-				>
-					<Icon component={Svg} viewBox="2 2 20 20">
-						<path fill="currentColor" d={mdiHome} />
-					</Icon>
-				</Fab>
+				<a href={`/automaths + ${query}`}>
+					<button class="btn-icon variant-filled-primary"
+						><iconify-icon icon="mdi:home" /></button
+					>
+				</a>
 			</div>
 			<div class="flex flex-col items-center" style="color:white">
 				<div class="my-2" style="font-size:2em; font-family:'pacifico'">

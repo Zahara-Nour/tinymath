@@ -64,7 +64,7 @@
 	let courseAuxNombres = false
 	let correction = false
 	let basket: BasketType = []
-	let interactive = true // mode interactif pour l'exemple
+	let interactive = false
 	let selectedGrade = grade
 
 	const ids = data.ids
@@ -80,7 +80,7 @@
 			questions = basket
 		} else {
 			const q = getQuestion(theme, domain, subdomain, level)
-			questions.push({ id: q.id, count: 10 })
+			questions.push({ id: q.id, count: 10, delay: q.defaultDelay })
 		}
 
 		let offset = 0
@@ -333,7 +333,7 @@
 			questions = basket
 		} else {
 			const q = getQuestion(theme, domain, subdomain, level)
-			questions.push({ id: q.id, count: 10 })
+			questions.push({ id: q.id, count: 10, delay: q.defaultDelay })
 		}
 
 		const base = dev ? 'http://localhost:5173/' : 'http://ubumaths.net/'

@@ -17,33 +17,38 @@ export const formatToHtml = writable(
 export const toMarkup = writable((o: string) => o)
 
 export function prepareMathlive() {
-	import('tinymathlive')
-		.then((m) => {
-			mathliveReady.set(true)
-			mathfieldElement.set(m.MathfieldElement)
-			toMarkup.set(m.convertLatexToMarkup)
-			const regex = /\$\$(.*?)\$\$/g
-			const replacement = (_: string, p1: string) => m.convertLatexToMarkup(p1)
-			const _formatToHtml = (
-				o: FormatToHtmlArg,
-			): NonNullable<FormatToHtmlArg> => {
-				if (!o) {
-					return ''
-				}
+	if (mathliveReady) {
+		import('tinymathlive')
+			.then((m) => {
+				mathliveReady.set(true)
+				mathfieldElement.set(m.MathfieldElement)
+				toMarkup.set(m.convertLatexToMarkup)
+				const regex = /\$\$(.*?)\$\$/g
 
-				if (Array.isArray(o)) {
-					return o.map((elmt) => _formatToHtml(elmt))
-				} else if (isObjectWithText(o)) {
-					return { ...o, text: _formatToHtml(o.text) }
-				} else if (typeof o === 'string') {
-					return o.replace(regex, replacement)
-				} else {
-					return o
+				const replacement = (_: string, p1: string) =>
+					m.convertLatexToMarkup(p1)
+
+				const _formatToHtml = (
+					o: FormatToHtmlArg,
+				): NonNullable<FormatToHtmlArg> => {
+					if (!o) {
+						return ''
+					}
+
+					if (Array.isArray(o)) {
+						return o.map((elmt) => _formatToHtml(elmt))
+					} else if (isObjectWithText(o)) {
+						return { ...o, text: _formatToHtml(o.text) }
+					} else if (typeof o === 'string') {
+						return o.replace(regex, replacement)
+					} else {
+						return o
+					}
 				}
-			}
-			formatToHtml.set(_formatToHtml)
-		})
-		.catch((e) => {
-			fail('erreur while importing mathlive', e)
-		})
+				formatToHtml.set(_formatToHtml)
+			})
+			.catch((e) => {
+				fail('erreur while importing mathlive', e)
+			})
+	}
 }

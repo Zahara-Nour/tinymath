@@ -6,7 +6,7 @@
 		virtualKeyboardMode,
 		prepareMathlive,
 	} from '$lib/stores'
-	import { onDestroy, onMount, tick } from 'svelte'
+	import { afterUpdate, onDestroy, onMount, tick } from 'svelte'
 	import { getLogger, formatToLatex } from '$lib/utils'
 	import virtualKeyboard from '$lib/mathlive/virtualKeyboard'
 	import { createDetailedCorrection } from '$lib/questions/correctionItem'
@@ -15,19 +15,19 @@
 	import { assessItem } from '$lib/questions/correction'
 	import {
 		isQuestionChoices,
+		type AnsweredQuestion,
 		type Commit,
 		type CorrectedQuestion,
 		type Line,
 	} from '$lib/type'
 	import type { MathfieldElement } from 'tinymathlive'
 
-	export let question: CorrectedQuestion
+	export let question: AnsweredQuestion
 	export let interactive = false
 	export let masked = false
-	export let magnify = 1
 	export let correction = false
 	export let simpleCorrection: Line[] = []
-	export let detailedCorrection = question.detailedCorrection
+	export let detailedCorrection: Line[] = []
 	export let commit: Commit = {
 		exec: () => {},
 		hook: () => {},
@@ -50,6 +50,37 @@
 	let changeListeners: ((ev: Event) => void)[] = []
 	let fieldsNb = 0
 	let coms: string[] = []
+
+	// si le commit a été passé par la série de questions
+	prepareMathlive()
+
+	if (commit) {
+		commit.hook = commitAnswers
+	} else {
+		commit = {
+			exec: commitAnswers,
+		}
+	}
+
+	onMount(insertMathFields)
+	afterUpdate(insertMathFields)
+	onDestroy(() => {
+		blurMathfields()
+		removeListeners()
+	})
+
+	$: initQuestion(question)
+
+	$: if (question && !correction && interactive) {
+		prepareInteractive()
+	} else {
+		stopInteractive()
+	}
+
+	// les corrections doivent être produites à l'initialisation
+	// et à chaque fois que l'utilisatur modifie ses réponses (qcm ou chams-réponses)
+	// il faut vérifier que l'update d'answers est bien triggé
+	$: makeCorrection(answers)
 
 	// console.log('context', params)
 
@@ -86,7 +117,8 @@
 			.trim()
 	}
 
-	function removeListeners() {
+	function blurMathfields() {
+		// on enlève le focus des mathfields . Bug ?
 		if (mfs.length) {
 			mfs.forEach((mf) => {
 				if (mf.hasFocus() && mf.blur) {
@@ -94,6 +126,10 @@
 				}
 			})
 		}
+	}
+
+	function removeListeners() {
+		// listeners
 		keyListeners.forEach((listener, i) =>
 			mfs[i].removeEventListener('keyup', listener),
 		)
@@ -118,6 +154,7 @@
 			// la touche entrée a été appuyée et il n'y a qu'un seul mathfield, on commit
 			if (mfs.length === 1 && immediateCommit) {
 				// removeListeners ????
+				blurMathfields()
 				removeListeners()
 				commit.exec()
 			} else {
@@ -195,32 +232,23 @@
 		})
 	}
 
-	function initQuestion(question: CorrectedQuestion) {
+	// initialisation d'une nouvelle question
+	function initQuestion(question: AnsweredQuestion) {
 		// if (!masked) console.log('init question')
 
+		// on enlève les listeners de la question précédente
+		blurMathfields()
 		removeListeners()
 
+		// mathfields
 		mfs = []
 		nmfs = 0
 
-		// pour  empecher un update
-		const q = question
-		// if (!question.detailedCorrection && question.correctionDetails) {
+		simpleCorrection = []
+		detailedCorrection = []
 
-		// 	q.detailedCorrection = createDetailedCorrection(question)
-		// 	if (!masked) console.log('create detailed correction', q.detailedCorrection)
-		// }
-		// detailedCorrection = question.detailedCorrection
-
-		if (!detailedCorrection && question.correctionDetails) {
-			q.detailedCorrection = createDetailedCorrection(question)
-			detailedCorrection = q.detailedCorrection
-			if (!masked) console.log('create detailed correction', detailedCorrection)
-		}
-
-		console.log('detailedCorrection', detailedCorrection)
-		answers = question.answers
-		answers_latex = question.answers_latex
+		answers = []
+		answers_latex = []
 
 		enounce = question.enounce
 			? ($formatToHtml(formatToLatex(question.enounce)) as string)
@@ -232,23 +260,16 @@
 	}
 
 	function makeCorrection(answers: (number | string)[]) {
-		// if (!masked) console.log('makeCorrection')
+		// on fait un alias de la question pour être sur de ne pas trigger un update local
+		const q = question
 		if (interactive) {
-			const item = { ...question, answers, answers_latex }
-			assessItem(item)
-			// if (!masked) console.log('assess item', item)
-			coms = item.coms
-			simpleCorrection = item.simpleCorrection
-		} else if (question.simpleCorrection) {
-			simpleCorrection = question.simpleCorrection
-		} else {
-			const q = question
-			assessItem(q)
-			if (!masked) console.log('assess item', q)
-			simpleCorrection = q.simpleCorrection
-			detailedCorrection = q.detailedCorrection
-			console.log('detailedCorrection', detailedCorrection)
+			q.answers = answers
+			q.answers_latex = answers_latex
 		}
+		const corrected = assessItem(q)
+		coms = corrected.coms
+		simpleCorrection = corrected.simpleCorrection
+		detailedCorrection = corrected.detailedCorrection
 	}
 
 	function commitAnswers() {
@@ -260,7 +281,7 @@
 		if (!masked) console.log('assess item', q)
 	}
 
-	async function prepareInteractive() {
+	function prepareInteractive() {
 		// if (!masked) console.log('prepare interactive')
 		mfs = []
 		nmfs = 0
@@ -268,11 +289,15 @@
 		expression = question.expression_latex
 		expression2 = question.expression2_latex
 
+		// pour ajouter un champs réponse dans l'expression à calculer
 		if (expression && question.type === 'result' && !question.answerField) {
 			expression += '=\\ldots'
 		}
 
 		answerField = question.answerField
+		// cas des question où il n'y a que l'énoncé et pas de champs réponse particulier
+		// ... est transformé en \\ldots qui sera markupé par mathlive
+		//  et le markup sera remplacé par un mathfield
 		if (
 			!answerField &&
 			!expression &&
@@ -300,16 +325,15 @@
 		}
 
 		possiblyResetAnswers()
-
-		await tick()
-		insertMathFields()
 	}
 
 	function stopInteractive() {
 		// if (!masked) console.log('stop interactive')
+		blurMathfields()
 		removeListeners()
 		mfs = []
 
+		// on réinitialise pour se débarasser des mathfields
 		expression = question.expression_latex
 		expression2 = question.expression2_latex
 		answerField = question.answerField
@@ -328,43 +352,27 @@
 			expression2 = $toMarkup(expression2)
 		}
 
+		// pourquoi ? à cause du focus des mathfields ?
 		possiblyResetAnswers()
 	}
 
 	function possiblyResetAnswers() {
-		if (!interactive) {
-			answers = []
-			answers_latex = []
-		} else {
-			// if faut garder les réponses si on sort du mode correction
-			if (!answers.length)
-				answers = question.solutions
-					? question.solutions.map((s) => '')
-					: question.testAnswers.map((s) => '')
-			if (!answers_latex.length)
-				answers_latex = question.solutions
-					? question.solutions.map((s) => '')
-					: question.testAnswers.map((s) => '')
-		}
+		// if (!interactive) {
+		// 	answers = []
+		// 	answers_latex = []
+		// } else {
+		// 	// if faut garder les réponses si on sort du mode correction
+		// 	if (!answers.length)
+		// 		answers = question.solutions
+		// 			? // bancal
+		// 			  question.solutions.map((s) => '')
+		// 			: question.testAnswers?.map((s) => '') || []
+		// 	if (!answers_latex.length)
+		// 		answers_latex = question.solutions
+		// 			? question.solutions.map((s) => '')
+		// 			: question.testAnswers?.map((s) => '') || []
+		// }
 	}
-
-	$: initQuestion(question)
-
-	$: if (question && !correction && interactive) {
-		prepareInteractive()
-	} else {
-		stopInteractive()
-	}
-
-	$: makeCorrection(answers)
-
-	onMount(() => {
-		prepareMathlive()
-	})
-
-	onDestroy(() => {
-		removeListeners()
-	})
 
 	function insertMathFields() {
 		// if (!masked) console.log('insertathFields', answers, answers_latex)
@@ -478,15 +486,6 @@
 
 		fieldsNb = mfs.length || 0
 	}
-
-	if (commit) {
-		commit.hook = commitAnswers
-	} else {
-		commit = {
-			hook: () => {},
-			exec: commitAnswers,
-		}
-	}
 </script>
 
 <div class={`flex flex-col items-center justify-around ${$$props.class}`}>
@@ -496,8 +495,7 @@
 				id="enounce"
 				class={(correction ? 'mb-1' : 'my-3') +
 					' text-center max-w-4xl leading-normal'}
-				style={`font-size:${correction ? 1 : magnify}rem;` +
-					(correction ? 'color:' + colors['grey-600'] : '')}
+				style={correction ? 'color:' + colors['grey-600'] : ''}
 			>
 				{@html enounce}
 			</div>
@@ -505,8 +503,7 @@
 			<div
 				id="enounce2"
 				class={(correction ? 'my-1' : 'my-3') + ' text-center max-w-4xl'}
-				style={`font-size:${correction ? 1 : magnify}rem` +
-					(correction ? 'color:' + colors['grey-600'] : '')}
+				style={correction ? 'color:' + colors['grey-600'] : ''}
 			>
 				{@html enounce2}
 			</div>
@@ -546,9 +543,7 @@
 			<div
 				id="expressions"
 				class=" flex flex-col items-center justify-center"
-				style={`max-width:100%;font-size:${
-					correction ? 1 : magnify * 1.5
-				}rem;` + (correction ? 'color:' + colors['grey-600'] : '')}
+				style={correction ? 'color:' + colors['grey-600'] : ''}
 			>
 				<div
 					id={`expression-${question.num}${masked ? '-masked' : ''}`}
@@ -567,10 +562,7 @@
 				{/if}
 			</div>
 		{:else if !correction && element === 'choices' && question.choices}
-			<div
-				class="mt-3 flex flex-wrap justify-around"
-				style={`font-size:${magnify}rem`}
-			>
+			<div class="mt-3 flex flex-wrap justify-around">
 				{#each question.choices as choice, i}
 					<button
 						class="rounded-lg  m-2 p-2"
@@ -613,7 +605,6 @@
 			<div
 				id={`answerField-${question.num}${masked ? '-masked' : ''}`}
 				class="my-3"
-				style={`font-size:${magnify}rem`}
 			>
 				{@html answerField}
 			</div>
@@ -633,9 +624,7 @@
 			{#each simpleCorrection as line}
 				<div
 					class=" my-1 z-0 relative"
-					style={`word-break: break-word ;white-space: normal;font-size:${
-						magnify === 1 ? 1.2 : magnify
-					}rem`}
+					style={`word-break: break-word ;white-space: normal;`}
 				>
 					<CorrectionLine {line} />
 				</div>

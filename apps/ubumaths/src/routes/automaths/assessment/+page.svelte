@@ -2,25 +2,20 @@
 	import generate from '$lib/questions/generateQuestion'
 	import { afterUpdate, onDestroy, onMount, setContext } from 'svelte'
 	import datas, { getQuestion } from '$lib/questions/questions.js'
-	import { getLogger, shuffle } from '$lib/utils'
+	import { convertToTime, getLogger, shuffle } from '$lib/utils'
 	import { createTimer } from '$lib/timer'
 	import { page } from '$app/stores'
 	import { virtualKeyboardMode, touchDevice, mathliveReady } from '$lib/stores'
-	import { goto } from '$app/navigation'
 
-	import { fetchImage } from '$lib/images'
 	import Correction from './Correction.svelte'
 	import type {
 		AnsweredQuestion,
 		Basket,
 		Commit,
 		CorrectedQuestion,
-		GeneratedQuestion,
-		QuestionWithID,
 		Time,
 		Timer,
 	} from '$lib/type'
-	import CorrectionItem from '$lib/ui/CorrectionItem.svelte'
 	import Spinner from '$lib/ui/Spinner.svelte'
 	import QuestionCard from '$lib/ui/QuestionCard.svelte'
 	import { RangeSlider } from '@skeletonlabs/skeleton'
@@ -63,11 +58,21 @@
 	let basket: Basket
 	let go = false
 	const testParams: TestParams = {}
-	let commit: Commit
+	let commit: Commit = {
+		exec: function () {
+			if (this.hook) {
+				this.hook()
+			}
+			if (!courseAuxNombres) {
+				change()
+			}
+		},
+	}
+	let commits: Commit[] = []
 	let ref: HTMLElement
 	let fontSize: number
 	let remaining: Time
-	let commits: Commit[] = []
+
 	let query: string
 
 	type TestParams = {
@@ -75,13 +80,8 @@
 		flash?: boolean
 		classroom?: boolean
 	}
-	setContext('test-params', testParams)
 
-	function decodeUrlParam(param: string): any {
-		const urlParam = $page.url.searchParams.get(param)
-		if (urlParam === null) return null
-		return JSON.parse(decodeURI(urlParam))
-	}
+	setContext('test-params', testParams)
 
 	onMount(() => {
 		if (ref) {
@@ -103,14 +103,32 @@
 		}
 	})
 
-	function countDown(remaining: number) {
-		percentage = (remaining * 100) / delay
-		alert = remaining < 5000
-	}
-
 	onDestroy(() => {
 		timer.stop()
 	})
+
+	initTest()
+
+	// le bouton restart a été appuyé après la correction
+	$: if (restart) {
+		initTest()
+	}
+	$: virtualKeyboardMode.set($touchDevice)
+	$: delay = slider * 1000
+
+	function decodeUrlParam(param: string): any {
+		const urlParam = $page.url.searchParams.get(param)
+		if (urlParam === null) return null
+		return JSON.parse(decodeURI(urlParam))
+	}
+
+	function top(remaining: number) {
+		alert = remaining < 5
+	}
+
+	function tick(remaining: number) {
+		percentage = (remaining * 100) / (delay * 1000)
+	}
 
 	function initTest() {
 		info('init test')
@@ -158,22 +176,6 @@
 
 		cards.forEach((q, i) => {
 			q.num = i + 1
-			if (q.image) {
-				q.imageBase64P = fetchImage(q.image)
-			}
-			if (q.imageCorrection) {
-				q.imageCorrectionBase64P = fetchImage(q.imageCorrection)
-			}
-			if (q.choices) {
-				q.choices.forEach((choice) => {
-					if (choice.image) {
-						choice.imageBase64P = fetchImage(choice.image)
-						choice.imageBase64P.then((base64) => {
-							choice.base64 = base64
-						})
-					}
-				})
-			}
 		})
 
 		if (classroom && basket.length === 1) {
@@ -199,11 +201,10 @@
 		showExemple = false
 		go = true
 		if (courseAuxNombres) {
-			const tick = () => {
-				remaining = 
+			const tick = (seconds: number) => {
+				remaining = convertToTime(seconds)
 			}
-			timer = createTimer(7 * 60, tick, commit.exec)
-			remaining = timer.getTime()
+			timer = createTimer({ delay: 7 * 60, tick, timeout: commit.exec })
 			timer.start()
 		} else {
 			// on passe à la première question
@@ -245,7 +246,7 @@
 				alert = false
 				start = Date.now()
 				previous = 0
-				timer = createTimer(delay, countDown, commit)
+				timer = createTimer({ delay, top, tick, timeout: commit.exec })
 			}
 		} else if (!flash) {
 			finish = true
@@ -254,14 +255,14 @@
 
 	function togglePause() {
 		if (pause) {
-			start = Date.now()
+			timer.resume()
 		} else {
-			previous = elapsed
+			timer.pause()
 		}
 		pause = !pause
 	}
 
-	function handleKeydown(ev) {
+	function handleKeydown(ev: KeyboardEvent) {
 		if (classroom) {
 			ev.preventDefault()
 			if (ev.code === 'Space') {
@@ -281,26 +282,6 @@
 					break
 			}
 		}
-	}
-
-	initTest()
-
-	// le bouton restart a été appuyé après la correction
-	$: if (restart) {
-		initTest()
-	}
-	$: virtualKeyboardMode.set($touchDevice)
-	$: delay = slider * 1000
-
-	commit = {
-		exec: function () {
-			if (this.hook) {
-				this.hook()
-			}
-			if (!courseAuxNombres) {
-				change()
-			}
-		},
 	}
 </script>
 

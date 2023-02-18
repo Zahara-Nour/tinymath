@@ -197,16 +197,13 @@ export function isInteger(str: number | string) {
 	return !isNaN(+str) && Number.isInteger(+str)
 }
 
-export function convertToTime(nseconds: number) {
-	const days = Math.floor((nseconds * 1000) / (1000 * 60 * 60 * 24))
-	const hours = Math.floor(
-		((nseconds * 1000) % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
-	)
-	const minutes = Math.floor(
-		((nseconds * 1000) % (1000 * 60 * 60)) / (1000 * 60),
-	)
-	const seconds = Math.floor(((nseconds * 1000) % (1000 * 60)) / 1000)
-	return { days, hours, minutes, seconds }
+export function convertToTime(ms: number) {
+	const days = Math.floor(ms / (1000 * 60 * 60 * 24))
+	const hours = Math.floor((ms % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+	const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60))
+	const seconds = Math.floor((ms % (1000 * 60)) / 1000)
+	const milliseconds = Math.floor(ms % 1000)
+	return { days, hours, minutes, seconds, milliseconds }
 }
 
 export {

@@ -1,25 +1,46 @@
 import type { Time } from './type'
 import { convertToTime } from './utils'
 
-export function createTimer(
-	delay: number,
-	tick: (remaining: number) => any,
-	timeout: () => void,
-) {
-	let ticker: NodeJS.Timer | null
+export function createTimer({
+	delay, // en secondes
+	tick, // tick toutes les 10 ms
+	top, //donne le top toutes les secondes
+	timeout,
+}: {
+	delay: number
+	tick?: (remaining: number) => void // en ms
+	top?: (remaining: number) => any // en s
+	timeout: () => any
+}) {
+	let ticker_10ms: NodeJS.Timer | null
+	let ticker_1s: NodeJS.Timer | null
 	let status = 'done'
-	let remaining = delay
+	let remaining = delay * 1000 // en ms
+	let remainingSeconds = delay
 	let time = convertToTime(remaining)
 
-	const callback = () => {
+	function tick_1s() {
+		remainingSeconds -= 1
+		if (remainingSeconds < 0) {
+			status = 'done'
+			if (ticker_10ms) clearInterval(ticker_10ms)
+			if (ticker_1s) clearInterval(ticker_1s)
+			timeout()
+		} else {
+			if (top) top(remainingSeconds)
+		}
+	}
+
+	function tick_10ms() {
 		remaining -= 1
 		if (remaining < 0) {
 			status = 'done'
-			if (ticker) clearInterval(ticker)
+			if (ticker_10ms) clearInterval(ticker_10ms)
+			if (ticker_1s) clearInterval(ticker_1s)
 			timeout()
 		} else {
 			time = convertToTime(remaining)
-			tick(remaining)
+			if (tick) tick(remaining)
 		}
 	}
 
@@ -30,27 +51,34 @@ export function createTimer(
 		start() {
 			remaining = delay
 			time = convertToTime(remaining)
-			if (ticker) clearInterval(ticker)
-			ticker = setInterval(callback, 1000)
+			if (ticker_10ms) clearInterval(ticker_10ms)
+			ticker_10ms = setInterval(tick_10ms, 10)
+			if (ticker_1s) clearInterval(ticker_1s)
+			ticker_1s = setInterval(tick_1s, 1000)
 			status = 'running'
 		},
 		pause() {
 			if (status === 'running') {
 				status = 'paused'
-				clearInterval(ticker!)
-				ticker = null
+				if (ticker_10ms) clearInterval(ticker_10ms)
+				if (ticker_1s) clearInterval(ticker_1s)
+				ticker_10ms = null
+				ticker_1s = null
 			}
 		},
 		stop() {
 			if (status === 'running') {
-				clearInterval(ticker!)
-				ticker = null
+				if (ticker_10ms) clearInterval(ticker_10ms)
+				if (ticker_1s) clearInterval(ticker_1s)
+				ticker_10ms = null
+				ticker_1s = null
 				status = 'done'
 			}
 		},
 		resume() {
 			if (status === 'paused') {
-				ticker = setInterval(callback, 1000)
+				ticker_10ms = setInterval(tick_10ms, 10)
+				ticker_1s = setInterval(tick_1s, 1000)
 				status = 'running'
 			}
 		},

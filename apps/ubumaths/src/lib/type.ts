@@ -108,7 +108,6 @@ export type Choice = {
 	text?: string
 	image?: string
 	imageBase64?: string
-	base64?: string // pourquoi les 2
 	imageBase64P?: Promise<string>
 }
 
@@ -230,6 +229,7 @@ export type GeneratedQuestion = QuestionWithID & {
 
 export type AnsweredQuestion = GeneratedQuestion & {
 	answers: (string | number)[] // pas de réponse en mode projection
+	answers_latex: string[] // pas de réponse en mode projection
 	options: Option[]
 	time?: number
 }
@@ -293,7 +293,7 @@ export type Links = Array<{
 export type BasketItem = {
 	count: number
 	enounceAlone?: boolean
-	delay?: number
+	delay: number
 	id: string
 }
 export type Basket = Array<BasketItem>

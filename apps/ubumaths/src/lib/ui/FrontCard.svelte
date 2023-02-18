@@ -24,8 +24,7 @@
 
 	$: description = $formatToHtml(formatToLatex(card.description))
 	$: subdescription = $formatToHtml(formatToLatex(card.subdescription))
-	$: if (!masked)
-		console.log('front card detailedCorrection', card.num, detailedCorrection)
+	$: if (!masked) console.log('interactive', interactive)
 </script>
 
 <div bind:clientHeight={h} bind:clientWidth={w} class={`${$$props.class}`}>
@@ -49,15 +48,17 @@
 					</div>
 					<button
 						on:click={() => (correction = !correction)}
-						class={correction
-							? 'variant-filled-primary'
-							: 'variant-filled-secondary'}>C</button
+						class={'mx-1 btn-icon ' +
+							(correction
+								? 'variant-filled-primary'
+								: 'variant-filled-surface')}>C</button
 					>
 					<button
 						on:click={() => (interactive = !interactive)}
-						class={correction
-							? 'variant-filled-primary'
-							: 'variant-filled-secondary'}>I</button
+						class={'mx-1 btn-icon ' +
+							(interactive
+								? 'variant-filled-primary'
+								: 'variant-filled-surface')}>I</button
 					>
 				</div>
 				<span>{card.id}</span>

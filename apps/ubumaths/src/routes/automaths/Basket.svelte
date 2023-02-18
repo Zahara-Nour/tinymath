@@ -10,13 +10,13 @@
 	import type { Basket } from '$lib/type'
 	import QuestionCard from '$lib/ui/QuestionCard.svelte'
 
-	const ids = datas.ids
-
 	export let basket: Basket
 	export let courseAuxNombres = false
 	export let enounceAlone = false
 
-	const addItem = (i: number) => {
+	const ids = datas.ids
+
+	function addItem(i: number) {
 		basket[i].count++
 		//  pour forcer l'update
 		basket = basket
