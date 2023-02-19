@@ -482,7 +482,11 @@ export default function generateQuestion(
 		warn("can't generate a different question from others")
 	}
 
-	if (question.limits) {
+	// TODO: bug si je ne mets pas le test
+	if (
+		question.limits?.limits[i]?.count !== undefined &&
+		question.limits?.limits[i]?.count !== null
+	) {
 		question.limits.limits[i].count =
 			(question.limits.limits[i].count as number) + 1
 	}

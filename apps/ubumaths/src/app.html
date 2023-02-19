@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
+		<meta name="viewport" content="width=device-width" />
 
-<head>
-	<meta charset="utf-8" />
-	<link rel="icon" href="%sveltekit.assets%/favicon.png" />
-	<meta name="viewport" content="width=device-width" />
-	%sveltekit.head%
-</head>
+		<!-- MAthlive styles for static formulas -->
+		<link rel="stylesheet" href="/%sveltekit.assets%/mathlive-fonts.css" />
+		<link rel="stylesheet" href="/%sveltekit.assets%/mathlive-static.css" />
 
-<body>
-	<div style="display: contents" class="h-full overflow-hidden">%sveltekit.body%</div>
-</body>
+		<link rel="stylesheet" href="/%sveltekit.assets%/fonts.css" />
 
+		%sveltekit.head%
+	</head>
+
+	<body>
+		<div style="display: contents" class="h-full overflow-hidden">
+			%sveltekit.body%
+		</div>
+	</body>
 </html>

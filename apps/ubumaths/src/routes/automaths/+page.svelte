@@ -7,7 +7,6 @@
 	import { fetchImage } from '$lib/images'
 	import { goto } from '$app/navigation'
 	import { getLogger, objectMap } from '$lib/utils'
-	import { formatToHtml } from '$lib/stores'
 	import {
 		assessItem,
 		prepareAnsweredQuestion,
@@ -68,11 +67,6 @@
 	let selectedGrade = grade
 
 	const ids = data.ids
-
-	// $: console.log('theme', theme)
-	// $: console.log('domain', domain)
-	// $: console.log('subdomain', subdomain)
-	// $: console.log('level', level)
 
 	function generateExoTexmacs() {
 		let questions: BasketItem[] = []
@@ -154,7 +148,6 @@
 					const correctedQuestion = assessItem(
 						prepareAnsweredQuestion(generated),
 					)
-					// console.log('simpleCorrectiopn', generated.simpleCorrection)
 					solution +=
 						'\\item ' +
 						correctedQuestion.simpleCorrection
@@ -179,7 +172,6 @@
 							correctedQuestion.answerField
 								.replace(/\$\$/g, '$')
 								.replace(/\.\.\./g, '\\text{\\ \\ldots\\ldots \\ }') + '\n'
-						// console.log('enounce', enounce)
 					}
 					generateds.push(correctedQuestion)
 				}
@@ -211,13 +203,9 @@
 		subdomain = '',
 		level = 0,
 	) {
-		// console.log('-change grade')
 		grade = grades.includes(new_grade) ? new_grade : grades[grades.length - 1]
-		console.log('grade', grade)
 		availableLevels = getAvailablesLevels(grade)
-		// console.log('availableLevels', availableLevels)
 		themes = Object.keys(availableLevels)
-		console.log('themes', themes)
 		changeThemeDomainSubdomainLevel(theme, domain, subdomain, level)
 	}
 
@@ -227,11 +215,8 @@
 		subdomain = '',
 		level = 0,
 	) {
-		console.log('theme 1', theme)
 		theme = themes.includes(new_theme) ? new_theme : themes[0]
-		console.log('theme', theme)
 		domains = Object.keys(availableLevels[theme])
-		console.log('domains', domains)
 		changeDomainSubdomainLevel(domain, subdomain, level)
 	}
 
@@ -241,9 +226,7 @@
 		level = 0,
 	) {
 		domain = domains.includes(new_domain) ? new_domain : domains[0]
-		console.log('domain', domain)
 		subdomains = Object.keys(availableLevels[theme][domain])
-		console.log('subdomains', subdomains)
 		changeSubdomainLevel(subdomain, level)
 	}
 
@@ -251,11 +234,8 @@
 		subdomain = subdomains.includes(new_subdomain)
 			? new_subdomain
 			: subdomains[0]
-		console.log('subdomain', subdomain)
 		levels = availableLevels[theme][domain][subdomain]
-		console.log('levels', levels)
 		level = levels.includes(new_level) ? new_level : 1
-		console.log('level', level)
 		generated = prepareCorrectedQuestion(
 			prepareAnsweredQuestion(generateExemple(theme, domain, subdomain, level)),
 		)
@@ -385,7 +365,6 @@
 	// $: changeTheme(theme)
 
 	function changeGrade(grade: string) {
-		console.log('update grade', grade)
 		changeGradeThemeDomainSubdomainLevel(grade, theme, domain, subdomain, level)
 	}
 	$: changeGrade(selectedGrade)
@@ -395,14 +374,14 @@
 		})
 		basket = basket
 	}
-	onMount(() => console.log('onMount'))
-	beforeUpdate(
-		(() => {
-			let nupdate = 0
-			return () => console.log('beforeUpdate', nupdate++)
-		})(),
-	)
-	afterUpdate(() => console.log('afterUpdate'))
+	// onMount(() => console.log('onMount'))
+	// beforeUpdate(
+	// 	(() => {
+	// 		let nupdate = 0
+	// 		return () => console.log('beforeUpdate', nupdate++)
+	// 	})(),
+	// )
+	// afterUpdate(() => console.log('afterUpdate'))
 </script>
 
 <h3>Les automaths !</h3>
@@ -498,10 +477,11 @@
 		<QuestionCard
 			class="max-w-xl"
 			card={generated}
-			showDescription={true}
+			showDescription
 			bind:correction
 			bind:interactive
-			immediateCommit={false}
+			immediateCommit
+			flashcard
 		/>
 	</div>
 {/if}

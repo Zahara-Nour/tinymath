@@ -25,10 +25,7 @@
 	// $: isStudent = isLoggedIn && $user.roles.includes('student')
 </script>
 
-<div
-	class="py-3 flex sticky top-0 bg-surface-50-900-token"
-	style={'z-index:10;'}
->
+<div class="py-3 flex sticky top-0 bg-surface-50-900-token">
 	<div class="grow" />
 
 	<button
@@ -104,7 +101,7 @@
 
 	<div class="relative inline-block">
 		{#if basket.length}
-			<span class={'badge variant-filled-error absolute -top-2 -right-1 z-10'}
+			<span class={'badge variant-filled-error absolute -top-2 -right-1 z-1'}
 				>{basket.reduce((acc, item) => acc + item.count, 0)}</span
 			>
 		{/if}

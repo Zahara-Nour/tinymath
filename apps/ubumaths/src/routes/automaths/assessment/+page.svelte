@@ -21,6 +21,7 @@
 	import { RangeSlider } from '@skeletonlabs/skeleton'
 	import CircularProgress from '$lib/ui/CircularProgress.svelte'
 	import {
+		assessItem,
 		prepareAnsweredQuestion,
 		prepareCorrectedQuestion,
 	} from '$lib/questions/correction'
@@ -104,7 +105,7 @@
 	})
 
 	onDestroy(() => {
-		timer.stop()
+		if (timer) timer.stop()
 	})
 
 	initTest()
@@ -114,7 +115,7 @@
 		initTest()
 	}
 	$: virtualKeyboardMode.set($touchDevice)
-	$: delay = slider * 1000
+	$: delay = slider
 
 	function decodeUrlParam(param: string): any {
 		const urlParam = $page.url.searchParams.get(param)
@@ -123,11 +124,18 @@
 	}
 
 	function top(remaining: number) {
+		// top toutes les 1s
+		// en secondes
+		console.log('top', remaining)
+		// percentage = (remaining * 100) / delay
 		alert = remaining < 5
 	}
 
 	function tick(remaining: number) {
-		percentage = (remaining * 100) / (delay * 1000)
+		// top toutes les 10ms
+		// en ms
+		percentage = ((remaining / 1000) * 100) / delay
+		// console.log('percentage', percentage)
 	}
 
 	function initTest() {
@@ -198,13 +206,14 @@
 	}
 
 	function beginTest() {
+		console.log('begin')
 		showExemple = false
 		go = true
 		if (courseAuxNombres) {
 			const tick = (seconds: number) => {
 				remaining = convertToTime(seconds)
 			}
-			timer = createTimer({ delay: 7 * 60, tick, timeout: commit.exec })
+			timer = createTimer({ delay: 7 * 60, tick, timeout: () => commit.exec() })
 			timer.start()
 		} else {
 			// on passe à la première question
@@ -231,22 +240,29 @@
 				if (time === 0) time = 1
 				card.time = time
 				if (slider && basket.length === 1) {
-					delay = slider * 1000
+					delay = slider
 				} else {
 					delay = card.delay
-						? card.delay * 1000
+						? card.delay
 						: card.defaultDelay
-						? card.defaultDelay * 1000
-						: 20000
-					slider = delay / 1000
+						? card.defaultDelay
+						: 20
+					slider = delay
 				}
 				slider = Math.max(5, slider)
 				// slider = Math.min(slider, 60)
+				console.log('delay', delay)
 				percentage = 0
 				alert = false
 				start = Date.now()
 				previous = 0
-				timer = createTimer({ delay, top, tick, timeout: commit.exec })
+				timer = createTimer({
+					delay: delay,
+					top,
+					tick,
+					timeout: () => commit.exec(), //pour garder le this sur commit
+				})
+				timer.start()
 			}
 		} else if (!flash) {
 			finish = true
@@ -310,7 +326,12 @@
 	</div>
 {:else if finish}
 	{#if showCorrection}
-		<Correction items={cards} {query} {classroom} bind:restart />
+		<Correction
+			items={cards.map(assessItem)}
+			{query}
+			{classroom}
+			bind:restart
+		/>
 	{:else}
 		<div style="height:90vh" class="flex justify-center items-center">
 			<button
@@ -327,7 +348,7 @@
 			on:click={() => {
 				beginTest()
 			}}
-			class="variant-filled-primary">Let's go !</button
+			class="rounded p-4 variant-filled-primary text-xl">Let's go !</button
 		>
 	</div>
 {:else if courseAuxNombres}
@@ -370,16 +391,16 @@
 	<div bind:this={ref}>
 		{#if !flash}
 			<div class={' my-1 flex justify-start items-center'}>
-				{#if classroom}
-					<RangeSlider
-						name="range-slider"
-						bind:value={slider}
-						{max}
-						{min}
-						step={5}
-						ticked>Label</RangeSlider
-					>
-				{/if}
+				<!-- {#if classroom} -->
+				<RangeSlider
+					name="range-slider"
+					bind:value={slider}
+					{max}
+					{min}
+					step={5}
+					ticked>Label</RangeSlider
+				>
+				<!-- {/if} -->
 				{#if !classroom && card.type !== 'choice' && card.type !== 'choices'}
 					<button
 						on:click={() => {

@@ -32,7 +32,8 @@ export function createTimer({
 	}
 
 	function tick_10ms() {
-		remaining -= 1
+		remaining -= 10
+		// console.log('remaining', remaining)
 		if (remaining < 0) {
 			status = 'done'
 			if (ticker_10ms) clearInterval(ticker_10ms)
@@ -49,13 +50,16 @@ export function createTimer({
 			return status
 		},
 		start() {
-			remaining = delay
-			time = convertToTime(remaining)
-			if (ticker_10ms) clearInterval(ticker_10ms)
-			ticker_10ms = setInterval(tick_10ms, 10)
-			if (ticker_1s) clearInterval(ticker_1s)
-			ticker_1s = setInterval(tick_1s, 1000)
-			status = 'running'
+			if (status === 'done') {
+				remaining = delay * 1000
+				time = convertToTime(remaining)
+				if (ticker_10ms) clearInterval(ticker_10ms)
+				ticker_10ms = setInterval(tick_10ms, 10)
+				if (ticker_1s) clearInterval(ticker_1s)
+				ticker_1s = setInterval(tick_1s, 1000)
+				status = 'running'
+				console.log('timer starts')
+			}
 		},
 		pause() {
 			if (status === 'running') {
@@ -73,6 +77,7 @@ export function createTimer({
 				ticker_10ms = null
 				ticker_1s = null
 				status = 'done'
+				console.log('timer stops')
 			}
 		},
 		resume() {

@@ -28,11 +28,8 @@
 	export let correction = false
 	export let simpleCorrection: Line[] = []
 	export let detailedCorrection: Line[] = []
-	export let commit: Commit = {
-		exec: () => {},
-		hook: () => {},
-	}
-	export let immediateCommit = true
+	export let commit: Commit
+	export let immediateCommit = false
 
 	let { fail, trace, info } = getLogger('correction', 'trace')
 
@@ -54,6 +51,7 @@
 	// si le commit a été passé par la série de questions
 	prepareMathlive()
 
+	// si l'objet commit a été passé en prop
 	if (commit) {
 		commit.hook = commitAnswers
 	} else {

@@ -2,16 +2,20 @@
 	import BackCard from './BackCard.svelte'
 	import FrontCard from './FrontCard.svelte'
 	// import { fontSize } from '$lib/stores'
-	import type { CorrectedQuestion } from '$lib/type'
+	import type {
+		AnsweredQuestion,
+		Commit,
+		CorrectedQuestion,
+		Line,
+	} from '$lib/type'
 
-	export let card: CorrectedQuestion
+	export let card: AnsweredQuestion
 	export let interactive = false
 	export let flashcard = false
 	export let showDescription = false
 	export let correction = false
+	export let commit: Commit
 	export let immediateCommit = false
-
-	let updatedFlashCard = flashcard
 
 	let flip = false
 	const toggleFlip = () => (flip = !flip)
@@ -22,8 +26,8 @@
 	let height: number // height for displayed card
 	let width = 0
 
-	let simpleCorrection = card.simpleCorrection
-	let detailedCorrection = card.detailedCorrection
+	let simpleCorrection: Line[] = []
+	let detailedCorrection: Line[] = []
 
 	async function updateHeight() {
 		// console.log('updateHeight')npm
@@ -32,52 +36,19 @@
 		// console.log('height', height)
 	}
 
-	// TODO: a revoir
-	// $: if (card) {
-	// 	updatedFlashCard =
-	// 		flashcard === null
-	// 			? (correction &&
-	// 					!!card.correctionDetails &&
-	// 					!!card.correctionDetails.length) ||
-	// 			  (!interactive && !correction)
-	// 			: flashcard
-	// }
-
-	// $: console.log('interactive', interactive)
-	// $: console.log('correction', correction)
-	// $: console.log('flashcard', updatedFlashCard)
-
 	$: if (card) {
 		// console.log('changing card')
 		flip = false
 	}
 
-	// $: console.log('hback_masked', hback_masked)
-	// $: console.log('hfront_masked', hfront_masked)
-	// $: console.log('height', height)
-	// $: if (updatedFlashCard && hfront_masked && hback_masked) {
-	// 	updateHeight()
-	// }
-
-	// $: if (!updatedFlashCard && hfront_masked) {
-	// 	updateHeight()
-	// }
-
 	$: if (hfront_masked || hback_masked) {
 		updateHeight()
 	}
 
-	// $: if ($fontSize) {
-	// 	// console.log('changing size')
-	// 	height = 0
-	// }
-
-	$: console.log('updatedFlashCard', updatedFlashCard)
-	$: console.log(
-		'QuestionCard detailedCorrection',
-		card.num,
-		detailedCorrection,
-	)
+	$: isFlashCard =
+		flashcard &&
+		((correction && !!detailedCorrection.length) ||
+			(!correction && !interactive))
 </script>
 
 <div
@@ -89,7 +60,7 @@
 			<FrontCard
 				{card}
 				{toggleFlip}
-				flashcard={updatedFlashCard}
+				flashcard={isFlashCard}
 				{showDescription}
 				{height}
 				bind:interactive
@@ -97,10 +68,11 @@
 				bind:w={width}
 				bind:simpleCorrection
 				bind:detailedCorrection
+				{commit}
 				{immediateCommit}
 			/>
 		</div>
-		{#if updatedFlashCard}
+		{#if isFlashCard}
 			<div class="back" style={height ? 'height:100%;' : ''}>
 				<BackCard
 					{card}
@@ -122,20 +94,20 @@
 	<!-- <div > -->
 	<FrontCard
 		{card}
-		flashcard={updatedFlashCard}
+		flashcard={isFlashCard}
 		{showDescription}
 		bind:h={hfront_masked}
-		masked={true}
+		masked
 		{interactive}
 		{correction}
 		{immediateCommit}
 	/>
 
-	{#if updatedFlashCard}
+	{#if isFlashCard}
 		<BackCard
 			{card}
 			bind:h={hback_masked}
-			masked={true}
+			masked
 			{correction}
 			{simpleCorrection}
 			{detailedCorrection}

@@ -8,29 +8,28 @@
 	import {
 		isQuestionChoice,
 		isQuestionChoices,
+		type AnsweredQuestion,
 		type Choice,
-		type CorrectedQuestion,
-		type GeneratedQuestion,
-		type Question,
+		type Line,
 	} from '$lib/type'
 
-	export let card: CorrectedQuestion
+	export let card: AnsweredQuestion
 	export let toggleFlip = () => {}
 	export let h = 0
 	export let w = 0
 	export let height = 0
 	export let width = 0
 	export let correction = false
-	export let detailedCorrection = card.detailedCorrection
+	export let detailedCorrection: Line[] = []
 	export let masked = false
 
-	function getSolution(card: CorrectedQuestion) {
+	function getSolution(card: AnsweredQuestion) {
 		let nSol = -1
 		let s: string | Choice
 
 		function replaceSol() {
 			nSol += 1
-			return math(card.solutions[nSol]).latex
+			return math(card.solutions![nSol]).latex
 		}
 
 		if (isQuestionChoices(card)) {
@@ -47,7 +46,7 @@
 				>`
 
 				if (choice.image) {
-					s += `<img src="${choice.base64}" style="max-width:min(400px,80%);max-height:40vh;" alt="choice ${i}"/>`
+					s += `<img src="${choice.imageBase64}" style="max-width:min(400px,80%);max-height:40vh;" alt="choice ${i}"/>`
 				} else {
 					s += `<div class="text-base " style="{font-size:1rem}">`
 					s += choice.text as string
@@ -68,7 +67,7 @@
 			if (card.answerField && card.type !== 'equation') {
 				s = $formatToHtml(card.answerField.replace(/\?/g, replaceSol)) as string
 			} else {
-				s = card.solutions[0] as string
+				s = card.solutions![0] as string
 				s = '$$' + math(s).latex + '$$'
 			}
 		}
@@ -128,7 +127,7 @@
 			{#if details}
 				<div class="my-2 relative">
 					{#each details as line}
-						<div class=" correction-line z-0">
+						<div class=" correction-line">
 							<CorrectionLine {line} />
 						</div>
 					{/each}

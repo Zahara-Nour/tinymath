@@ -4,7 +4,6 @@
 	import { correct_color, incorrect_color, unoptimal_color } from '$lib/colors'
 	import { Confetti } from 'svelte-confetti'
 	import { getLogger } from '$lib/utils'
-	import { goto } from '$app/navigation'
 	import math from 'tinycas'
 	import {
 		STATUS_CORRECT,
@@ -29,6 +28,8 @@
 
 	let total = 0
 	let score = 0
+
+	console.log('corrected', items)
 
 	items.forEach((item) => {
 		console.log('item', item)
@@ -131,11 +132,11 @@ z-index:100"
 			<div class="flex flex-col items-center justify-around h-full">
 				<button
 					on:click={() => (restart = true)}
-					class="btn-icon variant-filled-primary"
+					class="my-2 btn-icon variant-filled-primary  text-2xl"
 					><iconify-icon icon="mdi:reload" /></button
 				>
 				<a href={`/automaths + ${query}`}>
-					<button class="btn-icon variant-filled-primary"
+					<button class="my-2 btn-icon variant-filled-primary  text-2xl"
 						><iconify-icon icon="mdi:home" /></button
 					>
 				</a>

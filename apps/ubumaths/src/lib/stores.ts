@@ -6,6 +6,7 @@ import { isObjectWithText } from './utils'
 import { getLogger } from '$lib/utils'
 let { info, fail, warn } = getLogger('store', 'info')
 
+export const fontSize = writable(16)
 export const touchDevice = writable(false)
 export const mathliveReady = writable(false)
 export const virtualKeyboardMode = writable(false)

@@ -4,10 +4,15 @@
 	import { formatToHtml } from '$lib/stores'
 	import { formatToLatex } from '$lib/utils'
 	import { mdc_colors } from '$lib/colors'
-	import type { CorrectedQuestion } from '$lib/type'
+	import type {
+		AnsweredQuestion,
+		Commit,
+		CorrectedQuestion,
+		Line,
+	} from '$lib/type'
 
 	export let toggleFlip = () => {}
-	export let card: CorrectedQuestion
+	export let card: AnsweredQuestion
 	export let showDescription = false
 	export let height = 0
 	export let width = 0
@@ -15,16 +20,15 @@
 	export let w = 0
 	export let masked = false
 	export let interactive = false
-	// export let commit = null
+	export let commit: Commit
 	export let correction = false
-	export let simpleCorrection = card.simpleCorrection
-	export let detailedCorrection = card.detailedCorrection
+	export let simpleCorrection: Line[] = []
+	export let detailedCorrection: Line[] = []
 	export let immediateCommit = false
 	export let flashcard = false
 
 	$: description = $formatToHtml(formatToLatex(card.description))
 	$: subdescription = $formatToHtml(formatToLatex(card.subdescription))
-	$: if (!masked) console.log('interactive', interactive)
 </script>
 
 <div bind:clientHeight={h} bind:clientWidth={w} class={`${$$props.class}`}>
@@ -33,20 +37,23 @@
 		style={height ? `height:${height}px;` : width ? `width:${width}px;` : ''}
 	>
 		{#if showDescription}
-			<header class="header flex items-center justify-between">
+			<header class="header flex items-center justify-between pb-2 border-b-2">
 				<div class="flex justify-left items-center">
-					<div style="margin-left:3rem">
-						<span class="relative" style={'color:var(--mdc-theme-primary'}>
+					<div class="flex flex-col justify-start">
+						<span class="font-bold text-primary-500">
 							{@html $formatToHtml(description)}
 						</span>
 
 						{#if subdescription}
-							<span class="relative" style={'color:var(--mdc-theme-on-surface'}
-								>{@html $formatToHtml(subdescription)}</span
-							>
+							<span class="text-primary-500">
+								{@html $formatToHtml(subdescription)}
+							</span>
 						{/if}
 					</div>
-					<button
+				</div>
+
+				<span
+					><button
 						on:click={() => (correction = !correction)}
 						class={'mx-1 btn-icon ' +
 							(correction
@@ -60,8 +67,8 @@
 								? 'variant-filled-primary'
 								: 'variant-filled-surface')}>I</button
 					>
-				</div>
-				<span>{card.id}</span>
+					<span class="ml-2">{card.id}</span>
+				</span>
 			</header>
 		{/if}
 		{#if correction}
@@ -80,12 +87,15 @@
 			{interactive}
 			bind:simpleCorrection
 			bind:detailedCorrection
+			{commit}
 			{immediateCommit}
 		/>
 
 		{#if flashcard}
 			<footer class="footer flex justify-end">
-				<button on:click={toggleFlip} class="btn-icon variant-filled-primary"
+				<button
+					on:click={toggleFlip}
+					class="text-xl btn-icon variant-filled-primary"
 					><iconify-icon icon="mdi:orbit-variant" /></button
 				>
 			</footer>

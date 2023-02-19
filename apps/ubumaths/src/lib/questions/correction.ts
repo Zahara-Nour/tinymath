@@ -1,6 +1,6 @@
 import math from 'tinycas'
 import { getLogger } from '$lib/utils'
-import { createCorrection } from './correctionItem'
+import { createCorrection, createDetailedCorrection } from './correctionItem'
 import type {
 	AnsweredQuestion,
 	CorrectedQuestion,
@@ -1011,8 +1011,10 @@ export function assessItem(item: AnsweredQuestion) {
 			}
 		}
 	}
-	console.log('assessed item', correctedItem)
+
 	createCorrection(correctedItem)
+	createDetailedCorrection(correctedItem)
+	console.log('assessed item', correctedItem)
 	return correctedItem
 }
 
@@ -1022,6 +1024,7 @@ export function prepareAnsweredQuestion(
 	return {
 		...q,
 		answers: [],
+		answers_latex: [],
 		options: q.options || [],
 	}
 }

@@ -337,7 +337,7 @@ export function createCorrection(item: CorrectedQuestion) {
 					}
 
 					if (choice.image) {
-						c.image = choice.base64
+						c.image = choice.imageBase64
 					} else {
 						c.text = choice.text
 						c.html = get(formatToHtml)(
@@ -424,7 +424,7 @@ export function createDetailedCorrection(item: CorrectedQuestion) {
 	const { solutions, correctionDetails } = item
 
 	let lines: Line[] = []
-	let line
+	let line: Line
 	let solutions_latex = createSolutionsLatex(item)
 
 	const regexExpression = /&expression/g
@@ -473,39 +473,43 @@ export function createDetailedCorrection(item: CorrectedQuestion) {
 		if (detail.type === 'image') {
 			// le base64 de l'image a été préparé lors de la génération de la question
 			let img = detail.base64
-			line = `<img src='${img}' style="max-width:400px;max-height:40vh;" alt='toto'>`
+			line = {
+				html: `<img src='${img}' style="max-width:400px;max-height:40vh;" alt='toto'>`,
+			}
 		} else {
-			line = detail.text
-				// .replace(new RegExp('&exp2', 'g'), '$$$$'+expression2_latex+'$$$$')
-				// .replace(new RegExp('&exp', 'g'), '$$$$'+expression_latex+'$$$$')
-				.replace(regexExpression2, replaceExpression2)
-				.replace(regexExpression, replaceExpression)
-				.replace(regexExp2, replaceExp2)
-				.replace(regexExp, replaceExp)
-				.replace(regexSolution, replaceSolution)
-				.replace(regexSol, replaceSol)
-				.replace(
-					'&solution',
-					() =>
-						`<span style="color:${correct_color}; border:2px solid ${correct_color}; border-radius: 5px;  margin:2px; padding:5px;display:inline-block">` +
-						(item.type === 'choice'
-							? get(formatToHtml)(
-									item.choices[solutions[0] as number].text as string,
-							  )
-							: get(toMarkup)(solutions_latex[0] as string)) +
-						'</span>',
-				)
-				.replace(
-					new RegExp('&sol', 'g'),
-					item.type === QUESTION_TYPE_CHOICE
-						? (item.choices[solutions[0] as number].text as string)
-						: `\\enclose{roundedbox}[3px solid ${correct_color}]{\\textcolor{${correct_color}}{` +
-								solutions_latex[0] +
-								'}}',
-				)
+			line = {
+				html: detail.text
+					// .replace(new RegExp('&exp2', 'g'), '$$$$'+expression2_latex+'$$$$')
+					// .replace(new RegExp('&exp', 'g'), '$$$$'+expression_latex+'$$$$')
+					.replace(regexExpression2, replaceExpression2)
+					.replace(regexExpression, replaceExpression)
+					.replace(regexExp2, replaceExp2)
+					.replace(regexExp, replaceExp)
+					.replace(regexSolution, replaceSolution)
+					.replace(regexSol, replaceSol)
+					.replace(
+						'&solution',
+						() =>
+							`<span style="color:${correct_color}; border:2px solid ${correct_color}; border-radius: 5px;  margin:2px; padding:5px;display:inline-block">` +
+							(item.type === 'choice'
+								? get(formatToHtml)(
+										item.choices[solutions[0] as number].text as string,
+								  )
+								: get(toMarkup)(solutions_latex[0] as string)) +
+							'</span>',
+					)
+					.replace(
+						new RegExp('&sol', 'g'),
+						item.type === QUESTION_TYPE_CHOICE
+							? (item.choices[solutions[0] as number].text as string)
+							: `\\enclose{roundedbox}[3px solid ${correct_color}]{\\textcolor{${correct_color}}{` +
+									solutions_latex[0] +
+									'}}',
+					),
+			}
 		}
 		lines.push(line)
 	})
-	lines = lines.map((l) => get(formatToHtml)(l) as string)
+	lines = lines.map((l) => {...l, html:get(formatToHtml)(l.html))
 	return lines
 }
