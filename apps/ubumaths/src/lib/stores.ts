@@ -27,7 +27,6 @@ export function prepareMathlive() {
 	if (!get(mathliveReady)) {
 		import('tinymathlive')
 			.then((m) => {
-				console.log('m', m)
 				mathliveReady.set(true)
 				mathfieldElement.set(m.MathfieldElement)
 				toMarkup.set(m.convertLatexToMarkup)

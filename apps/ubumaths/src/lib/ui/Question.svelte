@@ -84,8 +84,6 @@
 	// il faut vérifier que l'update d'answers est bien triggé
 	$: makeCorrection(answers)
 
-	// console.log('context', params)
-
 	// l'utilisateur à choisi une réponse
 	function onChoice(i: number) {
 		if (interactive) {
@@ -184,8 +182,6 @@
 
 		const keystroke = ev.code
 		const key = ev.key
-		// console.log('onKeyStroke')
-		// console.log('answers_latex', answers_latex[i])
 		if (
 			keystroke === 'Space'
 			//  &&
@@ -236,8 +232,6 @@
 
 	// initialisation d'une nouvelle question
 	function initQuestion(question: AnsweredQuestion) {
-		if (!masked) console.log('init question')
-
 		// on enlève les listeners de la question précédente
 		blurMathfields()
 		removeListeners()
@@ -251,7 +245,6 @@
 
 		answers = []
 		answers_latex = []
-		if (!masked) console.log('init question nswers', answers)
 
 		enounce = question.enounce
 			? ($formatLatexToHtml(formatToLatex(question.enounce)) as string)
@@ -264,15 +257,12 @@
 
 	function makeCorrection(answers: (number | string)[]) {
 		// on fait un alias de la question pour être sur de ne pas trigger un update local
-		if (!masked) console.log('makeCorrection', answers)
 		const q = question
 		if (interactive) {
-			console.log('answers', answers)
 			q.answers = answers
 			q.answers_latex = answers_latex
 		}
 		const corrected = assessItem(q)
-		if (!masked) console.log('makeCorrection', corrected)
 		coms = corrected.coms
 		simpleCorrection = corrected.simpleCorrection
 		detailedCorrection = corrected.detailedCorrection
@@ -284,11 +274,9 @@
 		q.answers = answers
 		q.answers_latex = answers_latex
 		assessItem(q)
-		if (!masked) console.log('assess item', q)
 	}
 
 	function prepareInteractive() {
-		if (!masked) console.log('prepare interactive')
 		mfs = []
 		nmfs = 0
 
@@ -338,7 +326,6 @@
 	}
 
 	function stopInteractive() {
-		// if (!masked) console.log('stop interactive')
 		blurMathfields()
 		removeListeners()
 		mfs = []
@@ -366,7 +353,6 @@
 	}
 
 	function insertMathFields() {
-		// if (!masked) console.log('insertathFields', answers, answers_latex)
 		const elements: HTMLElement[] = []
 
 		if (answerField) {
@@ -382,7 +368,6 @@
 				}
 			}
 		} else if (expression) {
-			// console.log(`${question.num}${masked ? '-masked' : ''}`)
 			const expressionElements =
 				document
 					.querySelector(

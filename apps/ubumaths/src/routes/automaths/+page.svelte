@@ -69,11 +69,6 @@
 
 	const ids = data.ids
 
-	console.log('grade', grade)
-	console.log('theme', theme)
-	console.log('domain', domain)
-	console.log('subdomain', subdomain)
-	console.log('level', level)
 	$: changeGrade(selectedGrade)
 	$: if (courseAuxNombres) {
 		basket.forEach((item) => {
@@ -220,7 +215,6 @@
 		grade = grades.includes(new_grade) ? new_grade : grades[grades.length - 1]
 		storedGrade.set(grade)
 		availableLevels = getAvailablesLevels(grade)
-		console.log('availableLevels', availableLevels)
 		themes = Object.keys(availableLevels)
 		changeThemeDomainSubdomainLevel(theme, domain, subdomain, level)
 	}
@@ -375,21 +369,9 @@
 		} else fail(`question ${theme}-${domain}-${subdomain}-${level} not found.`)
 	}
 
-	// $: changeGrade(grade)
-	// $: changeTheme(theme)
-
 	function changeGrade(grade: string) {
 		changeGradeThemeDomainSubdomainLevel(grade, theme, domain, subdomain, level)
 	}
-
-	// onMount(() => console.log('onMount'))
-	// beforeUpdate(
-	// 	(() => {
-	// 		let nupdate = 0
-	// 		return () => console.log('beforeUpdate', nupdate++)
-	// 	})(),
-	// )
-	// afterUpdate(() => console.log('afterUpdate'))
 </script>
 
 <h3>Les automaths !</h3>

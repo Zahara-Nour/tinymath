@@ -548,7 +548,6 @@ function checkSigns(item: CorrectedQuestion) {
 				.removeUnecessaryBrackets()
 				.removeMultOperator()
 			// il faut enlever les * inutiles
-			// console.log('check signs', e1.string, e2.string, e1.string === e2.string)
 			if (e1.string !== e2.string) result.push(i)
 		}
 	})
@@ -725,8 +724,6 @@ function checkForm(item: CorrectedQuestion) {
 						.removeMultOperator()
 						.sortTermsAndFactors()
 
-					// console.log('answer & solution', e.string, solution.string)
-
 					// il faut trouver une autre solution quand il y a des unités
 					if (!e.unit && !e.strictlyEquals(solution)) {
 						item.statuss[i] = STATUS_BAD_FORM
@@ -744,9 +741,7 @@ function checkForm(item: CorrectedQuestion) {
 // on évalue la réponse de l'utilisateur en donnant un statut à chaque élément de la réponse,
 // ainsi qu'à la réponse globale
 export function assessItem(item: AnsweredQuestion) {
-	// console.log('correcting', item)
-
-	// TODO : vérifier que les options sont intialisées à [] dans generateQuestion
+	// TODO: vérifier que les options sont intialisées à [] dans generateQuestion
 	const correctedItem: CorrectedQuestion = prepareCorrectedQuestion(item)
 	// essentiellement pour les tests
 	if (!correctedItem.answers_latex.length && correctedItem.answers.length) {

@@ -33,7 +33,6 @@ function createSolutionsLatex(item: CorrectedQuestion) {
 				) {
 					return item.choices[solution as number]
 				} else {
-					// console.log('solution', solution)
 					const e = math(solution)
 					return e.latex
 				}

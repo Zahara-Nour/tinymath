@@ -400,7 +400,6 @@ export default function generateQuestion(
 			}
 		}
 	}
-	// console.log('limits', JSON.parse(JSON.stringify(question.limits.limits)))
 
 	do {
 		count++
