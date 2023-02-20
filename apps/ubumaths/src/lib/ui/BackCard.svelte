@@ -3,7 +3,7 @@
 	import math from 'tinycas'
 	import 'iconify-icon'
 	import { formatLatexToHtml } from '$lib/stores'
-	import { mdc_colors, correct_color } from '$lib/colors'
+	import { correct_color } from '$lib/colors'
 	import CorrectionLine from './CorrectionLine.svelte'
 	import {
 		isQuestionChoice,
@@ -97,12 +97,13 @@
 					Détails
 				</span>
 			</div>
-
-			{#each details as line}
-				<div class="correction-line">
-					<CorrectionLine {line} />
-				</div>
-			{/each}
+			<div class="z-0 relative">
+				{#each details as line}
+					<div class="correction-line">
+						<CorrectionLine {line} />
+					</div>
+				{/each}
+			</div>
 
 			<div class=" w-full flex justify-end">
 				<button
@@ -114,7 +115,7 @@
 		{:else}
 			<!-- solution générique -->
 			<div class="text-success-500">Réponse :</div>
-			<div class="my-5" style={`font-size:${magnify_3xl};`}>
+			<div class="my-5 z-0 relative" style={`font-size:${magnify_3xl};`}>
 				{@html solution}
 			</div>
 			{#if card.imageCorrection}
@@ -134,7 +135,7 @@
 				{/await}
 			{/if}
 			{#if details}
-				<div class="my-2">
+				<div class="my-2 z-0 relative">
 					{#each details as line}
 						<div class=" correction-line">
 							<CorrectionLine {line} />

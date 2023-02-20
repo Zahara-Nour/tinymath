@@ -928,6 +928,8 @@ describe('Testing parsing units', () => {
 describe('Testing incorrect expressions ', () => {
 	const p = parser()
 	const exps = [
+		'1,',
+		'1+',
 		'1 cm + 1',
 		'1L + 1m',
 		'1 cm cm',

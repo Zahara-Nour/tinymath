@@ -6,12 +6,7 @@ import {
 	STATUS_EMPTY,
 	STATUS_BAD_UNIT,
 } from './correction'
-import {
-	mdc_colors,
-	correct_color,
-	incorrect_color,
-	unoptimal_color,
-} from '$lib/colors'
+import { correct_color, incorrect_color, unoptimal_color } from '$lib/colors'
 import { toMarkup, formatLatexToHtml } from '$lib/stores'
 import math from 'tinycas'
 import { formatToLatex, formatToTexmacs } from '$lib/utils'
@@ -297,7 +292,7 @@ export function createCorrection(item: CorrectedQuestion) {
 						'\\end{align*}$$'
 				} else if (status === STATUS_INCORRECT) {
 					text +=
-						`&= \\enclose{updiagonalstrike}[6px solid rgba(205, 0, 11, .4)]{\\textcolor{${incorrect_color}}{${answers_latex[0]}}}` +
+						`&= \\enclose{updiagonalstrike}[3px solid ${incorrect_color}]{${answers_latex[0]}}` +
 						`\\\\&= \\enclose{roundedbox}[3px solid ${correct_color}]{\\textcolor{${correct_color}}{${solutions_latex[0]}}}\\end{align*}$$`
 				} else if (
 					status === STATUS_BAD_FORM ||

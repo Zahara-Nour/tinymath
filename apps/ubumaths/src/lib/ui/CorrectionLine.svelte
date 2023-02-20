@@ -4,9 +4,9 @@
 	export let line: Line
 
 	const classBadgeCorrect =
-		'badge variant-filled-success absolute -top-5 -right-2 z-10 text-success-500'
+		'badge-icon variant-filled-success absolute -top-4 -right-2 z-10 text-success-500'
 	const classBadgeIncorrect =
-		'badge variant-filled-error absolute -top-5 -right-2 z-10 text-error-500'
+		'badge-icon variant-filled-error absolute -top-4 -right-2 z-10 text-error-500'
 
 	const classAnswerSolution = 'p-2 border-4 border-success-500 rounded-lg'
 	const classAnswerNotSolution = 'p-2 border-4 border-grey-500 rounded-lg'
@@ -20,7 +20,7 @@
 			</span>
 		{:else if line.choices}
 			{#each line.choices as choice, i}
-				<div class="relative inline-block">
+				<div class="mx-2 relative inline-block">
 					{#if choice.badge}
 						<span
 							class={choice.badge === 'correct'

@@ -280,9 +280,12 @@ const mdc_colors: { [index: string]: string } = {
 // let color2
 // let color3
 
-let correct_color = mdc_colors['lime-500']
-let unoptimal_color = mdc_colors['amber-300']
-let incorrect_color = mdc_colors['red-400']
+// let correct_color = mdc_colors['lime-500']
+let correct_color = '#a3d651'
+// let unoptimal_color = mdc_colors['amber-300']
+let unoptimal_color = '#ffc400'
+// let incorrect_color = mdc_colors['red-400']
+let incorrect_color = '#ff6171'
 let color1 = mdc_colors['orange-300']
 let color2 = mdc_colors['teal-400']
 let color3 = mdc_colors['pink-300']
@@ -294,7 +297,6 @@ export {
 	color1,
 	color2,
 	color3,
-	mdc_colors,
 	correct_color,
 	incorrect_color,
 	unoptimal_color,

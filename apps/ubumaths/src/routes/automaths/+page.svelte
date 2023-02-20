@@ -29,7 +29,7 @@
 	} from '@skeletonlabs/skeleton'
 	import QuestionCard from '$lib/ui/QuestionCard.svelte'
 	import { afterUpdate, beforeUpdate, onMount } from 'svelte'
-	import { storedGrade } from '$lib/stores'
+	import { formatLatexToHtml, storedGrade } from '$lib/stores'
 	import { get } from 'svelte/store'
 
 	let { info, fail, warn } = getLogger('Automaths', 'info')
@@ -447,13 +447,13 @@
 							><p
 								class={'font-bold ' + (domain === d ? 'text-primary-500' : '')}
 							>
-								{d}
+								{@html $formatLatexToHtml(d)}
 							</p></svelte:fragment
 						>
 						<div slot="content" class="pl-14 border-l-2 border-primary-500">
 							{#each subdomains as subd (theme + d + subd)}
 								<div class="my-5 flex items-center">
-									<span class="mb-2">{subd}</span>
+									<span class="mb-2">{@html $formatLatexToHtml(subd)}</span>
 									<div class="flex flex-wrap">
 										{#if Array.isArray(availableLevels[theme][d][subd])}
 											{#each availableLevels[theme][d][subd] as l (theme + d + subd + l)}

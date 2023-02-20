@@ -3,7 +3,6 @@
 	import Question from './Question.svelte'
 	import { formatLatexToHtml } from '$lib/stores'
 	import { formatToLatex } from '$lib/utils'
-	import { mdc_colors } from '$lib/colors'
 	import type {
 		AnsweredQuestion,
 		Commit,

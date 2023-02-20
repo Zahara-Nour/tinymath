@@ -15,8 +15,6 @@
 		magnify_2xl,
 	} from '$lib/utils'
 	import virtualKeyboard from '$lib/mathlive/virtualKeyboard'
-	import { createDetailedCorrection } from '$lib/questions/correctionItem'
-	import { mdc_colors as colors } from '$lib/colors'
 	import CorrectionLine from './CorrectionLine.svelte'
 	import { assessItem } from '$lib/questions/correction'
 	import {
@@ -238,7 +236,7 @@
 
 	// initialisation d'une nouvelle question
 	function initQuestion(question: AnsweredQuestion) {
-		// if (!masked) console.log('init question')
+		if (!masked) console.log('init question')
 
 		// on enlève les listeners de la question précédente
 		blurMathfields()
@@ -253,6 +251,7 @@
 
 		answers = []
 		answers_latex = []
+		if (!masked) console.log('init question nswers', answers)
 
 		enounce = question.enounce
 			? ($formatLatexToHtml(formatToLatex(question.enounce)) as string)
@@ -265,12 +264,15 @@
 
 	function makeCorrection(answers: (number | string)[]) {
 		// on fait un alias de la question pour être sur de ne pas trigger un update local
+		if (!masked) console.log('makeCorrection', answers)
 		const q = question
 		if (interactive) {
+			console.log('answers', answers)
 			q.answers = answers
 			q.answers_latex = answers_latex
 		}
 		const corrected = assessItem(q)
+		if (!masked) console.log('makeCorrection', corrected)
 		coms = corrected.coms
 		simpleCorrection = corrected.simpleCorrection
 		detailedCorrection = corrected.detailedCorrection
@@ -286,7 +288,7 @@
 	}
 
 	function prepareInteractive() {
-		// if (!masked) console.log('prepare interactive')
+		if (!masked) console.log('prepare interactive')
 		mfs = []
 		nmfs = 0
 
@@ -326,6 +328,12 @@
 
 		if (expression2) {
 			expression2 = $toMarkup(expression2)
+		}
+
+		// TODO : et avec un champs de plusieurs réponses ?
+		if (!answers.length) {
+			answers = ['']
+			answers_latex = ['']
 		}
 	}
 
@@ -585,6 +593,7 @@
 		<div
 			id={`answerField-${question.num}${masked ? '-masked' : ''}`}
 			class="my-3 flex flex-col items-center justify-center"
+			style={`font-size:${magnify_2xl};`}
 		>
 			<div
 				id={`answerField-${question.num}${masked ? '-masked' : ''}`}
@@ -607,7 +616,7 @@
 		<div class="mt-3" style={`font-size:${magnify_2xl};`}>
 			{#each simpleCorrection as line}
 				<div
-					class=" my-1"
+					class=" my-1 z-0 relative"
 					style={`word-break: break-word ;white-space: normal;`}
 				>
 					<CorrectionLine {line} />

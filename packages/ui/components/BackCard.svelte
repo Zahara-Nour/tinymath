@@ -6,7 +6,7 @@
 	// import { Svg } from '@smui/common'
 	// import Paper from '@smui/paper'
 	// import { formatLatexToHtml } from '$lib/stores'
-	import { mdc_colors, correct_color } from '$lib/colors'
+	import { correct_color } from '$lib/colors'
 	// import CorrectionLine from './CorrectionLine.svelte'
 
 	export let card

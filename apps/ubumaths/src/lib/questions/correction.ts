@@ -869,15 +869,24 @@ export function assessItem(item: AnsweredQuestion) {
 					}
 				}
 			} else {
-				correctedItem.answers.forEach((answer, i) => {
-					if (
-						correctedItem.statuss[i] !== STATUS_EMPTY &&
-						math(answer).isIncorrect()
-					) {
-						correctedItem.statuss[i] = STATUS_INCORRECT
-						correctedItem.status = STATUS_INCORRECT
-					}
-				})
+				const answer = correctedItem.answers[0]
+				if (
+					correctedItem.status !== STATUS_EMPTY &&
+					math(answer).isIncorrect()
+				) {
+					correctedItem.status = STATUS_INCORRECT
+					correctedItem.coms.push(MATH_INCORRECT)
+				}
+
+				// correctedItem.answers.forEach((answer, i) => {
+				// 	if (
+				// 		correctedItem.statuss[i] !== STATUS_EMPTY &&
+				// 		math(answer).isIncorrect()
+				// 	) {
+				// 		correctedItem.statuss[i] = STATUS_INCORRECT
+				// 		correctedItem.status = STATUS_INCORRECT
+				// 	}
+				// })
 			}
 
 			if (
