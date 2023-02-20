@@ -75,7 +75,6 @@
 		},
 	}
 	let commits: Commit[] = []
-	let ref: HTMLElement
 	let remaining: Time
 
 	let query: string
@@ -86,7 +85,7 @@
 		classroom?: boolean
 	}
 
-	const magnifyClassroom = '2.5em'
+	const magnifyClassroom = '2em'
 
 	setContext('test-params', testParams)
 
@@ -374,10 +373,7 @@
 		>
 	</div>
 {:else if card}
-	<div
-		bind:this={ref}
-		style={classroom ? `font-size: ${magnifyClassroom};` : ''}
-	>
+	<div style={classroom ? `font-size: ${magnifyClassroom};` : ''}>
 		{#if !flash}
 			<div class={' my-1 flex justify-start items-center'}>
 				{#if classroom}
@@ -403,12 +399,7 @@
 				{/if}
 				<div class="flex grow" />
 
-				<CircularProgress
-					number={current + 1}
-					fontSize={$fontSize * 1.8}
-					{percentage}
-					pulse={alert}
-				/>
+				<CircularProgress number={current + 1} {percentage} pulse={alert} />
 			</div>
 		{/if}
 
@@ -452,7 +443,7 @@
 
 	.magnify-icon {
 		font-size: 0.9em;
-		width: 1.5em;
+		width: 1.8em;
 	}
 
 	.btn-icon-magnify {

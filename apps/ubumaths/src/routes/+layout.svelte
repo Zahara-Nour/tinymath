@@ -29,7 +29,7 @@
 <AppShell>
 	<svelte:fragment slot="header">
 		<!-- App Bar -->
-		<AppBar>
+		<AppBar class="shadow-2xl">
 			<svelte:fragment slot="lead">
 				<img src="/images/gidouille.png" alt="gidouille" class="w-8 mr-2" />
 				<div class="inline-block">
@@ -70,8 +70,9 @@
 		</AppBar>
 	</svelte:fragment>
 	<!-- Page Route Content -->
-
-	<slot />
+	<div class="p-6">
+		<slot />
+	</div>
 </AppShell>
 
 <svelte:head>

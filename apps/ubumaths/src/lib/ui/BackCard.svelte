@@ -82,18 +82,20 @@
 
 <div bind:clientHeight={h} bind:clientWidth={w} class={`${$$props.class}`}>
 	<div
-		class="card p-4 flex flex-col items-start justify-between"
+		class="card shadow-xl p-4 flex flex-col items-center justify-between"
 		style={height ? `height:${height}px;` : width ? `width:${width}px;` : ''}
 	>
 		<!-- correction des réponses de l'utilisateur -->
 
 		<!-- si mode correction, on affiche la correction détaillée -->
 		{#if correction}
-			<div
-				class="correction-title text-success-500 font-bold mb-4"
-				style={`font-size:1rem;`}
-			>
-				Détails
+			<div class="w-full flex flex-col items-start justify-between">
+				<span
+					class="correction-title text-success-500 font-bold mb-4"
+					style={`font-size:1rem;`}
+				>
+					Détails
+				</span>
 			</div>
 
 			{#each details as line}
@@ -132,7 +134,7 @@
 				{/await}
 			{/if}
 			{#if details}
-				<div class="my-2 relative">
+				<div class="my-2">
 					{#each details as line}
 						<div class=" correction-line">
 							<CorrectionLine {line} />
@@ -140,8 +142,10 @@
 					{/each}
 				</div>
 			{/if}
-			<footer class="footermt-3 w-full flex justify-end">
-				<button on:click={toggleFlip} class="btn-icon variant-filled-primary"
+			<footer class="footer w-full flex justify-end">
+				<button
+					on:click={toggleFlip}
+					class="btn-icon-magnify variant-filled-primary"
 					><iconify-icon icon="mdi:orbit-variant" /></button
 				>
 			</footer>
@@ -171,7 +175,7 @@
 
 	.magnify-icon {
 		font-size: 0.9em;
-		width: 1.5em;
+		width: 1.8em;
 	}
 
 	.btn-icon-magnify {

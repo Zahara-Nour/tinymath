@@ -33,7 +33,7 @@
 
 <div bind:clientHeight={h} bind:clientWidth={w} class={`${$$props.class}`}>
 	<div
-		class="card variant-filled-soft p-4 flex flex-col   justify-between"
+		class="card shadow-xl variant-filled-soft p-4 flex flex-col justify-between"
 		style={height ? `height:${height}px;` : width ? `width:${width}px;` : ''}
 	>
 		{#if showDescription}
@@ -72,14 +72,15 @@
 			</header>
 		{/if}
 		{#if correction}
-			<div
-				class="correction-title text-success-500 font-bold"
-				style={`font-size:1rem; position:absolute;top:1.5em`}
-			>
-				Correction
+			<div class=" flex flex-col items-start">
+				<span
+					class="correction-title text-success-500 font-bold mb-4 pt-4"
+					style={`font-size:1rem;`}
+				>
+					Correction
+				</span>
 			</div>
 		{/if}
-
 		<Question
 			question={card}
 			{masked}
@@ -116,7 +117,7 @@
 
 	.magnify-icon {
 		font-size: 0.9em;
-		width: 1.5em;
+		width: 1.8em;
 	}
 
 	.btn-icon-magnify {

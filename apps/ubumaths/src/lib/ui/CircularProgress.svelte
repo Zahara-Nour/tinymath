@@ -1,6 +1,5 @@
 <script lang="ts">
 	export let number: number
-	export let fontSize: number
 	export let percentage: number
 	export let pulse = false
 
@@ -58,11 +57,9 @@
 	// SVG centers the stroke width on the radius, subtract out so circle fits in square
 	//   const sqSize = sqSize
 
-	$: sqSize = fontSize * 3
+	$: sqSize = 3.5
 
-	$: strokeWidth = fontSize / 4 + 2
-
-	$: radius = sqSize / 3.6
+	$: radius = 1
 
 	// Arc length at 100% coverage is the circle circumference
 	$: dashArray = radius * Math.PI * 2
@@ -75,30 +72,36 @@
 <div
 	style=" --theme-color: {color};position: relative;display: inline-block;text-align: center;color:black;"
 >
-	<svg width={sqSize} height={sqSize}>
-		<circle class={pulse ? 'pulse' : 'nopulse'} cx="50%" cy="50%" r={radius} />
+	<svg width={`${sqSize}em`} height={`${sqSize}em`}>
+		<circle
+			class={pulse ? 'pulse' : 'nopulse'}
+			cx="50%"
+			cy="50%"
+			r={`${radius}em`}
+		/>
 		<circle
 			cx="50%"
 			cy="50%"
-			r={radius}
+			r={`${radius}em`}
 			stroke="#ddd"
 			fill="white"
-			stroke-width={`${strokeWidth}px`}
+			stroke-width="0.4em"
 		/>
 		<circle
 			class="circle-progress"
 			cx="50%"
 			cy="50%"
-			r={radius}
+			r={`${radius}em`}
 			fill="none"
 			stroke={color}
-			stroke-width={`${strokeWidth}px`}
-			stroke-dasharray={dashArray}
-			stroke-dashoffset={dashOffset}
+			stroke-width="0.4em"
+			stroke-dasharray={`${dashArray}em`}
+			stroke-dashoffset={`${dashOffset}em`}
 		/>
 	</svg>
 	<div
-		style={`font-size: ${fontSize}px;position: absolute;left: 50%;top: 50%;transform: translate(-50%, -60%);font-family:'pacifico'`}
+		class="font-bold"
+		style={`font-size:1.4em;position: absolute;left: 50%;top: 50%;transform: translate(-50%, -60%);font-family:'pacifico'`}
 	>
 		{number}
 	</div>

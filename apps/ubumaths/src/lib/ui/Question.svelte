@@ -7,7 +7,13 @@
 		prepareMathlive,
 	} from '$lib/stores'
 	import { afterUpdate, onDestroy, onMount, tick } from 'svelte'
-	import { getLogger, formatToLatex, magnify_3xl } from '$lib/utils'
+	import {
+		getLogger,
+		formatToLatex,
+		magnify_3xl,
+		magnify_xl,
+		magnify_2xl,
+	} from '$lib/utils'
 	import virtualKeyboard from '$lib/mathlive/virtualKeyboard'
 	import { createDetailedCorrection } from '$lib/questions/correctionItem'
 	import { mdc_colors as colors } from '$lib/colors'
@@ -321,8 +327,6 @@
 		if (expression2) {
 			expression2 = $toMarkup(expression2)
 		}
-
-		possiblyResetAnswers()
 	}
 
 	function stopInteractive() {
@@ -351,25 +355,6 @@
 		}
 
 		// pourquoi ? à cause du focus des mathfields ?
-		possiblyResetAnswers()
-	}
-
-	function possiblyResetAnswers() {
-		// if (!interactive) {
-		// 	answers = []
-		// 	answers_latex = []
-		// } else {
-		// 	// if faut garder les réponses si on sort du mode correction
-		// 	if (!answers.length)
-		// 		answers = question.solutions
-		// 			? // bancal
-		// 			  question.solutions.map((s) => '')
-		// 			: question.testAnswers?.map((s) => '') || []
-		// 	if (!answers_latex.length)
-		// 		answers_latex = question.solutions
-		// 			? question.solutions.map((s) => '')
-		// 			: question.testAnswers?.map((s) => '') || []
-		// }
 	}
 
 	function insertMathFields() {
@@ -491,17 +476,16 @@
 		{#if element === 'enounce' && enounce}
 			<div
 				id="enounce"
-				class={(correction ? 'mb-1' : 'my-3') +
+				class={(correction ? 'text-base text-tertiary-500' : '') +
 					' text-center max-w-4xl leading-normal'}
-				style={correction ? 'color:' + colors['grey-600'] : ''}
 			>
 				{@html enounce}
 			</div>
 		{:else if element === 'enounce2' && enounce2}
 			<div
 				id="enounce2"
-				class={(correction ? 'my-1' : 'my-3') + ' text-center max-w-4xl'}
-				style={correction ? 'color:' + colors['grey-600'] : ''}
+				class={(correction ? 'text-base text-tertiary-500' : '') +
+					' text-center max-w-4xl leading-normal'}
 			>
 				{@html enounce2}
 			</div>
@@ -541,7 +525,7 @@
 			<div
 				id="expressions"
 				class=" flex flex-col items-center justify-center "
-				style={`font-size:${magnify_3xl};`}
+				style={`font-size:${magnify_2xl};`}
 			>
 				<div
 					id={`expression-${question.num}${masked ? '-masked' : ''}`}
@@ -562,7 +546,7 @@
 		{:else if !correction && element === 'choices' && question.choices}
 			<div
 				class="mt-3 flex flex-wrap justify-around"
-				style={`font-size:${magnify_3xl};`}
+				style={`font-size:${magnify_2xl};`}
 			>
 				{#each question.choices as choice, i}
 					<button
@@ -620,10 +604,10 @@
 	{/if}
 
 	{#if correction}
-		<div class="mt-3">
+		<div class="mt-3" style={`font-size:${magnify_2xl};`}>
 			{#each simpleCorrection as line}
 				<div
-					class=" my-1 z-0 relative"
+					class=" my-1"
 					style={`word-break: break-word ;white-space: normal;`}
 				>
 					<CorrectionLine {line} />
