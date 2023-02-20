@@ -25,6 +25,7 @@
 	export let detailedCorrection: Line[] = []
 	export let immediateCommit = false
 	export let flashcard = false
+	const classBtnIconMagnify = 'btn magnify-icon aspect-square  rounded-full'
 
 	$: description = $formatLatexToHtml(formatToLatex(card.description))
 	$: subdescription = $formatLatexToHtml(formatToLatex(card.subdescription))
@@ -95,13 +96,13 @@
 			{#if flashcard}
 				<button
 					on:click={toggleFlip}
-					class=" btn-icon-magnify variant-filled-primary"
+					class={classBtnIconMagnify + ' variant-filled-primary'}
 					><iconify-icon icon="mdi:orbit-variant" /></button
 				>
 			{:else}
 				<button
 					style="visibility:hidden;"
-					class="btn-icon-magnify variant-filled-primary"
+					class={classBtnIconMagnify + ' variant-filled-primary'}
 					><iconify-icon icon="mdi:orbit-variant" /></button
 				>
 			{/if}
@@ -109,7 +110,7 @@
 	</div>
 </div>
 
-<style lang="postcss">
+<style>
 	.correction-title {
 		transform: rotate(-45deg);
 	}
@@ -117,9 +118,5 @@
 	.magnify-icon {
 		font-size: 0.9em;
 		width: 1.8em;
-	}
-
-	.btn-icon-magnify {
-		@apply btn magnify-icon aspect-square  rounded-full;
 	}
 </style>

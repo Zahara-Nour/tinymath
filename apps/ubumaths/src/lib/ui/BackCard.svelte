@@ -22,6 +22,7 @@
 	export let width = 0
 	export let correction = false
 	export let detailedCorrection: Line[] = []
+	const classBtnIconMagnify = 'btn magnify-icon aspect-square  rounded-full'
 
 	function getSolution(card: AnsweredQuestion) {
 		let nSol = -1
@@ -146,7 +147,7 @@
 			<footer class="footer w-full flex justify-end">
 				<button
 					on:click={toggleFlip}
-					class="btn-icon-magnify variant-filled-primary"
+					class={classBtnIconMagnify + ' variant-filled-primary'}
 					><iconify-icon icon="mdi:orbit-variant" /></button
 				>
 			</footer>
@@ -177,9 +178,5 @@
 	.magnify-icon {
 		font-size: 0.9em;
 		width: 1.8em;
-	}
-
-	.btn-icon-magnify {
-		@apply btn magnify-icon aspect-square  rounded-full;
 	}
 </style>

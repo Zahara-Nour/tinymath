@@ -20,8 +20,6 @@
 	const toggleFlash = () => (flash = !flash)
 	const toggleCourseAuxNombres = () => (courseAuxNombres = !courseAuxNombres)
 
-	const classSelected = 'ml-1 btn-icon variant-filled-primary text-2xl'
-	const classNotSelected = 'ml-1 btn-icon variant-filled-surface text-2xl'
 	// $: isLoggedIn = $user.id != 'guest'
 	// $: isTeacher = isLoggedIn && $user.roles.includes('teacher')
 	// $: isStudent = isLoggedIn && $user.roles.includes('student')
@@ -36,7 +34,7 @@
 			position: 'bottom',
 		}}
 		on:click={copyLink}
-		class={classNotSelected}><iconify-icon icon="mdi:link" /></button
+		class="not-selected"><iconify-icon icon="mdi:link" /></button
 	>
 
 	<button
@@ -45,7 +43,7 @@
 			position: 'bottom',
 		}}
 		on:click={generateExoTexmacs}
-		class={classNotSelected}
+		class="not-selected"
 		><iconify-icon icon="mdi:newspaper-variant-outline" /></button
 	>
 
@@ -55,7 +53,7 @@
 			position: 'bottom',
 		}}
 		on:click={toggleCourseAuxNombres}
-		class={courseAuxNombres ? classSelected : classNotSelected}
+		class={courseAuxNombres ? 'selected' : 'not-selected'}
 		><iconify-icon icon="mdi:run-fast" /></button
 	>
 
@@ -65,13 +63,11 @@
 			position: 'bottom',
 		}}
 		on:click={toggleClassroom}
-		class={classroom ? classSelected : classNotSelected}
+		class={classroom ? 'selected' : 'not-selected'}
 		><iconify-icon icon="mdi:projector-screen" /></button
 	>
 
-	<button
-		on:click={toggleFlash}
-		class={flash ? classSelected : classNotSelected}
+	<button on:click={toggleFlash} class={flash ? 'selected' : 'not-selected'}
 		><iconify-icon icon="mdi:flash" /></button
 	>
 
@@ -81,7 +77,7 @@
 			position: 'bottom',
 		}}
 		on:click={toggleExemple}
-		class={displayExemple ? classSelected : classNotSelected}
+		class={displayExemple ? 'selected' : 'not-selected'}
 		><iconify-icon icon="mdi:help" /></button
 	>
 
@@ -91,7 +87,7 @@
 			position: 'bottom',
 		}}
 		on:click={fillBasket}
-		class={classNotSelected}><iconify-icon icon="mdi:basket-plus" /></button
+		class="not-selected"><iconify-icon icon="mdi:basket-plus" /></button
 	>
 
 	<button
@@ -100,8 +96,7 @@
 			position: 'bottom',
 		}}
 		on:click={flushBasket}
-		class={classNotSelected}
-		><iconify-icon icon="mdi:trash-can-outline" /></button
+		class="not-selected"><iconify-icon icon="mdi:trash-can-outline" /></button
 	>
 
 	<div class="relative inline-block">
@@ -117,7 +112,7 @@
 					position: 'bottom',
 				}}
 				on:click={toggleBasket}
-				class={showBasket ? classSelected : classNotSelected}
+				class={showBasket ? 'selected' : 'not-selected'}
 				><iconify-icon icon="mdi:basket" /></button
 			>
 		</span>
@@ -129,7 +124,16 @@
 			position: 'left',
 		}}
 		on:click={launchTest}
-		class={classNotSelected}
+		class="not-selected"
 		><iconify-icon icon="mdi:rocket-launch-outline" /></button
 	>
 </div>
+
+<style lang="postcss">
+	.selected {
+		@apply ml-1 btn-icon variant-filled-primary text-2xl;
+	}
+	.not-selected {
+		@apply ml-1 btn-icon variant-filled-surface text-2xl;
+	}
+</style>

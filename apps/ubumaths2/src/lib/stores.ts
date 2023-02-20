@@ -5,6 +5,7 @@ import type { FormatToHtmlArg } from './type'
 import { isObjectWithText } from './utils'
 import { getLogger } from '$lib/utils'
 let { info, fail, warn } = getLogger('store', 'info')
+import { browser, building, dev, version } from '$app/environment'
 
 export const storedGrade = writable('')
 export const fontSize = writable(16)
@@ -24,7 +25,7 @@ export const formatLatexToHtml = writable(
 export const toMarkup = writable((o: string) => o)
 
 export function prepareMathlive() {
-	if (!get(mathliveReady)) {
+	if (!get(mathliveReady) && browser) {
 		import('tinymathlive')
 			.then((m) => {
 				mathliveReady.set(true)

@@ -68,6 +68,8 @@
 	let selectedGrade = grade
 
 	const ids = data.ids
+	const classSelected = 'ml-1 mb-2 btn-icon variant-filled-primary'
+	const classNotSelected = 'ml-1 mb-2 btn-icon variant-surface-primary'
 
 	$: changeGrade(selectedGrade)
 	$: if (courseAuxNombres) {
@@ -442,8 +444,8 @@
 												<button
 													on:click={() => changeSubdomainLevel(subd, l)}
 													class={subdomain === subd && level === l
-														? 'selected'
-														: 'not-selected'}>{l}</button
+														? classSelected
+														: classNotSelected}>{l}</button
 												>
 											{/each}
 										{/if}
@@ -475,12 +477,3 @@
 		/>
 	</div>
 {/if}
-
-<style lang="postcss">
-	.selected {
-		@apply ml-1 mb-2 btn-icon variant-filled-primary;
-	}
-	.not-selected {
-		@apply ml-1 mb-2 btn-icon variant-filled-surface;
-	}
-</style>

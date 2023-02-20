@@ -86,6 +86,7 @@
 	}
 
 	const magnifyClassroom = '2em'
+	const classBtnIconMagnify = 'btn magnify-icon aspect-square  rounded-full'
 
 	setContext('test-params', testParams)
 
@@ -296,12 +297,12 @@
 		<div class="mt-4">
 			<button
 				on:click={generateExemple}
-				class="btn-icon-magnify variant-filled-primary mx-2"
+				class={classBtnIconMagnify + ' variant-filled-primary mx-2'}
 				><iconify-icon icon="mdi:restart" /></button
 			>
 			<button
 				on:click={beginTest}
-				class="btn-icon-magnify variant-filled-primary mx-2"
+				class={classBtnIconMagnify + ' variant-filled-primary mx-2'}
 				><iconify-icon icon="mdi:rocket-launch-outline" /></button
 			>
 		</div>
@@ -428,7 +429,7 @@
 	Pas de questions
 {/if}
 
-<style lang="postcss">
+<style>
 	#cards-container {
 		margin-top: 20px;
 		margin-bottom: 20px;
@@ -444,9 +445,5 @@
 	.magnify-icon {
 		font-size: 0.9em;
 		width: 1.8em;
-	}
-
-	.btn-icon-magnify {
-		@apply btn magnify-icon aspect-square  rounded-full;
 	}
 </style>
