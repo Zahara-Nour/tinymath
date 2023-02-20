@@ -1,13 +1,13 @@
 <script lang="ts">
 	import {
 		toMarkup,
-		formatToHtml,
+		formatLatexToHtml,
 		mathfieldElement,
 		virtualKeyboardMode,
 		prepareMathlive,
 	} from '$lib/stores'
 	import { afterUpdate, onDestroy, onMount, tick } from 'svelte'
-	import { getLogger, formatToLatex } from '$lib/utils'
+	import { getLogger, formatToLatex, magnify_3xl } from '$lib/utils'
 	import virtualKeyboard from '$lib/mathlive/virtualKeyboard'
 	import { createDetailedCorrection } from '$lib/questions/correctionItem'
 	import { mdc_colors as colors } from '$lib/colors'
@@ -249,11 +249,11 @@
 		answers_latex = []
 
 		enounce = question.enounce
-			? ($formatToHtml(formatToLatex(question.enounce)) as string)
+			? ($formatLatexToHtml(formatToLatex(question.enounce)) as string)
 			: ''
 
 		enounce2 = question.enounce2
-			? ($formatToHtml(formatToLatex(question.enounce2)) as string)
+			? ($formatLatexToHtml(formatToLatex(question.enounce2)) as string)
 			: ''
 	}
 
@@ -307,7 +307,7 @@
 
 		if (answerField) {
 			answerField = (
-				$formatToHtml(answerField.replace(/\.\.\./g, '\\ldots')) as string
+				$formatLatexToHtml(answerField.replace(/\.\.\./g, '\\ldots')) as string
 			).replace(/…/g, addMathfield)
 		}
 
@@ -337,7 +337,7 @@
 		answerField = question.answerField
 
 		if (answerField) {
-			answerField = $formatToHtml(
+			answerField = $formatLatexToHtml(
 				answerField.replace(/\.\.\./g, '\\; \\ldots \\;'),
 			) as string
 		}
@@ -540,8 +540,8 @@
 		{:else if element === 'expression' && expression && (!correction || question.answerField || (question.type !== 'result' && question.type !== 'fill in'))}
 			<div
 				id="expressions"
-				class=" flex flex-col items-center justify-center"
-				style={correction ? 'color:' + colors['grey-600'] : ''}
+				class=" flex flex-col items-center justify-center "
+				style={`font-size:${magnify_3xl};`}
 			>
 				<div
 					id={`expression-${question.num}${masked ? '-masked' : ''}`}
@@ -560,15 +560,17 @@
 				{/if}
 			</div>
 		{:else if !correction && element === 'choices' && question.choices}
-			<div class="mt-3 flex flex-wrap justify-around">
+			<div
+				class="mt-3 flex flex-wrap justify-around"
+				style={`font-size:${magnify_3xl};`}
+			>
 				{#each question.choices as choice, i}
 					<button
-						class="rounded-lg  m-2 p-2"
-						style={`font-size:1em; min-width:2em;border: 4px solid ${
-							interactive && answers.includes(i)
-								? 'var(--mdc-theme-primary)'
-								: 'var(--mdc-theme-secondary)'
-						};`}
+						class={'rounded-lg  m-2 p-2 border-4 ' +
+							(interactive && answers.includes(i)
+								? 'border-primary-500'
+								: 'border-tertiary-500')}
+						style={'min-width:2em'}
 						on:click={() => onChoice(i)}
 					>
 						{#if choice.image}
@@ -587,7 +589,7 @@
 						{/if}
 						{#if choice.text}
 							<div>
-								{@html $formatToHtml(formatToLatex(choice.text))}
+								{@html $formatLatexToHtml(formatToLatex(choice.text))}
 							</div>
 						{/if}
 					</button>
@@ -638,6 +640,3 @@
 		{/if}
 	{/if}
 </div>
-
-<style>
-</style>

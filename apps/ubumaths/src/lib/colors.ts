@@ -1,5 +1,3 @@
-// import { darkmode } from '$lib/stores'
-
 const mdc_colors: { [index: string]: string } = {
 	'red-50': '#ffebee',
 	'red-100': '#ffcdd2',
@@ -282,23 +280,13 @@ const mdc_colors: { [index: string]: string } = {
 // let color2
 // let color3
 
-// darkmode.subscribe((dark) => {
-// if (dark) {
 let correct_color = mdc_colors['lime-500']
 let unoptimal_color = mdc_colors['amber-300']
 let incorrect_color = mdc_colors['red-400']
-let color1 = mdc_colors['red-500']
-let color2 = mdc_colors['red-500']
-let color3 = mdc_colors['red-500']
-// 	} else {
-// 		correct_color = mdc_colors['green-500']
-// 		unoptimal_color = mdc_colors['amber-400']
-// 		incorrect_color = mdc_colors['red-400']
-// 		color1 = mdc_colors['orange-300']
-// 		color2 = mdc_colors['teal-400']
-// 		color3 = mdc_colors['pink-300']
-// 	}
-// })
+let color1 = mdc_colors['orange-300']
+let color2 = mdc_colors['teal-400']
+let color3 = mdc_colors['pink-300']
+
 export const primary = '#6200ee'
 export const secondary = '#018786'
 

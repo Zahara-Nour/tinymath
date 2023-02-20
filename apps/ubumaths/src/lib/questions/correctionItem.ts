@@ -12,7 +12,7 @@ import {
 	incorrect_color,
 	unoptimal_color,
 } from '$lib/colors'
-import { toMarkup, formatToHtml } from '$lib/stores'
+import { toMarkup, formatLatexToHtml } from '$lib/stores'
 import math from 'tinycas'
 import { formatToLatex, formatToTexmacs } from '$lib/utils'
 import { get } from 'svelte/store'
@@ -23,12 +23,19 @@ import {
 	type Line,
 	type LineChoice,
 } from '$lib/type'
-import { QUESTION_TYPE_CHOICE, QUESTION_TYPE_RESULT } from './questions'
+import {
+	QUESTION_TYPE_CHOICE,
+	QUESTION_TYPE_CHOICES,
+	QUESTION_TYPE_RESULT,
+} from './questions'
 
 function createSolutionsLatex(item: CorrectedQuestion) {
 	return item.solutions.length
 		? item.solutions.map((solution) => {
-				if (item.type === QUESTION_TYPE_CHOICE) {
+				if (
+					item.type === QUESTION_TYPE_CHOICE ||
+					item.type === QUESTION_TYPE_CHOICES
+				) {
 					return item.choices[solution as number]
 				} else {
 					// console.log('solution', solution)
@@ -53,7 +60,7 @@ export function createCorrection(item: CorrectedQuestion) {
 
 	if (!solutions.length && !item.testAnswers.length) return
 
-	const lines: Line[] = []
+	let lines: Line[] = []
 	let coms = item.coms || []
 
 	let answerColor = correct_color
@@ -79,11 +86,13 @@ export function createCorrection(item: CorrectedQuestion) {
 		return '$$' + item.expression2_latex + '$$'
 	}
 
+	// &exp est déjà dans une expression LaTeX : on ne rajoute pas les $$
 	const regexExp = /&exp/g
 	function replaceExp() {
 		return item.expression_latex || ''
 	}
 
+	// &exp2 est déjà dans une expression LaTeX : on ne rajoute pas les $$
 	const regexExp2 = /&exp2/g
 	function replaceExp2() {
 		return item.expression2_latex || ''
@@ -95,11 +104,12 @@ export function createCorrection(item: CorrectedQuestion) {
 			`<span style="color:${correct_color}; border:2px solid ${correct_color}; border-radius: 5px;  margin:2px; padding:5px;display:inline-block">` +
 			(item.type === 'choice'
 				? item.choices[item.answers[p1 ? p1 - 1 : 0] as number].text
-				: get(toMarkup)('$$' + answers_latex[p1 ? p1 - 1 : 0] + '$$')) +
+				: '$$' + answers_latex[p1 ? p1 - 1 : 0] + '$$') +
 			'</span>'
 		)
 	}
 
+	// &ans est déjà dans une expression LaTeX : on ne rajoute pas les $$
 	const regexAns = /&ans([1-9]?)/g
 	function replaceAnsCorrect(match: string, p1: number) {
 		return (
@@ -121,12 +131,13 @@ export function createCorrection(item: CorrectedQuestion) {
 	}
 
 	function replaceSolutionTexmacs(match: string, p1: number) {
-		return item.type === 'choice'
+		return item.type === 'choice' || item.type === 'choices'
 			? (item.choices[solutions[p1 ? p1 - 1 : 0] as number].text as string)
 			: `$\\textcolor{green}{` + solutions_latex[p1 ? p1 - 1 : 0] + '}$'
 	}
 
 	const regexSol = /&sol([1-9]?)/g
+	// &sol est déjà dans une expression LaTeX : on ne rajoute pas les $$
 	function replaceSol(match: string, p1: number) {
 		return item.type === 'choice'
 			? (item.choices[solutions[p1 ? p1 - 1 : 0] as number].text as string)
@@ -174,48 +185,49 @@ export function createCorrection(item: CorrectedQuestion) {
 	if (correctionFormat) {
 		// la correction
 		if (status === STATUS_CORRECT) {
-			let html
 			correctionFormat.correct.forEach((format) => {
 				if (format === 'image') {
-					let img = choices[solutions[0] as number].imageBase64
-					html = `<img src='${img}' style="max-width:400px;max-height:40vh;" alt='toto'>`
+					const img = choices[solutions[0] as number].imageBase64
+					const html = `<img src='${img}' style="max-width:400px;max-height:40vh;" alt='toto'>`
+					lines.push({
+						html,
+					})
 				} else {
-					html = (formatToLatex(format) as string)
+					const text = (formatToLatex(format) as string)
 						.replace(regexExpression2, replaceExpression2)
 						.replace(regexExpression, replaceExpression)
 						.replace(regexExp2, replaceExp2)
 						.replace(regexExp, replaceExp)
 						.replace(regexAnswer, replaceAnswerCorrect)
 						.replace(regexAns, replaceAnsCorrect)
+					lines.push({
+						text,
+					})
 				}
-
-				lines.push({ html: get(formatToHtml)(formatToLatex(html)) as string })
 			})
 		} else {
 			;(correctionFormat.uncorrect as string[]).forEach((format) => {
-				let html
-				let texmacs
 				if (format === 'image') {
 					let img = choices[solutions[0] as number].imageBase64
-					html = `<img style="max-width:400px;max-height:40vh;" src='${img}' alt='toto'>`
+					const html = `<img style="max-width:400px;max-height:40vh;" src='${img}' alt='toto'>`
+					lines.push({ html })
 				} else {
-					html = (formatToLatex(format) as string)
+					const text = (formatToLatex(format) as string)
 						.replace(regexExpression2, replaceExpression2)
 						.replace(regexExpression, replaceExpression)
 						.replace(regexExp2, replaceExp2)
 						.replace(regexExp, replaceExp)
 						.replace(regexSolution, replaceSolution)
 						.replace(regexSol, replaceSol)
-					texmacs = (formatToTexmacs(format) as string)
+					const texmacs = (formatToTexmacs(format) as string)
 						.replace(regexExpression2, replaceExpression2)
 						.replace(regexExpression, replaceExpression)
 						.replace(regexExp2, replaceExp2)
 						.replace(regexExp, replaceExp)
 						.replace(regexSolution, replaceSolutionTexmacs)
 						.replace(regexSol, replaceSolTexmacs)
+					lines.push({ text, texmacs })
 				}
-
-				lines.push({ html: get(formatToHtml)(html) as string, texmacs })
 			})
 
 			// le commentaire avec la réponse de l'utilisateur
@@ -223,7 +235,7 @@ export function createCorrection(item: CorrectedQuestion) {
 			if (status !== STATUS_EMPTY && item.answers.length) {
 				if (correctionFormat.answer === 'image') {
 					// TODO: A revoir
-					let img = choices[answers[0] as number].imageBase64
+					const img = choices[answers[0] as number].imageBase64
 					coms.unshift(
 						`<img src='${img}' style="padding:2px; border: 2px solid ${incorrect_color} ;max-width:400px;max-height:40vh;" alt='toto'>`,
 					)
@@ -247,39 +259,20 @@ export function createCorrection(item: CorrectedQuestion) {
 	} else {
 		switch (item.type) {
 			case QUESTION_TYPE_RESULT: {
-				let html
-
-				// if (status === STATUS_CORRECT) {
-				// 	html =
-				// 		`$$${expression_latex}=$$` +
-				// 		`<span style="color:${correct_color}; border:2px solid ${correct_color}; border-radius: 5px;  margin:2px; padding:5px;display:inline-block">` +
-				// 		'$$' +
-				// 		answers_latex[0] +
-				// 		'$$' +
-				// 		'</span>'
-				// } else if (status === STATUS_EMPTY) {
-				// 	html =
-				// 		`$$${expression_latex}=$$` +
-				// 		`<span style="color:${correct_color}; border:2px solid ${correct_color}; border-radius: 5px;  margin:2px; padding:5px;display:inline-block">` +
-				// 		'$$' +
-				// 		solutions_latex[0] +
-				// 		'$$' +
-				// 		'</span>'
-				// } else {
-				html = `$$\\begin{align*}  ${expression_latex}`
+				let text = `$$\\begin{align*}  ${expression_latex}`
 				if (status === STATUS_INCORRECT) {
-					html += `&= \\enclose{updiagonalstrike}[3px solid ${incorrect_color}]{${answers_latex[0]}} \\\\`
+					text += `&= \\enclose{updiagonalstrike}[3px solid ${incorrect_color}]{${answers_latex[0]}} \\\\`
 				} else if (status === STATUS_BAD_FORM || status === STATUS_BAD_UNIT) {
-					html += `&= \\textcolor{${incorrect_color}}{${answers_latex[0]}} \\\\`
+					text += `&= \\textcolor{${incorrect_color}}{${answers_latex[0]}} \\\\`
 				} else if (status === STATUS_UNOPTIMAL_FORM) {
-					html += `&= \\textcolor{${unoptimal_color}}{${answers_latex[0]}} \\\\`
+					text += `&= \\textcolor{${unoptimal_color}}{${answers_latex[0]}} \\\\`
 				}
 				if (status === STATUS_CORRECT) {
-					html += `&=\\enclose{roundedbox}[2px solid ${correct_color}, padding='2']{\\textcolor{${correct_color}}{${answers_latex[0]}}}`
+					text += `&=\\enclose{roundedbox}[2px solid ${correct_color}, padding='2']{\\textcolor{${correct_color}}{${answers_latex[0]}}}`
 				} else {
-					html += `&=\\enclose{roundedbox}[2px solid ${correct_color}, padding='2']{\\textcolor{${correct_color}}{${solutions_latex[0]}}}`
+					text += `&=\\enclose{roundedbox}[2px solid ${correct_color}, padding='2']{\\textcolor{${correct_color}}{${solutions_latex[0]}}}`
 				}
-				html += '\\end{align*}$$'
+				text += '\\end{align*}$$'
 				// }
 				const texmacs =
 					'<math|' +
@@ -287,7 +280,7 @@ export function createCorrection(item: CorrectedQuestion) {
 					`=<with|color|#66bb6a|${math(solutions[0]).texmacs}>>`
 
 				lines.push({
-					html: get(formatToHtml)(formatToLatex(html)) as string,
+					text,
 					texmacs,
 				})
 
@@ -296,27 +289,27 @@ export function createCorrection(item: CorrectedQuestion) {
 
 			case 'equation': {
 				// let exp = '$$\\begin{align*}x & =5-3 \\\\  & =2\\end{align*}$$'
-				let html
-				html = `$$\\begin{align*}  x`
+				let text
+				text = `$$\\begin{align*}  x`
 				if (status === STATUS_EMPTY) {
-					html +=
+					text +=
 						`=\\enclose{roundedbox}[3px solid ${correct_color}]{\\textcolor{${correct_color}}{${solutions_latex[0]}}}` +
 						'\\end{align*}$$'
 				} else if (status === STATUS_INCORRECT) {
-					html +=
+					text +=
 						`&= \\enclose{updiagonalstrike}[6px solid rgba(205, 0, 11, .4)]{\\textcolor{${incorrect_color}}{${answers_latex[0]}}}` +
 						`\\\\&= \\enclose{roundedbox}[3px solid ${correct_color}]{\\textcolor{${correct_color}}{${solutions_latex[0]}}}\\end{align*}$$`
 				} else if (
 					status === STATUS_BAD_FORM ||
 					status === STATUS_UNOPTIMAL_FORM
 				) {
-					html +=
+					text +=
 						`&= \\textcolor{${unoptimal_color}}{${answers_latex[0]}}` +
 						`\\\\&= \\enclose{roundedbox}[3px solid ${correct_color}]{\\textcolor{${correct_color}}{${solutions_latex[0]}}}\\end{align*}$$`
 				} else {
-					html += `=\\enclose{roundedbox}[3px solid ${correct_color}]{\\textcolor{${correct_color}}{${answers_latex[0]}}}\\end{align*}$$`
+					text += `=\\enclose{roundedbox}[3px solid ${correct_color}]{\\textcolor{${correct_color}}{${answers_latex[0]}}}\\end{align*}$$`
 				}
-				lines.push({ html: get(formatToHtml)(html) as string })
+				lines.push({ text })
 
 				break
 			}
@@ -340,9 +333,6 @@ export function createCorrection(item: CorrectedQuestion) {
 						c.image = choice.imageBase64
 					} else {
 						c.text = choice.text
-						c.html = get(formatToHtml)(
-							formatToLatex(choice.text as string),
-						) as string
 					}
 					if (answers.length || c.solution) {
 						choices.push(c)
@@ -355,9 +345,9 @@ export function createCorrection(item: CorrectedQuestion) {
 
 			case 'fill in': {
 				//TODO : empty ?
-				let html
+				let text
 				if (status === STATUS_CORRECT) {
-					html =
+					text =
 						'$$' +
 						(expression_latex as string).replace(
 							/\\ldots/,
@@ -365,7 +355,7 @@ export function createCorrection(item: CorrectedQuestion) {
 						) +
 						'$$'
 				} else {
-					html =
+					text =
 						'$$' +
 						(expression_latex as string).replace(
 							/\\ldots/,
@@ -398,7 +388,7 @@ export function createCorrection(item: CorrectedQuestion) {
 					i++
 					return `<with|color|#66bb6a|${math(solutions[i]).texmacs}>`
 				}
-				expression
+
 				const texmacs =
 					'<math|' +
 					math(expression as string).texmacs.replace(
@@ -406,16 +396,35 @@ export function createCorrection(item: CorrectedQuestion) {
 						putSolutions,
 					) +
 					'>'
-				lines.push({ html: get(formatToHtml)(html) as string, texmacs })
+				lines.push({ text, texmacs })
 			}
 		}
 	}
 
 	if (item.answers.length) {
+		// mode projection
 		coms = coms.map((com) =>
-			(get(formatToHtml)(com) as string).replace(/_COLORANSWER_/g, answerColor),
+			(get(formatLatexToHtml)(com) as string).replace(
+				/_COLORANSWER_/g,
+				answerColor,
+			),
 		)
 	}
+	lines = lines.map((l) => {
+		if (l.text) {
+			return {
+				...l,
+				html: get(formatLatexToHtml)(l.text) as string,
+			}
+		} else if (l.choices) {
+			return {
+				...l,
+				choices: l.choices.map((c) =>
+					c.text ? { ...c, html: get(formatLatexToHtml)(c.text) as string } : c,
+				),
+			}
+		} else return l
+	})
 	item.coms = coms
 	item.simpleCorrection = lines
 }
@@ -429,12 +438,12 @@ export function createDetailedCorrection(item: CorrectedQuestion) {
 
 	const regexExpression = /&expression/g
 	function replaceExpression() {
-		return get(toMarkup)('$$' + item.expression_latex + '$$')
+		return '$$' + item.expression_latex + '$$'
 	}
 
 	const regexExpression2 = /&expression2/g
 	function replaceExpression2() {
-		return get(toMarkup)('$$' + item.expression2_latex + '$$')
+		return '$$' + item.expression2_latex + '$$'
 	}
 
 	const regexExp = /&exp/g
@@ -451,11 +460,9 @@ export function createDetailedCorrection(item: CorrectedQuestion) {
 	function replaceSolution(match: string, p1: number) {
 		return (
 			`<span style="color:${correct_color}; border:2px solid ${correct_color}; border-radius: 5px; margin:2px;padding:5px;display:inline-block">` +
-			(item.type === QUESTION_TYPE_CHOICE
-				? get(formatToHtml)(
-						item.choices[solutions[p1 ? p1 - 1 : 0] as number].text as string,
-				  )
-				: get(toMarkup)(solutions_latex[p1 ? p1 - 1 : 0] as string)) +
+			(item.type === QUESTION_TYPE_CHOICE || item.type === QUESTION_TYPE_CHOICES
+				? (item.choices[solutions[p1 ? p1 - 1 : 0] as number].text as string)
+				: '$$' + solutions_latex[p1 ? p1 - 1 : 0] + '$$') +
 			'</span>'
 		)
 	}
@@ -478,7 +485,7 @@ export function createDetailedCorrection(item: CorrectedQuestion) {
 			}
 		} else {
 			line = {
-				html: detail.text
+				text: detail.text
 					// .replace(new RegExp('&exp2', 'g'), '$$$$'+expression2_latex+'$$$$')
 					// .replace(new RegExp('&exp', 'g'), '$$$$'+expression_latex+'$$$$')
 					.replace(regexExpression2, replaceExpression2)
@@ -486,30 +493,16 @@ export function createDetailedCorrection(item: CorrectedQuestion) {
 					.replace(regexExp2, replaceExp2)
 					.replace(regexExp, replaceExp)
 					.replace(regexSolution, replaceSolution)
-					.replace(regexSol, replaceSol)
-					.replace(
-						'&solution',
-						() =>
-							`<span style="color:${correct_color}; border:2px solid ${correct_color}; border-radius: 5px;  margin:2px; padding:5px;display:inline-block">` +
-							(item.type === 'choice'
-								? get(formatToHtml)(
-										item.choices[solutions[0] as number].text as string,
-								  )
-								: get(toMarkup)(solutions_latex[0] as string)) +
-							'</span>',
-					)
-					.replace(
-						new RegExp('&sol', 'g'),
-						item.type === QUESTION_TYPE_CHOICE
-							? (item.choices[solutions[0] as number].text as string)
-							: `\\enclose{roundedbox}[3px solid ${correct_color}]{\\textcolor{${correct_color}}{` +
-									solutions_latex[0] +
-									'}}',
-					),
+					.replace(regexSol, replaceSol),
 			}
 		}
 		lines.push(line)
 	})
-	lines = lines.map((l) => {...l, html:get(formatToHtml)(l.html))
+	lines = lines.map((l) => ({
+		...l,
+		html: get(formatLatexToHtml)(l.text!) as string,
+	}))
+
+	item.detailedCorrection = lines
 	return lines
 }

@@ -29,10 +29,11 @@
 	} from '@skeletonlabs/skeleton'
 	import QuestionCard from '$lib/ui/QuestionCard.svelte'
 	import { afterUpdate, beforeUpdate, onMount } from 'svelte'
+	import { storedGrade } from '$lib/stores'
+	import { get } from 'svelte/store'
 
 	let { info, fail, warn } = getLogger('Automaths', 'info')
 	const questions = data.questions
-	const grade_url_params = decodeURI($page.url.searchParams.get('grade') || '')
 	const theme_url_params = decodeURI($page.url.searchParams.get('theme') || '')
 	const domain_url_params = decodeURI(
 		$page.url.searchParams.get('domain') || '',
@@ -45,7 +46,7 @@
 		10,
 	)
 
-	let grade = grade_url_params
+	let grade = get(storedGrade)
 	let availableLevels: AvailableLevels
 	let themes: string[]
 	let theme = theme_url_params
@@ -67,6 +68,19 @@
 	let selectedGrade = grade
 
 	const ids = data.ids
+
+	console.log('grade', grade)
+	console.log('theme', theme)
+	console.log('domain', domain)
+	console.log('subdomain', subdomain)
+	console.log('level', level)
+	$: changeGrade(selectedGrade)
+	$: if (courseAuxNombres) {
+		basket.forEach((item) => {
+			item.count = 1
+		})
+		basket = basket
+	}
 
 	function generateExoTexmacs() {
 		let questions: BasketItem[] = []
@@ -204,7 +218,9 @@
 		level = 0,
 	) {
 		grade = grades.includes(new_grade) ? new_grade : grades[grades.length - 1]
+		storedGrade.set(grade)
 		availableLevels = getAvailablesLevels(grade)
+		console.log('availableLevels', availableLevels)
 		themes = Object.keys(availableLevels)
 		changeThemeDomainSubdomainLevel(theme, domain, subdomain, level)
 	}
@@ -316,9 +332,7 @@
 			questions.push({ id: q.id, count: 10, delay: q.defaultDelay })
 		}
 
-		const base = dev ? 'http://localhost:5173/' : 'http://ubumaths.net/'
-
-		let href = base + 'automaths/assessment/?questions='
+		let href = '/automaths/assessment/?questions='
 		href += encodeURI(JSON.stringify(questions))
 		if (classroom) href += '&classroom=true'
 		if (flash) href += '&flash=true'
@@ -367,13 +381,7 @@
 	function changeGrade(grade: string) {
 		changeGradeThemeDomainSubdomainLevel(grade, theme, domain, subdomain, level)
 	}
-	$: changeGrade(selectedGrade)
-	$: if (courseAuxNombres) {
-		basket.forEach((item) => {
-			item.count = 1
-		})
-		basket = basket
-	}
+
 	// onMount(() => console.log('onMount'))
 	// beforeUpdate(
 	// 	(() => {
@@ -432,7 +440,7 @@
 			<Accordion autocollapse>
 				{#each domains as d, i (theme + d)}
 					<AccordionItem
-						open={i === 0}
+						open={d === domain}
 						on:click={() => changeDomainSubdomainLevel(d)}
 					>
 						<svelte:fragment slot="summary"

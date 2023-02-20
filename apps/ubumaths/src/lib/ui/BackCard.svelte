@@ -2,7 +2,7 @@
 	// import Spinner from './Spinner.svelte'
 	import math from 'tinycas'
 	import 'iconify-icon'
-	import { formatToHtml } from '$lib/stores'
+	import { formatLatexToHtml } from '$lib/stores'
 	import { mdc_colors, correct_color } from '$lib/colors'
 	import CorrectionLine from './CorrectionLine.svelte'
 	import {
@@ -12,6 +12,7 @@
 		type Choice,
 		type Line,
 	} from '$lib/type'
+	import { magnify_3xl } from '$lib/utils'
 
 	export let card: AnsweredQuestion
 	export let toggleFlip = () => {}
@@ -21,7 +22,6 @@
 	export let width = 0
 	export let correction = false
 	export let detailedCorrection: Line[] = []
-	export let masked = false
 
 	function getSolution(card: AnsweredQuestion) {
 		let nSol = -1
@@ -65,7 +65,9 @@
 			}
 		} else {
 			if (card.answerField && card.type !== 'equation') {
-				s = $formatToHtml(card.answerField.replace(/\?/g, replaceSol)) as string
+				s = $formatLatexToHtml(
+					card.answerField.replace(/\?/g, replaceSol),
+				) as string
 			} else {
 				s = card.solutions![0] as string
 				s = '$$' + math(s).latex + '$$'
@@ -74,38 +76,43 @@
 		return s
 	}
 
-	$: if (!masked) console.log('back card details', card.num, details)
-	$: solution = $formatToHtml(getSolution(card))
+	$: solution = $formatLatexToHtml(getSolution(card))
 	$: details = detailedCorrection || []
 </script>
 
 <div bind:clientHeight={h} bind:clientWidth={w} class={`${$$props.class}`}>
 	<div
-		class="card p-4 flex flex-col items-center justify-between"
+		class="card p-4 flex flex-col items-start justify-between"
 		style={height ? `height:${height}px;` : width ? `width:${width}px;` : ''}
 	>
 		<!-- correction des réponses de l'utilisateur -->
 
 		<!-- si mode correction, on affiche la correction détaillée -->
 		{#if correction}
-			<div class="correction-title">Détails</div>
-			<div class="relative">
-				{#each details as line}
-					<div class="correction-line">
-						<CorrectionLine {line} />
-					</div>
-				{/each}
+			<div
+				class="correction-title text-success-500 font-bold mb-4"
+				style={`font-size:1rem;`}
+			>
+				Détails
 			</div>
 
+			{#each details as line}
+				<div class="correction-line">
+					<CorrectionLine {line} />
+				</div>
+			{/each}
+
 			<div class=" w-full flex justify-end">
-				<button on:click={toggleFlip} class="btn-icon variant-filled-primary"
+				<button
+					on:click={toggleFlip}
+					class="btn-icon-magnify variant-filled-primary"
 					><iconify-icon icon="mdi:orbit-variant" /></button
 				>
 			</div>
 		{:else}
 			<!-- solution générique -->
-			<div>Réponse :</div>
-			<div class="my-5 relative">
+			<div class="text-success-500">Réponse :</div>
+			<div class="my-5" style={`font-size:${magnify_3xl};`}>
 				{@html solution}
 			</div>
 			{#if card.imageCorrection}
@@ -142,7 +149,7 @@
 	</div>
 </div>
 
-<style>
+<style lang="postcss">
 	.correction-line {
 		margin-top: 9px;
 		margin-bottom: 9px;
@@ -160,5 +167,14 @@
 
 	.correction-title {
 		transform: rotate(-45deg);
+	}
+
+	.magnify-icon {
+		font-size: 0.9em;
+		width: 1.5em;
+	}
+
+	.btn-icon-magnify {
+		@apply btn magnify-icon aspect-square  rounded-full;
 	}
 </style>

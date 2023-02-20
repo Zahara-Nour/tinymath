@@ -320,6 +320,8 @@ export type Timer = {
 		minutes: number
 		seconds: number
 	}
+	getSeconds(): number
+	changeDelay(newDelay: number): void
 }
 
 export type Time = {

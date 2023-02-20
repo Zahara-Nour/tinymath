@@ -24,7 +24,7 @@
 		>
 			<span
 				class="absolute"
-				style="display:inline-block; top: 50%;left: 50%;transform: translate(-50%, -70%);margin: 0;"
+				style="display:inline-block; top: 50%;left: 50%;transform: translate(-50%, -60%);margin: 0;"
 			>
 				{item.num}
 			</span>

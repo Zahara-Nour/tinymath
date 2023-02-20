@@ -88,7 +88,8 @@ export function createTimer({
 			}
 		},
 		changeDelay(newDelay: number) {
-			remaining = remaining + newDelay - delay
+			remainingSeconds = remainingSeconds + newDelay - delay
+			remaining = remaining + (newDelay - delay) * 1000
 			delay = newDelay
 		},
 

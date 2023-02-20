@@ -206,6 +206,11 @@ export function convertToTime(ms: number) {
 	return { days, hours, minutes, seconds, milliseconds }
 }
 
+export const magnify_lg = '1.125em'
+export const magnify_xl = '1.25em'
+export const magnify_2xl = '1.5em'
+export const magnify_3xl = '1.875em'
+
 export {
 	getLogger,
 	shuffle,

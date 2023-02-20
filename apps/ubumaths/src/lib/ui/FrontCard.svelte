@@ -1,7 +1,7 @@
 <script lang="ts">
 	// import Spinner from './Spinner.svelte'
 	import Question from './Question.svelte'
-	import { formatToHtml } from '$lib/stores'
+	import { formatLatexToHtml } from '$lib/stores'
 	import { formatToLatex } from '$lib/utils'
 	import { mdc_colors } from '$lib/colors'
 	import type {
@@ -27,13 +27,13 @@
 	export let immediateCommit = false
 	export let flashcard = false
 
-	$: description = $formatToHtml(formatToLatex(card.description))
-	$: subdescription = $formatToHtml(formatToLatex(card.subdescription))
+	$: description = $formatLatexToHtml(formatToLatex(card.description))
+	$: subdescription = $formatLatexToHtml(formatToLatex(card.subdescription))
 </script>
 
 <div bind:clientHeight={h} bind:clientWidth={w} class={`${$$props.class}`}>
 	<div
-		class="card variant-filled-soft p-4 flex flex-col  justify-between"
+		class="card variant-filled-soft p-4 flex flex-col   justify-between"
 		style={height ? `height:${height}px;` : width ? `width:${width}px;` : ''}
 	>
 		{#if showDescription}
@@ -41,12 +41,12 @@
 				<div class="flex justify-left items-center">
 					<div class="flex flex-col justify-start">
 						<span class="font-bold text-primary-500">
-							{@html $formatToHtml(description)}
+							{@html $formatLatexToHtml(description)}
 						</span>
 
 						{#if subdescription}
 							<span class="text-primary-500">
-								{@html $formatToHtml(subdescription)}
+								{@html $formatLatexToHtml(subdescription)}
 							</span>
 						{/if}
 					</div>
@@ -73,8 +73,8 @@
 		{/if}
 		{#if correction}
 			<div
-				class="correction-title"
-				style={` color:${mdc_colors['lime-500']}; font-size:1rem; position:absolute;top:1.5em;left:-6px`}
+				class="correction-title text-success-500 font-bold"
+				style={`font-size:1rem; position:absolute;top:1.5em`}
 			>
 				Correction
 			</div>
@@ -91,20 +91,35 @@
 			{immediateCommit}
 		/>
 
-		{#if flashcard}
-			<footer class="footer flex justify-end">
+		<footer class="footer flex justify-end">
+			{#if flashcard}
 				<button
 					on:click={toggleFlip}
-					class="text-xl btn-icon variant-filled-primary"
+					class=" btn-icon-magnify variant-filled-primary"
 					><iconify-icon icon="mdi:orbit-variant" /></button
 				>
-			</footer>
-		{/if}
+			{:else}
+				<button
+					style="visibility:hidden;"
+					class="btn-icon-magnify variant-filled-primary"
+					><iconify-icon icon="mdi:orbit-variant" /></button
+				>
+			{/if}
+		</footer>
 	</div>
 </div>
 
-<style>
+<style lang="postcss">
 	.correction-title {
 		transform: rotate(-45deg);
+	}
+
+	.magnify-icon {
+		font-size: 0.9em;
+		width: 1.5em;
+	}
+
+	.btn-icon-magnify {
+		@apply btn magnify-icon aspect-square  rounded-full;
 	}
 </style>

@@ -135,7 +135,7 @@ z-index:100"
 					class="my-2 btn-icon variant-filled-primary  text-2xl"
 					><iconify-icon icon="mdi:reload" /></button
 				>
-				<a href={`/automaths + ${query}`}>
+				<a href={`/automaths${query}`}>
 					<button class="my-2 btn-icon variant-filled-primary  text-2xl"
 						><iconify-icon icon="mdi:home" /></button
 					>

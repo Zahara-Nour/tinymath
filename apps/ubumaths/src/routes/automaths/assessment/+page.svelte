@@ -5,7 +5,12 @@
 	import { convertToTime, getLogger, shuffle } from '$lib/utils'
 	import { createTimer } from '$lib/timer'
 	import { page } from '$app/stores'
-	import { virtualKeyboardMode, touchDevice, mathliveReady } from '$lib/stores'
+	import {
+		virtualKeyboardMode,
+		touchDevice,
+		mathliveReady,
+		fontSize,
+	} from '$lib/stores'
 
 	import Correction from './Correction.svelte'
 	import type {
@@ -71,7 +76,6 @@
 	}
 	let commits: Commit[] = []
 	let ref: HTMLElement
-	let fontSize: number
 	let remaining: Time
 
 	let query: string
@@ -82,27 +86,9 @@
 		classroom?: boolean
 	}
 
+	const magnifyClassroom = '2.5em'
+
 	setContext('test-params', testParams)
-
-	onMount(() => {
-		if (ref) {
-			const style = window.getComputedStyle(ref)
-			fontSize = parseInt(
-				style.getPropertyValue('font-size').replace('px', ''),
-				10,
-			)
-		}
-	})
-
-	afterUpdate(() => {
-		if (ref) {
-			const style = window.getComputedStyle(ref)
-			fontSize = parseInt(
-				style.getPropertyValue('font-size').replace('px', ''),
-				10,
-			)
-		}
-	})
 
 	onDestroy(() => {
 		if (timer) timer.stop()
@@ -115,7 +101,11 @@
 		initTest()
 	}
 	$: virtualKeyboardMode.set($touchDevice)
-	$: delay = slider
+
+	function changeDelay(delay: number) {
+		if (timer) timer.changeDelay(delay)
+	}
+	$: changeDelay(slider)
 
 	function decodeUrlParam(param: string): any {
 		const urlParam = $page.url.searchParams.get(param)
@@ -125,9 +115,6 @@
 
 	function top(remaining: number) {
 		// top toutes les 1s
-		// en secondes
-		console.log('top', remaining)
-		// percentage = (remaining * 100) / delay
 		alert = remaining < 5
 	}
 
@@ -135,7 +122,6 @@
 		// top toutes les 10ms
 		// en ms
 		percentage = ((remaining / 1000) * 100) / delay
-		// console.log('percentage', percentage)
 	}
 
 	function initTest() {
@@ -206,7 +192,6 @@
 	}
 
 	function beginTest() {
-		console.log('begin')
 		showExemple = false
 		go = true
 		if (courseAuxNombres) {
@@ -239,25 +224,18 @@
 				let time = Math.min(Math.round(elapsed / 1000), delay)
 				if (time === 0) time = 1
 				card.time = time
-				if (slider && basket.length === 1) {
-					delay = slider
-				} else {
-					delay = card.delay
-						? card.delay
-						: card.defaultDelay
-						? card.defaultDelay
-						: 20
-					slider = delay
-				}
-				slider = Math.max(5, slider)
+
+				delay = card.delay || card.defaultDelay || 20
+				slider = delay
+
+				// slider = Math.max(5, slider)
 				// slider = Math.min(slider, 60)
-				console.log('delay', delay)
 				percentage = 0
 				alert = false
 				start = Date.now()
 				previous = 0
 				timer = createTimer({
-					delay: delay,
+					delay,
 					top,
 					tick,
 					timeout: () => commit.exec(), //pour garder le this sur commit
@@ -310,35 +288,43 @@
 {:else if showExemple}
 	<div
 		class=" flex flex-col justify-center items-center"
-		style=" min-height: calc(100vh - 146px);"
+		style={'min-height: calc(100vh - 146px);' +
+			(classroom ? `font-size:${magnifyClassroom};` : '')}
 	>
 		<div style="width:900px">
 			<QuestionCard card={generatedExemple} flashcard />
 		</div>
-		<div class="mt-2 flex justify-end">
-			<button on:click={generateExemple} class="btn-icon variant-filled-primary"
+		<div class="mt-4">
+			<button
+				on:click={generateExemple}
+				class="btn-icon-magnify variant-filled-primary mx-2"
 				><iconify-icon icon="mdi:restart" /></button
 			>
-			<button on:click={beginTest} class="btn-icon variant-filled-primary"
+			<button
+				on:click={beginTest}
+				class="btn-icon-magnify variant-filled-primary mx-2"
 				><iconify-icon icon="mdi:rocket-launch-outline" /></button
 			>
 		</div>
 	</div>
 {:else if finish}
 	{#if showCorrection}
-		<Correction
-			items={cards.map(assessItem)}
-			{query}
-			{classroom}
-			bind:restart
-		/>
+		<div style={classroom ? `font-size: ${magnifyClassroom};` : ''}>
+			<Correction
+				items={cards.map(assessItem)}
+				{query}
+				{classroom}
+				bind:restart
+			/>
+		</div>
 	{:else}
-		<div style="height:90vh" class="flex justify-center items-center">
+		<div style="height:90vh" class=" flex justify-center items-center">
 			<button
 				on:click={() => {
 					showCorrection = true
 				}}
-				class="variant-filled-primary">Afficher la correction</button
+				class="p-4  variant-filled-primary text-xl"
+				>Afficher la correction</button
 			>
 		</div>
 	{/if}
@@ -348,7 +334,7 @@
 			on:click={() => {
 				beginTest()
 			}}
-			class="rounded p-4 variant-filled-primary text-xl">Let's go !</button
+			class=" p-4 variant-filled-primary text-xl">Let's go !</button
 		>
 	</div>
 {:else if courseAuxNombres}
@@ -362,7 +348,7 @@
 		<div id="cards-container" style={`width:600px`}>
 			{#each cards as card}
 				<div class="card">
-					<div class=" p-2 elevation-{4} rounded-lg">
+					<div class=" p-2 rounded-lg">
 						<QuestionCard
 							{card}
 							interactive={true}
@@ -388,19 +374,22 @@
 		>
 	</div>
 {:else if card}
-	<div bind:this={ref}>
+	<div
+		bind:this={ref}
+		style={classroom ? `font-size: ${magnifyClassroom};` : ''}
+	>
 		{#if !flash}
 			<div class={' my-1 flex justify-start items-center'}>
-				<!-- {#if classroom} -->
-				<RangeSlider
-					name="range-slider"
-					bind:value={slider}
-					{max}
-					{min}
-					step={5}
-					ticked>Label</RangeSlider
-				>
-				<!-- {/if} -->
+				{#if classroom}
+					<RangeSlider
+						class="pl-4"
+						name="range-slider"
+						bind:value={slider}
+						{max}
+						{min}
+						step={5}
+					/>
+				{/if}
 				{#if !classroom && card.type !== 'choice' && card.type !== 'choices'}
 					<button
 						on:click={() => {
@@ -416,7 +405,7 @@
 
 				<CircularProgress
 					number={current + 1}
-					fontSize={classroom ? 2.5 * fontSize : fontSize * 1.8}
+					fontSize={$fontSize * 1.8}
 					{percentage}
 					pulse={alert}
 				/>
@@ -430,7 +419,6 @@
 						{card}
 						interactive={!classroom && !flash}
 						{commit}
-						magnify={classroom ? 2.5 : 1}
 						immediateCommit={true}
 						flashcard={flash}
 					/>
@@ -438,7 +426,7 @@
 			</div>
 		</div>
 		<div>
-			<a href={`/automaths + ${query}`}>
+			<a href={`/automaths${query}`}>
 				<button class="btn-icon variant-filled-primary"
 					><iconify-icon icon="mdi:home" /></button
 				>
@@ -449,7 +437,7 @@
 	Pas de questions
 {/if}
 
-<style>
+<style lang="postcss">
 	#cards-container {
 		margin-top: 20px;
 		margin-bottom: 20px;
@@ -460,5 +448,14 @@
 		/* height: 500px; */
 		/* max-height: 70vh; */
 		/* width: 100%; */
+	}
+
+	.magnify-icon {
+		font-size: 0.9em;
+		width: 1.5em;
+	}
+
+	.btn-icon-magnify {
+		@apply btn magnify-icon aspect-square  rounded-full;
 	}
 </style>

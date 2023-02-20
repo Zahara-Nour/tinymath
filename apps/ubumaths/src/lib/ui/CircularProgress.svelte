@@ -98,7 +98,7 @@
 		/>
 	</svg>
 	<div
-		style={`font-size: ${fontSize}px;position: absolute;left: 50%;top: 48%;transform: translate(-50%, -70%);font-family:'pacifico'`}
+		style={`font-size: ${fontSize}px;position: absolute;left: 50%;top: 50%;transform: translate(-50%, -60%);font-family:'pacifico'`}
 	>
 		{number}
 	</div>

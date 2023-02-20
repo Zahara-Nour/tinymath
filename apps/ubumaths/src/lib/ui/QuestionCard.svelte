@@ -52,7 +52,7 @@
 </script>
 
 <div
-	class={`card ${$$props.class}`}
+	class={`card bg-surface-50-900-token ring-surface-50-900-token ${$$props.class}`}
 	style={height ? `height:${height}px;` : ''}
 >
 	<div class="flipper" class:flip style={height ? 'height:100%;' : ''}>
