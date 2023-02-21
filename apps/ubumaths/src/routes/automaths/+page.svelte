@@ -376,104 +376,105 @@
 	}
 </script>
 
-<h3>Les automaths !</h3>
+<div class="container mx-auto px-2">
+	<Buttons
+		bind:showBasket
+		bind:classroom
+		bind:flash
+		bind:displayExemple
+		bind:courseAuxNombres
+		{basket}
+		{launchTest}
+		{fillBasket}
+		{copyLink}
+		{generateExoTexmacs}
+		{flushBasket}
+	/>
 
-<Buttons
-	bind:showBasket
-	bind:classroom
-	bind:flash
-	bind:displayExemple
-	bind:courseAuxNombres
-	{basket}
-	{launchTest}
-	{fillBasket}
-	{copyLink}
-	{generateExoTexmacs}
-	{flushBasket}
-/>
-
-{#if !showBasket}
-	<div class="my-8 label">
-		<span>Niveau : </span>
-		<select class="select max-w-xs" bind:value={selectedGrade}>
-			{#each grades as grade, i}
-				<option value={grade}>{grade}</option>
-			{/each}
-		</select>
-	</div>
-{/if}
-
-{#if showBasket}
-	<!-- {#if isTeacher && showBasket} -->
-	<Basket bind:basket {courseAuxNombres} />
-{:else if theme}
-	<TabGroup
-		justify="justify-start flex-wrap"
-		active="border-b-4 border-primary-500"
-		hover="hover:variant-soft-primary"
-	>
-		{#each themes as t (t)}
-			<Tab
-				on:click={() => changeThemeDomainSubdomainLevel(t)}
-				group={theme}
-				name={t}
-				value={t}>{t}</Tab
-			>
-		{/each}
-		<svelte:fragment slot="panel">
-			<Accordion autocollapse>
-				{#each domains as d, i (theme + d)}
-					<AccordionItem
-						open={d === domain}
-						on:click={() => changeDomainSubdomainLevel(d)}
-					>
-						<svelte:fragment slot="summary"
-							><p
-								class={'font-bold ' + (domain === d ? 'text-primary-500' : '')}
-							>
-								{@html $formatLatexToHtml(d)}
-							</p></svelte:fragment
-						>
-						<div slot="content" class="pl-14 border-l-2 border-primary-500">
-							{#each subdomains as subd (theme + d + subd)}
-								<div class="my-5 flex items-center">
-									<span class="mb-2">{@html $formatLatexToHtml(subd)}</span>
-									<div class="flex flex-wrap">
-										{#if Array.isArray(availableLevels[theme][d][subd])}
-											{#each availableLevels[theme][d][subd] as l (theme + d + subd + l)}
-												<button
-													on:click={() => changeSubdomainLevel(subd, l)}
-													class={subdomain === subd && level === l
-														? classSelected
-														: classNotSelected}>{l}</button
-												>
-											{/each}
-										{/if}
-									</div>
-									<div style="flex-grow:1;" />
-								</div>
-							{/each}
-						</div>
-					</AccordionItem>
+	{#if !showBasket}
+		<div class="my-8 label">
+			<span>Niveau : </span>
+			<select class="select max-w-xs" bind:value={selectedGrade}>
+				{#each grades as grade, i}
+					<option value={grade}>{grade}</option>
 				{/each}
-			</Accordion>
-		</svelte:fragment>
-	</TabGroup>
-{/if}
+			</select>
+		</div>
+	{/if}
 
-{#if displayExemple}
-	<div
-		class=" border-t-2 w-full bg-surface-50-900-token px-2 py-5 sticky bottom-0 z-10 flex items-center justify-center"
-	>
-		<hl />
-		<QuestionCard
-			class="max-w-xl"
-			card={generated}
-			showDescription
-			bind:correction
-			bind:interactive
-			immediateCommit
-			flashcard
-		/>
-	</div>
-{/if}
+	{#if showBasket}
+		<!-- {#if isTeacher && showBasket} -->
+		<Basket bind:basket {courseAuxNombres} />
+	{:else if theme}
+		<TabGroup
+			justify="justify-start flex-wrap"
+			active="border-b-4 border-primary-500"
+			hover="hover:variant-soft-primary"
+		>
+			{#each themes as t (t)}
+				<Tab
+					on:click={() => changeThemeDomainSubdomainLevel(t)}
+					group={theme}
+					name={t}
+					value={t}>{t}</Tab
+				>
+			{/each}
+			<svelte:fragment slot="panel">
+				<Accordion autocollapse>
+					{#each domains as d, i (theme + d)}
+						<AccordionItem
+							open={d === domain}
+							on:click={() => changeDomainSubdomainLevel(d)}
+						>
+							<svelte:fragment slot="summary"
+								><p
+									class={'font-bold ' +
+										(domain === d ? 'text-primary-500' : '')}
+								>
+									{@html $formatLatexToHtml(d)}
+								</p></svelte:fragment
+							>
+							<div slot="content" class="pl-14 border-l-2 border-primary-500">
+								{#each subdomains as subd (theme + d + subd)}
+									<div class="my-5 flex items-center">
+										<span class="mb-2">{@html $formatLatexToHtml(subd)}</span>
+										<div class="flex flex-wrap">
+											{#if Array.isArray(availableLevels[theme][d][subd])}
+												{#each availableLevels[theme][d][subd] as l (theme + d + subd + l)}
+													<button
+														on:click={() => changeSubdomainLevel(subd, l)}
+														class={subdomain === subd && level === l
+															? classSelected
+															: classNotSelected}>{l}</button
+													>
+												{/each}
+											{/if}
+										</div>
+										<div style="flex-grow:1;" />
+									</div>
+								{/each}
+							</div>
+						</AccordionItem>
+					{/each}
+				</Accordion>
+			</svelte:fragment>
+		</TabGroup>
+	{/if}
+
+	{#if displayExemple}
+		<div
+			class=" border-t-2 w-full bg-surface-50-900-token px-2 py-5 sticky bottom-0 z-10 flex items-center justify-center"
+		>
+			<hl />
+			<QuestionCard
+				class="max-w-xl"
+				card={generated}
+				showDescription
+				bind:correction
+				bind:interactive
+				immediateCommit
+				flashcard
+			/>
+		</div>
+	{/if}
+</div>
