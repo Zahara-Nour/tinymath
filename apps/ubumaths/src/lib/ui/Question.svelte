@@ -79,11 +79,18 @@
 		stopInteractive()
 	}
 
+	$: setFocus($virtualKeyboardMode)
+
 	// les corrections doivent être produites à l'initialisation
 	// et à chaque fois que l'utilisatur modifie ses réponses (qcm ou chams-réponses)
 	// il faut vérifier que l'update d'answers est bien triggé
 	$: makeCorrection(answers)
 
+	function setFocus(virtualKeyboard: boolean) {
+		if (virtualKeyboard && mfs && mfs.length) {
+			mfs[0].focus()
+		}
+	}
 	// l'utilisateur à choisi une réponse
 	function onChoice(i: number) {
 		if (interactive) {

@@ -5,18 +5,36 @@
 	import '../app.postcss'
 	import { page } from '$app/stores'
 	import { AppShell } from '@skeletonlabs/skeleton'
-	import { prepareMathlive } from '$lib/stores'
+	import { prepareMathlive, touchDevice } from '$lib/stores'
 	import TobBar from '$lib/ui/TobBar.svelte'
 	import links from '$lib/navlinks'
 	import PageHeader from '$lib/ui/PageHeader.svelte'
 	import Footer from '$lib/ui/Footer.svelte'
 	import Navigation from '$lib/ui/Navigation.svelte'
 	import { Drawer, drawerStore } from '@skeletonlabs/skeleton'
+	import { onMount } from 'svelte'
+	import { getLogger } from '$lib/utils'
 
 	type ScrollEvent = UIEvent & { currentTarget: EventTarget & HTMLDivElement }
+	let { info, fail, warn } = getLogger('Automaths', 'info')
 	let header = ''
 
-	prepareMathlive()
+	onMount(() => {
+		// import dynamic de mathlive
+		prepareMathlive()
+
+		// detects a touche screen device at the first touch
+		//  https://codeburst.io/the-only-way-to-detect-touch-with-javascript-7791a3346685
+		window.addEventListener(
+			'touchstart',
+			function onFirstTouch() {
+				touchDevice.set(true)
+				window.removeEventListener('touchstart', onFirstTouch, false)
+				info('Touch device detected.')
+			},
+			false,
+		)
+	})
 
 	$: url = $page.url.pathname
 	$: setPageHeader(url)
@@ -46,7 +64,11 @@
 		<TobBar {drawerOpen} />
 	</svelte:fragment>
 	<svelte:fragment slot="sidebarLeft">
-		<div id="sidebar-left" class="hidden lg:block lg:w-60"><Navigation /></div>
+		{#if !url.includes('assessment')}
+			<div id="sidebar-left" class="hidden lg:block lg:w-60">
+				<Navigation />
+			</div>
+		{/if}
 	</svelte:fragment>
 	<svelte:fragment slot="sidebarRight">
 		<div id="sidebar-left" class="hidden lg:block" />

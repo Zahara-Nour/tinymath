@@ -203,6 +203,7 @@ export default function generateQuestion(
 
 	function getSelectedElement(field: keyof Question) {
 		const elements = question[field]
+
 		if (elements && Array.isArray(elements) && elements.length) {
 			const length = elements.length
 			return elements[length === 1 ? 0 : i]
@@ -394,6 +395,13 @@ export default function generateQuestion(
 							question.limits.reached),
 				)
 			}
+			console.log('limit', limit)
+			console.log(
+				'question.limits.limits[i].count',
+				i,
+				question.limits.limits[i].count,
+			)
+
 			question.limits.limits[i].limit = limit
 			if (question.limits.limits[i].count !== limit) {
 				availables.push(i)

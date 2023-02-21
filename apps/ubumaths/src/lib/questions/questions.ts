@@ -22679,7 +22679,7 @@ export function getQuestion(
 		(q) => questionsWithID[theme][domain][subdomain].indexOf(q) + 1 === level,
 	)
 	if (q) {
-		return q
+		return { ...q }
 	} else {
 		throw new Error('question not found')
 	}

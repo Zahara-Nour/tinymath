@@ -23,7 +23,6 @@
 	} from '$lib/type'
 	import Spinner from '$lib/ui/Spinner.svelte'
 	import QuestionCard from '$lib/ui/QuestionCard.svelte'
-	import { RangeSlider } from '@skeletonlabs/skeleton'
 	import CircularProgress from '$lib/ui/CircularProgress.svelte'
 	import {
 		assessItem,
@@ -55,16 +54,15 @@
 	let showExemple = false
 	let showCorrection = false
 	let alert = false
-	let slider = 0
 	let min = 5,
 		max = 60
 	let cards: AnsweredQuestion[]
 	let card: AnsweredQuestion
-	let generatedExemple: CorrectedQuestion
+	let generatedExemple: AnsweredQuestion
 	let basket: Basket
 	let go = false
 	const testParams: TestParams = {}
-	let commit: Commit = {
+	const commit: Commit = {
 		exec: function () {
 			if (this.hook) {
 				this.hook()
@@ -102,10 +100,10 @@
 	}
 	$: virtualKeyboardMode.set($touchDevice)
 
-	function changeDelay(delay: number) {
+	function changeDelay(newDelay: number) {
+		delay = newDelay
 		if (timer) timer.changeDelay(delay)
 	}
-	$: changeDelay(slider)
 
 	function decodeUrlParam(param: string): any {
 		const urlParam = $page.url.searchParams.get(param)
@@ -113,15 +111,17 @@
 		return JSON.parse(decodeURI(urlParam))
 	}
 
-	function top(remaining: number) {
+	function top(secondsRemaining: number) {
 		// top toutes les 1s
-		alert = remaining < 5
+		alert = secondsRemaining <= 5
+		elapsed++
+		remaining = convertToTime(secondsRemaining * 1000)
 	}
 
-	function tick(remaining: number) {
+	function tick(msRemaining: number) {
 		// top toutes les 10ms
 		// en ms
-		percentage = ((remaining / 1000) * 100) / delay
+		percentage = ((msRemaining / 1000) * 100) / delay
 	}
 
 	function initTest() {
@@ -155,6 +155,7 @@
 			for (let i = 0; i < q.count; i++) {
 				const generated = generate(question, cards, q.count, offset)
 				generated.delay = delay
+				console.log('generated', generated)
 
 				cards.push(prepareAnsweredQuestion(generated))
 			}
@@ -186,9 +187,11 @@
 	function generateExemple() {
 		const { theme, domain, subdomain, level } = ids[basket[0].id]
 		const question = getQuestion(theme, domain, subdomain, level)
-		generatedExemple = prepareCorrectedQuestion(
-			prepareAnsweredQuestion(generate(question)),
-		)
+		console.log('getQuestion', question)
+		const generated = generate(question)
+		console.log('generatedExemple', generated)
+		generatedExemple = prepareAnsweredQuestion(generated)
+		console.log('generatedExemple', generatedExemple)
 	}
 
 	function beginTest() {
@@ -226,14 +229,11 @@
 				card.time = time
 
 				delay = card.delay || card.defaultDelay || 20
-				slider = delay
-
-				// slider = Math.max(5, slider)
-				// slider = Math.min(slider, 60)
 				percentage = 0
 				alert = false
 				start = Date.now()
 				previous = 0
+				elapsed = 0
 				timer = createTimer({
 					delay,
 					top,
@@ -280,7 +280,7 @@
 </script>
 
 <svelte:window on:keydown={handleKeydown} />
-<div class="container mx-auto px-2 pt-2 h-full">
+<div class="container mx-auto px-2 h-full">
 	{#if !$mathliveReady}
 		<div class="h-full flex justify-center items-center ">
 			<Spinner />
@@ -377,23 +377,32 @@
 			{#if !flash}
 				<div class={' my-1 flex justify-start items-center'}>
 					{#if classroom}
-						<RangeSlider
-							class="pl-4"
-							name="range-slider"
-							bind:value={slider}
-							{max}
-							{min}
-							step={5}
-						/>
+						<div class="flex">
+							<button
+								class="mx-2 btn-icon variant-filled-tertiary"
+								on:click={() => {
+									if (delay > 5) changeDelay(delay - 5)
+								}}>-5s</button
+							>
+							<button
+								class="mx-2 btn-icon variant-filled-tertiary"
+								on:click={() => {
+									if (delay <= 55) changeDelay(delay + 5)
+								}}>+5s</button
+							>
+						</div>
 					{/if}
 					{#if !classroom && card.type !== 'choice' && card.type !== 'choices'}
 						<button
 							on:click={() => {
-								virtualKeyboardMode.update((state) => {
-									return !state
-								})
+								virtualKeyboardMode.update(
+									(virtualKeyboard) => !virtualKeyboard,
+								)
 							}}
-							class="btn-icon variant-filled-primary"
+							class={'btn-icon ' +
+								($virtualKeyboardMode
+									? 'variant-filled-primary'
+									: 'variant-filled-tertiary')}
 							><iconify-icon icon="mdi:keyboard" /></button
 						>
 					{/if}
@@ -403,18 +412,17 @@
 				</div>
 			{/if}
 
-			<div class="flex justify-center">
-				<div id="cards-container" style={`width:${classroom ? 1000 : 600}px`}>
-					{#each [cards[current]] as card (current)}
-						<QuestionCard
-							{card}
-							interactive={!classroom && !flash}
-							{commit}
-							immediateCommit={true}
-							flashcard={flash}
-						/>
-					{/each}
-				</div>
+			<div id="cards-container" class="flex justify-center">
+				{#each [cards[current]] as card (current)}
+					<QuestionCard
+						class={classroom ? 'max-w-3xl' : 'max-w-xl'}
+						{card}
+						interactive={!classroom && !flash}
+						{commit}
+						immediateCommit={true}
+						flashcard={flash}
+					/>
+				{/each}
 			</div>
 			<div>
 				<a href={`/automaths${query}`}>
