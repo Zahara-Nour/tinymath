@@ -30,7 +30,11 @@
 
 		function replaceSol() {
 			nSol += 1
-			return math(card.solutions![nSol]).latex
+			return (
+				`\\textcolor{${correct_color}}{` +
+				math(card.solutions![nSol]).latex +
+				'}'
+			)
 		}
 
 		if (isQuestionChoices(card)) {
@@ -64,15 +68,19 @@
 			} else if (s.image) {
 				s = `<img src=${s.image}>`
 			}
-		} else {
-			if (card.answerField && card.type !== 'equation') {
-				s = $formatLatexToHtml(
-					card.answerField.replace(/\?/g, replaceSol),
-				) as string
+		} else if (card.type === 'fill in') {
+			if (card.expression) {
+				s = '$$' + card.expression.replace(/\?/g, replaceSol) + '$$'
+			} else if (card.answerField) {
+				s = card.answerField.replace(/\.\.\./g, replaceSol)
 			} else {
-				s = card.solutions![0] as string
-				s = '$$' + math(s).latex + '$$'
+				s = 'solution non trouvée'
 			}
+		} else if (card.type === 'equation') {
+			s = card.answerField!.replace(/\.\.\./g, replaceSol)
+		} else {
+			s = card.solutions![0] as string
+			s = '$$' + math(s).latex + '$$'
 		}
 		return s
 	}

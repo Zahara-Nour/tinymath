@@ -7,7 +7,7 @@ import {
 	STATUS_BAD_UNIT,
 } from './correction'
 import { correct_color, incorrect_color, unoptimal_color } from '$lib/colors'
-import { toMarkup, formatLatexToHtml } from '$lib/stores'
+import { formatLatexToHtml } from '$lib/stores'
 import math from 'tinycas'
 import { formatToLatex, formatToTexmacs } from '$lib/utils'
 import { get } from 'svelte/store'
