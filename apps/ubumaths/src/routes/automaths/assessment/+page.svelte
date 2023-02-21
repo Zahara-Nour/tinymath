@@ -280,154 +280,154 @@
 </script>
 
 <svelte:window on:keydown={handleKeydown} />
-
-{#if !$mathliveReady}
-	<div class="flex justify-center items-center" style="height:75vh">
-		<Spinner />
-	</div>
-{:else if showExemple}
-	<div
-		class=" flex flex-col justify-center items-center"
-		style={'min-height: calc(100vh - 146px);' +
-			(classroom ? `font-size:${magnifyClassroom};` : '')}
-	>
-		<div style="width:900px">
-			<QuestionCard card={generatedExemple} flashcard />
+<div class="container mx-auto px-2 pt-2 h-full">
+	{#if !$mathliveReady}
+		<div class="h-full flex justify-center items-center ">
+			<Spinner />
 		</div>
-		<div class="mt-4">
-			<button
-				on:click={generateExemple}
-				class={classBtnIconMagnify + ' variant-filled-primary mx-2'}
-				><iconify-icon icon="mdi:restart" /></button
-			>
-			<button
-				on:click={beginTest}
-				class={classBtnIconMagnify + ' variant-filled-primary mx-2'}
-				><iconify-icon icon="mdi:rocket-launch-outline" /></button
-			>
-		</div>
-	</div>
-{:else if finish}
-	{#if showCorrection}
-		<div style={classroom ? `font-size: ${magnifyClassroom};` : ''}>
-			<Correction
-				items={cards.map(assessItem)}
-				{query}
-				{classroom}
-				bind:restart
-			/>
-		</div>
-	{:else}
-		<div style="height:90vh" class=" flex justify-center items-center">
-			<button
-				on:click={() => {
-					showCorrection = true
-				}}
-				class="p-4  variant-filled-primary text-xl"
-				>Afficher la correction</button
-			>
-		</div>
-	{/if}
-{:else if !go}
-	<div style="height:90vh" class="flex justify-center items-center">
-		<button
-			on:click={() => {
-				beginTest()
-			}}
-			class=" p-4 variant-filled-primary text-xl">Let's go !</button
+	{:else if showExemple}
+		<div
+			class="h-full flex flex-col justify-center items-center"
+			style={classroom ? `font-size:${magnifyClassroom};` : ''}
 		>
-	</div>
-{:else if courseAuxNombres}
-	Course aux nombres
-	{#if remaining}
-		{`${remaining.minutes}:${remaining.seconds < 10 ? '0' : ''}${
-			remaining.seconds
-		}`}
-	{/if}
-	<div class="flex justify-center">
-		<div id="cards-container" style={`width:600px`}>
-			{#each cards as card}
-				<div class="card">
-					<div class=" p-2 rounded-lg">
-						<QuestionCard
-							{card}
-							interactive={true}
-							commit={(() => {
-								const c = { ...commit }
-								commits.push(c)
-								return c
-							})()}
-						/>
-					</div>
-				</div>
-			{/each}
+			<div style="width:900px">
+				<QuestionCard card={generatedExemple} flashcard />
+			</div>
+			<div class="mt-4">
+				<button
+					on:click={generateExemple}
+					class={classBtnIconMagnify + ' variant-filled-primary mx-2'}
+					><iconify-icon icon="mdi:restart" /></button
+				>
+				<button
+					on:click={beginTest}
+					class={classBtnIconMagnify + ' variant-filled-primary mx-2'}
+					><iconify-icon icon="mdi:rocket-launch-outline" /></button
+				>
+			</div>
 		</div>
-	</div>
-	<div class="flex justify-center items-center">
-		<button
-			on:click={() => {
-				timer.stop()
-				commits.forEach((commit) => commit.exec())
-				finish = true
-			}}
-			class="variant-filled-primary">Valider</button
-		>
-	</div>
-{:else if card}
-	<div style={classroom ? `font-size: ${magnifyClassroom};` : ''}>
-		{#if !flash}
-			<div class={' my-1 flex justify-start items-center'}>
-				{#if classroom}
-					<RangeSlider
-						class="pl-4"
-						name="range-slider"
-						bind:value={slider}
-						{max}
-						{min}
-						step={5}
-					/>
-				{/if}
-				{#if !classroom && card.type !== 'choice' && card.type !== 'choices'}
-					<button
-						on:click={() => {
-							virtualKeyboardMode.update((state) => {
-								return !state
-							})
-						}}
-						class="btn-icon variant-filled-primary"
-						><iconify-icon icon="mdi:keyboard" /></button
-					>
-				{/if}
-				<div class="flex grow" />
-
-				<CircularProgress number={current + 1} {percentage} pulse={alert} />
+	{:else if finish}
+		{#if showCorrection}
+			<div style={classroom ? `font-size: ${magnifyClassroom};` : ''}>
+				<Correction
+					items={cards.map(assessItem)}
+					{query}
+					{classroom}
+					bind:restart
+				/>
+			</div>
+		{:else}
+			<div class="h-full flex justify-center items-center">
+				<button
+					on:click={() => {
+						showCorrection = true
+					}}
+					class="p-4  variant-filled-primary text-xl"
+					>Afficher la correction</button
+				>
 			</div>
 		{/if}
-
+	{:else if !go}
+		<div class="h-full flex justify-center items-center">
+			<button
+				on:click={() => {
+					beginTest()
+				}}
+				class=" p-4 variant-filled-primary text-xl">Let's go !</button
+			>
+		</div>
+	{:else if courseAuxNombres}
+		Course aux nombres
+		{#if remaining}
+			{`${remaining.minutes}:${remaining.seconds < 10 ? '0' : ''}${
+				remaining.seconds
+			}`}
+		{/if}
 		<div class="flex justify-center">
-			<div id="cards-container" style={`width:${classroom ? 1000 : 600}px`}>
-				{#each [cards[current]] as card (current)}
-					<QuestionCard
-						{card}
-						interactive={!classroom && !flash}
-						{commit}
-						immediateCommit={true}
-						flashcard={flash}
-					/>
+			<div id="cards-container" style={`width:600px`}>
+				{#each cards as card}
+					<div class="card">
+						<div class=" p-2 rounded-lg">
+							<QuestionCard
+								{card}
+								interactive={true}
+								commit={(() => {
+									const c = { ...commit }
+									commits.push(c)
+									return c
+								})()}
+							/>
+						</div>
+					</div>
 				{/each}
 			</div>
 		</div>
-		<div>
-			<a href={`/automaths${query}`}>
-				<button class="btn-icon variant-filled-primary"
-					><iconify-icon icon="mdi:home" /></button
-				>
-			</a>
+		<div class="flex justify-center items-center">
+			<button
+				on:click={() => {
+					timer.stop()
+					commits.forEach((commit) => commit.exec())
+					finish = true
+				}}
+				class="variant-filled-primary">Valider</button
+			>
 		</div>
-	</div>
-{:else}
-	Pas de questions
-{/if}
+	{:else if card}
+		<div style={classroom ? `font-size: ${magnifyClassroom};` : ''}>
+			{#if !flash}
+				<div class={' my-1 flex justify-start items-center'}>
+					{#if classroom}
+						<RangeSlider
+							class="pl-4"
+							name="range-slider"
+							bind:value={slider}
+							{max}
+							{min}
+							step={5}
+						/>
+					{/if}
+					{#if !classroom && card.type !== 'choice' && card.type !== 'choices'}
+						<button
+							on:click={() => {
+								virtualKeyboardMode.update((state) => {
+									return !state
+								})
+							}}
+							class="btn-icon variant-filled-primary"
+							><iconify-icon icon="mdi:keyboard" /></button
+						>
+					{/if}
+					<div class="flex grow" />
+
+					<CircularProgress number={current + 1} {percentage} pulse={alert} />
+				</div>
+			{/if}
+
+			<div class="flex justify-center">
+				<div id="cards-container" style={`width:${classroom ? 1000 : 600}px`}>
+					{#each [cards[current]] as card (current)}
+						<QuestionCard
+							{card}
+							interactive={!classroom && !flash}
+							{commit}
+							immediateCommit={true}
+							flashcard={flash}
+						/>
+					{/each}
+				</div>
+			</div>
+			<div>
+				<a href={`/automaths${query}`}>
+					<button class="btn-icon variant-filled-primary"
+						><iconify-icon icon="mdi:home" /></button
+					>
+				</a>
+			</div>
+		</div>
+	{:else}
+		Pas de questions
+	{/if}
+</div>
 
 <style>
 	#cards-container {

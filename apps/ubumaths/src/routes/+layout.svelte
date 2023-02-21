@@ -18,7 +18,8 @@
 
 	prepareMathlive()
 
-	$: setPageHeader($page.url.pathname)
+	$: url = $page.url.pathname
+	$: setPageHeader(url)
 
 	function setPageHeader(url: string) {
 		const link = links.find((l) => url.includes(l.url))
@@ -45,10 +46,10 @@
 		<TobBar {drawerOpen} />
 	</svelte:fragment>
 	<svelte:fragment slot="sidebarLeft">
-		<div id="sidebar-left" class="hidden lg:block"><Navigation /></div>
+		<div id="sidebar-left" class="hidden lg:block lg:w-60"><Navigation /></div>
 	</svelte:fragment>
 	<svelte:fragment slot="sidebarRight">
-		<div id="sidebar-left" class="hidden lg:block">Sidebar Right</div>
+		<div id="sidebar-left" class="hidden lg:block" />
 	</svelte:fragment>
 	<svelte:fragment slot="pageHeader"
 		><PageHeader title={header} /></svelte:fragment
@@ -56,8 +57,12 @@
 	<!-- Router Slot -->
 	<slot />
 	<!-- ---- / ---- -->
-	<svelte:fragment slot="pageFooter">Page Footer</svelte:fragment>
-	<svelte:fragment slot="footer"><Footer /></svelte:fragment>
+	<svelte:fragment slot="pageFooter" />
+	<svelte:fragment slot="footer">
+		{#if url === '/'}
+			<Footer />
+		{/if}
+	</svelte:fragment>
 </AppShell>
 
 <svelte:head>

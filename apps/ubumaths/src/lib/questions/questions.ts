@@ -150,14 +150,14 @@ const questions: Questions = {
 					description: 'Connaître la position décimale',
 					subdescription: "Jusqu'aux dizaines.",
 					enounces: [
-						'Dans le nombre $$&4$$, quel est le chiffre des dizaines ?',
-						'Dans le nombre $$&4$$, quel est le chiffre des unités ?',
+						'Dans le nombre $$&3$$, quel est le chiffre des dizaines ?',
+						'Dans le nombre $$&3$$, quel est le chiffre des unités ?',
 					],
 					variabless: [
 						{
 							'&1': '$e[1;9]',
 							'&2': '$e[0;9]\\{&1}',
-							'&4': '[_&1*10+&2_]',
+							'&3': '[_&1*10+&2_]',
 						},
 					],
 					solutionss: [['&1'], ['&2']],
