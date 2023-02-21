@@ -63,64 +63,65 @@
 				),
 			),
 		)}
-		<div class="my-4 flex flex-row">
-			<QuestionCard showDescription class="mx-4 max-w-sm" {card} />
+		<div class="my-4 flex flex-col items-center lg:flex-row">
+			<QuestionCard class="mx-4 max-w-sm" {card} />
 
-			<div class="mx-4 flex flex-col">
-				{#if !courseAuxNombres}
-					<div class="flex flex-row justify-center">
-						<div class="mt-2">
-							répétition: {basket[i].count}
+			<div class="my-4 flex flex-row">
+				<div class="mx-4 flex flex-row items-start justify-start lg:flex-col">
+					<div class="flex flex-col items-center">
+						{#if !courseAuxNombres}
+							<div class="flex flex-row justify-center">
+								répétition: {basket[i].count}
+							</div>
+						{/if}
+						<div class="flex flex-row justify-center">
+							<button
+								on:click={() => removeItem(i)}
+								class="mx-1 btn-icon variant-filled-primary"
+								><iconify-icon icon="mdi:minus" /></button
+							>
+							{#if !courseAuxNombres}
+								<button
+									on:click={() => addItem(i)}
+									class="mx-1 btn-icon variant-filled-primary"
+									><iconify-icon icon="mdi:plus" /></button
+								>
+							{/if}
 						</div>
 					</div>
-				{/if}
-				<div class="ml-2 flex flex-row justify-center">
-					<button
-						on:click={() => removeItem(i)}
-						class="mx-1 btn-icon variant-filled-primary"
-						><iconify-icon icon="mdi:minus" /></button
-					>
-					{#if !courseAuxNombres}
-						<button
-							on:click={() => addItem(i)}
-							class="mx-1 btn-icon variant-filled-primary"
-							><iconify-icon icon="mdi:plus" /></button
-						>
-					{/if}
+					<div class="flex flex-col items-center">
+						{#if !courseAuxNombres}
+							<div class="flex flex-row justify-center items-center">
+								temps: {basket[i].delay} s
+							</div>
+							<div class="flex flex-row justify-center  items-center">
+								<button
+									on:click={() => lessTime(i)}
+									class="mx-1 btn-icon variant-filled-primary"
+									><iconify-icon icon="mdi:minus" /></button
+								>
+								<button
+									on:click={() => moreTime(i)}
+									class="mx-1 btn-icon variant-filled-primary"
+									><iconify-icon icon="mdi:plus" /></button
+								>
+							</div>
+						{/if}
+					</div>
 				</div>
-
-				{#if !courseAuxNombres}
-					<div class="flex flex-row justify-center">
-						<div class="mt-2">
-							temps: {basket[i].delay} s
-						</div>
+				<div class="mx-4 label">
+					<strong>Options</strong>
+					<div class="space-y-2">
+						<label class="flex items-center space-x-2">
+							<input
+								class="checkbox"
+								type="checkbox"
+								on:change={() => toggleEnounceAlone(i)}
+								bind:checked={enounceAlone}
+							/>
+							<p>Enoncé séparé</p>
+						</label>
 					</div>
-					<div class="ml-2 flex flex-row justify-center">
-						<button
-							on:click={() => lessTime(i)}
-							class="mx-1 btn-icon variant-filled-primary"
-							><iconify-icon icon="mdi:minus" /></button
-						>
-						<button
-							on:click={() => moreTime(i)}
-							class="mx-1 btn-icon variant-filled-primary"
-							><iconify-icon icon="mdi:plus" /></button
-						>
-					</div>
-				{/if}
-			</div>
-			<div class="mx-4 label">
-				<strong>Options</strong>
-				<div class="space-y-2">
-					<label class="flex items-center space-x-2">
-						<input
-							class="checkbox"
-							type="checkbox"
-							on:change={() => toggleEnounceAlone(i)}
-							bind:checked={enounceAlone}
-						/>
-						<p>Enoncé séparé</p>
-					</label>
 				</div>
 			</div>
 		</div>
