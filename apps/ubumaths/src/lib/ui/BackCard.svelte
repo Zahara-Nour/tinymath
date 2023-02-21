@@ -105,14 +105,6 @@
 					</div>
 				{/each}
 			</div>
-
-			<div class=" w-full flex justify-end">
-				<button
-					on:click={toggleFlip}
-					class="btn-icon-magnify variant-filled-primary"
-					><iconify-icon icon="mdi:orbit-variant" /></button
-				>
-			</div>
 		{:else}
 			<!-- solution générique -->
 			<div class="text-success-500">Réponse :</div>
@@ -144,14 +136,14 @@
 					{/each}
 				</div>
 			{/if}
-			<footer class="footer w-full flex justify-end">
-				<button
-					on:click={toggleFlip}
-					class={classBtnIconMagnify + ' variant-filled-primary'}
-					><iconify-icon icon="mdi:orbit-variant" /></button
-				>
-			</footer>
 		{/if}
+		<footer class="footer w-full flex justify-end">
+			<button
+				on:click={toggleFlip}
+				class={classBtnIconMagnify + ' variant-filled-primary'}
+				><iconify-icon icon="mdi:orbit-variant" /></button
+			>
+		</footer>
 	</div>
 </div>
 

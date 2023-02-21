@@ -69,7 +69,7 @@
 
 	const ids = data.ids
 	const classSelected = 'ml-1 mb-2 btn-icon variant-filled-primary'
-	const classNotSelected = 'ml-1 mb-2 btn-icon variant-surface-primary'
+	const classNotSelected = 'ml-1 mb-2 btn-icon variant-filled-tertiary'
 
 	$: changeGrade(selectedGrade)
 	$: if (courseAuxNombres) {

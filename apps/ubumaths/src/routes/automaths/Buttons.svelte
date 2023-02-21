@@ -21,7 +21,7 @@
 	const toggleCourseAuxNombres = () => (courseAuxNombres = !courseAuxNombres)
 
 	const classSelected = 'ml-1 btn-icon variant-filled-primary text-2xl'
-	const classNotSelected = 'ml-1 btn-icon variant-filled-surface text-2xl'
+	const classNotSelected = 'ml-1 btn-icon variant-filled-tertiary text-2xl'
 	// $: isLoggedIn = $user.id != 'guest'
 	// $: isTeacher = isLoggedIn && $user.roles.includes('teacher')
 	// $: isStudent = isLoggedIn && $user.roles.includes('student')
