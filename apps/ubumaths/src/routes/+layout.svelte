@@ -10,29 +10,42 @@
 	import links from '$lib/navlinks'
 	import PageHeader from '$lib/ui/PageHeader.svelte'
 	import Footer from '$lib/ui/Footer.svelte'
+	import Navigation from '$lib/ui/Navigation.svelte'
+	import { Drawer, drawerStore } from '@skeletonlabs/skeleton'
+
+	type ScrollEvent = UIEvent & { currentTarget: EventTarget & HTMLDivElement }
+	let header = ''
 
 	prepareMathlive()
-	let header = ''
+
+	$: setPageHeader($page.url.pathname)
 
 	function setPageHeader(url: string) {
 		const link = links.find((l) => url.includes(l.url))
 		header = link ? link.text : ''
 	}
 
-	type ScrollEvent = UIEvent & { currentTarget: EventTarget & HTMLDivElement }
 	function scrollHandler(event: Event) {
 		// console.log((event as ScrollEvent).currentTarget.scrollTop)
 	}
 
-	$: setPageHeader($page.url.pathname)
+	function drawerOpen(): void {
+		drawerStore.open({})
+	}
+
+	function drawerClose(): void {
+		drawerStore.close()
+	}
 </script>
+
+<Drawer><Navigation {drawerClose} /></Drawer>
 
 <AppShell on:scroll={scrollHandler}>
 	<svelte:fragment slot="header">
-		<TobBar />
+		<TobBar {drawerOpen} />
 	</svelte:fragment>
 	<svelte:fragment slot="sidebarLeft">
-		<div id="sidebar-left" class="hidden lg:block">Sidebar Left</div>
+		<div id="sidebar-left" class="hidden lg:block"><Navigation /></div>
 	</svelte:fragment>
 	<svelte:fragment slot="sidebarRight">
 		<div id="sidebar-left" class="hidden lg:block">Sidebar Right</div>

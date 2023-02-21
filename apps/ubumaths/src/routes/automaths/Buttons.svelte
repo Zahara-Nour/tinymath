@@ -27,7 +27,7 @@
 	// $: isStudent = isLoggedIn && $user.roles.includes('student')
 </script>
 
-<div class="py-3 flex sticky top-0 bg-surface-50-900-token">
+<div class="py-3 flex flex-wrap sticky top-0 bg-surface-50-900-token">
 	<div class="grow" />
 
 	<button

@@ -4,9 +4,9 @@
 <div
 	class="container h-full mx-auto flex flex-col justify-center items-center space-y-20 text-center"
 >
-	<h2 class="font-bold">
+	<h1 class="font-bold" style="font-family: 'Baloo 2', sans-serif;">
 		Les maths de la chandelle <span class="text-primary-500">verte</span>
-	</h2>
+	</h1>
 	<!-- Animated Logo -->
 
 	<figure>
