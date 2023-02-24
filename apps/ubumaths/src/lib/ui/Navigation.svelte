@@ -1,7 +1,6 @@
 <script lang="ts">
 	import links from '$lib/navlinks'
 	import { page } from '$app/stores'
-	import { tooltip } from '@skeletonlabs/skeleton'
 
 	export let drawerClose = () => {}
 </script>
@@ -11,14 +10,7 @@
 		{#each links as link}
 			{@const active = $page.url.pathname.includes(link.url)}
 			<li>
-				<a
-					use:tooltip={{
-						content: link.tooltip,
-						position: 'bottom',
-					}}
-					href={link.url}
-					on:click={drawerClose}
-				>
+				<a href={link.url} on:click={drawerClose}>
 					<span class:active class="px-2">{link.text}</span>
 				</a>
 			</li>

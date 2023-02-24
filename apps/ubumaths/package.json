@@ -13,6 +13,8 @@
 		"supabase-types": "npx supabase gen types typescript --project-id 'vlqgmctfhesdhaifmyab' --schema public   > types/supabase.ts"
 	},
 	"dependencies": {
+		"@floating-ui/dom": "^1.2.1",
+		"@skeletonlabs/skeleton": "^0.132.5",
 		"@supabase/auth-helpers-sveltekit": "^0.8.7",
 		"@supabase/supabase-js": "^2.8.0",
 		"iconify-icon": "^1.0.7",
@@ -24,7 +26,6 @@
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.31.1",
-		"@skeletonlabs/skeleton": "^0.124.2",
 		"@sveltejs/adapter-vercel": "^2.1.0",
 		"@sveltejs/kit": "^1.8.3",
 		"@tailwindcss/forms": "^0.5.3",

@@ -17,6 +17,15 @@
 	import { supabaseClient } from '$lib/supabaseClients'
 	import { invalidate, invalidateAll } from '$app/navigation'
 	import type { PageData } from './$types'
+	import {
+		computePosition,
+		autoUpdate,
+		flip,
+		shift,
+		offset,
+		arrow,
+	} from '@floating-ui/dom'
+	import { storePopup } from '@skeletonlabs/skeleton'
 
 	type ScrollEvent = UIEvent & { currentTarget: EventTarget & HTMLDivElement }
 
@@ -54,6 +63,8 @@
 			subscription.unsubscribe()
 		}
 	})
+
+	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow })
 
 	$: url = $page.url.pathname
 	$: setPageHeader(url)
