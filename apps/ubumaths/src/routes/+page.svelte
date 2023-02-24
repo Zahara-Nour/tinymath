@@ -1,4 +1,20 @@
 <script lang="ts">
+	import { enhance, type SubmitFunction } from '$app/forms'
+	import { supabaseClient } from '$lib/supabaseClients'
+	import type { PageData } from './$types'
+
+	export let data: PageData
+
+	// if JS enabled, we'll use this to submit the logout form
+	let submitLogout: SubmitFunction = async ({ cancel }) => {
+		const { error } = await supabaseClient.auth.signOut()
+		if (error) {
+			console.log(error)
+		}
+		// prevent the form submission from actually going through
+		cancel()
+	}
+	$: console.log('data.session', data.session)
 </script>
 
 <div
@@ -7,6 +23,19 @@
 	<h1 class="font-bold" style="font-family: 'Baloo 2', sans-serif;">
 		Les maths de la chandelle <span class="text-primary-500">verte</span>
 	</h1>
+
+	{#if data.session}
+		<p>Welcome back, {data.session.user.email}!</p>
+		<form action="/logout" method="POST" use:enhance={submitLogout}>
+			<button type="submit" class="btn variant-filled-primary">Logout</button>
+		</form>
+	{:else}
+		<div class="auth-buttons">
+			<a href="/login" class="btn variant-filled-primary">Login</a>
+			<a href="/register" class="btn variant-filled-primary">Register</a>
+		</div>
+	{/if}
+
 	<!-- Animated Logo -->
 
 	<figure>

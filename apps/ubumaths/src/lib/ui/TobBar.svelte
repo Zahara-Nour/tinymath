@@ -1,12 +1,16 @@
 <script lang="ts">
-	import { AppBar, tooltip } from '@skeletonlabs/skeleton'
+	import { AppBar, Avatar, tooltip } from '@skeletonlabs/skeleton'
 	import { LightSwitch } from '@skeletonlabs/skeleton'
 	import { fontSize } from '$lib/stores'
 	import links from '$lib/navlinks'
 	import { page } from '$app/stores'
 	import { get } from 'svelte/store'
+	import type { Session } from '@supabase/supabase-js'
 
 	export let drawerOpen: () => void
+	export let session: Session | null
+
+	$: if (session) console.log('session', session.user.user_metadata.avatar_url)
 
 	function increase() {
 		const newSize = get(fontSize) + 1
@@ -63,6 +67,13 @@
 		</div>
 	</svelte:fragment>
 	<svelte:fragment slot="trail">
+		{#if session}
+			<Avatar
+				border="border-4 border-surface-300-600-token hover:!border-primary-500"
+				cursor="cursor-pointer"
+				src={session.user.user_metadata.avatar_url}
+			/>
+		{/if}
 		<button on:click={decrease} class="text-xl btn-icon variant-filled-primary"
 			><iconify-icon icon="mdi:format-font-size-decrease" /></button
 		>

@@ -14,8 +14,14 @@
 	import { Drawer, drawerStore } from '@skeletonlabs/skeleton'
 	import { onMount } from 'svelte'
 	import { getLogger } from '$lib/utils'
+	import { supabaseClient } from '$lib/supabaseClients'
+	import { invalidate, invalidateAll } from '$app/navigation'
+	import type { PageData } from './$types'
 
 	type ScrollEvent = UIEvent & { currentTarget: EventTarget & HTMLDivElement }
+
+	export let data: PageData
+
 	let { info, fail, warn } = getLogger('Automaths', 'info')
 	let header = ''
 
@@ -34,6 +40,19 @@
 			},
 			false,
 		)
+
+		// Synchronizing the page store
+		// Every PageLoad or LayoutLoad using getSupabase() will update when invalidate('supabase:auth') is called.
+		// If some data is not updated on signin/signout you can fall back to invalidateAll().
+		const {
+			data: { subscription },
+		} = supabaseClient.auth.onAuthStateChange(() => {
+			invalidateAll()
+		})
+
+		return () => {
+			subscription.unsubscribe()
+		}
 	})
 
 	$: url = $page.url.pathname
@@ -61,7 +80,7 @@
 
 <AppShell on:scroll={scrollHandler}>
 	<svelte:fragment slot="header">
-		<TobBar {drawerOpen} />
+		<TobBar {drawerOpen} session={data.session} />
 	</svelte:fragment>
 	<svelte:fragment slot="sidebarLeft">
 		{#if !url.includes('assessment')}
