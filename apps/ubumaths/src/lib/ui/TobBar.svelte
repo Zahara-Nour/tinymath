@@ -1,9 +1,7 @@
 <script lang="ts">
-	import { AppBar, popup } from '@skeletonlabs/skeleton'
+	import { AppBar } from '@skeletonlabs/skeleton'
 	import { LightSwitch } from '@skeletonlabs/skeleton'
 	import { fontSize } from '$lib/stores'
-	import links from '$lib/navlinks'
-	import { page } from '$app/stores'
 	import { get } from 'svelte/store'
 	import Burger from './Burger.svelte'
 	import UserAvatar from './UserAvatar.svelte'
@@ -27,49 +25,19 @@
 
 <AppBar class="shadow-2xl">
 	<svelte:fragment slot="lead">
-		<img
-			src="/images/gidouille.png"
-			alt="gidouille"
-			class="hidden lg:inline-block lg:w-8 lg:mr-4"
-		/>
-		<Burger handleClick={drawerOpen} />
+		<img src="/images/gidouille.png" alt="gidouille" class="w-8 mr-4" />
+
 		<div class="inline-block">
 			<a href="/">
 				<strong
-					class="text-xl text-primary-500 mr-6 uppercase"
+					class="hidden lg:text-xl lg:inline-block lg:text-primary-500 lg:mr-6 lg:uppercase"
 					style="font-family: 'Baloo 2', sans-serif;">Ubumaths</strong
 				>
 			</a>
 		</div>
-		<div class="hidden lg:inline-block">
-			{#each links as link}
-				{@const active = $page.url.pathname.includes(link.url)}
-				<div>
-					<a
-						use:popup={{
-							event: 'hover',
-							target: link.text,
-							placement: 'bottom',
-						}}
-						class:active
-						class="px-2 mx-2 pb-2"
-						href={link.url}
-					>
-						{link.text}
-					</a>
-					<div
-						class="text-xs text-center card variant-filled-primary p-2 whitespace-nowrap shadow-xl"
-						data-popup={link.text}
-					>
-						{link.tooltip}
-						<!-- Arrow -->
-						<div class="arrow variant-filled-primary" />
-					</div>
-				</div>
-			{/each}
-		</div>
 	</svelte:fragment>
 	<svelte:fragment slot="trail">
+		<LightSwitch />
 		<UserAvatar />
 
 		<button on:click={decrease} class="text-xl btn-icon variant-filled-primary"
@@ -78,7 +46,8 @@
 		<button on:click={increase} class="text-xl btn-icon variant-filled-primary"
 			><IconIncrease /></button
 		>
-		<LightSwitch />
+
+		<Burger class=" btn btn-sm mr-4 lg:hidden" handleClick={drawerOpen} />
 	</svelte:fragment>
 </AppBar>
 

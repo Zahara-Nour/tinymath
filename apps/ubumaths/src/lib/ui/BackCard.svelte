@@ -22,7 +22,7 @@
 	export let width = 0
 	export let correction = false
 	export let detailedCorrection: Line[] = []
-	const classBtnIconMagnify = 'btn magnify-icon aspect-square rounded-full'
+	const classBtnIconMagnify = 'btn aspect-square rounded-full'
 
 	function getSolution(card: AnsweredQuestion) {
 		let nSol = -1

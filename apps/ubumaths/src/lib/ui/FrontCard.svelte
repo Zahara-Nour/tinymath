@@ -26,7 +26,7 @@
 	export let detailedCorrection: Line[] = []
 	export let immediateCommit = false
 	export let flashcard = false
-	const classBtnIconMagnify = 'btn magnify-icon aspect-square  rounded-full'
+	const classBtnIconMagnify = 'btn aspect-square  rounded-full'
 
 	$: description = $formatLatexToHtml(formatToLatex(card.description))
 	$: subdescription = $formatLatexToHtml(formatToLatex(card.subdescription))

@@ -182,7 +182,7 @@
 
 <Drawer><Navigation {drawerClose} /></Drawer>
 
-<AppShell on:scroll={scrollHandler}>
+<AppShell on:scroll={scrollHandler} slotSidebarLeft="bg-surface-100-800-token">
 	<svelte:fragment slot="header">
 		{#if !url.includes('dashboard')}
 			<TobBar {drawerOpen} />

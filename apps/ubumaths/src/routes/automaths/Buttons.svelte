@@ -9,6 +9,7 @@
 	import IconRocket from '$lib/icones/IconRocket.svelte'
 	import IconRun from '$lib/icones/IconRun.svelte'
 	import IconTrash from '$lib/icones/IconTrash.svelte'
+	import { user } from '$lib/stores'
 	import type { Basket } from '$lib/type'
 
 	export let showBasket = false
@@ -39,11 +40,21 @@
 <div class="py-3 flex flex-wrap sticky   bg-surface-50-900-token  top-0">
 	<div class="grow" />
 
-	<button on:click={copyLink} class={classNotSelected}><IconLink /></button>
-
-	<button on:click={generateExoTexmacs} class={classNotSelected}
-		><IconNewspaper /></button
+	<button
+		on:click={toggleExemple}
+		class={displayExemple ? classSelected : classNotSelected}
+		><IconQuestion /></button
 	>
+
+	{#if $user.isTeacher()}
+		<button on:click={copyLink} class={classNotSelected}><IconLink /></button>
+	{/if}
+
+	{#if $user.isTeacher()}
+		<button on:click={generateExoTexmacs} class={classNotSelected}
+			><IconNewspaper /></button
+		>
+	{/if}
 
 	<button
 		on:click={toggleCourseAuxNombres}
@@ -51,43 +62,47 @@
 		><IconRun /></button
 	>
 
-	<button
-		on:click={toggleClassroom}
-		class={classroom ? classSelected : classNotSelected}
-		><IconProjector /></button
-	>
+	{#if $user.isTeacher()}
+		<button
+			on:click={toggleClassroom}
+			class={classroom ? classSelected : classNotSelected}
+			><IconProjector /></button
+		>
+	{/if}
 
 	<button
 		on:click={toggleFlash}
 		class={flash ? classSelected : classNotSelected}><IconFlash /></button
 	>
 
-	<button
-		on:click={toggleExemple}
-		class={displayExemple ? classSelected : classNotSelected}
-		><IconQuestion /></button
-	>
+	{#if $user.isTeacher()}
+		<button on:click={fillBasket} class={classNotSelected}
+			><IconBasketPlus /></button
+		>
+	{/if}
 
-	<button on:click={fillBasket} class={classNotSelected}
-		><IconBasketPlus /></button
-	>
+	{#if $user.isTeacher()}
+		<button on:click={flushBasket} class={classNotSelected}
+			><IconTrash /></button
+		>
+	{/if}
 
-	<button on:click={flushBasket} class={classNotSelected}><IconTrash /></button>
-
-	<div class="relative inline-block">
-		{#if basket.length}
-			<span class={'badge variant-filled-error absolute -top-2 -right-1 z-1'}
-				>{basket.reduce((acc, item) => acc + item.count, 0)}</span
-			>
-		{/if}
-		<span>
-			<button
-				on:click={toggleBasket}
-				class={showBasket ? classSelected : classNotSelected}
-				><IconBasket /></button
-			>
-		</span>
-	</div>
+	{#if $user.isTeacher()}
+		<div class="relative inline-block">
+			{#if basket.length}
+				<span class={'badge variant-filled-error absolute -top-2 -right-1 z-1'}
+					>{basket.reduce((acc, item) => acc + item.count, 0)}</span
+				>
+			{/if}
+			<span>
+				<button
+					on:click={toggleBasket}
+					class={showBasket ? classSelected : classNotSelected}
+					><IconBasket /></button
+				>
+			</span>
+		</div>
+	{/if}
 
 	<button on:click={launchTest} class={classNotSelected}><IconRocket /></button>
 </div>

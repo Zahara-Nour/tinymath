@@ -1,5 +1,5 @@
 <script>
-	export let size = '1.2em'
+	export let size = '1.1em'
 	export let stroke = 'currentColor'
 </script>
 

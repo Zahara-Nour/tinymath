@@ -1,33 +1,20 @@
 <script lang="ts">
 	import generate from '$lib/questions/generateQuestion'
-	import { afterUpdate, onDestroy, onMount, setContext } from 'svelte'
+	import { onDestroy, setContext } from 'svelte'
 	import datas, { getQuestion } from '$lib/questions/questions.js'
 	import { convertToTime, getLogger, shuffle } from '$lib/utils'
 	import { createTimer } from '$lib/timer'
 	import { page } from '$app/stores'
-	import {
-		virtualKeyboardMode,
-		touchDevice,
-		mathliveReady,
-		fontSize,
-	} from '$lib/stores'
+	import { virtualKeyboardMode, touchDevice, mathliveReady } from '$lib/stores'
 
 	import Correction from './Correction.svelte'
-	import type {
-		AnsweredQuestion,
-		Basket,
-		Commit,
-		CorrectedQuestion,
-		Time,
-		Timer,
-	} from '$lib/type'
+	import type { AnsweredQuestion, Basket, Commit, Time, Timer } from '$lib/type'
 	import Spinner from '$lib/ui/Spinner.svelte'
 	import QuestionCard from '$lib/ui/QuestionCard.svelte'
 	import CircularProgress from '$lib/ui/CircularProgress.svelte'
 	import {
 		assessItem,
 		prepareAnsweredQuestion,
-		prepareCorrectedQuestion,
 	} from '$lib/questions/correction'
 	import IconRocket from '$lib/icones/IconRocket.svelte'
 	import IconRestart from '$lib/icones/IconRestart.svelte'
@@ -58,8 +45,6 @@
 	let showExemple = false
 	let showCorrection = false
 	let alert = false
-	let min = 5,
-		max = 60
 	let cards: AnsweredQuestion[]
 	let card: AnsweredQuestion
 	let generatedExemple: AnsweredQuestion
@@ -88,7 +73,7 @@
 	}
 
 	const magnifyClassroom = '2em'
-	const classBtnIconMagnify = 'btn magnify-icon aspect-square  rounded-full'
+	const classBtnIconMagnify = 'btn aspect-square  rounded-full'
 
 	setContext('test-params', testParams)
 
@@ -449,10 +434,5 @@
 		/* height: 500px; */
 		/* max-height: 70vh; */
 		/* width: 100%; */
-	}
-
-	.magnify-icon {
-		font-size: 0.9em;
-		width: 1.8em;
 	}
 </style>

@@ -1,5 +1,5 @@
 <script>
-	export let size = '2em'
+	export let size = '1.1em'
 </script>
 
 <div class="${$$props.class}">

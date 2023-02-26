@@ -14,7 +14,7 @@
 		/>
 	</a>
 	<a rel="noreferrer" target="_blank" href="https://www.lyceevoltaire.org/">
-		<span>Lycée Franco-Qatarien Voltaire</span>
+		<span>Lycée Voltaire</span>
 	</a>
 	<div class="flex-grow" />
 	<span style="">D. Le Jolly</span>

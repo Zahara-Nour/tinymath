@@ -2,10 +2,8 @@
 	export let number: number
 	export let percentage: number
 	export let pulse = false
+	export let size = 5
 
-	let sqSize: number
-	let radius: number
-	let viewBox
 	let dashArray: number
 	let dashOffset: number
 
@@ -53,13 +51,10 @@
 	]
 	let color = gradient[0]
 
+	$: radius = size / 3.5
 	// Size of the enclosing square
 	// SVG centers the stroke width on the radius, subtract out so circle fits in square
 	//   const sqSize = sqSize
-
-	$: sqSize = 3.5
-
-	$: radius = 1
 
 	// Arc length at 100% coverage is the circle circumference
 	$: dashArray = radius * Math.PI * 2
@@ -67,12 +62,13 @@
 	$: dashOffset = dashArray - (dashArray * percentage) / 100
 
 	$: color = gradient[Math.floor(((100 - percentage) / 100) * 40)]
+	$: strokeWidth = size / 9
 </script>
 
 <div
-	style=" --theme-color: {color};position: relative;display: inline-block;text-align: center;color:black;"
+	style="position: relative;display: inline-block;text-align: center;color:black;"
 >
-	<svg width={`${sqSize}em`} height={`${sqSize}em`}>
+	<svg width={`${size}em`} height={`${size}em`}>
 		<circle
 			class={pulse ? 'pulse' : 'nopulse'}
 			cx="50%"
@@ -85,7 +81,7 @@
 			r={`${radius}em`}
 			stroke="#ddd"
 			fill="white"
-			stroke-width="0.4em"
+			stroke-width={`${strokeWidth}em`}
 		/>
 		<circle
 			class="circle-progress"
@@ -94,14 +90,16 @@
 			r={`${radius}em`}
 			fill="none"
 			stroke={color}
-			stroke-width="0.4em"
+			stroke-width={`${strokeWidth}em`}
 			stroke-dasharray={`${dashArray}em`}
 			stroke-dashoffset={`${dashOffset}em`}
 		/>
 	</svg>
 	<div
 		class="font-bold"
-		style={`font-size:1.4em;position: absolute;left: 50%;top: 50%;transform: translate(-50%, -60%);font-family:'pacifico'`}
+		style={`font-size:${
+			size / 3
+		}em;position: absolute;left: 50%;top: 50%;transform: translate(-50%, -60%);font-family:'pacifico'`}
 	>
 		{number}
 	</div>

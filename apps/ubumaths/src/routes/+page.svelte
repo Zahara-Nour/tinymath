@@ -6,11 +6,14 @@
 </script>
 
 <div
-	class="container h-full mx-auto flex flex-col justify-center items-center space-y-20 text-center"
+	class="container p-4 h-full mx-auto flex flex-col justify-center items-center space-y-20 text-center "
 >
-	<h1 class="font-bold" style="font-family: 'Averia Serif Libre', sans-serif;">
-		Les maths de la chandelle <span class="text-primary-500">verte</span>
-	</h1>
+	<h2 class="font-bold" style="font-family: 'Averia Serif Libre', sans-serif;">
+		<div class="my-2">Ubumaths</div>
+		<div>
+			Les maths de la chandelle <span class="text-primary-500">verte</span>
+		</div>
+	</h2>
 	<!-- Animated Logo -->
 
 	<figure>
@@ -187,7 +190,7 @@
 	}
 	figure svg,
 	.img-bg {
-		@apply w-64 h-64 md:w-80 md:h-80;
+		@apply w-60 h-60;
 	}
 	.img-bg {
 		@apply absolute z-[-1] rounded-full blur-[50px] transition-all;

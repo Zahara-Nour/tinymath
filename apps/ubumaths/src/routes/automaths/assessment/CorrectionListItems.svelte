@@ -20,11 +20,11 @@
 	<div class="w-full flex justify-start items-start mb-5">
 		<div
 			class="relative mr-0"
-			style={`font-family:'pacifico';color:white;background:${color}; border-radius: 50%;width:2em; height:2em`}
+			style={`font-family:'pacifico';color:white;background:${color}; border-radius: 50%;width:2.5em; height:2.5em`}
 		>
 			<span
 				class="absolute"
-				style="font-size:1.5em;display:inline-block; top: 50%;left: 50%;transform: translate(-50%, -60%);margin: 0;"
+				style="font-size:1.8em;display:inline-block; top: 50%;left: 50%;transform: translate(-50%, -60%);margin: 0;"
 			>
 				{item.num}
 			</span>
