@@ -132,11 +132,11 @@ z-index:100"
 			<div class="flex flex-col items-center justify-around h-full">
 				<button
 					on:click={() => (restart = true)}
-					class="my-2 btn-icon variant-filled-primary  text-2xl"
+					class="text-black bg-white my-2 btn-icon   text-2xl"
 					><IconReload /></button
 				>
 				<a href={`/automaths${query}`}>
-					<button class="my-2 btn-icon variant-filled-primary  text-2xl"
+					<button class="text-black bg-white my-2 btn-icon   text-2xl"
 						><IconHome /></button
 					>
 				</a>
