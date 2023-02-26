@@ -1,1 +1,1 @@
-import '$lib/supabaseClients'
+import '$lib/db'

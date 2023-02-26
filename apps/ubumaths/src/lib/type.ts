@@ -335,3 +335,32 @@ export type Commit = {
 	hook?: () => void
 	exec: () => void
 }
+
+export type ExtraInfo = {
+	firstname?: string
+	lastname?: string
+	fullname?: string
+	user_id?: string | null // supabase user id
+}
+export type UserProfile = ExtraInfo & {
+	id: number // users table primary key
+	email: string
+	role: string
+	grade: string
+	classes: string[]
+	avatar?: string
+}
+
+export type User = UserProfile & {
+	isStudent: () => boolean
+	isTeacher: () => boolean
+	isAdmin: () => boolean
+	isGuest: () => boolean
+}
+
+export type addUserArg = {
+	email: string
+	role: string
+	classes: string[]
+	grade: string
+}

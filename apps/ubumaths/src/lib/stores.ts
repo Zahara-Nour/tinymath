@@ -1,12 +1,24 @@
 // global store
 import type { MathfieldElement } from 'tinymathlive'
 import { get, writable, type Writable } from 'svelte/store'
-import type { FormatToHtmlArg } from './type'
+import type { FormatToHtmlArg, User } from './type'
 import { isObjectWithText } from './utils'
 import { getLogger } from '$lib/utils'
 let { info, fail, warn } = getLogger('store', 'info')
 import { browser, building, dev, version } from '$app/environment'
 
+export const guest: User = {
+	id: '',
+	email: '',
+	roles: [],
+	avatar: '',
+	isStudent: () => false,
+	isTeacher: () => false,
+	isAdmin: () => false,
+	isGuest: () => true,
+}
+export const user: Writable<User> = writable(guest)
+export const connected = writable(false)
 export const storedGrade = writable('')
 export const fontSize = writable(16)
 export const touchDevice = writable(false)

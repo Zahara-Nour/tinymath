@@ -295,51 +295,54 @@ export interface Database {
       users: {
         Row: {
           assessments: number[] | null
-          classes: string[] | null
+          classes: string[]
           created_at: string | null
-          email: string | null
-          firstname: string | null
-          grade: string | null
+          email: string
+          firstname: string
+          fullname: string
+          grade: string
           id: number
-          lastname: string | null
+          lastname: string
           others: number[] | null
-          roles: string[] | null
-          schoolId: number | null
-          teacherId: number | null
+          role: string
+          school_id: number | null
+          teacher_id: number | null
           updated_at: string | null
-          userId: string | null
+          user_id: string | null
         }
         Insert: {
           assessments?: number[] | null
-          classes?: string[] | null
+          classes?: string[]
           created_at?: string | null
-          email?: string | null
-          firstname?: string | null
-          grade?: string | null
+          email?: string
+          firstname?: string
+          fullname?: string
+          grade?: string
           id?: number
-          lastname?: string | null
+          lastname?: string
           others?: number[] | null
-          roles?: string[] | null
-          schoolId?: number | null
-          teacherId?: number | null
+          role: string
+          school_id?: number | null
+          teacher_id?: number | null
           updated_at?: string | null
-          userId?: string | null
+          user_id?: string | null
         }
         Update: {
           assessments?: number[] | null
-          classes?: string[] | null
+          classes?: string[]
           created_at?: string | null
-          email?: string | null
-          firstname?: string | null
-          grade?: string | null
+          email?: string
+          firstname?: string
+          fullname?: string
+          grade?: string
           id?: number
-          lastname?: string | null
+          lastname?: string
           others?: number[] | null
-          roles?: string[] | null
-          schoolId?: number | null
-          teacherId?: number | null
+          role?: string
+          school_id?: number | null
+          teacher_id?: number | null
           updated_at?: string | null
-          userId?: string | null
+          user_id?: string | null
         }
       }
     }

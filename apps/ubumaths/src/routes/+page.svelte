@@ -1,29 +1,16 @@
 <script lang="ts">
-	import { enhance, type SubmitFunction } from '$app/forms'
-	import { supabaseClient } from '$lib/supabaseClients'
+	import IconUsers from '$lib/icones/IconUsers.svelte'
 	import type { PageData } from './$types'
 
 	export let data: PageData
-
-	$: console.log('data.session', data.session)
 </script>
 
 <div
 	class="container h-full mx-auto flex flex-col justify-center items-center space-y-20 text-center"
 >
-	<h1 class="font-bold" style="font-family: 'Baloo 2', sans-serif;">
+	<h1 class="font-bold" style="font-family: 'Averia Serif Libre', sans-serif;">
 		Les maths de la chandelle <span class="text-primary-500">verte</span>
 	</h1>
-
-	{#if data.session}
-		<p>Welcome back, {data.session.user.email}!</p>
-	{:else}
-		<div class="auth-buttons">
-			<a href="/login" class="btn variant-filled-primary">Login</a>
-			<a href="/register" class="btn variant-filled-primary">Register</a>
-		</div>
-	{/if}
-
 	<!-- Animated Logo -->
 
 	<figure>

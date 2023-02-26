@@ -9,6 +9,7 @@
 		CorrectedQuestion,
 		Line,
 	} from '$lib/type'
+	import IconOrbitVariant from '$lib/icones/IconOrbitVariant.svelte'
 
 	export let toggleFlip = () => {}
 	export let card: AnsweredQuestion
@@ -97,13 +98,13 @@
 				<button
 					on:click={toggleFlip}
 					class={classBtnIconMagnify + ' variant-filled-primary'}
-					><iconify-icon icon="mdi:orbit-variant" /></button
+					><IconOrbitVariant /></button
 				>
 			{:else}
 				<button
 					style="visibility:hidden;"
 					class={classBtnIconMagnify + ' variant-filled-primary'}
-					><iconify-icon icon="mdi:orbit-variant" /></button
+					><IconOrbitVariant /></button
 				>
 			{/if}
 		</footer>

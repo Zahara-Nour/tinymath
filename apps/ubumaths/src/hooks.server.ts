@@ -1,4 +1,4 @@
-import '$lib/supabaseClients'
+import '$lib/db'
 import { getSupabase } from '@supabase/auth-helpers-sveltekit'
 import type { Handle } from '@sveltejs/kit'
 

@@ -1,7 +1,6 @@
 <script lang="ts">
 	// import Spinner from './Spinner.svelte'
 	import math from 'tinycas'
-	import 'iconify-icon'
 	import { formatLatexToHtml } from '$lib/stores'
 	import { correct_color } from '$lib/colors'
 	import CorrectionLine from './CorrectionLine.svelte'
@@ -13,6 +12,7 @@
 		type Line,
 	} from '$lib/type'
 	import { magnify_3xl } from '$lib/utils'
+	import IconOrbitVariant from '$lib/icones/IconOrbitVariant.svelte'
 
 	export let card: AnsweredQuestion
 	export let toggleFlip = () => {}
@@ -149,7 +149,7 @@
 			<button
 				on:click={toggleFlip}
 				class={classBtnIconMagnify + ' variant-filled-primary'}
-				><iconify-icon icon="mdi:orbit-variant" /></button
+				><IconOrbitVariant /></button
 			>
 		</footer>
 	</div>

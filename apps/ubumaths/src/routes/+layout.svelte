@@ -4,8 +4,13 @@
 	import '@skeletonlabs/skeleton/styles/all.css'
 	import '../app.postcss'
 	import { page } from '$app/stores'
-	import { AppShell } from '@skeletonlabs/skeleton'
-	import { prepareMathlive, touchDevice } from '$lib/stores'
+	import {
+		AppShell,
+		Toast,
+		toastStore,
+		type ToastSettings,
+	} from '@skeletonlabs/skeleton'
+	import { guest, prepareMathlive, touchDevice, user } from '$lib/stores'
 	import TobBar from '$lib/ui/TobBar.svelte'
 	import links from '$lib/navlinks'
 	import PageHeader from '$lib/ui/PageHeader.svelte'
@@ -13,9 +18,14 @@
 	import Navigation from '$lib/ui/Navigation.svelte'
 	import { Drawer, drawerStore } from '@skeletonlabs/skeleton'
 	import { onMount } from 'svelte'
-	import { getLogger } from '$lib/utils'
-	import { supabaseClient } from '$lib/supabaseClients'
-	import { invalidate, invalidateAll } from '$app/navigation'
+	import { getLogger, isEmptyObject } from '$lib/utils'
+	import {
+		addUser,
+		getUserByEmail,
+		supabaseClient,
+		updateUserInfo,
+	} from '$lib/db'
+	import { goto, invalidate, invalidateAll } from '$app/navigation'
 	import type { PageData } from './$types'
 	import {
 		computePosition,
@@ -26,6 +36,9 @@
 		arrow,
 	} from '@floating-ui/dom'
 	import { storePopup } from '@skeletonlabs/skeleton'
+	import type { Session } from '@supabase/supabase-js'
+	import type { ExtraInfo, User, UserProfile } from '$lib/type'
+	import { createUser } from '$lib/users'
 
 	type ScrollEvent = UIEvent & { currentTarget: EventTarget & HTMLDivElement }
 
@@ -64,14 +77,89 @@
 		}
 	})
 
+	// poper store initialized with Floating UI
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow })
 
 	$: url = $page.url.pathname
 	$: setPageHeader(url)
+	$: authorize(data.session)
 
 	function setPageHeader(url: string) {
 		const link = links.find((l) => url.includes(l.url))
 		header = link ? link.text : ''
+	}
+
+	async function authorize(session: Session | null) {
+		if (session && $user.isGuest()) {
+			info('User is signed in.')
+			console.log('session', session)
+
+			if (
+				!session.user.email?.includes('voltairedoha.com') &&
+				session.user.email !== 'zahara.alnour@gmail.com'
+			) {
+				toastStore.trigger({
+					message:
+						"Désolé mais Ubumaths est réservé pour l'instant aux élèves du lycée Voltaire de Doha.",
+					background: 'bg-error-500',
+					autohide: true,
+					timeout: 10000,
+				})
+				supabaseClient.auth.signOut()
+			} else {
+				// get user data from supabase
+				const { data, error } = await getUserByEmail(session.user.email)
+
+				if (error) {
+					fail(error.message)
+					toastStore.trigger({
+						message: "Les données utilisateurs n'ont pu être récupérées.",
+						background: 'bg-error-500',
+					})
+				} else if (!data) {
+					toastStore.trigger({
+						message:
+							"Le compte n'existe pas. Il faut demander à M. Le Jolly de le créer.",
+						background: 'bg-error-500',
+					})
+				} else {
+					// update user data in supabase
+					const extraInfo: ExtraInfo = {}
+					if (!data.firstname && session.user.user_metadata.firstname)
+						extraInfo.firstname = session.user.user_metadata.firstname
+					if (!data.lastname && session.user.user_metadata.lastname)
+						extraInfo.lastname = session.user.user_metadata.firstname
+					if (!data.fullname && session.user.user_metadata.full_name)
+						extraInfo.fullname = session.user.user_metadata.full_name
+					if (!data.user_id) extraInfo.user_id = session.user.id
+					if (!isEmptyObject(extraInfo)) {
+						const { error } = await updateUserInfo(data.id, extraInfo)
+						if (error) {
+							warn(error.message)
+							toastStore.trigger({
+								message: "Les données utilisateurs n'ont pu être mises à jour.",
+								background: 'bg-warning-500',
+							})
+						}
+					}
+
+					const u = createUser({
+						...data,
+						...extraInfo,
+						avatar: session.user.user_metadata.avatar_url,
+					})
+					user.set(u)
+					toastStore.trigger({
+						message: `Bienvenue ${u.firstname || u.fullname || u.email}`,
+						background: 'bg-success-500',
+					})
+					console.log('u', u)
+				}
+			}
+		} else if (!session && !$user.isGuest()) {
+			user.set(guest)
+			info('User is not signed in.')
+		}
 	}
 
 	function scrollHandler(event: Event) {
@@ -87,14 +175,21 @@
 	}
 </script>
 
+<svelte:head>
+	<title>UbuMaths - Les maths de la chandelle verte</title>
+	<meta />
+</svelte:head>
+
 <Drawer><Navigation {drawerClose} /></Drawer>
 
 <AppShell on:scroll={scrollHandler}>
 	<svelte:fragment slot="header">
-		<TobBar {drawerOpen} session={data.session} />
+		{#if !url.includes('dashboard')}
+			<TobBar {drawerOpen} />
+		{/if}
 	</svelte:fragment>
 	<svelte:fragment slot="sidebarLeft">
-		{#if !url.includes('assessment')}
+		{#if !url.includes('assessment') && !url.includes('dashboard')}
 			<div id="sidebar-left" class="hidden lg:block lg:w-60">
 				<Navigation />
 			</div>
@@ -117,7 +212,4 @@
 	</svelte:fragment>
 </AppShell>
 
-<svelte:head>
-	<title>UbuMaths - Les maths de la chandelle verte</title>
-	<meta />
-</svelte:head>
+<Toast />

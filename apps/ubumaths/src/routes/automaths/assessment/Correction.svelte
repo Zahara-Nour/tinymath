@@ -10,6 +10,9 @@
 		STATUS_UNOPTIMAL_FORM,
 	} from '$lib/questions/correction'
 	import type { CorrectedQuestion } from '$lib/type'
+	import IconHome from '$lib/icones/IconHome.svelte'
+	import IconScan from '$lib/icones/IconScan.svelte'
+	import IconReload from '$lib/icones/IconReload.svelte'
 
 	export let items: CorrectedQuestion[]
 	export let restart
@@ -100,7 +103,7 @@ z-index:100"
 	{/if}
 	<div class="my-3 flex justify-end">
 		<button on:click={toggleDetails} class="btn-icon variant-filled-primary"
-			><iconify-icon icon="mdi:scan-helper" /></button
+			><IconScan /></button
 		>
 	</div>
 
@@ -130,11 +133,11 @@ z-index:100"
 				<button
 					on:click={() => (restart = true)}
 					class="my-2 btn-icon variant-filled-primary  text-2xl"
-					><iconify-icon icon="mdi:reload" /></button
+					><IconReload /></button
 				>
 				<a href={`/automaths${query}`}>
 					<button class="my-2 btn-icon variant-filled-primary  text-2xl"
-						><iconify-icon icon="mdi:home" /></button
+						><IconHome /></button
 					>
 				</a>
 			</div>

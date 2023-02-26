@@ -1,4 +1,14 @@
 <script lang="ts">
+	import IconBasket from '$lib/icones/IconBasket.svelte'
+	import IconBasketPlus from '$lib/icones/IconBasketPlus.svelte'
+	import IconFlash from '$lib/icones/IconFlash.svelte'
+	import IconLink from '$lib/icones/IconLink.svelte'
+	import IconNewspaper from '$lib/icones/IconNewspaper.svelte'
+	import IconProjector from '$lib/icones/IconProjector.svelte'
+	import IconQuestion from '$lib/icones/IconQuestion.svelte'
+	import IconRocket from '$lib/icones/IconRocket.svelte'
+	import IconRun from '$lib/icones/IconRun.svelte'
+	import IconTrash from '$lib/icones/IconTrash.svelte'
 	import type { Basket } from '$lib/type'
 
 	export let showBasket = false
@@ -29,45 +39,40 @@
 <div class="py-3 flex flex-wrap sticky   bg-surface-50-900-token  top-0">
 	<div class="grow" />
 
-	<button on:click={copyLink} class={classNotSelected}
-		><iconify-icon icon="mdi:link" /></button
-	>
+	<button on:click={copyLink} class={classNotSelected}><IconLink /></button>
 
 	<button on:click={generateExoTexmacs} class={classNotSelected}
-		><iconify-icon icon="mdi:newspaper-variant-outline" /></button
+		><IconNewspaper /></button
 	>
 
 	<button
 		on:click={toggleCourseAuxNombres}
 		class={courseAuxNombres ? classSelected : classNotSelected}
-		><iconify-icon icon="mdi:run-fast" /></button
+		><IconRun /></button
 	>
 
 	<button
 		on:click={toggleClassroom}
 		class={classroom ? classSelected : classNotSelected}
-		><iconify-icon icon="mdi:projector-screen" /></button
+		><IconProjector /></button
 	>
 
 	<button
 		on:click={toggleFlash}
-		class={flash ? classSelected : classNotSelected}
-		><iconify-icon icon="mdi:flash" /></button
+		class={flash ? classSelected : classNotSelected}><IconFlash /></button
 	>
 
 	<button
 		on:click={toggleExemple}
 		class={displayExemple ? classSelected : classNotSelected}
-		><iconify-icon icon="mdi:help" /></button
+		><IconQuestion /></button
 	>
 
 	<button on:click={fillBasket} class={classNotSelected}
-		><iconify-icon icon="mdi:basket-plus" /></button
+		><IconBasketPlus /></button
 	>
 
-	<button on:click={flushBasket} class={classNotSelected}
-		><iconify-icon icon="mdi:trash-can-outline" /></button
-	>
+	<button on:click={flushBasket} class={classNotSelected}><IconTrash /></button>
 
 	<div class="relative inline-block">
 		{#if basket.length}
@@ -79,12 +84,10 @@
 			<button
 				on:click={toggleBasket}
 				class={showBasket ? classSelected : classNotSelected}
-				><iconify-icon icon="mdi:basket" /></button
+				><IconBasket /></button
 			>
 		</span>
 	</div>
 
-	<button on:click={launchTest} class={classNotSelected}
-		><iconify-icon icon="mdi:rocket-launch-outline" /></button
-	>
+	<button on:click={launchTest} class={classNotSelected}><IconRocket /></button>
 </div>

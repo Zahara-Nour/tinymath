@@ -1,32 +1,16 @@
 <script lang="ts">
-	import {
-		AppBar,
-		Avatar,
-		popup,
-		type PopupSettings,
-	} from '@skeletonlabs/skeleton'
+	import { AppBar, popup } from '@skeletonlabs/skeleton'
 	import { LightSwitch } from '@skeletonlabs/skeleton'
 	import { fontSize } from '$lib/stores'
 	import links from '$lib/navlinks'
 	import { page } from '$app/stores'
 	import { get } from 'svelte/store'
-	import type { Session } from '@supabase/supabase-js'
-	import { enhance, type SubmitFunction } from '$app/forms'
-	import { supabaseClient } from '$lib/supabaseClients'
+	import Burger from './Burger.svelte'
+	import UserAvatar from './UserAvatar.svelte'
+	import IconIncrease from '$lib/icones/IconIncrease.svelte'
+	import IconDecrease from '$lib/icones/IconDecrease.svelte'
 
 	export let drawerOpen: () => void
-	export let session: Session | null
-	// if JS enabled, we'll use this to submit the logout form
-	let submitLogout: SubmitFunction = async ({ cancel }) => {
-		const { error } = await supabaseClient.auth.signOut()
-		if (error) {
-			console.log(error)
-		}
-		// prevent the form submission from actually going through
-		cancel()
-	}
-
-	$: if (session) console.log('session', session.user.user_metadata.avatar_url)
 
 	function increase() {
 		const newSize = get(fontSize) + 1
@@ -48,15 +32,7 @@
 			alt="gidouille"
 			class="hidden lg:inline-block lg:w-8 lg:mr-4"
 		/>
-		<button class="lg:hidden btn btn-sm mr-4" on:click={drawerOpen}>
-			<span>
-				<svg viewBox="0 0 100 80" class="fill-token w-4 h-4">
-					<rect width="100" height="20" />
-					<rect y="30" width="100" height="20" />
-					<rect y="60" width="100" height="20" />
-				</svg>
-			</span>
-		</button>
+		<Burger handleClick={drawerOpen} />
 		<div class="inline-block">
 			<a href="/">
 				<strong
@@ -94,76 +70,13 @@
 		</div>
 	</svelte:fragment>
 	<svelte:fragment slot="trail">
-		{#if session}
-			<span
-				use:popup={{
-					event: 'click',
-					target: 'avatarMenu',
-					placement: 'bottom',
-				}}
-			>
-				<Avatar
-					border="border-4 border-surface-300-600-token hover:!border-primary-500"
-					cursor="cursor-pointer"
-					src={session.user.user_metadata.avatar_url}
-				/>
-			</span>
-			<div
-				class="card variant-filled-surface p-2 shadow-xl"
-				data-popup="avatarMenu"
-			>
-				<nav class="list-nav">
-					<!-- (optionally you can provde a label here) -->
-					<ul>
-						<li>
-							<form action="/logout" method="POST" use:enhance={submitLogout}>
-								<button type="submit" class="btn variant-filled-error"
-									>Logout</button
-								>
-							</form>
-						</li>
-						<li>
-							<a href="/profile">
-								<span class="flex-auto">Profile</span>
-							</a>
-						</li>
-					</ul>
-				</nav>
-			</div>
-		{:else}
-			<span
-				use:popup={{
-					event: 'click',
-					target: 'loginMenu',
-					placement: 'bottom',
-				}}
-			>
-				<button class={'text-xl btn-icon variant-filled-primary'}
-					><iconify-icon icon="fa:user-circle-o" />
-				</button>
-			</span>
-			<div
-				class="card variant-filled-surface p-2 shadow-xl"
-				data-popup="loginMenu"
-			>
-				<nav class="list-nav">
-					<!-- (optionally you can provde a label here) -->
-					<ul>
-						<li>
-							<a href="/login">
-								<span class="flex-auto">Connexion</span>
-							</a>
-						</li>
-					</ul>
-				</nav>
-			</div>
-		{/if}
+		<UserAvatar />
 
 		<button on:click={decrease} class="text-xl btn-icon variant-filled-primary"
-			><iconify-icon icon="mdi:format-font-size-decrease" /></button
+			><IconDecrease /></button
 		>
 		<button on:click={increase} class="text-xl btn-icon variant-filled-primary"
-			><iconify-icon icon="mdi:format-font-size-increase" /></button
+			><IconIncrease /></button
 		>
 		<LightSwitch />
 	</svelte:fragment>

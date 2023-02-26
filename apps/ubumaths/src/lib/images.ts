@@ -1,4 +1,4 @@
-import { supabaseClient } from '$lib/supabaseClients'
+import { supabaseClient } from '$lib/db'
 import { getLogger } from '$lib/utils'
 let { info, fail, warn } = getLogger('images', 'info')
 import { browser } from '$app/environment'

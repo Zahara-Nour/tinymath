@@ -1,7 +1,35 @@
 <script lang="ts">
+	import { enhance, type SubmitFunction } from '$app/forms'
+	import { supabaseClient } from '$lib/db'
+	import type { Provider } from '@supabase/supabase-js'
 	import type { ActionData } from './$types'
 
 	export let form: ActionData
+
+	const signInWithProvider = async (provider: Provider) => {
+		console.log('login')
+		const { data, error } = await supabaseClient.auth.signInWithOAuth({
+			provider: provider,
+		})
+		console.log('data', data)
+	}
+
+	const submitSocialLogin: SubmitFunction = async ({ action, cancel }) => {
+		switch (action.searchParams.get('provider')) {
+			case 'google':
+				await signInWithProvider('google')
+				break
+			case 'discord':
+				await signInWithProvider('discord')
+				break
+			case 'github':
+				await signInWithProvider('github')
+				break
+			default:
+				break
+		}
+		cancel()
+	}
 </script>
 
 <main>
@@ -16,7 +44,7 @@
 		<input type="password" name="password" />
 		<button type="submit" class="btn btn-primary">Login</button>
 	</form>
-	<form class="socials" method="POST">
+	<form class="socials" method="POST" use:enhance={submitSocialLogin}>
 		<button formaction="?/login&provider=github" class="btn btn-ghost"
 			>Github</button
 		>

@@ -9,6 +9,8 @@
 	} from '$lib/questions/correction'
 	import type { Basket } from '$lib/type'
 	import QuestionCard from '$lib/ui/QuestionCard.svelte'
+	import IconPlus from '$lib/icones/IconPlus.svelte'
+	import IconMinus from '$lib/icones/IconMinus.svelte'
 
 	export let basket: Basket
 	export let courseAuxNombres = false
@@ -78,13 +80,13 @@
 							<button
 								on:click={() => removeItem(i)}
 								class="mx-1 btn-icon variant-filled-primary"
-								><iconify-icon icon="mdi:minus" /></button
+								><IconMinus /></button
 							>
 							{#if !courseAuxNombres}
 								<button
 									on:click={() => addItem(i)}
 									class="mx-1 btn-icon variant-filled-primary"
-									><iconify-icon icon="mdi:plus" /></button
+									><IconPlus /></button
 								>
 							{/if}
 						</div>
@@ -98,12 +100,12 @@
 								<button
 									on:click={() => lessTime(i)}
 									class="mx-1 btn-icon variant-filled-primary"
-									><iconify-icon icon="mdi:minus" /></button
+									><IconMinus /></button
 								>
 								<button
 									on:click={() => moreTime(i)}
 									class="mx-1 btn-icon variant-filled-primary"
-									><iconify-icon icon="mdi:plus" /></button
+									><IconPlus /></button
 								>
 							</div>
 						{/if}

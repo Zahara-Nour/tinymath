@@ -29,6 +29,10 @@
 		prepareAnsweredQuestion,
 		prepareCorrectedQuestion,
 	} from '$lib/questions/correction'
+	import IconRocket from '$lib/icones/IconRocket.svelte'
+	import IconRestart from '$lib/icones/IconRestart.svelte'
+	import IconKeyboard from '$lib/icones/IconKeyboard.svelte'
+	import IconHome from '$lib/icones/IconHome.svelte'
 
 	const ids = datas.ids
 	let { info, fail, trace } = getLogger('Assessment', 'trace')
@@ -297,12 +301,12 @@
 				<button
 					on:click={generateExemple}
 					class={classBtnIconMagnify + ' variant-filled-primary mx-2'}
-					><iconify-icon icon="mdi:restart" /></button
+					><IconRestart /></button
 				>
 				<button
 					on:click={beginTest}
 					class={classBtnIconMagnify + ' variant-filled-primary mx-2'}
-					><iconify-icon icon="mdi:rocket-launch-outline" /></button
+					><IconRocket /></button
 				>
 			</div>
 		</div>
@@ -402,8 +406,7 @@
 							class={'btn-icon ' +
 								($virtualKeyboardMode
 									? 'variant-filled-primary'
-									: 'variant-filled-tertiary')}
-							><iconify-icon icon="mdi:keyboard" /></button
+									: 'variant-filled-tertiary')}><IconKeyboard /></button
 						>
 					{/if}
 					<div class="flex grow" />
@@ -426,9 +429,7 @@
 			</div>
 			<div>
 				<a href={`/automaths${query}`}>
-					<button class="btn-icon variant-filled-primary"
-						><iconify-icon icon="mdi:home" /></button
-					>
+					<button class="btn-icon variant-filled-primary"><IconHome /></button>
 				</a>
 			</div>
 		</div>
