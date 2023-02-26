@@ -62,6 +62,7 @@ import {
 	isSum,
 	isSymbol,
 	isTan,
+	isTemplate,
 	isTime,
 	isUnequality,
 	LogN,
@@ -905,19 +906,27 @@ export default function normalize(node: Node): Normal {
 
 	if (isIncorrectExp(node)) {
 		e = createNotDefinedNormal('Incorrect expression')
-	} else if (isLimit(node)) {
+	}
+	// Limit
+	else if (isLimit(node)) {
 		n = nSum([[coefOne(), createBase(node)]])
 		d = nSumOne()
-	} else if (isTime(node)) {
+	}
+	// Time
+	else if (isTime(node)) {
 		const children = node.children.map((c) => c.normal)
 		e = children.pop() as Normal
 		while (children.length) {
 			e = e.add(children.pop() as Normal)
 		}
-	} else if (isBoolean(node)) {
+	}
+	// Boolean
+	else if (isBoolean(node)) {
 		n = nSum([[coefOne(), createBase(node)]])
 		d = nSumOne()
-	} else if (isNumber(node)) {
+	}
+	// Number
+	else if (isNumber(node)) {
 		if (node.isInt()) {
 			n = nSum([[simpleCoef(number(node.value)), baseOne()]])
 			d = nSumOne()
@@ -925,11 +934,17 @@ export default function normalize(node: Node): Normal {
 			// on convertit le float en fraction
 			e = math(fraction(node).toString()).normal
 		}
-	} else if (isPower(node)) {
+	}
+	// Power
+	else if (isPower(node)) {
 		e = node.first.normal.pow(node.last.normal)
-	} else if (isRadical(node)) {
+	}
+	// Radical
+	else if (isRadical(node)) {
 		e = node.first.normal.pow(number(0.5).normal)
-	} else if (isCos(node)) {
+	}
+	// Cos
+	else if (isCos(node)) {
 		const childNormal = node.children[0].normal
 		const child = childNormal.node
 
@@ -970,7 +985,9 @@ export default function normalize(node: Node): Normal {
 				n = nSum([[coefOne(), createBase(base)]])
 			}
 		}
-	} else if (isSin(node)) {
+	}
+	// Sin
+	else if (isSin(node)) {
 		const childNormal = node.children[0].normal
 		const child = childNormal.node
 
@@ -1016,7 +1033,9 @@ export default function normalize(node: Node): Normal {
 				n = nSum([[coefOne(), createBase(base)]])
 			}
 		}
-	} else if (isTan(node)) {
+	}
+	// Tan
+	else if (isTan(node)) {
 		const childNormal = node.children[0].normal
 		const child = childNormal.node
 
@@ -1044,7 +1063,9 @@ export default function normalize(node: Node): Normal {
 				n = nSum([[coefOne(), createBase(base)]])
 			}
 		}
-	} else if (isLn(node)) {
+	}
+	// Ln
+	else if (isLn(node)) {
 		const childNormal = node.children[0].normal
 		const child = childNormal.node
 
@@ -1083,7 +1104,9 @@ export default function normalize(node: Node): Normal {
 				n = nSum([[coefOne(), createBase(base)]])
 			}
 		}
-	} else if (isExp(node)) {
+	}
+	// Exp
+	else if (isExp(node)) {
 		const child = node.first
 		const childNormal = child.normal
 
@@ -1107,7 +1130,9 @@ export default function normalize(node: Node): Normal {
 				n = nSum([[coefOne(), createBase(base)]])
 			}
 		}
-	} else if (isAbs(node)) {
+	}
+	// Abs
+	else if (isAbs(node)) {
 		const child = node.first
 		const childNormal = child.normal
 		if (child.isNumeric()) {
@@ -1121,7 +1146,9 @@ export default function normalize(node: Node): Normal {
 			d = nSumOne()
 			n = nSum([[coefOne(), createBase(base)]])
 		}
-	} else if (isLog(node)) {
+	}
+	// Log
+	else if (isLog(node)) {
 		const childNormal = node.children[0].normal
 		const child = childNormal.node
 
@@ -1157,7 +1184,9 @@ export default function normalize(node: Node): Normal {
 				n = nSum([[coefOne(), createBase(base)]])
 			}
 		}
-	} else if (isFloor(node)) {
+	}
+	//  Floor
+	else if (isFloor(node)) {
 		const childNormal = node.children[0].normal
 		const child = childNormal.node
 		if (child.isNumeric()) {
@@ -1167,7 +1196,9 @@ export default function normalize(node: Node): Normal {
 			d = nSumOne()
 			n = nSum([[coefOne(), createBase(base)]])
 		}
-	} else if (isPGCD(node)) {
+	}
+	// PGCD
+	else if (isPGCD(node)) {
 		const children = node.children.map((c) => c.normal.node)
 		let a = children[0]
 		let b = children[1]
@@ -1191,7 +1222,9 @@ export default function normalize(node: Node): Normal {
 			n = nSum([[coefOne(), createBase(base)]])
 			d = nSumOne()
 		}
-	} else if (isMod(node)) {
+	}
+	// Mod
+	else if (isMod(node)) {
 		const children = node.children.map((c) => c.normal.node)
 		const a = children[0]
 		const b = children[1]
@@ -1212,7 +1245,9 @@ export default function normalize(node: Node): Normal {
 			n = nSum([[coefOne(), createBase(base)]])
 			d = nSumOne()
 		}
-	} else if (isMin(node) || isMinP(node)) {
+	}
+	// Min, MinP
+	else if (isMin(node) || isMinP(node)) {
 		const children = node.children.map((c) => c.normal.node)
 		const a = children[0]
 		const b = children[1]
@@ -1223,7 +1258,9 @@ export default function normalize(node: Node): Normal {
 			n = nSum([[coefOne(), createBase(base)]])
 			d = nSumOne()
 		}
-	} else if (isMax(node) || isMaxP(node)) {
+	}
+	// MAx, MaxP
+	else if (isMax(node) || isMaxP(node)) {
 		const children = node.children.map((c) => c.normal.node)
 		const a = children[0]
 		const b = children[1]
@@ -1235,43 +1272,61 @@ export default function normalize(node: Node): Normal {
 			n = nSum([[coefOne(), createBase(base)]])
 			d = nSumOne()
 		}
-	} else if (isPercentage(node)) {
+	}
+	// Percentage
+	else if (isPercentage(node)) {
 		e = node.first.div(number(100)).normal
-	} else if (isHole(node)) {
+	}
+	// Hole
+	else if (isHole(node)) {
 		n = nSum([[coefOne(), createBase(node)]])
 		d = nSumOne()
-	} else if (isIdentifier(node)) {
+	}
+	// Identifier
+	else if (isIdentifier(node)) {
 		n = nSum([[coefOne(), createBase(node)]])
 		d = nSumOne()
-	} else if (isSymbol(node)) {
+	}
+	// Symbol
+	else if (isSymbol(node)) {
 		n = nSum([
 			[coefOne(), createBase(symbol(node.toString({ displayUnit: false })))],
 		])
 		d = nSumOne()
-	} else if (isBracket(node) || isPositive(node)) {
+	}
+	// Bracket, Positive
+	else if (isBracket(node) || isPositive(node)) {
 		e = normalize(node.first)
-	} else if (isOpposite(node)) {
+	}
+	// Opposite
+	else if (isOpposite(node)) {
 		e = node.first.normal
 		if (!e.node.isZero()) e = e.oppose() // pour ne pas avoir un -0
-	} else if (isSum(node)) {
+	}
+	// Sum
+	else if (isSum(node)) {
 		e = node.children[0].normal
 		for (let i = 1; i < node.children.length; i++) {
 			e = e.add(node.children[i].normal)
 		}
-	} else if (
-		isProduct(node) ||
-		isProductImplicit(node) ||
-		isProductPoint(node)
-	) {
+	}
+	// Product
+	else if (isProduct(node) || isProductImplicit(node) || isProductPoint(node)) {
 		e = number(1).normal
 		for (let i = 0; i < node.children.length; i++) {
 			e = e.mult(node.children[i].normal)
 		}
-	} else if (isDifference(node)) {
+	}
+	// Difference
+	else if (isDifference(node)) {
 		e = node.first.normal.sub(node.last.normal)
-	} else if (isDivision(node) || isQuotient(node)) {
+	}
+	// Division
+	else if (isDivision(node) || isQuotient(node)) {
 		e = node.first.normal.div(node.last.normal)
-	} else if (isRelations(node)) {
+	}
+	// Relations
+	else if (isRelations(node)) {
 		let bool = true
 		// console.log('node', node)
 		node.ops.forEach((op, i) => {
@@ -1279,22 +1334,34 @@ export default function normalize(node: Node): Normal {
 			bool = bool && (test.eval() as Bool).boolvalue
 		})
 		e = boolean(bool).normal
-	} else if (isUnequality(node)) {
-		e = boolean(!node.first.eval().equals(node.last.eval())).normal
-	} else if (isEquality(node)) {
-		e = boolean(node.first.eval().equals(node.last.eval())).normal
-	} else if (isInequalityLess(node)) {
-		e = boolean(node.first.eval().isLowerThan(node.last.eval())).normal
-	} else if (isInequalityMore(node)) {
-		e = boolean(node.first.eval().isGreaterThan(node.last.eval())).normal
-	} else if (isInequalityLessOrEqual(node)) {
-		e = boolean(node.first.eval().isLowerOrEqual(node.last.eval())).normal
-	} else if (isInequalityMoreOrEQual(node)) {
-		e = boolean(node.first.eval().isGreaterOrEqual(node.last.eval())).normal
 	}
-
-	// TODO: et les TEMPLATES?
-	else {
+	//  Unesquality
+	else if (isUnequality(node)) {
+		e = boolean(!node.first.eval().equals(node.last.eval())).normal
+	}
+	// equality
+	else if (isEquality(node)) {
+		e = boolean(node.first.eval().equals(node.last.eval())).normal
+	}
+	// InequalityLess
+	else if (isInequalityLess(node)) {
+		e = boolean(node.first.eval().isLowerThan(node.last.eval())).normal
+	}
+	// InequalityMore
+	else if (isInequalityMore(node)) {
+		e = boolean(node.first.eval().isGreaterThan(node.last.eval())).normal
+	}
+	// InequalityLessOrEqual
+	else if (isInequalityLessOrEqual(node)) {
+		e = boolean(node.first.eval().isLowerOrEqual(node.last.eval())).normal
+	}
+	// InequalityMoreOrEqual
+	else if (isInequalityMoreOrEQual(node)) {
+		e = boolean(node.first.eval().isGreaterOrEqual(node.last.eval())).normal
+	} else if (isTemplate(node)) {
+		n = nSum([[coefOne(), createBase(node)]])
+		d = nSumOne()
+	} else {
 		e = createNotDefinedNormal('Impossible to normalize ' + node.string)
 	}
 

@@ -681,7 +681,7 @@ const questions: Questions = {
 				},
 				{
 					description: 'Comparer deux nombres entiers',
-					subdescription: 'Nombres inférieurs à $$10000$$',
+					subdescription: 'Nombres inférieurs à $$10,000$$',
 					enounces: ['Quel est le plus petit de ces 2 nombres ?'],
 					variabless: [
 						{

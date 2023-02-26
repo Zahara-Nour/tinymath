@@ -159,6 +159,7 @@ export default function generateQuestion(
 
 				// on génère les valeurs aléatoires
 				generated = math(generated).generate().string
+
 				variables[name as VariableName] = generated
 			})
 		return variables
@@ -270,7 +271,7 @@ export default function generateQuestion(
 						} else return false
 					}),
 			)
-			if (repeat) warn('mêmes variables', variables)
+			if (duplicate) warn('mêmes variables', variables)
 		}
 
 		if (enounce) {
