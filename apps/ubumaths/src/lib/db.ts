@@ -3,9 +3,11 @@ import {
 	PUBLIC_SUPABASE_URL,
 	PUBLIC_SUPABASE_ANON_KEY,
 } from '$env/static/public'
-import type { addUserArg, ExtraInfo } from './type'
+import { getLogger } from '$lib/utils'
 
-console.log('key', PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL)
+import type { UserInfo, ExtraInfo } from './type'
+
+const { info, fail, warn } = getLogger('Automaths', 'info')
 const supabaseClient = createClient(
 	PUBLIC_SUPABASE_URL,
 	PUBLIC_SUPABASE_ANON_KEY,
@@ -13,7 +15,7 @@ const supabaseClient = createClient(
 
 export { supabaseClient }
 
-export function addUser(profile: addUserArg) {
+export function addUser(profile: UserInfo) {
 	return supabaseClient.from('users').insert([profile])
 }
 
@@ -33,6 +35,36 @@ export function getUserByEmail(email: string) {
 		.maybeSingle()
 }
 
-export function addUsers(list: addUserArg[]) {
+export function addUsers(list: UserInfo[]) {
 	supabaseClient.from('users').insert(list)
+}
+
+export async function fetchUserClassIdsNames(id: number) {
+	const result = await supabaseClient
+		.from('users')
+		.select('classes')
+		.eq('id', id)
+		.maybeSingle()
+
+	const classeIds = result.data?.classes || []
+	const { data, error } = await supabaseClient
+		.from('classes')
+		.select('class, id')
+		.in('id', classeIds)
+	if (data) {
+		return {
+			data: data.map((c) => ({ className: c.class, id: c.id })),
+			error: null,
+		}
+	} else {
+		return { data: null, error }
+	}
+}
+
+export async function fetchClassStudentsIdsNames(classId: number) {
+	return supabaseClient
+		.from('users')
+		.select('id, fullname, firstname, lastname')
+		.eq('role', 'student')
+		.contains('classes', [classId])
 }

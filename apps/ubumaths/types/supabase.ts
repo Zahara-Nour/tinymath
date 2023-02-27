@@ -13,26 +13,49 @@ export interface Database {
         Row: {
           created_at: string | null
           id: number
-          questions: Json[] | null
-          teacher_id: number | null
-          title: string | null
+          questions: Json
+          teacher_id: number
+          title: string
           updated_at: string | null
         }
         Insert: {
           created_at?: string | null
           id?: number
-          questions?: Json[] | null
-          teacher_id?: number | null
-          title?: string | null
+          questions?: Json
+          teacher_id: number
+          title?: string
           updated_at?: string | null
         }
         Update: {
           created_at?: string | null
           id?: number
-          questions?: Json[] | null
-          teacher_id?: number | null
-          title?: string | null
+          questions?: Json
+          teacher_id?: number
+          title?: string
           updated_at?: string | null
+        }
+      }
+      classes: {
+        Row: {
+          class: string
+          created_at: string | null
+          grade: string
+          id: number
+          school_id: number
+        }
+        Insert: {
+          class?: string
+          created_at?: string | null
+          grade?: string
+          id?: number
+          school_id: number
+        }
+        Update: {
+          class?: string
+          created_at?: string | null
+          grade?: string
+          id?: number
+          school_id?: number
         }
       }
       navadra_fights: {
@@ -265,37 +288,34 @@ export interface Database {
       }
       schools: {
         Row: {
-          city: string | null
-          classes: string[] | null
-          country: string | null
+          city: string
+          country: string
           created_at: string | null
           id: number
-          name: string | null
+          name: string
           updated_at: string | null
         }
         Insert: {
-          city?: string | null
-          classes?: string[] | null
-          country?: string | null
+          city?: string
+          country?: string
           created_at?: string | null
           id?: number
-          name?: string | null
+          name?: string
           updated_at?: string | null
         }
         Update: {
-          city?: string | null
-          classes?: string[] | null
-          country?: string | null
+          city?: string
+          country?: string
           created_at?: string | null
           id?: number
-          name?: string | null
+          name?: string
           updated_at?: string | null
         }
       }
       users: {
         Row: {
           assessments: number[] | null
-          classes: string[]
+          classes: number[]
           created_at: string | null
           email: string
           firstname: string
@@ -312,7 +332,7 @@ export interface Database {
         }
         Insert: {
           assessments?: number[] | null
-          classes?: string[]
+          classes?: number[]
           created_at?: string | null
           email?: string
           firstname?: string
@@ -329,7 +349,7 @@ export interface Database {
         }
         Update: {
           assessments?: number[] | null
-          classes?: string[]
+          classes?: number[]
           created_at?: string | null
           email?: string
           firstname?: string

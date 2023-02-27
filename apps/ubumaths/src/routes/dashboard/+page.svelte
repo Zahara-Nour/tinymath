@@ -4,10 +4,6 @@
 	import DashboardAdmin from './DashboardAdmin.svelte'
 	import DashboardStudent from './DashboardStudent.svelte'
 	import DashboardTeacher from './DashboardTeacher.svelte'
-
-	// $: if ($user.isGuest()) {
-	// 	goto('/')
-	// }
 </script>
 
 {#if $user.isAdmin()}

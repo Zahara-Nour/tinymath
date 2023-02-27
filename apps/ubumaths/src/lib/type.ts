@@ -336,20 +336,33 @@ export type Commit = {
 	exec: () => void
 }
 
+export type UserInfo = {
+	email: string
+	role: string
+	grade: string
+	classes: number[]
+}
+
 export type ExtraInfo = {
 	firstname?: string
 	lastname?: string
 	fullname?: string
 	user_id?: string | null // supabase user id
 }
-export type UserProfile = ExtraInfo & {
-	id: number // users table primary key
-	email: string
-	role: string
-	grade: string
-	classes: string[]
-	avatar?: string
-}
+export type UserProfile = UserInfo &
+	ExtraInfo & {
+		id: number // users table primary key
+		avatar?: string
+		classIdsNames: { className: string; id: number }[]
+		studentsIdsNames: {
+			[index: number]: {
+				id: number
+				firstname: string
+				lastname: string
+				fullname: string
+			}[]
+		}
+	}
 
 export type User = UserProfile & {
 	isStudent: () => boolean
@@ -358,9 +371,16 @@ export type User = UserProfile & {
 	isGuest: () => boolean
 }
 
-export type addUserArg = {
-	email: string
-	role: string
-	classes: string[]
-	grade: string
+export type School = {
+	id: number
+	name: string
+	city: string
+	country: string
+}
+
+export type Assessment = {
+	id: number
+	title: string
+	questions: Basket
+	teacher_id: number
 }

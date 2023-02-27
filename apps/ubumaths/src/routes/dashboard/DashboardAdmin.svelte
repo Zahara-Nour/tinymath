@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Gidouille from '$lib/icones/Gidouille.svelte'
 	import IconUsers from '$lib/icones/IconUsers.svelte'
-	import PageHeader from '$lib/ui/PageHeader.svelte'
 	import UserAvatar from '$lib/ui/UserAvatar.svelte'
 	import { AppRail, AppRailTile } from '@skeletonlabs/skeleton'
 	import { writable, type Writable } from 'svelte/store'

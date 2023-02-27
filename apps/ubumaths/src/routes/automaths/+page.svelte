@@ -26,11 +26,13 @@
 		AccordionItem,
 		Tab,
 		TabGroup,
+		toastStore,
 	} from '@skeletonlabs/skeleton'
 	import QuestionCard from '$lib/ui/QuestionCard.svelte'
 	import { afterUpdate, beforeUpdate, onMount } from 'svelte'
 	import { formatLatexToHtml, storedGrade } from '$lib/stores'
 	import { get } from 'svelte/store'
+	import { supabaseClient } from '$lib/db'
 
 	let { info, fail, warn } = getLogger('Automaths', 'info')
 	const questions = data.questions
@@ -43,6 +45,10 @@
 	)
 	const level_url_params = parseInt(
 		decodeURI($page.url.searchParams.get('level') || '') || '0',
+		10,
+	)
+	const assessment_url_params = parseInt(
+		decodeURI($page.url.searchParams.get('assessment') || '') || '0',
 		10,
 	)
 
@@ -58,7 +64,7 @@
 	let level = level_url_params
 	let displayExemple = false
 	let generated: CorrectedQuestion
-	let showBasket = false
+	let showBasket = !!assessment_url_params
 	let classroom = false
 	let flash = false
 	let courseAuxNombres = false
@@ -404,7 +410,7 @@
 
 	{#if showBasket}
 		<!-- {#if isTeacher && showBasket} -->
-		<Basket bind:basket {courseAuxNombres} />
+		<Basket assessment={assessment_url_params} bind:basket {courseAuxNombres} />
 	{:else if theme}
 		<TabGroup
 			justify="justify-start flex-wrap"

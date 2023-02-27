@@ -6,11 +6,18 @@
 	import { page } from '$app/stores'
 	import {
 		AppShell,
+		Modal,
 		Toast,
 		toastStore,
 		type ToastSettings,
 	} from '@skeletonlabs/skeleton'
-	import { guest, prepareMathlive, touchDevice, user } from '$lib/stores'
+	import {
+		connected,
+		guest,
+		prepareMathlive,
+		touchDevice,
+		user,
+	} from '$lib/stores'
 	import TobBar from '$lib/ui/TobBar.svelte'
 	import links from '$lib/navlinks'
 	import PageHeader from '$lib/ui/PageHeader.svelte'
@@ -21,6 +28,8 @@
 	import { getLogger, isEmptyObject } from '$lib/utils'
 	import {
 		addUser,
+		fetchClassStudentsIdsNames,
+		fetchUserClassIdsNames,
 		getUserByEmail,
 		supabaseClient,
 		updateUserInfo,
@@ -92,6 +101,7 @@
 	async function authorize(session: Session | null) {
 		if (session && $user.isGuest()) {
 			info('User is signed in.')
+
 			console.log('session', session)
 
 			if (
@@ -102,8 +112,6 @@
 					message:
 						"Désolé mais Ubumaths est réservé pour l'instant aux élèves du lycée Voltaire de Doha.",
 					background: 'bg-error-500',
-					autohide: true,
-					timeout: 10000,
 				})
 				supabaseClient.auth.signOut()
 			} else {
@@ -132,7 +140,10 @@
 					if (!data.fullname && session.user.user_metadata.full_name)
 						extraInfo.fullname = session.user.user_metadata.full_name
 					if (!data.user_id) extraInfo.user_id = session.user.id
+					console.log('extra info', extraInfo, 'data', data, 'session', session)
 					if (!isEmptyObject(extraInfo)) {
+						console.log('updating user info', extraInfo, data.id)
+						// const result = await updateUserInfo(data.id, extraInfo)
 						const { error } = await updateUserInfo(data.id, extraInfo)
 						if (error) {
 							warn(error.message)
@@ -143,12 +154,68 @@
 						}
 					}
 
+					// fetch user classes
+					const { data: dataUserClasses, error } = await fetchUserClassIdsNames(
+						data.id,
+					)
+					let classIdsNames: { className: string; id: number }[] = []
+					if (error || !dataUserClasses) {
+						warn(error?.message || 'no data returned for user classes')
+						toastStore.trigger({
+							message: "Les classes de l'utilisateur n'ont pu être récupérées.",
+							background: 'bg-warning-500',
+						})
+					} else {
+						console.log('dataUserClasses', dataUserClasses)
+						classIdsNames = dataUserClasses
+					}
+
+					// fetch user students
+					let userStudents: {
+						[index: number]: {
+							id: number
+							firstname: string
+							lastname: string
+							fullname: string
+						}[]
+					} = {}
+					try {
+						const results = await Promise.all(
+							data.classes.map((c) => fetchClassStudentsIdsNames(c)),
+						)
+						if (!results.some((result) => result.error)) {
+							results.forEach((result, i) => {
+								if (result.data) {
+									console.log('result.data', result.data)
+									userStudents[data.classes[i]] = result.data.map(
+										(student) => ({
+											id: student.id,
+											firstname: student.firstname,
+											lastname: student.lastname,
+											fullname: student.fullname,
+										}),
+									)
+								}
+							})
+						}
+					} catch (e) {
+						fail((e as Error).message)
+						userStudents = {}
+						toastStore.trigger({
+							message: "Les élèves de l'utilisateur n'ont pu être récupérés.",
+							background: 'bg-warning-500',
+						})
+					}
+
 					const u = createUser({
 						...data,
 						...extraInfo,
+						classIdsNames,
+						studentsIdsNames: userStudents,
 						avatar: session.user.user_metadata.avatar_url,
 					})
 					user.set(u)
+					connected.set(true)
 					toastStore.trigger({
 						message: `Bienvenue ${u.firstname || u.fullname || u.email}`,
 						background: 'bg-success-500',
@@ -158,6 +225,7 @@
 			}
 		} else if (!session && !$user.isGuest()) {
 			user.set(guest)
+			connected.set(false)
 			info('User is not signed in.')
 		}
 	}
@@ -213,3 +281,4 @@
 </AppShell>
 
 <Toast />
+<Modal />
