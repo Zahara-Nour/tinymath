@@ -5,9 +5,13 @@
 	import { enhance, type SubmitFunction } from '$app/forms'
 	import { getLogger } from '$lib/utils'
 	import { toastStore } from '@skeletonlabs/skeleton'
-	import type { Assessment, Basket, School } from '$lib/type'
+	import type { AnsweredQuestion, Assessment, Basket, School } from '$lib/type'
 	import { add_classes } from 'svelte/internal'
 	import { user } from '$lib/stores'
+	import generateQuestion, {
+		generateQuestionsFromBasket,
+	} from '$lib/questions/generateQuestion'
+	import { SupabaseAuthClient } from '@supabase/supabase-js/dist/module/lib/SupabaseAuthClient'
 
 	let { warn, trace, fail } = getLogger('UserMgmt', 'warn')
 	let textarea: string = ''
@@ -21,27 +25,52 @@
 		{} as { [index: number]: number[] },
 	)
 	let selectedClasses: number[] = []
-	let allStudents: number[] = []
+	let allStudents: { id: number; name: string }[] = []
 
 	fetchAssessments()
 
 	$: allStudents = getAllStudents(selectedClasses, selectedStudents)
 
+	function getStudentName(studentId: number) {
+		const student = $user.studentsIdsNames[selectedClassId].find(
+			(s) => s.id === studentId,
+		)
+		return (
+			student?.fullname ||
+			(student?.firstname &&
+				student?.lastname &&
+				student.firstname + ' ' + student.lastname) ||
+			'Anonymous'
+		)
+	}
+
 	function getAllStudents(
 		classes: number[],
 		students: { [index: number]: number[] },
 	) {
+		// whole classes
 		let allStudents = classes.reduce((acc, c) => {
-			acc.push(...$user.studentsIdsNames[c].map((s) => s.id))
+			acc.push(
+				...$user.studentsIdsNames[c].map((s) => ({
+					id: s.id,
+					name: s.fullname || s.firstname + ' ' + s.lastname,
+				})),
+			)
 			return acc
-		}, [] as number[])
+		}, [] as { id: number; name: string }[])
 
+		// individuals
 		allStudents = allStudents.concat(
 			Object.keys(students)
 				.reduce((acc, classId) => {
-					acc = acc.concat(students[parseInt(classId, 10)])
+					acc = acc.concat(
+						students[parseInt(classId, 10)].map((student) => ({
+							id: student,
+							name: getStudentName(student),
+						})),
+					)
 					return acc
-				}, [] as number[])
+				}, [] as { id: number; name: string }[])
 				.filter((s) => !allStudents.includes(s)),
 		)
 		return allStudents
@@ -76,6 +105,63 @@
 				}
 			})
 	}
+
+	async function assignAssessments(assessmentId: number) {
+		// fetch basket
+		let basket: Basket = []
+		const { data, error } = await supabaseClient
+			.from('assessments')
+			.select('questions')
+			.eq('id', assessmentId)
+			.maybeSingle()
+
+		if (error) {
+			fail(error.message)
+			toastStore.trigger({
+				message: 'La récupération des questions a échoué.',
+				background: 'bg-error-500',
+			})
+		} else if (!data) {
+			fail('Questions not found.')
+			toastStore.trigger({
+				message: 'Aucune question retrouvée.',
+				background: 'bg-error-500',
+			})
+		} else {
+			basket = JSON.parse(data.questions as string)
+		}
+
+		if (basket.length) {
+			const assignments = allStudents.map((student) => {
+				return {
+					student_id: student.id,
+					teacher_id: $user.id,
+					mark: 0,
+					total: basket.reduce((acc, q) => acc + q.count, 0),
+					basket: JSON.stringify(basket),
+					title: assessments?.find((a) => a.id === assessmentId)?.title,
+				}
+			})
+
+			console.log('assignements', assignments)
+
+			const { error } = await supabaseClient
+				.from('assignments')
+				.insert(assignments)
+			if (error) {
+				fail(error.message)
+				toastStore.trigger({
+					message: "L'assignation des évaluations a échoué.",
+					background: 'bg-error-500',
+				})
+			} else {
+				toastStore.trigger({
+					message: 'Les évaluations ont été assignées.',
+					background: 'bg-success-500',
+				})
+			}
+		}
+	}
 </script>
 
 <PageHeader title="Gestion des évaluations" />
@@ -100,7 +186,10 @@
 							href={`/automaths?assessment=${assessment.id}`}
 							class="btn variant-filled-primary mx-2">Voir / Modifier</a
 						>
-						<button class="btn variant-filled-primary mx-2">Attribuer</button>
+						<button
+							on:click={() => assignAssessments(assessment.id)}
+							class="btn variant-filled-primary mx-2">Attribuer</button
+						>
 					</div>
 				</div>
 			</div>

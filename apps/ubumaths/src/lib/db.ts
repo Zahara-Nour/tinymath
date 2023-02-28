@@ -61,6 +61,13 @@ export async function fetchUserClassIdsNames(id: number) {
 	}
 }
 
+export async function fetchAssignments(studentId: number) {
+	return supabaseClient
+		.from('assignments')
+		.select('*')
+		.match({ student_id: studentId, status: 'pending' })
+}
+
 export async function fetchClassStudentsIdsNames(classId: number) {
 	return supabaseClient
 		.from('users')

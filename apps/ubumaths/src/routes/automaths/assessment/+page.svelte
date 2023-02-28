@@ -1,5 +1,7 @@
 <script lang="ts">
-	import generate from '$lib/questions/generateQuestion'
+	import generate, {
+		generateQuestionsFromBasket,
+	} from '$lib/questions/generateQuestion'
 	import { onDestroy, setContext } from 'svelte'
 	import datas, { getQuestion } from '$lib/questions/questions.js'
 	import { convertToTime, getLogger, shuffle } from '$lib/utils'
@@ -20,6 +22,8 @@
 	import IconRestart from '$lib/icones/IconRestart.svelte'
 	import IconKeyboard from '$lib/icones/IconKeyboard.svelte'
 	import IconHome from '$lib/icones/IconHome.svelte'
+	import { supabaseClient } from '$lib/db'
+	import { toastStore } from '@skeletonlabs/skeleton'
 
 	const ids = datas.ids
 	let { info, fail, trace } = getLogger('Assessment', 'trace')
@@ -50,6 +54,8 @@
 	let generatedExemple: AnsweredQuestion
 	let basket: Basket
 	let go = false
+	let assignmentId: number
+
 	const testParams: TestParams = {}
 	const commit: Commit = {
 		exec: function () {
@@ -113,7 +119,7 @@
 		percentage = ((msRemaining / 1000) * 100) / delay
 	}
 
-	function initTest() {
+	async function initTest() {
 		info('init test')
 		current = -1
 		restart = false
@@ -124,32 +130,50 @@
 		classroom = decodeUrlParam('classroom') === true
 		flash = decodeUrlParam('flash') === true
 		courseAuxNombres = decodeUrlParam('courseAuxNombres') === true
+		assignmentId =
+			decodeUrlParam('assessment') &&
+			parseInt(decodeUrlParam('assessment') as string)
+		console.log('assignmentId', assignmentId)
+		const training = decodeUrlParam('training') === true
+		console.log('training', training)
 		testParams.courseAuxNombres = courseAuxNombres
 		testParams.classroom = classroom
 		testParams.flash = flash
 
 		basket = decodeUrlParam('questions')
 
-		showCorrection = !classroom
+		// si c'est une évaluation programmée
+		if (!basket) {
+			const { data, error } = await supabaseClient
+				.from('assignments')
+				.select('basket')
+				.eq('id', assignmentId)
+				.maybeSingle()
 
-		let offset = 0
-		basket.forEach((q) => {
-			const { theme, domain, subdomain, level } = ids[q.id]
-			const question = getQuestion(theme, domain, subdomain, level)
-			let delay = q.delay || question.defaultDelay
-			//  check that delay is a multiple of five
-			const rest = delay % 5
-			delay = delay + 5 - rest
-
-			for (let i = 0; i < q.count; i++) {
-				const generated = generate(question, cards, q.count, offset)
-				generated.delay = delay
-				console.log('generated', generated)
-
-				cards.push(prepareAnsweredQuestion(generated))
+			if (error) {
+				fail('error while fetching assignment', error)
+				toastStore.trigger({
+					message:
+						"Une erreur est survenue lors de la récupération de l'évaluation",
+					background: 'bg-error-500',
+				})
+			} else if (!data) {
+				fail('no data while fetching assignment')
+				toastStore.trigger({
+					message:
+						"Une erreur est survenue lors de la récupération de l'évaluation",
+					background: 'bg-error-500',
+				})
+			} else {
+				basket = JSON.parse(data.basket as string)
+				console.log('basket', basket)
 			}
-			offset += q.count
-		})
+		}
+
+		showCorrection = !classroom
+		if (!basket) basket = []
+		generateQuestionsFromBasket(basket, cards)
+		if (!basket) basket = []
 		if (basket.length === 1) {
 			;({ theme, domain, subdomain, level } = ids[basket[0].id])
 			query = encodeURI(
@@ -302,6 +326,7 @@
 					items={cards.map(assessItem)}
 					{query}
 					{classroom}
+					{assignmentId}
 					bind:restart
 				/>
 			</div>

@@ -35,6 +35,44 @@ export interface Database {
           updated_at?: string | null
         }
       }
+      assignments: {
+        Row: {
+          basket: Json
+          created_at: string | null
+          id: number
+          mark: number
+          questions: Json | null
+          status: string
+          student_id: number
+          teacher_id: number
+          title: string
+          total: number
+        }
+        Insert: {
+          basket?: Json
+          created_at?: string | null
+          id?: number
+          mark: number
+          questions?: Json | null
+          status?: string
+          student_id: number
+          teacher_id: number
+          title?: string
+          total: number
+        }
+        Update: {
+          basket?: Json
+          created_at?: string | null
+          id?: number
+          mark?: number
+          questions?: Json | null
+          status?: string
+          student_id?: number
+          teacher_id?: number
+          title?: string
+          total?: number
+        }
+      }
       classes: {
         Row: {
           class: string

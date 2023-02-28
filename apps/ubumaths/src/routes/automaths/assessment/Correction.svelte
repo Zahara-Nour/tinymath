@@ -13,8 +13,11 @@
 	import IconHome from '$lib/icones/IconHome.svelte'
 	import IconScan from '$lib/icones/IconScan.svelte'
 	import IconReload from '$lib/icones/IconReload.svelte'
+	import { supabaseClient } from '$lib/db'
+	import { toastStore } from '@skeletonlabs/skeleton'
 
 	export let items: CorrectedQuestion[]
+	export let assignmentId: number
 	export let restart
 	export let query: string
 	export let classroom = false
@@ -41,7 +44,27 @@
 				? item.points / 2
 				: 0
 	})
-	// inititalisation
+
+	// sauvegarde des résultats
+	if (assignmentId) {
+		supabaseClient
+			.from('assignments')
+			.update({
+				mark: score,
+				questions: JSON.stringify(items),
+				status: 'done',
+			})
+			.eq('id', assignmentId)
+			.then((res) => {
+				if (res.error) {
+					fail(res.error)
+					toastStore.trigger({
+						message: 'Erreur lors de la sauvegarde des résultats',
+						background: 'bg-red-500',
+					})
+				}
+			})
+	}
 
 	// Quand le composant de correction a fini de s'afficher,
 	// le score a déjà été calculé, on l'enregistre

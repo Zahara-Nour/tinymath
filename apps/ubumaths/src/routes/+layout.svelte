@@ -28,6 +28,7 @@
 	import { getLogger, isEmptyObject } from '$lib/utils'
 	import {
 		addUser,
+		fetchAssignments,
 		fetchClassStudentsIdsNames,
 		fetchUserClassIdsNames,
 		getUserByEmail,
@@ -46,8 +47,10 @@
 	} from '@floating-ui/dom'
 	import { storePopup } from '@skeletonlabs/skeleton'
 	import type { Session } from '@supabase/supabase-js'
-	import type { ExtraInfo, User, UserProfile } from '$lib/type'
+	import type { Assignment, ExtraInfo, User, UserProfile } from '$lib/type'
 	import { createUser } from '$lib/users'
+	import AssessmentMgmt from './dashboard/AssessmentMgmt.svelte'
+	import Basket from './automaths/Basket.svelte'
 
 	type ScrollEvent = UIEvent & { currentTarget: EventTarget & HTMLDivElement }
 
@@ -207,11 +210,38 @@
 						})
 					}
 
+					let assignments: Assignment[] = []
+					if (data.role === 'student') {
+						const { data: dataAssignments, error } = await fetchAssignments(
+							data.id,
+						)
+						if (error) {
+							warn(error.message)
+							toastStore.trigger({
+								message: "Les évaluations à faire n'ont pu être récupérées.",
+								background: 'bg-warning-500',
+							})
+						} else if (!dataAssignments) {
+							warn('no assignments found')
+							toastStore.trigger({
+								message: 'Aucune donnée reçue pour les évaluations à faire.',
+								background: 'bg-warning-500',
+							})
+						} else if (dataAssignments.length) {
+							assignments = dataAssignments.map((assignment) => ({
+								...assignment,
+								questions: [],
+								basket: JSON.parse(assignment.basket as string),
+							}))
+						}
+					}
+
 					const u = createUser({
 						...data,
 						...extraInfo,
 						classIdsNames,
 						studentsIdsNames: userStudents,
+						assignments,
 						avatar: session.user.user_metadata.avatar_url,
 					})
 					user.set(u)
@@ -266,9 +296,14 @@
 	<svelte:fragment slot="sidebarRight">
 		<div id="sidebar-left" class="hidden lg:block" />
 	</svelte:fragment>
-	<svelte:fragment slot="pageHeader"
-		><PageHeader title={header} /></svelte:fragment
-	>
+	<svelte:fragment slot="pageHeader">
+		{#if $user.assignments?.length && url.includes('assessment')}
+			<div class="p-4 bg-error-500 text-white">
+				Tu as <a href="/dashboard">des évaluations</a> à faire !
+			</div>
+		{/if}
+		<PageHeader title={header} />
+	</svelte:fragment>
 	<!-- Router Slot -->
 	<slot />
 	<!-- ---- / ---- -->

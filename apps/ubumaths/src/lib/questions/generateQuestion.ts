@@ -3,6 +3,8 @@ import math from 'tinycas'
 import { getLogger, lexicoSort, shuffle } from '$lib/utils'
 import {
 	isVariableName,
+	type AnsweredQuestion,
+	type Basket,
 	type Choice,
 	type CorrectionDetail,
 	type CorrectionFormat,
@@ -16,6 +18,7 @@ import {
 	type Variables,
 } from '$lib/type'
 import {
+	getQuestion,
 	QUESTION_TYPE_CHOICE,
 	QUESTION_TYPE_CHOICES,
 	QUESTION_TYPE_RESULT,
@@ -23,9 +26,35 @@ import {
 import type { Bool, Node, Numbr } from 'tinycas/dist/math/types'
 import type { EvalArg } from 'tinycas'
 import { fetchImage } from '$lib/images'
+import datas from '$lib/questions/questions.js'
+import { prepareAnsweredQuestion } from './correction'
 
 let { warn, trace } = getLogger('generateQuestion', 'warn')
 
+export function generateQuestionsFromBasket(
+	basket: Basket,
+	questions: AnsweredQuestion[],
+) {
+	let offset = 0
+	const ids = datas.ids
+	basket.forEach((q) => {
+		const { theme, domain, subdomain, level } = ids[q.id]
+		const question = getQuestion(theme, domain, subdomain, level)
+		let delay = q.delay || question.defaultDelay
+		//  check that delay is a multiple of five
+		const rest = delay % 5
+		delay = delay + 5 - rest
+
+		for (let i = 0; i < q.count; i++) {
+			const generated = generateQuestion(question, questions, q.count, offset)
+			generated.delay = delay
+			console.log('generated', generated)
+
+			questions.push(prepareAnsweredQuestion(generated))
+		}
+		offset += q.count
+	})
+}
 export default function generateQuestion(
 	question: QuestionWithID,
 	generateds: GeneratedQuestion[] = [],

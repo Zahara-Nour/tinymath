@@ -362,6 +362,7 @@ export type UserProfile = UserInfo &
 				fullname: string
 			}[]
 		}
+		assignments?: Assignment[]
 	}
 
 export type User = UserProfile & {
@@ -383,4 +384,16 @@ export type Assessment = {
 	title: string
 	questions: Basket
 	teacher_id: number
+}
+
+export type Assignment = {
+	id: number
+	teacher_id: number
+	student_id: number
+	questions?: CorrectedQuestion[] | null
+	basket: Basket
+	mark: number
+	status: string
+	total: number
+	title: string
 }
