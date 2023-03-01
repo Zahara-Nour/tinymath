@@ -6,7 +6,7 @@ export const POST: RequestHandler = async ({ locals }) => {
 	if (err) {
 		throw error(
 			500,
-			'Something went wrong logging you out. Please try again late',
+			'Something went wrong logging you out. Please try again later',
 		)
 	}
 	throw redirect(303, '/')

@@ -7,12 +7,12 @@
 	import { fetchImage } from '$lib/images'
 	import { goto } from '$app/navigation'
 	import { getLogger, objectMap } from '$lib/utils'
+	import { dev } from '$app/environment'
 	import {
 		assessItem,
 		prepareAnsweredQuestion,
 		prepareCorrectedQuestion,
 	} from '$lib/questions/correction'
-	import { dev } from '$app/environment'
 	import { page } from '$app/stores'
 	import math from 'tinycas'
 	import type {
@@ -334,7 +334,8 @@
 			questions.push({ id: q.id, count: 10, delay: q.defaultDelay })
 		}
 
-		let href = '/automaths/assessment/?questions='
+		const base = dev ? 'http://localhost:5173/' : 'http://ubumaths.net/'
+		let href = base + 'automaths/assessment/?questions='
 		href += encodeURI(JSON.stringify(questions))
 		if (classroom) href += '&classroom=true'
 		if (flash) href += '&flash=true'
