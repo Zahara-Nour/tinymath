@@ -334,7 +334,7 @@
 			questions.push({ id: q.id, count: 10, delay: q.defaultDelay })
 		}
 
-		const base = dev ? 'http://localhost:5173/' : 'http://ubumaths.net/'
+		const base = dev ? 'http://localhost:5173/' : 'https://ubumaths.net/'
 		let href = base + 'automaths/assessment/?questions='
 		href += encodeURI(JSON.stringify(questions))
 		if (classroom) href += '&classroom=true'
