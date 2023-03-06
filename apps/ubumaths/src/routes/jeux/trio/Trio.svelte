@@ -270,7 +270,7 @@
 					: ' variant-filled-surface')}
 		>
 			{#if selecteds.length >= 1}
-				{grid[selecteds[1].i][selecteds[1].j].n}
+				{grid[selecteds[0].i][selecteds[0].j].n}
 			{:else}
 				<IconQuestion />
 			{/if}
