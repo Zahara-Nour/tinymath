@@ -17,6 +17,7 @@ export const guest: User = {
 	isAdmin: () => false,
 	isGuest: () => true,
 }
+export const fullScreen = writable(false)
 export const user: Writable<User> = writable(guest)
 export const connected = writable(false)
 export const storedGrade = writable('')

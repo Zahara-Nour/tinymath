@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { AppBar } from '@skeletonlabs/skeleton'
 	import { LightSwitch } from '@skeletonlabs/skeleton'
-	import { fontSize } from '$lib/stores'
+	import { fontSize, fullScreen } from '$lib/stores'
 	import { get } from 'svelte/store'
 	import Burger from './Burger.svelte'
 	import UserAvatar from './UserAvatar.svelte'
 	import IconIncrease from '$lib/icones/IconIncrease.svelte'
 	import IconDecrease from '$lib/icones/IconDecrease.svelte'
+	import IconFullscreen from '$lib/icones/IconFullscreen.svelte'
 
 	export let drawerOpen: () => void
 
@@ -46,13 +47,12 @@
 		<button on:click={increase} class="text-xl btn-icon variant-filled-primary"
 			><IconIncrease /></button
 		>
+		<button
+			on:click={() => fullScreen.update((state) => !state)}
+			class="text-xl btn-icon variant-filled-primary"
+			><IconFullscreen>/</IconFullscreen></button
+		>
 
 		<Burger class=" btn btn-sm mr-4 lg:hidden" handleClick={drawerOpen} />
 	</svelte:fragment>
 </AppBar>
-
-<style lang="postcss">
-	.active {
-		@apply border-b-4 border-primary-500;
-	}
-</style>

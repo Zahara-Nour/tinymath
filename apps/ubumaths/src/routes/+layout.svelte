@@ -13,6 +13,7 @@
 	} from '@skeletonlabs/skeleton'
 	import {
 		connected,
+		fullScreen,
 		guest,
 		prepareMathlive,
 		touchDevice,
@@ -51,6 +52,7 @@
 	import { createUser } from '$lib/users'
 	import AssessmentMgmt from './dashboard/AssessmentMgmt.svelte'
 	import Basket from './automaths/Basket.svelte'
+	import IconFullscreen from '$lib/icones/IconFullscreen.svelte'
 
 	type ScrollEvent = UIEvent & { currentTarget: EventTarget & HTMLDivElement }
 
@@ -280,14 +282,19 @@
 
 <Drawer><Navigation {drawerClose} /></Drawer>
 
-<AppShell on:scroll={scrollHandler} slotSidebarLeft="bg-surface-100-800-token">
+<AppShell
+	on:scroll={scrollHandler}
+	slotSidebarLeft="bg-surface-100-800-token"
+	regionPage="relative"
+	slotPageHeader="sticky top-0 z-10"
+>
 	<svelte:fragment slot="header">
-		{#if !url.includes('dashboard')}
+		{#if !url.includes('dashboard') && !$fullScreen}
 			<TobBar {drawerOpen} />
 		{/if}
 	</svelte:fragment>
 	<svelte:fragment slot="sidebarLeft">
-		{#if !url.includes('assessment') && !url.includes('dashboard')}
+		{#if !url.includes('assessment') && !url.includes('dashboard') && !$fullScreen}
 			<div id="sidebar-left" class="hidden lg:block lg:w-60">
 				<Navigation />
 			</div>
@@ -297,19 +304,30 @@
 		<div id="sidebar-left" class="hidden lg:block" />
 	</svelte:fragment>
 	<svelte:fragment slot="pageHeader">
-		{#if $user.assignments?.length && url.includes('assessment')}
-			<div class="p-4 bg-error-500 text-white">
-				Tu as <a href="/dashboard">des évaluations</a> à faire !
-			</div>
-		{/if}
-		<PageHeader title={header} />
+		<div>
+			{#if $fullScreen}
+				<button
+					class="btn-icon variant-filled-primary"
+					on:click={() => fullScreen.update((state) => !state)}
+				>
+					<IconFullscreen />
+				</button>
+			{/if}
+			{#if $user.assignments?.length && url.includes('assessment')}
+				<div class="p-4 bg-error-500 text-white">
+					Tu as <a href="/dashboard">des évaluations</a> à faire !
+				</div>
+			{/if}
+		</div>
 	</svelte:fragment>
+
 	<!-- Router Slot -->
+
 	<slot />
 	<!-- ---- / ---- -->
 	<svelte:fragment slot="pageFooter" />
 	<svelte:fragment slot="footer">
-		{#if url === '/'}
+		{#if url === '/' && !$fullScreen}
 			<Footer />
 		{/if}
 	</svelte:fragment>

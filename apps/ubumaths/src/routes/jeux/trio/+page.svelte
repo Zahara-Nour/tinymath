@@ -1,6 +1,10 @@
 <script>
+	import { fullScreen } from '$lib/stores'
+	import PageHeader from '$lib/ui/PageHeader.svelte'
 	import Trio from './Trio.svelte'
 </script>
 
-<h1>Le jeu du Trio mathématiques</h1>
+{#if !$fullScreen}
+	<PageHeader title="Trio" />
+{/if}
 <Trio />

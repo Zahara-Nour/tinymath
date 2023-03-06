@@ -33,6 +33,7 @@
 	import { formatLatexToHtml, storedGrade } from '$lib/stores'
 	import { get } from 'svelte/store'
 	import { supabaseClient } from '$lib/db'
+	import PageHeader from '$lib/ui/PageHeader.svelte'
 
 	let { info, fail, warn } = getLogger('Automaths', 'info')
 	const questions = data.questions
@@ -383,6 +384,7 @@
 	}
 </script>
 
+<PageHeader title="Automaths" />
 <div class="container mx-auto px-2">
 	<Buttons
 		bind:showBasket

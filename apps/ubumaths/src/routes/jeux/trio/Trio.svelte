@@ -3,9 +3,10 @@
 	import IconMult from '$lib/icones/IconMult.svelte'
 	import IconPlus from '$lib/icones/IconPlus.svelte'
 	import IconMinus from '$lib/icones/IconMinus.svelte'
-	import IconQuestion from '../../../lib/icones/IconQuestion.svelte'
+	import { beforeUpdate } from 'svelte'
+	import IconHelp from '$lib/icones/IconHelp.svelte'
 
-	export let size = 6
+	export let size = 9
 
 	type Cell = {
 		n: number
@@ -24,13 +25,14 @@
 		positions: Position[]
 	}
 
+	const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 	let classCorrection =
-		'flex justify-center items-center mx-4 my-2 w-20 h-20 text-3xl '
+		'flex justify-center items-center  rounded-lg p-6  mx-4  w-20 h-20 text-5xl font-bold '
 	let classWin =
-		'flex justify-center items-center mx-4 my-2 w-20 h-20 variant-filled-success text-3xl '
+		'flex justify-center items-center  rounded-lg mx-4  w-20 h-20 variant-filled-success text-5xl font-bold '
 	let classLost =
-		'flex justify-center items-center mx-4 my-2 w-20 h-20 variant-filled-error text-3xl '
-	let tileClass = `w-max grid grid-cols-6 gap-4 my-6`
+		'flex justify-center items-center rounded-lg mx-4  w-20 h-20 variant-filled-error text-5xl font-bold '
+
 	let grid: Grid = []
 	let target: Target = {
 		positions: [],
@@ -41,21 +43,33 @@
 	let op = '+'
 	let win = false
 	let selecteds: Position[] = []
+	let tileClass = ''
 
-	for (let n = 0; n < size * size; n++) {
-		const i = Math.floor(n / size) // la ligne
-		const j = n % size // la colonne
-
-		if (j === 0) {
-			grid[i] = []
-		}
-		grid[i][j] = {
-			status: '',
-			n: Math.floor(Math.random() * 9 + 1),
-		}
+	// $: {
+	tileClass = `w-max grid grid-cols-10 gap-4 my-6`
+	console.log('size', size)
+	console.log('tileClass', tileClass)
+	// }
+	$: {
+		console.log('changeGrid')
+		changeGrid(size)
 	}
 
-	choseTarget()
+	beforeUpdate(() => console.log('beforeUpdate'))
+
+	function changeGrid(size: number) {
+		grid = []
+		for (let i = 0; i < size; i++) {
+			grid[i] = []
+			for (let j = 0; j < size; j++) {
+				grid[i][j] = {
+					status: '',
+					n: Math.floor(Math.random() * 9 + 1),
+				}
+			}
+		}
+		choseTarget()
+	}
 
 	function showSolution() {
 		win = true
@@ -65,8 +79,9 @@
 			}
 		}
 		selecteds = [...target.positions]
-		selecteds.forEach((selected) => {
-			grid[selected.i][selected.j].status = 'selected'
+		selecteds.forEach((selected, i) => {
+			grid[selected.i][selected.j].status =
+				i === 2 ? 'selected-third' : 'selected'
 		})
 		op = target.op
 	}
@@ -154,8 +169,9 @@
 				op === '+' ? number1 * number2 + number3 : number1 * number2 - number3
 		}
 
-		selecteds.forEach((selected) => {
-			grid[selected.i][selected.j].status = 'selected'
+		selecteds.forEach((selected, i) => {
+			grid[selected.i][selected.j].status =
+				i === 2 ? 'selected-third' : 'selected'
 		})
 
 		if (result && result === target.value) {
@@ -165,6 +181,12 @@
 
 	function choseTarget() {
 		win = false
+		selecteds = []
+		for (let i = 0; i < size; i++) {
+			for (let j = 0; j < size; j++) {
+				grid[i][j].status = ''
+			}
+		}
 
 		do {
 			target = {
@@ -261,8 +283,11 @@
 	}
 </script>
 
-<div class="flex">
-	<div class="flex flex-col justify-center mx-12">
+<div class="flex justify-around">
+	<div
+		class="flex flex-col justify-center mx-12"
+		style="font-family:'Baloo 2', sans-serif;"
+	>
 		<span
 			class={classCorrection +
 				(selecteds.length >= 1
@@ -272,7 +297,7 @@
 			{#if selecteds.length >= 1}
 				{grid[selecteds[0].i][selecteds[0].j].n}
 			{:else}
-				<IconQuestion />
+				<IconHelp />
 			{/if}
 		</span>
 		<span class={classCorrection}>
@@ -288,7 +313,7 @@
 			{#if selecteds.length >= 2}
 				{grid[selecteds[1].i][selecteds[1].j].n}
 			{:else}
-				<IconQuestion />
+				<IconHelp />
 			{/if}
 		</span>
 		<span on:keydown={() => {}} on:click={toggleOp} class={classCorrection}>
@@ -301,13 +326,13 @@
 		<span
 			class={classCorrection +
 				(selecteds.length >= 3
-					? 'variant-filled-primary'
+					? 'variant-filled-secondary'
 					: 'variant-filled-surface')}
 		>
 			{#if selecteds.length === 3}
 				{grid[selecteds[2].i][selecteds[2].j].n}
 			{:else}
-				<IconQuestion />
+				<IconHelp />
 			{/if}
 		</span>
 		<span class={classCorrection}> = </span>
@@ -317,7 +342,20 @@
 	</div>
 	<div class="flex flex-col items-center">
 		<div class={tileClass}>
+			<div />
+			{#each grid as _, i}
+				<div
+					class="btn h-20 w-20 size text-4xl flex items-center justify-center "
+				>
+					{letters[i]}
+				</div>
+			{/each}
 			{#each grid as row, i}
+				<div
+					class="btn h-20 w-20 size text-4xl flex items-center justify-center "
+				>
+					{i + 1}
+				</div>
 				{#each row as cell, j}
 					<Tile
 						n={cell.n}
@@ -336,5 +374,24 @@
 		<button class="my-4 btn variant-filled-primary" on:click={showSolution}
 			>Solution</button
 		>
+		<button
+			class="my-4 btn variant-filled-primary"
+			on:click={() => changeGrid(size)}>Nouvelle grille</button
+		>
+		<div class="my-4 flex justify-center items-center">
+			<button
+				class="mr-2 btn variant-filled-primary"
+				on:click={() => {
+					if (size > 0) size--
+				}}><IconMinus /></button
+			>
+			Taille
+			<button
+				class="ml-2 btn variant-filled-primary"
+				on:click={() => {
+					size++
+				}}><IconPlus /></button
+			>
+		</div>
 	</div>
 </div>
