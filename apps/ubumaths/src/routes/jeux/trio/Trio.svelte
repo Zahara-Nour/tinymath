@@ -39,7 +39,7 @@
 		op: Math.random() < 0.5 ? '+' : '-',
 		value: -1,
 	}
-	let result
+	let result: number | null = null
 	let op = '+'
 	let win = false
 	let selecteds: Position[] = []
@@ -72,7 +72,6 @@
 	}
 
 	function showSolution() {
-		win = true
 		for (let i = 0; i < size; i++) {
 			for (let j = 0; j < size; j++) {
 				grid[i][j].status = 'not_available'
@@ -84,6 +83,8 @@
 				i === 2 ? 'selected-third' : 'selected'
 		})
 		op = target.op
+		result = target.value
+		win = true
 	}
 
 	function toggleOp() {
@@ -181,6 +182,7 @@
 
 	function choseTarget() {
 		win = false
+		result = null
 		selecteds = []
 		for (let i = 0; i < size; i++) {
 			for (let j = 0; j < size; j++) {
@@ -336,9 +338,16 @@
 			{/if}
 		</span>
 		<span class={classCorrection}> = </span>
-		<span class={win ? classWin : classLost}>
-			{target && target.value}
-		</span>
+
+		{#if result}
+			<span class={win ? classWin : classLost}>
+				{result}
+			</span>
+		{:else}
+			<span class={classCorrection + 'variant-filled-surface'}>
+				<IconHelp />
+			</span>
+		{/if}
 	</div>
 	<div class="flex flex-col items-center">
 		<div class={tileClass}>
@@ -366,7 +375,7 @@
 			{/each}
 		</div>
 	</div>
-	<div class="flex flex-col justify-center ml-12">
+	<div class="flex flex-col items-center justify-center ml-12">
 		<button class="my-4 btn variant-filled-primary" on:click={choseTarget}
 			>Nouvelle cible</button
 		>
@@ -393,5 +402,14 @@
 				}}><IconPlus /></button
 			>
 		</div>
+
+		{#if target && target.value > 0}
+			<span
+				class="mt-8 btn h-28 w-28 size text-7xl flex items-center justify-center font-bold variant-filled-primary"
+				style="font-family:'Baloo 2', sans-serif;"
+			>
+				{target.value}
+			</span>
+		{/if}
 	</div>
 </div>
