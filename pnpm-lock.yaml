@@ -50,6 +50,7 @@ importers:
   apps/ubumaths:
     specifiers:
       '@floating-ui/dom': ^1.2.1
+      '@neoconfetti/svelte': ^1.0.0
       '@playwright/test': ^1.31.1
       '@skeletonlabs/skeleton': ^0.132.5
       '@supabase/auth-helpers-sveltekit': ^0.8.7
@@ -77,6 +78,7 @@ importers:
       vitest: ^0.25.8
     dependencies:
       '@floating-ui/dom': 1.2.1
+      '@neoconfetti/svelte': 1.0.0
       '@skeletonlabs/skeleton': 0.132.5
       '@supabase/auth-helpers-sveltekit': 0.8.7_h4fmw4dd6b3xkulak4k3c7hqqu
       '@supabase/supabase-js': 2.8.0
@@ -1715,6 +1717,10 @@ packages:
       - encoding
       - supports-color
     dev: true
+
+  /@neoconfetti/svelte/1.0.0:
+    resolution: {integrity: sha512-SmksyaJAdSlMa9cTidVSIqYo1qti+WTsviNDwgjNVm+KQ3DRP2Df9umDIzC4vCcpEYY+chQe0i2IKnLw03AT8Q==}
+    dev: false
 
   /@nodelib/fs.scandir/2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
