@@ -200,7 +200,7 @@
 	/>
 {/if}
 
-<style>
+<style lang="postcss">
 	form {
 		width: 100%;
 		height: 100%;
@@ -259,7 +259,7 @@
 	}
 
 	.grid.playing .row.current {
-		filter: drop-shadow(3px 3px 10px var(--color-bg-0));
+		filter: drop-shadow(3px 3px 10px rgba(var(--color-surface-800)));
 	}
 
 	.letter {
@@ -274,27 +274,27 @@
 		border: none;
 		font-size: calc(0.08 * var(--width));
 		border-radius: 2px;
-		background: white;
+		background: rgba(var(--color-surface-200));
 		margin: 0;
-		color: rgba(0, 0, 0, 0.7);
+		color: rgba(var(--on-surface));
 	}
 
 	.letter.missing {
-		background: rgba(255, 255, 255, 0.5);
-		color: rgba(0, 0, 0, 0.5);
+		background: rgba(var(--color-surface-300));
+		color: rgba(var(--on-surface));
 	}
 
 	.letter.exact {
-		background: var(--color-theme-2);
-		color: white;
+		background: rgba(var(--color-primary-500));
+		color: rgba(var(--on-success));
 	}
 
 	.letter.close {
-		border: 2px solid var(--color-theme-2);
+		border: 2px solid rgba(var(--color-primary-500));
 	}
 
 	.selected {
-		outline: 2px solid var(--color-theme-1);
+		outline: 2px solid rgba(var(--color-tertiary-500));
 	}
 
 	.controls {
