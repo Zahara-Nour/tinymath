@@ -8,14 +8,17 @@
 
 	export let form: ActionData
 
+	$: console.log('size', data.size)
+
 	/** Whether or not the user has won */
-	$: won = data.answers.at(-1) === 'xxxxx'
+	$: won = data.answers.at(-1) === 'xxxxxxxxxxxxxxxxx'.substring(0, data.size)
 
 	/** The index of the current guess */
 	$: i = won ? -1 : data.answers.length
 
 	/** Whether the current guess can be submitted */
-	$: submittable = data.guesses[i]?.length === 5
+	$: submittable = true
+	// $: submittable = data.guesses[i]?.length === data.size
 
 	/**
 	 * A map of classnames for all letters that have been guessed,
@@ -36,7 +39,7 @@
 		data.answers.forEach((answer, i) => {
 			const guess = data.guesses[i]
 
-			for (let i = 0; i < 5; i += 1) {
+			for (let i = 0; i < guess.length; i += 1) {
 				const letter = guess[i]
 
 				if (answer[i] === 'x') {
@@ -61,7 +64,7 @@
 		if (key === 'backspace') {
 			data.guesses[i] = guess.slice(0, -1)
 			if (form?.badGuess) form.badGuess = false
-		} else if (guess.length < 5) {
+		} else if (guess.length < data.size) {
 			data.guesses[i] += key
 		}
 	}
@@ -92,6 +95,7 @@
 	method="POST"
 	action="?/enter"
 	use:enhance={() => {
+		console.log('use enhance')
 		// prevent default callback from resetting the form
 		return ({ update }) => {
 			update({ reset: false })
@@ -100,12 +104,17 @@
 >
 	<a class="how-to-play" href="/sverdle/how-to-play">How to play</a>
 
-	<div class="grid" class:playing={!won} class:bad-guess={form?.badGuess}>
+	<div
+		class="grid"
+		class:playing={!won}
+		class:bad-guess={form?.badGuess}
+		style="--grid-size: {data.size}"
+	>
 		{#each Array(6) as _, row}
 			{@const current = row === i}
 			<h2 class="visually-hidden">Row {row + 1}</h2>
 			<div class="row" class:current>
-				{#each Array(5) as _, column}
+				{#each Array(data.size) as _, column}
 					{@const answer = data.answers[row]?.[column]}
 					{@const value = data.guesses[row]?.[column] ?? ''}
 					{@const selected = current && column === data.guesses[row].length}
@@ -171,7 +180,7 @@
 								on:click|preventDefault={update}
 								data-key={letter}
 								class={classnames[letter]}
-								disabled={data.guesses[i].length === 5}
+								disabled={data.guesses[i].length === data.size}
 								formaction="?/update"
 								name="key"
 								value={letter}
@@ -247,7 +256,7 @@
 
 	.grid .row {
 		display: grid;
-		grid-template-columns: repeat(5, 1fr);
+		grid-template-columns: repeat(var(--grid-size), 1fr);
 		grid-gap: 0.2rem;
 		margin: 0 0 0.2rem 0;
 	}
