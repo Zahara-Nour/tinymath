@@ -3,6 +3,7 @@
 	import { enhance } from '$app/forms'
 	import type { PageData, ActionData } from './$types'
 	import { reduced_motion } from './reduced-motion'
+	import dancing from '$lib/images/dancing.gif'
 
 	export let data: PageData
 
@@ -89,11 +90,9 @@
 	<meta name="description" content="A Wordle clone written in SvelteKit" />
 </svelte:head>
 
-<h1 class="visually-hidden">Sverdle</h1>
-
 <form
 	method="POST"
-	action="?/enter"
+	action="?/enter&size={data.size}"
 	use:enhance={() => {
 		console.log('use enhance')
 		// prevent default callback from resetting the form
@@ -102,8 +101,6 @@
 		}
 	}}
 >
-	<a class="how-to-play" href="/sverdle/how-to-play">How to play</a>
-
 	<div
 		class="grid"
 		class:playing={!won}
@@ -145,16 +142,29 @@
 				{/each}
 			</div>
 		{/each}
+		<input name="size" type="hidden" value={data.size} />
 	</div>
 
 	<div class="controls">
 		{#if won || data.answers.length >= 6}
-			{#if !won && data.answer}
-				<p>the answer was "{data.answer}"</p>
-			{/if}
-			<button data-key="enter" class="restart selected" formaction="?/restart">
-				{won ? 'you won :)' : `game over :(`} play again?
-			</button>
+			<div class="flex items-center justify-center">
+				{#if !won && data.answer}
+					<p>the answer was "{data.answer}"</p>
+				{:else if won}
+					<div class="flex justify-center w-full h-32">
+						<img src={dancing} alt="célébration" />
+					</div>
+				{/if}
+				<div class="flex flex-col">
+					<button
+						data-key="enter"
+						class="restart selected"
+						formaction="?/restart"
+					>
+						{won ? 'you won :)' : `game over :(`} play again?
+					</button>
+				</div>
+			</div>
 		{:else}
 			<div class="keyboard">
 				<button
@@ -243,8 +253,11 @@
 	}
 
 	.grid {
-		--width: min(100vw, 40vh, 380px);
+		/* --width: min(100vw, 40vh, 380px); */
+		--width: calc(var(--grid-size) * 3.5rem);
+		--height: calc(7 * 3rem);
 		max-width: var(--width);
+		max-height: var(--height);
 		align-self: center;
 		justify-self: center;
 		width: 100%;
@@ -281,7 +294,7 @@
 		box-sizing: border-box;
 		text-transform: lowercase;
 		border: none;
-		font-size: calc(0.08 * var(--width));
+		font-size: 2rem;
 		border-radius: 2px;
 		background: rgba(var(--color-surface-200));
 		margin: 0;
@@ -289,21 +302,26 @@
 	}
 
 	.letter.missing {
-		background: rgba(var(--color-surface-300));
+		background: rgba(var(--color-surface-400));
 		color: rgba(var(--on-surface));
+		@apply text-surface-700;
 	}
 
 	.letter.exact {
 		background: rgba(var(--color-primary-500));
-		color: rgba(var(--on-success));
+		color: rgba(var(--on-primary));
 	}
 
 	.letter.close {
-		border: 2px solid rgba(var(--color-primary-500));
+		border: 3px solid rgba(var(--color-primary-500));
 	}
 
 	.selected {
-		outline: 2px solid rgba(var(--color-tertiary-500));
+		outline: none;
+		border: 3px solid #f95454;
+		animation-name: blinking;
+		animation-duration: 1.5s;
+		animation-iteration-count: 100;
 	}
 
 	.controls {
@@ -331,8 +349,9 @@
 	.keyboard button,
 	.keyboard button:disabled {
 		--size: min(8vw, 4vh, 40px);
-		background-color: white;
-		color: black;
+		background: rgba(var(--color-surface-300));
+		margin: 0;
+		color: rgba(var(--on-surface));
 		width: var(--size);
 		border: none;
 		border-radius: 2px;
@@ -341,21 +360,22 @@
 	}
 
 	.keyboard button.exact {
-		background: var(--color-theme-2);
-		color: white;
+		background: rgba(var(--color-primary-500));
+		color: rgba(var(--on-primary));
 	}
 
 	.keyboard button.missing {
-		opacity: 0.5;
+		background: rgba(var(--color-surface-400));
+		color: rgba(var(--on-surface));
 	}
 
 	.keyboard button.close {
-		border: 2px solid var(--color-theme-2);
+		border: 2px solid rgba(var(--color-primary-500));
 	}
 
 	.keyboard button:focus {
-		background: var(--color-theme-1);
-		color: white;
+		background: rgba(var(--color-tertiary-500));
+		color: rgba(var(--on-tertiary));
 		outline: none;
 	}
 
@@ -395,6 +415,12 @@
 		background: var(--color-theme-1);
 		color: white;
 		outline: none;
+	}
+
+	@keyframes blinking {
+		50% {
+			border-color: #e1ddd5;
+		}
 	}
 
 	@keyframes wiggle {

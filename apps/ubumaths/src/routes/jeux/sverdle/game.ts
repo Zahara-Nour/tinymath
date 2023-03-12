@@ -10,7 +10,10 @@ export class Game {
 	/**
 	 * Create a game object from the player's cookie, or initialise a new game
 	 */
-	constructor(serialized: string | undefined = undefined) {
+	constructor(
+		serialized: string | undefined = undefined,
+		size: number | undefined,
+	) {
 		if (serialized) {
 			const [index, guesses, answers] = serialized.split('-')
 
@@ -21,7 +24,14 @@ export class Game {
 			this.answers = answers ? answers.split(' ') : []
 			console.log('serialiazed game answer', this.answer, this.answer.length)
 		} else {
-			this.index = Math.floor(Math.random() * words.length)
+			if (size) {
+				const sizedWords = words.filter((word) => word.length === size)
+				const answer = sizedWords[Math.floor(Math.random() * sizedWords.length)]
+				this.index = words.indexOf(answer)
+			} else {
+				this.index = Math.floor(Math.random() * words.length)
+			}
+
 			this.answer = words[this.index]
 			this.size = this.answer.length
 			this.guesses = ['', '', '', '', '', '']

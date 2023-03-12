@@ -54,10 +54,14 @@ export const actions = {
 	 */
 	enter: async ({ request, cookies }) => {
 		console.log('action enter')
-		const game = new Game(cookies.get('sverdle'))
+		// const size = request.url.
+		console.log('request', Object.keys(request))
 
 		const data = await request.formData()
+		const size = data.get('size') as string
 		const guess = data.getAll('guess') as string[]
+		const game = new Game(cookies.get('sverdle'), parseInt(size, 10))
+		console.log('data', data)
 
 		if (!game.enter(guess)) {
 			return fail(400, { badGuess: true })
