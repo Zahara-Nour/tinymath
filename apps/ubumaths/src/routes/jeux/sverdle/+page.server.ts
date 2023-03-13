@@ -22,6 +22,7 @@ export const load = (({ cookies }) => {
 		 */
 		answer: game.answers.length >= 6 ? game.answer : null,
 		size: game.size,
+		correctLetters: game.correctLetters,
 	}
 }) satisfies PageServerLoad
 
@@ -53,15 +54,10 @@ export const actions = {
 	 * the server, so that people can't cheat by peeking at the JavaScript
 	 */
 	enter: async ({ request, cookies }) => {
-		console.log('action enter')
-		// const size = request.url.
-		console.log('request', Object.keys(request))
-
 		const data = await request.formData()
 		const size = data.get('size') as string
 		const guess = data.getAll('guess') as string[]
 		const game = new Game(cookies.get('sverdle'), parseInt(size, 10))
-		console.log('data', data)
 
 		if (!game.enter(guess)) {
 			return fail(400, { badGuess: true })

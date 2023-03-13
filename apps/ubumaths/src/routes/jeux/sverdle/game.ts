@@ -6,6 +6,7 @@ export class Game {
 	answers: string[]
 	answer: string
 	size: number
+	correctLetters: string[]
 
 	/**
 	 * Create a game object from the player's cookie, or initialise a new game
@@ -15,13 +16,14 @@ export class Game {
 		size: number | undefined,
 	) {
 		if (serialized) {
-			const [index, guesses, answers] = serialized.split('-')
+			const [index, guesses, answers, correctLetters] = serialized.split('-')
 
 			this.index = +index
 			this.answer = words[this.index]
 			this.size = this.answer.length
 			this.guesses = guesses ? guesses.split(' ') : []
 			this.answers = answers ? answers.split(' ') : []
+			this.correctLetters = correctLetters ? correctLetters.split(' ') : []
 			console.log('serialiazed game answer', this.answer, this.answer.length)
 		} else {
 			if (size) {
@@ -36,7 +38,7 @@ export class Game {
 			this.size = this.answer.length
 			this.guesses = ['', '', '', '', '', '']
 			this.answers = []
-			console.log('init game answer', this.answer, this.answer.length)
+			this.correctLetters = Array(this.size).fill('')
 		}
 	}
 
@@ -45,7 +47,6 @@ export class Game {
 	 * true if the guess was valid, false otherwise
 	 */
 	enter(letters: string[]) {
-		console.log('answer', this.answer, this.answer.length)
 		const word = letters.join('')
 		const valid = allowed.has(word)
 
@@ -61,8 +62,10 @@ export class Game {
 			if (normalizeString(letters[i]) === normalizeString(available[i])) {
 				answer[i] = 'x'
 				available[i] = ' '
+				this.correctLetters[i] = letters[i]
 			}
 		}
+		console.log('set correct letters', this.correctLetters, 'answer', answer)
 
 		// then find close matches (this has to happen
 		// in a second step, otherwise an early close
@@ -88,7 +91,9 @@ export class Game {
 	 * Serialize game state so it can be set as a cookie
 	 */
 	toString() {
-		return `${this.index}-${this.guesses.join(' ')}-${this.answers.join(' ')}`
+		return `${this.index}-${this.guesses.join(' ')}-${this.answers.join(
+			' ',
+		)}-${this.correctLetters.join(' ')}`
 	}
 }
 

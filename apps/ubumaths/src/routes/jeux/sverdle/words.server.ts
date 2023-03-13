@@ -194,6 +194,13 @@ export const words = [
 	'solution',
 	'secant',
 	'courbe',
+	'shisma',
+	'schema',
+	'compter',
+	'codage',
+	'figure',
+	'signe',
+	'inverse',
 ]
 
 /** The list of valid guesses, of which the list of possible words is a subset */

@@ -4,11 +4,22 @@
 	import type { PageData, ActionData } from './$types'
 	import { reduced_motion } from './reduced-motion'
 	import dancing from '$lib/images/dancing.gif'
+	import IconReload from '$lib/icones/IconReload.svelte'
 
 	export let data: PageData
 
 	export let form: ActionData
 
+	const congrats = [
+		'Nice !',
+		'Good Job !',
+		'Well Done !',
+		'You nailed it !',
+		'You rock !',
+		'Great !',
+	]
+
+	$: console.log('correctLetters', data.correctLetters)
 	$: console.log('size', data.size)
 
 	/** Whether or not the user has won */
@@ -92,9 +103,8 @@
 
 <form
 	method="POST"
-	action="?/enter&size={data.size}"
+	action="?/enter"
 	use:enhance={() => {
-		console.log('use enhance')
 		// prevent default callback from resetting the form
 		return ({ update }) => {
 			update({ reset: false })
@@ -118,14 +128,16 @@
 					{@const exact = answer === 'x'}
 					{@const close = answer === 'c'}
 					{@const missing = answer === '_'}
+					{@const clue = !value && current && !!data.correctLetters[column]}
 					<div
 						class="letter"
 						class:exact
 						class:close
 						class:missing
 						class:selected
+						class:clue
 					>
-						{value}
+						{value || (current ? data.correctLetters[column] : '')}
 						<span class="visually-hidden">
 							{#if exact}
 								(correct)
@@ -147,21 +159,29 @@
 
 	<div class="controls">
 		{#if won || data.answers.length >= 6}
-			<div class="flex items-center justify-center">
+			<div class="flex items-center justify-center gap-8">
 				{#if !won && data.answer}
-					<p>the answer was "{data.answer}"</p>
+					<div class="flex flex-col">
+						<p>La mot mathématique était :</p>
+						<p class="font-bold text-primary-500">{data.answer}</p>
+					</div>
 				{:else if won}
 					<div class="flex justify-center w-full h-32">
 						<img src={dancing} alt="célébration" />
 					</div>
 				{/if}
-				<div class="flex flex-col">
+				<div class="ml-6 flex flex-col items-center">
+					<div class="text-3xl" style="font-family:'pacifico'">
+						{won
+							? congrats[Math.floor(Math.random() * congrats.length)]
+							: 'Game Over !'}
+					</div>
 					<button
 						data-key="enter"
-						class="restart selected"
+						class=" my-2 btn-icon  variant-filled-primary"
 						formaction="?/restart"
 					>
-						{won ? 'you won :)' : `game over :(`} play again?
+						<IconReload />
 					</button>
 				</div>
 			</div>
@@ -301,6 +321,10 @@
 		color: rgba(var(--on-surface));
 	}
 
+	.clue {
+		@apply text-surface-600;
+	}
+
 	.letter.missing {
 		background: rgba(var(--color-surface-400));
 		color: rgba(var(--on-surface));
@@ -400,21 +424,6 @@
 
 	.keyboard button[data-key='enter']:disabled {
 		opacity: 0.5;
-	}
-
-	.restart {
-		width: 100%;
-		padding: 1rem;
-		background: rgba(255, 255, 255, 0.5);
-		border-radius: 2px;
-		border: none;
-	}
-
-	.restart:focus,
-	.restart:hover {
-		background: var(--color-theme-1);
-		color: white;
-		outline: none;
 	}
 
 	@keyframes blinking {
