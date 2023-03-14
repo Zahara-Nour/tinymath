@@ -5,6 +5,7 @@
 	import IconMinus from '$lib/icones/IconMinus.svelte'
 	import { beforeUpdate } from 'svelte'
 	import IconHelp from '$lib/icones/IconHelp.svelte'
+	import { confetti } from '@neoconfetti/svelte'
 
 	export let size = 9
 
@@ -45,9 +46,10 @@
 	let selecteds: Position[] = []
 	let tileClass = ''
 
-	// $: {
-	tileClass = `w-max grid grid-cols-10 gap-4 my-6`
-	// }
+	$: {
+		tileClass = `w-max grid grid-cols-${size + 1} gap-4 my-6 `
+		console.log('tileClass', tileClass)
+	}
 	$: changeGrid(size)
 	$: result = calculateValue(selecteds, op)
 
@@ -411,3 +413,16 @@
 		{/if}
 	</div>
 </div>
+
+{#if win}
+	<div
+		style="position: absolute; left: 50%; top: 30%"
+		use:confetti={{
+			// particleCount: $reduced_motion ? 0 : undefined,
+			force: 0.7,
+			stageWidth: window.innerWidth,
+			stageHeight: window.innerHeight,
+			colors: ['#ff3e00', '#40b3ff', '#676778'],
+		}}
+	/>
+{/if}
