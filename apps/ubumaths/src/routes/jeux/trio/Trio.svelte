@@ -47,15 +47,23 @@
 
 	// $: {
 	tileClass = `w-max grid grid-cols-10 gap-4 my-6`
-	console.log('size', size)
-	console.log('tileClass', tileClass)
 	// }
-	$: {
-		console.log('changeGrid')
-		changeGrid(size)
-	}
+	$: changeGrid(size)
+	$: result = calculateValue(selecteds, op)
 
-	beforeUpdate(() => console.log('beforeUpdate'))
+	function calculateValue(selecteds: Position[], op: string) {
+		if (selecteds.length === 3) {
+			const values = selecteds.map((selected) => grid[selected.i][selected.j].n)
+
+			const value =
+				values[0] * values[1] + (op === '+' ? values[2] : -values[2])
+			if (value === target.value) {
+				win = true
+			}
+			return value
+		}
+		return null
+	}
 
 	function changeGrid(size: number) {
 		grid = []
@@ -92,7 +100,6 @@
 	}
 
 	function handleClick(i: number, j: number) {
-		result = null
 		for (let i = 0; i < size; i++) {
 			for (let j = 0; j < size; j++) {
 				grid[i][j].status = ''
@@ -163,21 +170,12 @@
 					grid[i][j].status = 'not_available'
 				}
 			}
-			const number1 = grid[selecteds[0].i][selecteds[0].j].n
-			const number2 = grid[selecteds[1].i][selecteds[1].j].n
-			const number3 = grid[selecteds[2].i][selecteds[2].j].n
-			result =
-				op === '+' ? number1 * number2 + number3 : number1 * number2 - number3
 		}
 
 		selecteds.forEach((selected, i) => {
 			grid[selected.i][selected.j].status =
 				i === 2 ? 'selected-third' : 'selected'
 		})
-
-		if (result && result === target.value) {
-			win = true
-		}
 	}
 
 	function choseTarget() {
@@ -340,7 +338,7 @@
 		<span class={classCorrection}> = </span>
 
 		{#if result}
-			<span class={win ? classWin : classLost}>
+			<span class={result === target.value ? classWin : classLost}>
 				{result}
 			</span>
 		{:else}
