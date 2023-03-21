@@ -2,24 +2,27 @@
 // for information about these interfaces
 // and what to do when importing types
 
-import type { TypedSupabaseClient } from '@supabase/auth-helpers-sveltekit'
-import type { Session } from '@supabase/supabase-js'
+import type {
+	GoTrueAdminApi,
+	Session,
+	SupabaseClient,
+} from '@supabase/supabase-js'
+import { Database } from '../types/supabase'
 
 declare global {
 	declare namespace App {
 		interface Supabase {
 			// Use the path to where you generated the types using the Supbase CLI.
-			Database: import('../types/supabase').Database
-			SchemaName: 'public'
+			Database: Database
 		}
 		interface Locals {
-			supabaseClient: TypedSupabaseClient
-			session: Session | null
+			supabase: SupabaseClient<Database>
+			getSession(): Promise<Session | null>
+			adminAuth: GoTrueAdminApi
 		}
 		interface PageData {
-			session: import('@supabase/supabase-js').Session | null
+			session: Session | null
 		}
-		// interface PageData {}
 		// interface Error {}
 		// interface Platform {}
 	}

@@ -1,9 +1,13 @@
-import { supabaseClient } from '$lib/db'
+import type { SupabaseClient } from '@supabase/supabase-js'
+import type { Database } from '../../types/supabase'
 import { getLogger } from '$lib/utils'
 let { info, fail, warn } = getLogger('images', 'info')
 import { browser } from '$app/environment'
 
-export async function fetchImage(name: string): Promise<string> {
+export async function fetchImage(
+	supabase: SupabaseClient<Database>,
+	name: string,
+): Promise<string> {
 	let base64: string | null = null
 
 	if (browser) {
@@ -11,7 +15,7 @@ export async function fetchImage(name: string): Promise<string> {
 
 		if (!base64) {
 			info('fetching image', name)
-			const { data: blob, error } = await supabaseClient.storage
+			const { data: blob, error } = await supabase.storage
 				.from('public/mental')
 				.download(name)
 

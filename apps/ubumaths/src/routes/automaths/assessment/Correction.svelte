@@ -13,14 +13,16 @@
 	import IconHome from '$lib/icones/IconHome.svelte'
 	import IconScan from '$lib/icones/IconScan.svelte'
 	import IconReload from '$lib/icones/IconReload.svelte'
-	import { supabaseClient } from '$lib/db'
 	import { toastStore } from '@skeletonlabs/skeleton'
+	import type { SupabaseClient } from '@supabase/supabase-js'
+	import type { Database } from '../../../../types/supabase'
 
 	export let items: CorrectedQuestion[]
 	export let assignmentId: number
 	export let restart
 	export let query: string
 	export let classroom = false
+	export let supabase: SupabaseClient<Database>
 
 	const { info, fail } = getLogger('Correction', 'info')
 	let percent: number
@@ -47,7 +49,7 @@
 
 	// sauvegarde des résultats
 	if (assignmentId) {
-		supabaseClient
+		supabase
 			.from('assignments')
 			.update({
 				mark: score,

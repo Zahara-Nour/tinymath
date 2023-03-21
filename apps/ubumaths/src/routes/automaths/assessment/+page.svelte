@@ -22,8 +22,9 @@
 	import IconRestart from '$lib/icones/IconRestart.svelte'
 	import IconKeyboard from '$lib/icones/IconKeyboard.svelte'
 	import IconHome from '$lib/icones/IconHome.svelte'
-	import { supabaseClient } from '$lib/db'
 	import { toastStore } from '@skeletonlabs/skeleton'
+
+	export let data
 
 	const ids = datas.ids
 	let { info, fail, trace } = getLogger('Assessment', 'trace')
@@ -144,7 +145,7 @@
 
 		// si c'est une évaluation programmée
 		if (!basket) {
-			const { data, error } = await supabaseClient
+			const { data: basketData, error } = await data.supabase
 				.from('assignments')
 				.select('basket')
 				.eq('id', assignmentId)
@@ -157,7 +158,7 @@
 						"Une erreur est survenue lors de la récupération de l'évaluation",
 					background: 'bg-error-500',
 				})
-			} else if (!data) {
+			} else if (!basketData) {
 				fail('no data while fetching assignment')
 				toastStore.trigger({
 					message:
@@ -165,7 +166,7 @@
 					background: 'bg-error-500',
 				})
 			} else {
-				basket = JSON.parse(data.basket as string)
+				basket = JSON.parse(basketData.basket as string)
 				console.log('basket', basket)
 			}
 		}

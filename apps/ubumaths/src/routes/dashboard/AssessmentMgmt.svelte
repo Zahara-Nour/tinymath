@@ -1,20 +1,13 @@
 <script lang="ts">
-	import { addUsers, supabaseClient } from '$lib/db'
 	import PageHeader from '$lib/ui/PageHeader.svelte'
-	import { grades } from '$lib/grades'
-	import { enhance, type SubmitFunction } from '$app/forms'
 	import { getLogger } from '$lib/utils'
 	import { toastStore } from '@skeletonlabs/skeleton'
-	import type { AnsweredQuestion, Assessment, Basket, School } from '$lib/type'
-	import { add_classes } from 'svelte/internal'
+	import type { Assessment, Basket, School } from '$lib/type'
 	import { user } from '$lib/stores'
-	import generateQuestion, {
-		generateQuestionsFromBasket,
-	} from '$lib/questions/generateQuestion'
-	import { SupabaseAuthClient } from '@supabase/supabase-js/dist/module/lib/SupabaseAuthClient'
+	import type { SupabaseClient } from '@supabase/supabase-js'
+	import type { Database } from '../../../types/supabase'
 
 	let { warn, trace, fail } = getLogger('UserMgmt', 'warn')
-	let textarea: string = ''
 	let assessments: Assessment[] | null = null
 	let selectedClassId = $user.classIdsNames[0].id
 	let selectedStudents: { [index: number]: number[] } = $user.classes.reduce(
@@ -76,7 +69,7 @@
 		return allStudents
 	}
 	function fetchAssessments() {
-		supabaseClient
+		supabase
 			.from('assessments')
 			.select('id, title, questions, teacher_id')
 			.eq('teacher_id', $user.id)
@@ -109,7 +102,7 @@
 	async function assignAssessments(assessmentId: number) {
 		// fetch basket
 		let basket: Basket = []
-		const { data, error } = await supabaseClient
+		const { data, error } = await supabase
 			.from('assessments')
 			.select('questions')
 			.eq('id', assessmentId)
@@ -145,9 +138,7 @@
 
 			console.log('assignements', assignments)
 
-			const { error } = await supabaseClient
-				.from('assignments')
-				.insert(assignments)
+			const { error } = await supabase.from('assignments').insert(assignments)
 			if (error) {
 				fail(error.message)
 				toastStore.trigger({

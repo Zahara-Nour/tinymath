@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { addUsers, supabaseClient } from '$lib/db'
 	import PageHeader from '$lib/ui/PageHeader.svelte'
 	import { grades } from '$lib/grades'
 	import { enhance, type SubmitFunction } from '$app/forms'

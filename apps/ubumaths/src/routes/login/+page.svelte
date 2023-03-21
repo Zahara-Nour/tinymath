@@ -1,58 +1,30 @@
 <script lang="ts">
-	import { enhance, type SubmitFunction } from '$app/forms'
-	import { supabaseClient } from '$lib/db'
-	import type { Provider } from '@supabase/supabase-js'
+	import { toastStore } from '@skeletonlabs/skeleton'
 	import type { ActionData } from './$types'
 
 	export let form: ActionData
 
-	const signInWithProvider = async (provider: Provider) => {
-		console.log('login')
-		const { data, error } = await supabaseClient.auth.signInWithOAuth({
-			provider: provider,
+	if (form?.error) {
+		toastStore.trigger({
+			message: form.error,
+			background: 'bg-error-500',
 		})
-		console.log('data', data)
-	}
-
-	const submitSocialLogin: SubmitFunction = async ({ action, cancel }) => {
-		switch (action.searchParams.get('provider')) {
-			case 'google':
-				await signInWithProvider('google')
-				break
-			case 'discord':
-				await signInWithProvider('discord')
-				break
-			case 'github':
-				await signInWithProvider('github')
-				break
-			default:
-				break
-		}
-		cancel()
 	}
 </script>
 
-<main>
-	{#if form?.error}
-		<p class="error">{form.error}</p>
-	{/if}
-	<h1>Login</h1>
-	<form action="?/login" method="POST" class="auth-form">
-		<label for=""> Email </label>
-		<input type="text" name="email" />
-		<label for=""> Password </label>
-		<input type="password" name="password" />
-		<button type="submit" class="btn btn-primary">Login</button>
-	</form>
-	<form class="socials" method="POST" use:enhance={submitSocialLogin}>
-		<button formaction="?/login&provider=github" class="btn btn-ghost"
-			>Github</button
-		>
-		<button formaction="?/login&provider=discord" class="btn btn-ghost"
-			>Discord</button
-		>
-		<button formaction="?/login&provider=google" class="btn btn-ghost"
-			>Google</button
-		>
-	</form>
-</main>
+<h1>Login</h1>
+<div class="mt-16 flex items-center justify-center">
+	<div class="p-4 card w-96 max-w-full">
+		<form action="?/login" method="POST" class="auth-form">
+			<label class="label" for=""> Email </label>
+			<input class="input" type="text" name="email" />
+			<label class="mt-4 label" for=""> Password </label>
+			<input class="input" type="password" name="password" />
+			<div class="flex justify-center">
+				<button type="submit" class="mt-4 btn variant-filled-primary"
+					>Login</button
+				>
+			</div>
+		</form>
+	</div>
+</div>

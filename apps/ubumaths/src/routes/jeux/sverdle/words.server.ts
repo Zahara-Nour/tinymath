@@ -201,6 +201,8 @@ export const words = [
 	'figure',
 	'signe',
 	'inverse',
+	'radian',
+	'rapport',
 ]
 
 /** The list of valid guesses, of which the list of possible words is a subset */

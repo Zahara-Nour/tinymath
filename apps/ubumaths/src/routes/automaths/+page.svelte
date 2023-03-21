@@ -32,7 +32,6 @@
 	import { afterUpdate, beforeUpdate, onMount } from 'svelte'
 	import { formatLatexToHtml, storedGrade } from '$lib/stores'
 	import { get } from 'svelte/store'
-	import { supabaseClient } from '$lib/db'
 	import PageHeader from '$lib/ui/PageHeader.svelte'
 
 	let { info, fail, warn } = getLogger('Automaths', 'info')

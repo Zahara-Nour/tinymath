@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { addUsers, supabaseClient } from '$lib/db'
+	import { supabaseClient } from '$lib/db'
 	import PageHeader from '$lib/ui/PageHeader.svelte'
 	import { grades } from '$lib/grades'
 	import { enhance, type SubmitFunction } from '$app/forms'
 	import { getLogger } from '$lib/utils'
 	import { toastStore } from '@skeletonlabs/skeleton'
 	import type { School } from '$lib/type'
-	import { add_classes } from 'svelte/internal'
+	import { user } from '$lib/stores'
 
 	let { warn, trace, fail } = getLogger('UserMgmt', 'warn')
 	let textarea: string = ''
@@ -32,6 +32,49 @@
 		selectedSchool = 0
 	}
 
+	function addUsers(rows: UserInfo[]) {
+		supabaseClient
+			.from('users')
+			.insert(rows)
+			.then((res) => {
+				if (res.error) {
+					fail(res.error.message)
+					toastStore.trigger({
+						message: 'L’ajout des utilisateurs a échoué.',
+						background: 'bg-error-500',
+					})
+				} else {
+					toastStore.trigger({
+						message: 'Les utilisateurs ont été ajoutés.',
+						background: 'bg-success-500',
+					})
+				}
+			})
+	}
+
+	function fetchClasses(school_id: number) {
+		supabaseClient
+			.from('classes')
+			.select('name, id')
+			.eq('school_id', school_id)
+			.then((res) => {
+				if (res.error) {
+					fail(res.error.message)
+					toastStore.trigger({
+						message: 'La récupération des classes a échoué.',
+						background: 'bg-error-500',
+					})
+				} else if (!res.data) {
+					fail('No classes found')
+					toastStore.trigger({
+						message: 'Aucune classe trouvée.',
+						background: 'bg-error-500',
+					})
+				} else {
+					schools![selectedSchool].classes = res.data
+				}
+			})
+	}
 	function fetchSchools() {
 		supabaseClient
 			.from('schools')
@@ -51,6 +94,7 @@
 					})
 				} else {
 					schools = res.data
+					$user.schools = schools
 					console.log('schools', schools)
 				}
 			})
@@ -74,7 +118,7 @@
 
 	const submitClass: SubmitFunction = async ({ action, cancel }) => {
 		const { error } = await supabaseClient.from('classes').insert({
-			class: className,
+			name: className,
 			grade: selectedGrade,
 			school_id: schools![selectedSchool].id,
 		})
@@ -148,7 +192,13 @@
 
 <div class="flex justify-center">
 	<button
-		on:click={() => addUsers(rows)}
+		on:click={() =>
+			addUsers(
+				rows.map((row) => ({
+					...row,
+					classes: schools,
+				})),
+			)}
 		class="my-4 btn variant-filled-tertiary">Créer les utilisateurs</button
 	>
 </div>

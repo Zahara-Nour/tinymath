@@ -11,18 +11,20 @@
 	import QuestionCard from '$lib/ui/QuestionCard.svelte'
 	import IconPlus from '$lib/icones/IconPlus.svelte'
 	import IconMinus from '$lib/icones/IconMinus.svelte'
-	import { supabaseClient } from '$lib/db'
 	import { toastStore, type ModalSettings } from '@skeletonlabs/skeleton'
 	import { connected, user } from '$lib/stores'
 	import { enhance, type SubmitFunction } from '$app/forms'
 	import { getLogger } from '$lib/utils'
 	import { modalStore } from '@skeletonlabs/skeleton'
 	import { goto } from '$app/navigation'
+	import type { SupabaseClient } from '@supabase/supabase-js'
+	import type { Database } from '../../../types/supabase'
 
 	export let basket: Basket = []
 	export let courseAuxNombres = false
 	export let enounceAlone = false
 	export let assessment = 0
+	export let supabase: SupabaseClient<Database>
 
 	let { warn, trace, fail } = getLogger('Basket', 'warn')
 	const ids = datas.ids
@@ -39,7 +41,7 @@
 	$: console.log('titleAvailable: ', titleAvailable)
 
 	async function loadBasket() {
-		const { error, data } = await supabaseClient
+		const { error, data } = await supabase
 			.from('assessments')
 			.select('questions, title')
 			.eq('id', assessment)
@@ -89,14 +91,14 @@
 	const saveAssessment: SubmitFunction = async (params) => {
 		params.cancel()
 		const { error } = await (titleAvailable
-			? supabaseClient.from('assessments').insert([
+			? supabase.from('assessments').insert([
 					{
 						title: evalTitle,
 						teacher_id: $user.id,
 						questions: JSON.stringify(basket),
 					},
 			  ])
-			: supabaseClient
+			: supabase
 					.from('assessments')
 					.update({
 						questions: JSON.stringify(basket),
@@ -119,7 +121,7 @@
 	}
 
 	async function fetchTitles() {
-		const { data, error } = await supabaseClient
+		const { data, error } = await supabase
 			.from('assessments')
 			.select('title,id')
 			.eq('teacher_id', $user.id)

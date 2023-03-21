@@ -336,40 +336,89 @@ export type Commit = {
 	exec: () => void
 }
 
+export type Vip = {
+	name: string
+}
+
+// creation d'un nouvel utilisateur
 export type UserInfo = {
 	email: string
 	role: string
-	grade: string
-	classes: number[]
+	firstname: string
+	lastname: string
+	classe_ids?: number[]
+	school_id?: number
+	teacher_id?: number
+	grade?: string
 }
 
 export type ExtraInfo = {
-	firstname?: string
-	lastname?: string
-	fullname?: string
-	user_id?: string | null // supabase user id
+	auth_id?: string | null // supabase user id
 }
-export type UserProfile = UserInfo &
+
+export type UserDB = UserInfo &
 	ExtraInfo & {
 		id: number // users table primary key
-		avatar?: string
-		classIdsNames: { className: string; id: number }[]
-		studentsIdsNames: {
-			[index: number]: {
-				id: number
-				firstname: string
-				lastname: string
-				fullname: string
-			}[]
-		}
-		assignments?: Assignment[]
 	}
 
-export type User = UserProfile & {
+export type Guest = UserInfo &
+	UserProto & {
+		email: ''
+		role: 'guest'
+		firstname: 'guest'
+		lastname: 'guest'
+	}
+
+export type Admin = UserDB &
+	UserProto & {
+		schools: School[]
+	}
+
+export type StudentInfo = {
+	grade: string
+	classe_ids: number[]
+	classes: Classe[]
+	school_id: number
+	teacher_id: number
+	avatar?: string
+	gidouilles: number
+	vips: Vip[]
+}
+export type Student = UserDB & UserProto & StudentInfo
+
+export type Teacher = UserDB &
+	UserProto & {
+		classe_ids: number[]
+		classes: Classe[]
+		school_id: number
+		avatar?: string
+		student_ids: number[]
+		students: Student[]
+	}
+
+export type UserProto = {
 	isStudent: () => boolean
 	isTeacher: () => boolean
 	isAdmin: () => boolean
 	isGuest: () => boolean
+}
+
+export type User = Admin | Student | Teacher | Guest
+
+export function isAdmin(u: User): u is Admin {
+	return u.role === 'admin'
+}
+
+export function isTeacher(u: User): u is Teacher {
+	return u.role === 'teacher'
+}
+
+export function isStrudent(u: User): u is Student {
+	return u.role === 'student'
+}
+
+export function isGuest(u: User): u is Guest {
+	return u.role === 'guest'
 }
 
 export type School = {
@@ -377,6 +426,13 @@ export type School = {
 	name: string
 	city: string
 	country: string
+}
+
+export type Classe = {
+	id: number
+	name: string
+	school_id: number
+	grade: string
 }
 
 export type Assessment = {

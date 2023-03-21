@@ -1,46 +1,12 @@
 <script lang="ts">
-	import { enhance, type SubmitFunction } from '$app/forms'
-	import { goto } from '$app/navigation'
-	import { supabaseClient } from '$lib/db'
+	import IconLogin from '$lib/icones/IconLogin.svelte'
 	import IconUser from '$lib/icones/IconUser.svelte'
 	import { user } from '$lib/stores'
-	import { Avatar, popup } from '@skeletonlabs/skeleton'
-	import type { Provider, Session } from '@supabase/supabase-js'
+	import { popup } from '@skeletonlabs/skeleton'
 
 	export let place = 'TopBar'
 
-	const signInWithProvider = async (provider: Provider) => {
-		await supabaseClient.auth.signInWithOAuth({
-			provider: provider,
-		})
-	}
-
-	const submitSocialLogin: SubmitFunction = async ({ action, cancel }) => {
-		switch (action.searchParams.get('provider')) {
-			case 'google':
-				await signInWithProvider('google')
-				break
-			case 'discord':
-				await signInWithProvider('discord')
-				break
-			case 'github':
-				await signInWithProvider('github')
-				break
-			default:
-				break
-		}
-		cancel()
-	}
-
-	// if JS enabled, we'll use this to submit the logout form
-	let submitLogout: SubmitFunction = async ({ cancel }) => {
-		const { error } = await supabaseClient.auth.signOut()
-		if (error) {
-			console.log(error)
-		}
-		cancel()
-		goto('/')
-	}
+	$: console.log('useAvatar : ', $user)
 </script>
 
 {#if !$user.isGuest()}
@@ -52,11 +18,14 @@
 				placement: 'right',
 			}}
 		>
-			<Avatar
+			<!-- <Avatar
 				border="border-4 border-surface-300-600-token hover:!border-primary-500"
 				cursor="cursor-pointer"
 				src={$user.avatar}
-			/>
+			/> -->
+			<button class={'text-xl btn-icon variant-filled-primary'}
+				><IconUser />
+			</button>
 		</span>
 		<div
 			class="card variant-filled-surface p-2 shadow-xl"
@@ -66,11 +35,7 @@
 				<!-- (optionally you can provde a label here) -->
 				<ul>
 					<li>
-						<form action="/logout" method="POST" use:enhance={submitLogout}>
-							<button type="submit" class="btn variant-filled-error"
-								>Déconnexion</button
-							>
-						</form>
+						<a href="/logout" class="btn variant-filled-error">Déconnexion</a>
 					</li>
 					{#if place === 'TopBar'}
 						<li>
@@ -92,7 +57,7 @@
 		}}
 	>
 		<button class={'text-xl btn-icon variant-filled-primary'}
-			><IconUser />
+			><IconLogin />
 		</button>
 	</span>
 	<div class="card variant-filled-surface p-2 shadow-xl" data-popup="loginMenu">
@@ -100,11 +65,16 @@
 			<!-- (optionally you can provde a label here) -->
 			<ul>
 				<li>
-					<form class="socials" method="POST" use:enhance={submitSocialLogin}>
+					<!-- <form class="socials" method="POST" use:enhance={submitSocialLogin}>
 						<button formaction="?/login&provider=google" class="btn btn-ghost"
 							>Connexion</button
 						>
-					</form>
+					</form> -->
+					<!-- <form method="POST">
+						<button formaction="?/login" class="btn btn-ghost">Connexion</button
+						>
+					</form> -->
+					<a class="btn btn-ghost" href="/login">Connexion</a>
 				</li>
 			</ul>
 		</nav>

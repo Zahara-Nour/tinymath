@@ -75,24 +75,24 @@ export interface Database {
       }
       classes: {
         Row: {
-          class: string
           created_at: string | null
           grade: string
           id: number
+          name: string
           school_id: number
         }
         Insert: {
-          class?: string
           created_at?: string | null
           grade?: string
           id?: number
+          name?: string
           school_id: number
         }
         Update: {
-          class?: string
           created_at?: string | null
           grade?: string
           id?: number
+          name?: string
           school_id?: number
         }
       }
@@ -352,55 +352,52 @@ export interface Database {
       }
       users: {
         Row: {
-          assessments: number[] | null
-          classes: number[]
+          auth_id: string | null
+          classe_ids: number[]
           created_at: string | null
           email: string
           firstname: string
-          fullname: string
+          gidouilles: number
           grade: string
           id: number
           lastname: string
-          others: number[] | null
           role: string
-          school_id: number | null
-          teacher_id: number | null
+          school_id: number
+          teacher_id: number
           updated_at: string | null
-          user_id: string | null
+          vips: Json
         }
         Insert: {
-          assessments?: number[] | null
-          classes?: number[]
+          auth_id?: string | null
+          classe_ids: number[]
           created_at?: string | null
           email?: string
           firstname?: string
-          fullname?: string
+          gidouilles?: number
           grade?: string
           id?: number
           lastname?: string
-          others?: number[] | null
-          role: string
-          school_id?: number | null
-          teacher_id?: number | null
+          role?: string
+          school_id?: number
+          teacher_id?: number
           updated_at?: string | null
-          user_id?: string | null
+          vips?: Json
         }
         Update: {
-          assessments?: number[] | null
-          classes?: number[]
+          auth_id?: string | null
+          classe_ids?: number[]
           created_at?: string | null
           email?: string
           firstname?: string
-          fullname?: string
+          gidouilles?: number
           grade?: string
           id?: number
           lastname?: string
-          others?: number[] | null
           role?: string
-          school_id?: number | null
-          teacher_id?: number | null
+          school_id?: number
+          teacher_id?: number
           updated_at?: string | null
-          user_id?: string | null
+          vips?: Json
         }
       }
     }

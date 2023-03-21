@@ -1,77 +1,116 @@
-import { createClient } from '@supabase/auth-helpers-sveltekit'
-import {
-	PUBLIC_SUPABASE_URL,
-	PUBLIC_SUPABASE_ANON_KEY,
-} from '$env/static/public'
 import { getLogger } from '$lib/utils'
 
 import type { UserInfo, ExtraInfo } from './type'
 
 const { info, fail, warn } = getLogger('Automaths', 'info')
-const supabaseClient = createClient(
-	PUBLIC_SUPABASE_URL,
-	PUBLIC_SUPABASE_ANON_KEY,
-)
+import type { SupabaseClient } from '@supabase/supabase-js'
+import type { Database } from '../../types/supabase'
 
-export { supabaseClient }
-
-export function addUser(profile: UserInfo) {
-	return supabaseClient.from('users').insert([profile])
+export function addUser(supabase: SupabaseClient<Database>, profile: UserInfo) {
+	return supabase.from('users').insert([profile])
 }
 
-export function updateUserInfo(id: number, infos: ExtraInfo) {
-	return supabaseClient.from('users').update(infos).eq('id', id)
+export function updateUserInfo(
+	supabase: SupabaseClient<Database>,
+	id: number,
+	infos: ExtraInfo,
+) {
+	return supabase.from('users').update(infos).eq('id', id)
 }
 
-export function getUser(id: string) {
-	return supabaseClient.from('users').select('*').eq('id', id).maybeSingle()
-}
-
-export function getUserByEmail(email: string) {
-	return supabaseClient
+export function fetchUser(supabase: SupabaseClient<Database>, user_id: string) {
+	return supabase
 		.from('users')
-		.select('*')
+		.select(
+			'id, firstname, lastname, role, email, school_id, teacher_id, grade, auth_id, classe_ids, gidouilles, vips',
+		)
+		.eq('id', user_id)
+		.maybeSingle()
+}
+
+export function fetchUserByEmail(
+	supabase: SupabaseClient<Database>,
+	email: string,
+) {
+	return supabase
+		.from('users')
+		.select(
+			'id, firstname, lastname, role, email, school_id, teacher_id, grade, auth_id, classe_ids, gidouilles, vips',
+		)
 		.eq('email', email)
 		.maybeSingle()
 }
 
-export function addUsers(list: UserInfo[]) {
-	supabaseClient.from('users').insert(list)
-}
-
-export async function fetchUserClassIdsNames(id: number) {
-	const result = await supabaseClient
+// fetch teacher and students classes
+export async function fetchUserClasses(
+	supabase: SupabaseClient<Database>,
+	user_id: number,
+) {
+	// fetch classes Ids of user
+	const { data: classeIdsData, error: classesIdsError } = await supabase
 		.from('users')
-		.select('classes')
-		.eq('id', id)
+		.select('classe_ids')
+		.eq('id', user_id)
 		.maybeSingle()
 
-	const classeIds = result.data?.classes || []
-	const { data, error } = await supabaseClient
-		.from('classes')
-		.select('class, id')
-		.in('id', classeIds)
-	if (data) {
-		return {
-			data: data.map((c) => ({ className: c.class, id: c.id })),
-			error: null,
-		}
-	} else {
-		return { data: null, error }
+	if (!classeIdsData || classesIdsError) {
+		return { data: null, error: classesIdsError }
 	}
+
+	const classe_ids = classeIdsData.classe_ids
+	return supabase
+		.from('classes')
+		.select('name, id, grade, school_id')
+		.in('id', classe_ids)
 }
 
-export async function fetchAssignments(studentId: number) {
-	return supabaseClient
+export async function fetchStudentPendingAssignments(
+	supabase: SupabaseClient<Database>,
+	student_id: number,
+) {
+	return supabase
 		.from('assignments')
-		.select('*')
-		.match({ student_id: studentId, status: 'pending' })
+		.select(
+			'id, teacher_id, student_id, status, total, mark, questions, basket, title',
+		)
+		.match({ student_id, status: 'pending' })
 }
 
-export async function fetchClassStudentsIdsNames(classId: number) {
-	return supabaseClient
+export async function fetchTeacherStudents(
+	supabase: SupabaseClient<Database>,
+	teacher_id: number,
+) {
+	return supabase
 		.from('users')
-		.select('id, fullname, firstname, lastname')
+		.select(
+			'role, grade, email, firstname, lastname, id, classe_ids, school_id, teacher_id, gidouilles, vips',
+		)
 		.eq('role', 'student')
-		.contains('classes', [classId])
+		.eq('teacher_id', teacher_id)
+}
+
+export async function classeStudents(
+	supabase: SupabaseClient<Database>,
+	classe_id: number,
+) {
+	return supabase
+		.from('users')
+		.select(
+			'role, grade, email, firstname, lastname, id, classe_ids, school_id, teacher_id, gidouilles, vips',
+		)
+		.eq('role', 'student')
+		.contains('classes', [classe_id])
+}
+
+export async function fetchSchoolClasses(
+	supabase: SupabaseClient<Database>,
+	school_id: number,
+) {
+	return supabase
+		.from('classes')
+		.select('id, name, grade, school_id')
+		.eq('school_id', school_id)
+}
+export async function fetchSchools(supabase: SupabaseClient<Database>) {
+	return supabase.from('schools').select('id, city, country, name')
 }
