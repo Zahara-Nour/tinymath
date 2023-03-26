@@ -1,5 +1,8 @@
 <script lang="ts">
-	import data, { getQuestion } from '$lib/questions/questions'
+	import questions, {
+		getQuestion,
+		questions_ids,
+	} from '$lib/questions/questions'
 	import { gradeMatchesClass, grades } from '$lib/grades'
 	import generateQuestion from '$lib/questions/generateQuestion'
 	import Buttons from './Buttons.svelte'
@@ -34,8 +37,9 @@
 	import { get } from 'svelte/store'
 	import PageHeader from '$lib/ui/PageHeader.svelte'
 
+	export let data
+
 	let { info, fail, warn } = getLogger('Automaths', 'info')
-	const questions = data.questions
 	const theme_url_params = decodeURI($page.url.searchParams.get('theme') || '')
 	const domain_url_params = decodeURI(
 		$page.url.searchParams.get('domain') || '',
@@ -73,7 +77,6 @@
 	let interactive = false
 	let selectedGrade = grade
 
-	const ids = data.ids
 	const classSelected = 'ml-1 mb-2 btn-icon variant-filled-primary'
 	const classNotSelected = 'ml-1 mb-2 btn-icon variant-filled-tertiary'
 
@@ -104,7 +107,7 @@
 		}
 
 		questions.forEach((q) => {
-			const { theme, domain, subdomain, level } = ids[q.id]
+			const { theme, domain, subdomain, level } = questions_ids[q.id]
 			const question = getQuestion(theme, domain, subdomain, level)
 
 			if (q.enounceAlone) {
@@ -412,7 +415,12 @@
 
 	{#if showBasket}
 		<!-- {#if isTeacher && showBasket} -->
-		<Basket assessment={assessment_url_params} bind:basket {courseAuxNombres} />
+		<Basket
+			db={data.supabase}
+			assessment_id={assessment_url_params}
+			bind:basket
+			{courseAuxNombres}
+		/>
 	{:else if theme}
 		<TabGroup
 			justify="justify-start flex-wrap"

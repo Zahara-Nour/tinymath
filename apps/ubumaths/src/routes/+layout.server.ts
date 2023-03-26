@@ -4,19 +4,19 @@ import {
 	fetchTeacherStudents,
 	fetchUserByEmail,
 	fetchUserClasses,
-	updateUserInfo,
+	updateUserProfile,
 } from '$lib/db'
-import type {
-	Assignment,
-	Classe,
-	ExtraInfo,
-	School,
-	Student,
-	StudentInfo,
-	UserDB,
+import {
+	isAdminProfile,
+	isStudentProfile,
+	isTeacherProfile,
+	type Assignment,
+	type Basket,
+	type StudentProfile,
+	type TeacherProfile,
+	type UserProfile,
 } from '$lib/type'
-import { createUser, guest } from '$lib/users'
-import { isEmptyObject } from '$lib/utils'
+import { cleanProfile, createUser, guest, guestProfile } from '$lib/users'
 import type { LayoutServerLoad } from './$types'
 
 export const load: LayoutServerLoad = async ({
@@ -39,21 +39,7 @@ export const load: LayoutServerLoad = async ({
 		if (!errors.includes(error)) errors.push(error)
 	}
 
-	let userProfile: UserDB & {
-		classes?: Classe[]
-		assignments?: Assignment[]
-		students?: (UserDB & StudentInfo)[]
-		schools?: School[]
-	} = {
-		role: 'guest',
-		firstname: 'guest',
-		lastname: 'guest',
-		email: '',
-		id: 0,
-	}
-	let classes: Classe[] = []
-	let students: (UserDB & StudentInfo)[] = []
-	let schools: School[] = []
+	let profile: UserProfile = guestProfile
 	let assignments: Assignment[] = []
 
 	if (session) {
@@ -71,19 +57,16 @@ export const load: LayoutServerLoad = async ({
 		} else if (!userData) {
 			console.log('User not created')
 			addErrors(NOT_CREATED_ERROR)
-			supabase.auth.signOut()
-			adminAuth.deleteUser(session.user.id)
+			// supabase.auth.signOut()
+			// adminAuth.deleteUser(session.user.id)
 		} else {
-			// update user data in supabase
-			const extraInfo: ExtraInfo = {}
-			if (!userData.auth_id) extraInfo.auth_id = session.user.id
-			console.log('extra info', extraInfo, 'data', userData, 'session', session)
-			if (!isEmptyObject(extraInfo)) {
-				console.log('updating user info', extraInfo)
-				const { error: updateError } = await updateUserInfo(
+			profile = cleanProfile(userData)
+			if (!userData.auth_id) {
+				profile.auth_id = session.user.id
+				// update supabase id
+				const { error: updateError } = await updateUserProfile(
 					supabase,
-					userData.id,
-					extraInfo,
+					profile,
 				)
 				if (updateError) {
 					console.log(USER_UPDATE_FAILED, updateError.message)
@@ -92,37 +75,46 @@ export const load: LayoutServerLoad = async ({
 			}
 
 			// fetch user classes
-			if (userData.role === 'teacher' || userData.role === 'student') {
-				const { data: dataUserClasses, error: userClassesError } =
-					await fetchUserClasses(supabase, userData.id)
+			if (isTeacherProfile(profile) || isStudentProfile(profile)) {
+				const { data: userClassesData, error: userClassesError } =
+					await fetchUserClasses(supabase, profile.id)
 
-				if (userClassesError || !dataUserClasses) {
+				if (userClassesError || !userClassesData) {
 					console.log(
 						userClassesError?.message || 'no data returned for user classes',
 					)
 					addErrors(FETCH_CLASSES_ERROR)
 				} else {
-					classes = dataUserClasses
+					profile.classes = userClassesData
 				}
 			}
 
-			// fetch students
-			if (userData.role === 'teacher') {
+			// fetch teacher students
+			if (isTeacherProfile(profile)) {
+				const classes = profile.classes
+				profile.students = {}
+
 				const { data: studentsData, error: studentsError } =
-					await fetchTeacherStudents(supabase, userData.id)
+					await fetchTeacherStudents(supabase, profile.id)
 				if (studentsError || !studentsData) {
 					console.log(studentsError?.message || 'no data returned for students')
 					addErrors(FETCH_CLASSES_ERROR)
 				} else {
-					students = studentsData.map((student) => ({
-						...student,
-						vips: JSON.parse(student.vips as string),
-					}))
+					classes.forEach((classe) => {
+						;(profile as TeacherProfile).students[classe.id] = studentsData
+							.map((profile) => cleanProfile(profile) as StudentProfile)
+							.filter((student) => student.classe_ids.includes(classe.id))
+							.map((student) => ({
+								...student,
+								classes: [],
+								assignments: [],
+							}))
+					})
 				}
 			}
 
 			// fetch schools
-			if (userData.role === 'admin') {
+			if (isAdminProfile(profile)) {
 				const { data: schoolsData, error: schoolsError } = await fetchSchools(
 					supabase,
 				)
@@ -133,14 +125,14 @@ export const load: LayoutServerLoad = async ({
 					console.log(FETCH_SCHOOLS_ERROR)
 					addErrors(FETCH_SCHOOLS_ERROR)
 				} else {
-					schools = schoolsData
+					profile.schools = schoolsData
 				}
 			}
 
 			// fetch pending assignments
-			if (userData.role === 'student') {
+			if (isStudentProfile(profile)) {
 				const { data: assignmentsData, error: assignmentsError } =
-					await fetchStudentPendingAssignments(supabase, userData.id)
+					await fetchStudentPendingAssignments(supabase, profile.id)
 				if (assignmentsError) {
 					console.log(FETCH_ASSIGNMENTS_ERROR, assignmentsError.message)
 					addErrors(FETCH_ASSIGNMENTS_ERROR)
@@ -150,22 +142,17 @@ export const load: LayoutServerLoad = async ({
 				} else {
 					assignments = assignmentsData.map((assignment) => ({
 						...assignment,
-						questions: JSON.parse(assignment.questions as string),
-						basket: JSON.parse(assignment.basket as string),
+						questions: null,
+						basket: JSON.parse(assignment.basket as string) as Basket,
 					}))
+					profile.assignments = assignments
 				}
 			}
-			userProfile = { ...userData }
-			if (classes.length) userProfile.classes = classes
-			if (students.length) userProfile.students = students
-			if (schools.length) userProfile.schools = schools
-			if (assignments.length) userProfile.assignments = assignments
 		}
 	}
-	console.log('userProfile', userProfile)
 	return {
 		session: getSession(),
-		userProfile,
+		userProfile: profile,
 		errors,
 	}
 }

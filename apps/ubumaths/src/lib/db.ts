@@ -1,19 +1,20 @@
 import { getLogger } from '$lib/utils'
 
-import type { UserInfo, ExtraInfo } from './type'
-
-const { info, fail, warn } = getLogger('Automaths', 'info')
+const { info, fail, warn } = getLogger('db', 'info')
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Database } from '../../types/supabase'
+import type { UserBasicProfile, UserProfile } from './type'
 
-export function addUser(supabase: SupabaseClient<Database>, profile: UserInfo) {
+export function addUser(
+	supabase: SupabaseClient<Database>,
+	profile: UserProfile,
+) {
 	return supabase.from('users').insert([profile])
 }
 
-export function updateUserInfo(
+export function updateUserProfile(
 	supabase: SupabaseClient<Database>,
-	id: number,
-	infos: ExtraInfo,
+	{ id, ...infos }: UserProfile,
 ) {
 	return supabase.from('users').update(infos).eq('id', id)
 }
@@ -53,8 +54,13 @@ export async function fetchUserClasses(
 		.eq('id', user_id)
 		.maybeSingle()
 
-	if (!classeIdsData || classesIdsError) {
+	if (classesIdsError) {
 		return { data: null, error: classesIdsError }
+	} else if (!classeIdsData || !classeIdsData.classe_ids) {
+		return {
+			data: null,
+			error: null,
+		}
 	}
 
 	const classe_ids = classeIdsData.classe_ids
@@ -83,23 +89,23 @@ export async function fetchTeacherStudents(
 	return supabase
 		.from('users')
 		.select(
-			'role, grade, email, firstname, lastname, id, classe_ids, school_id, teacher_id, gidouilles, vips',
+			'auth_id, role, grade, email, firstname, lastname, id, classe_ids, school_id, teacher_id, gidouilles, vips',
 		)
 		.eq('role', 'student')
 		.eq('teacher_id', teacher_id)
 }
 
-export async function classeStudents(
+export async function fetchClasseStudents(
 	supabase: SupabaseClient<Database>,
 	classe_id: number,
 ) {
 	return supabase
 		.from('users')
 		.select(
-			'role, grade, email, firstname, lastname, id, classe_ids, school_id, teacher_id, gidouilles, vips',
+			'auth_id, role, grade, email, firstname, lastname, id, classe_ids, school_id, teacher_id, gidouilles, vips',
 		)
 		.eq('role', 'student')
-		.contains('classes', [classe_id])
+		.contains('classe_ids', [classe_id])
 }
 
 export async function fetchSchoolClasses(
@@ -111,6 +117,56 @@ export async function fetchSchoolClasses(
 		.select('id, name, grade, school_id')
 		.eq('school_id', school_id)
 }
+
+export function addClass(
+	supabase: SupabaseClient<Database>,
+	{
+		name,
+		grade,
+		school_id,
+	}: {
+		name: string
+		grade: string
+		school_id: number
+	},
+) {
+	return supabase.from('classes').insert([{ name, grade, school_id }])
+}
+
 export async function fetchSchools(supabase: SupabaseClient<Database>) {
 	return supabase.from('schools').select('id, city, country, name')
+}
+
+export async function fetchSchoolTeachers(
+	supabase: SupabaseClient<Database>,
+	school_id: number,
+) {
+	return supabase
+		.from('users')
+		.select(
+			'auth_id, role, email, firstname, lastname, id, classe_ids, school_id',
+		)
+		.eq('role', 'teacher')
+		.eq('school_id', school_id)
+}
+
+export async function fetchTeacherAssessments(
+	supabase: SupabaseClient<Database>,
+	teacher_id: number,
+) {
+	return supabase
+		.from('assessments')
+		.select('id, title, questions, teacher_id')
+		.eq('teacher_id', teacher_id)
+}
+
+export async function fetchAssessment(
+	supabase: SupabaseClient<Database>,
+	assessment_id: number,
+) {
+	return supabase
+		.from('assessments')
+		.select('id, questions, title, teacher_id')
+		.eq('id', assessment_id)
+		.maybeSingle()
 }

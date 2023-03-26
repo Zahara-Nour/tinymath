@@ -1,13 +1,13 @@
 <script lang="ts">
 	import generate from '$lib/questions/generateQuestion'
-	import datas, { getQuestion } from '$lib/questions/questions'
+	import { getQuestion, questions_ids } from '$lib/questions/questions'
 	import Question from '$lib/ui/Question.svelte'
 	import {
 		assessItem,
 		prepareAnsweredQuestion,
 		prepareCorrectedQuestion,
 	} from '$lib/questions/correction'
-	import type { Basket } from '$lib/type'
+	import type { Basket, Teacher } from '$lib/type'
 	import QuestionCard from '$lib/ui/QuestionCard.svelte'
 	import IconPlus from '$lib/icones/IconPlus.svelte'
 	import IconMinus from '$lib/icones/IconMinus.svelte'
@@ -19,33 +19,31 @@
 	import { goto } from '$app/navigation'
 	import type { SupabaseClient } from '@supabase/supabase-js'
 	import type { Database } from '../../../types/supabase'
+	import { fetchAssessment } from '$lib/db'
 
 	export let basket: Basket = []
 	export let courseAuxNombres = false
 	export let enounceAlone = false
-	export let assessment = 0
-	export let supabase: SupabaseClient<Database>
+	export let assessment_id = 0
+	export let db: SupabaseClient<Database>
 
 	let { warn, trace, fail } = getLogger('Basket', 'warn')
-	const ids = datas.ids
+
 	let evalTitle = ''
-	let titleAvailable = false
+	let isTitleAvailable = false
 	let titles: { title: string; id: number }[] | null = null
 
-	if (assessment) {
-		loadBasket()
+	if (assessment_id) {
+		loadBasket(assessment_id)
 	}
-	$: if ($connected) fetchTitles()
 
-	$: titleAvailable = checkEvalTitleAvailability(evalTitle, titles)
-	$: console.log('titleAvailable: ', titleAvailable)
+	fetchTitles()
 
-	async function loadBasket() {
-		const { error, data } = await supabase
-			.from('assessments')
-			.select('questions, title')
-			.eq('id', assessment)
-			.maybeSingle()
+	$: isTitleAvailable = checkEvalTitleAvailability(evalTitle, titles)
+	$: console.log('isTitleAvailable: ', isTitleAvailable)
+
+	async function loadBasket(assessment_id: number) {
+		const { error, data } = await fetchAssessment(db, assessment_id)
 		if (error) {
 			fail(error)
 			toastStore.trigger({
@@ -53,7 +51,7 @@
 				background: 'bg-error-500',
 			})
 		} else if (!data) {
-			fail('No data returned for assessment ' + assessment)
+			fail('No data returned for assessment ' + assessment_id)
 			toastStore.trigger({
 				message: "Impossible de charger l'évaluation",
 				background: 'bg-error-500',
@@ -65,7 +63,7 @@
 	}
 
 	const submitSave: SubmitFunction = (params) => {
-		if (titleAvailable) {
+		if (isTitleAvailable) {
 			saveAssessment(params)
 		} else {
 			triggerConfirm(params)
@@ -90,15 +88,15 @@
 
 	const saveAssessment: SubmitFunction = async (params) => {
 		params.cancel()
-		const { error } = await (titleAvailable
-			? supabase.from('assessments').insert([
+		const { error } = await (isTitleAvailable
+			? db.from('assessments').insert([
 					{
 						title: evalTitle,
 						teacher_id: $user.id,
 						questions: JSON.stringify(basket),
 					},
 			  ])
-			: supabase
+			: db
 					.from('assessments')
 					.update({
 						questions: JSON.stringify(basket),
@@ -121,7 +119,7 @@
 	}
 
 	async function fetchTitles() {
-		const { data, error } = await supabase
+		const { data, error } = await db
 			.from('assessments')
 			.select('title,id')
 			.eq('teacher_id', $user.id)
@@ -185,7 +183,7 @@
 
 {#if basket.length}
 	{#each basket as item, i}
-		{@const { theme, domain, subdomain, level } = ids[item.id]}
+		{@const { theme, domain, subdomain, level } = questions_ids[item.id]}
 		{@const card = assessItem(
 			prepareCorrectedQuestion(
 				prepareAnsweredQuestion(
@@ -257,7 +255,7 @@
 		</div>
 	{/each}
 
-	{#if assessment}
+	{#if assessment_id}
 		<div class="flex justify-center my-4">
 			<button
 				on:click={() => {
@@ -274,7 +272,9 @@
 				<span>Titre</span>
 				<input
 					class={'input' +
-						(!titleAvailable || !evalTitle ? ' input-error' : ' input-success')}
+						(!isTitleAvailable || !evalTitle
+							? ' input-error'
+							: ' input-success')}
 					type="text"
 					bind:value={evalTitle}
 				/>
@@ -285,10 +285,10 @@
 			disabled={!titles || !evalTitle || !basket.length}
 			type="submit"
 			class={'btn' +
-				(!evalTitle || titleAvailable
+				(!evalTitle || isTitleAvailable
 					? ' variant-filled-primary'
 					: ' variant-filled-error')}
-			>{!evalTitle || titleAvailable ? 'Enregistrer' : 'Ecraser'}</button
+			>{!evalTitle || isTitleAvailable ? 'Enregistrer' : 'Ecraser'}</button
 		>
 	</form>
 {:else}

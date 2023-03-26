@@ -8,7 +8,6 @@
 	import {
 		connected,
 		fullScreen,
-		guest,
 		prepareMathlive,
 		touchDevice,
 		user,
@@ -32,15 +31,15 @@
 	} from '@floating-ui/dom'
 	import { storePopup } from '@skeletonlabs/skeleton'
 	import type { Session } from '@supabase/supabase-js'
-	import { createUser } from '$lib/users'
+	import { createUser, guest } from '$lib/users'
 	import IconFullscreen from '$lib/icones/IconFullscreen.svelte'
-	import { get } from 'svelte/store'
+	import { isStudent } from '$lib/type'
 
 	type ScrollEvent = UIEvent & { currentTarget: EventTarget & HTMLDivElement }
 
 	export let data: LayoutData
 
-	let { info, fail, warn } = getLogger('Automaths', 'info')
+	let { info, fail, warn } = getLogger('Layout', 'info')
 	let header = ''
 
 	onMount(() => {
@@ -93,21 +92,30 @@
 				background: 'bg-error-500',
 			}),
 		)
-		user.set(createUser(data.userProfile))
-		const u = get(user)
+
 		if (session) {
-			connected.set(true)
-			toastStore.trigger({
-				message: `Bienvenue ${u.firstname || u.email}`,
-				background: 'bg-success-500',
-			})
-			info('User is signed in.')
+			if (data.userProfile.role !== 'guest') {
+				toastStore.trigger({
+					message: `Bienvenue ${
+						data.userProfile.firstname || data.userProfile.email
+					}`,
+					background: 'bg-success-500',
+				})
+				info(`User ${data.userProfile.email} signed in.`)
+			}
 		} else {
 			// Signed out
-			user.set(guest)
-			connected.set(false)
-			info('User is not signed in.')
+			if (!$user.isGuest()) {
+				info(`User ${$user.firstname || $user.email} signed out.`)
+				toastStore.trigger({
+					message: `Bye ${
+						data.userProfile.firstname || data.userProfile.email
+					}`,
+					background: 'bg-success-500',
+				})
+			}
 		}
+		user.set(createUser(data.userProfile))
 	}
 
 	function scrollHandler(event: Event) {
@@ -161,7 +169,7 @@
 					<IconFullscreen />
 				</button>
 			{/if}
-			{#if $user.assignments?.length && url.includes('assessment')}
+			{#if isStudent($user) && $user.assignments?.length && !url.includes('assessment') && !url.includes('dashboard')}
 				<div class="p-4 bg-error-500 text-white">
 					Tu as <a href="/dashboard">des évaluations</a> à faire !
 				</div>

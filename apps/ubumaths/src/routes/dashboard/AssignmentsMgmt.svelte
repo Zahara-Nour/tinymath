@@ -5,32 +5,17 @@
 	import { getLogger } from '$lib/utils'
 	import { toastStore } from '@skeletonlabs/skeleton'
 	import { user } from '$lib/stores'
+	import type { Student } from '$lib/type'
 
 	let { warn, trace, fail } = getLogger('UserMgmt', 'warn')
-	let results
-	supabaseClient
-		.from('assignments')
-		.select('*')
-		.eq('student_id', $user.id)
-		.eq('status', 'done')
-		.then((res) => {
-			if (res.error) {
-				fail(res.error.message)
-				toastStore.trigger({
-					message: 'Erreur lors de la récupération des résultats',
-					background: 'bg-error-500',
-				})
-			} else {
-				results = res.data
-			}
-		})
+	let u = $user as Student
 </script>
 
 <PageHeader title="Mes évaluations" />
-{#if $user.assignments}
+{#if u.assignments}
 	<h3>Evaluations à faire :</h3>
 	<div class="card p-4 h-80 overflow-auto">
-		{#each $user.assignments as assignment}
+		{#each u.assignments as assignment}
 			<div
 				class="flex flex-col  text-black bg-surface-500 shadow-md rounded-md p-4 mb-4"
 			>

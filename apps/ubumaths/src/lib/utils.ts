@@ -176,7 +176,8 @@ export function objectMap<S, T>(
 			const new_value = mapFn(value, key, idx)
 			if (
 				!(
-					isEmptyObject(new_value) ||
+					(typeof new_value === 'object' &&
+						isEmptyObject(new_value as object)) ||
 					(Array.isArray(new_value) && new_value.length === 0) ||
 					!new_value
 				)

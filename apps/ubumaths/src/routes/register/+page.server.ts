@@ -9,7 +9,7 @@ export const actions: Actions = {
 
 		if (
 			!(
-				body.email.includes('@voltairedoha.com') ||
+				(body.email as string).includes('@voltairedoha.com') ||
 				body.email === 'zahara.alnour@gmail.com'
 			)
 		) {
@@ -18,7 +18,7 @@ export const actions: Actions = {
 					"Pour l'instant, seules les professeurs et élèves du lycée Voltaire peuvent s'inscrire !",
 			})
 		}
-		const { data, error } = await locals.supabaseClient.auth.signUp({
+		const { data, error } = await locals.supabase.auth.signUp({
 			email: body.email as string,
 			password: body.password as string,
 		})
@@ -31,7 +31,7 @@ export const actions: Actions = {
 		}
 
 		// need to check if the user has already been created by an admin or a teacher
-		const { data: userData, error: userError } = await locals.supabaseClient
+		const { data: userData, error: userError } = await locals.supabase
 			.from('users')
 			.select('*')
 			.eq('email', body.email)
@@ -42,17 +42,15 @@ export const actions: Actions = {
 			return fail(500, { error: 'Server error. Please try again later' })
 		}
 		if (!userData) {
-			console.log('user id', data)
-			const { error } = await locals.supabaseClient.auth.admin.deleteUser(
-				SECRET_SUPABASE_SERVICE_ROLE,
-				data.id,
-			)
+			const { error } = await locals.adminAuth.deleteUser(data.session!.user.id)
+			await locals.supabase.auth.signOut()
 
 			return fail(412, {
 				error:
 					"L'utilisateur n'a pas été créé dans la base de données. Merci de demander à M. Le Jolly.",
 			})
 		}
+		console.log('user succesfully registered')
 		throw redirect(303, '/')
 	},
 }

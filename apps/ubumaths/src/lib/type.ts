@@ -1,4 +1,4 @@
-import type { V } from 'vitest/dist/types-71ccd11d.js'
+import type { Database } from '../../types/supabase'
 import type {
 	CP,
 	CM1,
@@ -341,60 +341,57 @@ export type Vip = {
 }
 
 // creation d'un nouvel utilisateur
-export type UserInfo = {
+
+export type UserBasicProfile = {
 	email: string
 	role: string
 	firstname: string
 	lastname: string
+	id: number
+	auth_id: string | null
 	classe_ids?: number[]
 	school_id?: number
 	teacher_id?: number
 	grade?: string
+	classes?: Classe[]
+	avatar?: string
+	gidouilles?: number
+	vips?: Vip[]
+	students?: Record<number, StudentProfile[]>
 }
 
-export type ExtraInfo = {
-	auth_id?: string | null // supabase user id
+export type GuestProfile = UserBasicProfile & {
+	email: ''
+	role: 'guest'
+	firstname: 'guest'
+	lastname: 'guest'
 }
 
-export type UserDB = UserInfo &
-	ExtraInfo & {
-		id: number // users table primary key
-	}
+export type AdminProfile = UserBasicProfile & {
+	schools: School[]
+	role: 'admin'
+}
 
-export type Guest = UserInfo &
-	UserProto & {
-		email: ''
-		role: 'guest'
-		firstname: 'guest'
-		lastname: 'guest'
-	}
-
-export type Admin = UserDB &
-	UserProto & {
-		schools: School[]
-	}
-
-export type StudentInfo = {
+export type StudentProfile = UserBasicProfile & {
+	role: 'student'
 	grade: string
 	classe_ids: number[]
 	classes: Classe[]
 	school_id: number
 	teacher_id: number
-	avatar?: string
 	gidouilles: number
 	vips: Vip[]
+	assignments: Assignment[]
 }
-export type Student = UserDB & UserProto & StudentInfo
 
-export type Teacher = UserDB &
-	UserProto & {
-		classe_ids: number[]
-		classes: Classe[]
-		school_id: number
-		avatar?: string
-		student_ids: number[]
-		students: Student[]
-	}
+export type TeacherProfile = UserBasicProfile & {
+	role: 'teacher'
+	classe_ids: number[]
+	classes: Classe[]
+	school_id: number
+	student_ids: number[]
+	students: Record<number, StudentProfile[]>
+}
 
 export type UserProto = {
 	isStudent: () => boolean
@@ -403,7 +400,32 @@ export type UserProto = {
 	isGuest: () => boolean
 }
 
+export type UserProfile =
+	| AdminProfile
+	| StudentProfile
+	| TeacherProfile
+	| GuestProfile
+export type Admin = AdminProfile & UserProto
+export type Student = StudentProfile & UserProto
+export type Teacher = TeacherProfile & UserProto
+export type Guest = GuestProfile & UserProto
 export type User = Admin | Student | Teacher | Guest
+
+export function isAdminProfile(u: UserProfile): u is AdminProfile {
+	return u.role === 'admin'
+}
+
+export function isTeacherProfile(u: UserProfile): u is TeacherProfile {
+	return u.role === 'teacher'
+}
+
+export function isStudentProfile(u: UserProfile): u is StudentProfile {
+	return u.role === 'student'
+}
+
+export function isGuestProfile(u: UserProfile): u is GuestProfile {
+	return u.role === 'guest'
+}
 
 export function isAdmin(u: User): u is Admin {
 	return u.role === 'admin'
@@ -413,7 +435,7 @@ export function isTeacher(u: User): u is Teacher {
 	return u.role === 'teacher'
 }
 
-export function isStrudent(u: User): u is Student {
+export function isStudent(u: User): u is Student {
 	return u.role === 'student'
 }
 
@@ -452,4 +474,42 @@ export type Assignment = {
 	status: string
 	total: number
 	title: string
+}
+
+export type StudentData = Omit<
+	Database['public']['Tables']['users']['Row'],
+	'created_at' | 'updated_at'
+>
+
+export type TeacherData = Omit<
+	Database['public']['Tables']['users']['Row'],
+	'created_at' | 'updated_at' | 'vips' | 'teacher_id' | 'gidouilles' | 'grade'
+>
+
+export type AdminData = Omit<
+	Database['public']['Tables']['users']['Row'],
+	| 'created_at'
+	| 'updated_at'
+	| 'vips'
+	| 'teacher_id'
+	| 'gidouilles'
+	| 'grade'
+	| 'classe_ids'
+	| 'school_id'
+>
+
+export type UserData = StudentData | TeacherData | AdminData
+
+export type InsertUserData = Database['public']['Tables']['users']['Insert']
+
+export function isAdminData(data: UserData): data is AdminData {
+	return data.role === 'admin'
+}
+
+export function isTeacherData(data: UserData): data is TeacherData {
+	return data.role === 'teacher'
+}
+
+export function isStudentData(data: UserData): data is StudentData {
+	return data.role === 'student'
 }

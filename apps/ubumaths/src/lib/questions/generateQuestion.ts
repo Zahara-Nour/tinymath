@@ -26,7 +26,7 @@ import {
 import type { Bool, Node, Numbr } from 'tinycas/dist/math/types'
 import type { EvalArg } from 'tinycas'
 import { fetchImage } from '$lib/images'
-import datas from '$lib/questions/questions.js'
+import { questions_ids } from '$lib/questions/questions.js'
 import { prepareAnsweredQuestion } from './correction'
 
 let { warn, trace } = getLogger('generateQuestion', 'warn')
@@ -36,9 +36,9 @@ export function generateQuestionsFromBasket(
 	questions: AnsweredQuestion[],
 ) {
 	let offset = 0
-	const ids = datas.ids
+
 	basket.forEach((q) => {
-		const { theme, domain, subdomain, level } = ids[q.id]
+		const { theme, domain, subdomain, level } = questions_ids[q.id]
 		const question = getQuestion(theme, domain, subdomain, level)
 		let delay = q.delay || question.defaultDelay
 		//  check that delay is a multiple of five

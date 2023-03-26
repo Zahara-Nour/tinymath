@@ -6,17 +6,8 @@ import { isObjectWithText } from './utils'
 import { getLogger } from '$lib/utils'
 let { info, fail, warn } = getLogger('store', 'info')
 import { browser, building, dev, version } from '$app/environment'
+import { guest } from './users'
 
-export const guest: User = {
-	id: '',
-	email: '',
-	roles: [],
-	avatar: '',
-	isStudent: () => false,
-	isTeacher: () => false,
-	isAdmin: () => false,
-	isGuest: () => true,
-}
 export const fullScreen = writable(false)
 export const user: Writable<User> = writable(guest)
 export const connected = writable(false)
@@ -27,7 +18,6 @@ export const mathliveReady = writable(false)
 export const virtualKeyboardMode = writable(false)
 export const mathfieldElement: Writable<null | typeof MathfieldElement> =
 	writable(null)
-
 // convertit les sous-chaines $$...latex...$$ en markup HTML
 // entrée : chaine, tableau, objet (le champs text est converti et enregistré dans le champs html)
 export const formatLatexToHtml = writable(

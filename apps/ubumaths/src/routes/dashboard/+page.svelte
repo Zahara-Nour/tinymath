@@ -4,14 +4,16 @@
 	import DashboardAdmin from './DashboardAdmin.svelte'
 	import DashboardStudent from './DashboardStudent.svelte'
 	import DashboardTeacher from './DashboardTeacher.svelte'
+
+	export let data
 </script>
 
 {#if $user.isAdmin()}
-	<DashboardAdmin />
+	<DashboardAdmin db={data.supabase} />
 {:else if $user.isTeacher()}
-	<DashboardTeacher />
+	<DashboardTeacher db={data.supabase} />
 {:else if $user.isStudent()}
-	<DashboardStudent />
+	<DashboardStudent db={data.supabase} />
 {:else}
 	Vous n'êtes pas autorisé à voir cette page
 {/if}

@@ -3,9 +3,13 @@
 	import IconUsers from '$lib/icones/IconUsers.svelte'
 	import UserAvatar from '$lib/ui/UserAvatar.svelte'
 	import { AppRail, AppRailTile } from '@skeletonlabs/skeleton'
+	import type { SupabaseClient } from '@supabase/supabase-js'
 	import { writable, type Writable } from 'svelte/store'
+	import type { Database } from '../../../types/supabase'
 	import AssessmentMgmt from './AssessmentMgmt.svelte'
 	import AssignmentsMgmt from './AssignmentsMgmt.svelte'
+
+	export let db: SupabaseClient<Database>
 
 	const storeValue: Writable<number> = writable(1)
 </script>

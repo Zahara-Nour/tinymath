@@ -56,6 +56,7 @@
 	let basket: Basket
 	let go = false
 	let assignmentId: number
+	let training = true
 
 	const testParams: TestParams = {}
 	const commit: Commit = {
@@ -135,7 +136,7 @@
 			decodeUrlParam('assessment') &&
 			parseInt(decodeUrlParam('assessment') as string)
 		console.log('assignmentId', assignmentId)
-		const training = decodeUrlParam('training') === true
+		training = decodeUrlParam('training') === true
 		console.log('training', training)
 		testParams.courseAuxNombres = courseAuxNombres
 		testParams.classroom = classroom
@@ -329,6 +330,8 @@
 					{classroom}
 					{assignmentId}
 					bind:restart
+					db={data.supabase}
+					{training}
 				/>
 			</div>
 		{:else}

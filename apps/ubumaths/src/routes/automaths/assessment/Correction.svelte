@@ -19,10 +19,11 @@
 
 	export let items: CorrectedQuestion[]
 	export let assignmentId: number
+	export let training
 	export let restart
 	export let query: string
 	export let classroom = false
-	export let supabase: SupabaseClient<Database>
+	export let db: SupabaseClient<Database>
 
 	const { info, fail } = getLogger('Correction', 'info')
 	let percent: number
@@ -48,9 +49,8 @@
 	})
 
 	// sauvegarde des résultats
-	if (assignmentId) {
-		supabase
-			.from('assignments')
+	if (assignmentId && !training) {
+		db.from('assignments')
 			.update({
 				mark: score,
 				questions: JSON.stringify(items),

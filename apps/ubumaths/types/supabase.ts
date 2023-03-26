@@ -13,7 +13,7 @@ export interface Database {
         Row: {
           created_at: string | null
           id: number
-          questions: Json
+          questions: string
           teacher_id: number
           title: string
           updated_at: string | null
@@ -21,7 +21,7 @@ export interface Database {
         Insert: {
           created_at?: string | null
           id?: number
-          questions?: Json
+          questions: string
           teacher_id: number
           title?: string
           updated_at?: string | null
@@ -29,7 +29,7 @@ export interface Database {
         Update: {
           created_at?: string | null
           id?: number
-          questions?: Json
+          questions?: string
           teacher_id?: number
           title?: string
           updated_at?: string | null
@@ -37,11 +37,11 @@ export interface Database {
       }
       assignments: {
         Row: {
-          basket: Json
+          basket: string
           created_at: string | null
           id: number
           mark: number
-          questions: Json | null
+          questions: string | null
           status: string
           student_id: number
           teacher_id: number
@@ -49,11 +49,11 @@ export interface Database {
           total: number
         }
         Insert: {
-          basket?: Json
+          basket: string
           created_at?: string | null
           id?: number
           mark: number
-          questions?: Json | null
+          questions?: string | null
           status?: string
           student_id: number
           teacher_id: number
@@ -61,11 +61,11 @@ export interface Database {
           total: number
         }
         Update: {
-          basket?: Json
+          basket?: string
           created_at?: string | null
           id?: number
           mark?: number
-          questions?: Json | null
+          questions?: string | null
           status?: string
           student_id?: number
           teacher_id?: number
@@ -353,51 +353,51 @@ export interface Database {
       users: {
         Row: {
           auth_id: string | null
-          classe_ids: number[]
+          classe_ids: number[] | null
           created_at: string | null
           email: string
           firstname: string
-          gidouilles: number
-          grade: string
+          gidouilles: number | null
+          grade: string | null
           id: number
           lastname: string
           role: string
-          school_id: number
-          teacher_id: number
+          school_id: number | null
+          teacher_id: number | null
           updated_at: string | null
-          vips: Json
+          vips: string | null
         }
         Insert: {
           auth_id?: string | null
-          classe_ids: number[]
+          classe_ids?: number[] | null
           created_at?: string | null
           email?: string
           firstname?: string
-          gidouilles?: number
-          grade?: string
+          gidouilles?: number | null
+          grade?: string | null
           id?: number
           lastname?: string
           role?: string
-          school_id?: number
-          teacher_id?: number
+          school_id?: number | null
+          teacher_id?: number | null
           updated_at?: string | null
-          vips?: Json
+          vips?: string | null
         }
         Update: {
           auth_id?: string | null
-          classe_ids?: number[]
+          classe_ids?: number[] | null
           created_at?: string | null
           email?: string
           firstname?: string
-          gidouilles?: number
-          grade?: string
+          gidouilles?: number | null
+          grade?: string | null
           id?: number
           lastname?: string
           role?: string
-          school_id?: number
-          teacher_id?: number
+          school_id?: number | null
+          teacher_id?: number | null
           updated_at?: string | null
-          vips?: Json
+          vips?: string | null
         }
       }
     }

@@ -1,144 +1,120 @@
 <script lang="ts">
 	import PageHeader from '$lib/ui/PageHeader.svelte'
-	import { getLogger } from '$lib/utils'
+	import { getLogger, objectMap } from '$lib/utils'
 	import { toastStore } from '@skeletonlabs/skeleton'
-	import type { Assessment, Basket, School } from '$lib/type'
+	import type {
+		Assessment,
+		Basket,
+		School,
+		StudentProfile,
+		Teacher,
+	} from '$lib/type'
 	import { user } from '$lib/stores'
 	import type { SupabaseClient } from '@supabase/supabase-js'
 	import type { Database } from '../../../types/supabase'
+	import { fetchTeacherAssessments } from '$lib/db'
 
-	let { warn, trace, fail } = getLogger('UserMgmt', 'warn')
-	let assessments: Assessment[] | null = null
-	let selectedClassId = $user.classIdsNames[0].id
-	let selectedStudents: { [index: number]: number[] } = $user.classes.reduce(
-		(acc, c) => {
-			acc[c] = []
+	export let db: SupabaseClient<Database>
+
+	let { warn, trace, fail } = getLogger('assessmentMgmt', 'warn')
+	let u = $user as Teacher
+	let assessments: Assessment[] = []
+	let selectedClasseId = u.classe_ids[0]
+	let selectedStudents: Record<number, number[]> = u.classes.reduce(
+		(acc, classe) => {
+			acc[classe.id] = []
 			return acc
 		},
-		{} as { [index: number]: number[] },
+		{} as Record<number, StudentProfile[]>,
 	)
-	let selectedClasses: number[] = []
-	let allStudents: { id: number; name: string }[] = []
+	let selectedClassesIds: number[] = []
+	let allStudents: StudentProfile[] = []
 
-	fetchAssessments()
-
-	$: allStudents = getAllStudents(selectedClasses, selectedStudents)
-
-	function getStudentName(studentId: number) {
-		const student = $user.studentsIdsNames[selectedClassId].find(
-			(s) => s.id === studentId,
-		)
-		return (
-			student?.fullname ||
-			(student?.firstname &&
-				student?.lastname &&
-				student.firstname + ' ' + student.lastname) ||
-			'Anonymous'
-		)
-	}
+	getAssessments()
+	$: console.log('assessments: ', assessments)
+	$: allStudents = getAllStudents(selectedClassesIds, selectedStudents)
+	$: console.log('allStudents: ', allStudents)
 
 	function getAllStudents(
-		classes: number[],
-		students: { [index: number]: number[] },
+		classesIds: number[],
+		studentsByClasse: Record<number, number[]>,
 	) {
+		allStudents = []
 		// whole classes
-		let allStudents = classes.reduce((acc, c) => {
-			acc.push(
-				...$user.studentsIdsNames[c].map((s) => ({
-					id: s.id,
-					name: s.fullname || s.firstname + ' ' + s.lastname,
-				})),
-			)
-			return acc
-		}, [] as { id: number; name: string }[])
+		classesIds.forEach((classe_id) => {
+			allStudents = allStudents.concat(u.students[classe_id])
+		})
 
 		// individuals
-		allStudents = allStudents.concat(
-			Object.keys(students)
-				.reduce((acc, classId) => {
-					acc = acc.concat(
-						students[parseInt(classId, 10)].map((student) => ({
-							id: student,
-							name: getStudentName(student),
-						})),
-					)
-					return acc
-				}, [] as { id: number; name: string }[])
-				.filter((s) => !allStudents.includes(s)),
+
+		const indivuals = objectMap(studentsByClasse, (students_ids, classe_id) =>
+			students_ids
+				.map(
+					(student_id) =>
+						u.students[parseInt(classe_id, 10)].find(
+							(student) => student.id === student_id,
+						)!,
+				)
+				.filter(
+					(student) => student && !allStudents.some((s) => s.id === student.id),
+				),
 		)
+		Object.keys(indivuals).forEach((classe_id) => {
+			allStudents = allStudents.concat(indivuals[classe_id])
+		})
+
 		return allStudents
 	}
-	function fetchAssessments() {
-		supabase
-			.from('assessments')
-			.select('id, title, questions, teacher_id')
-			.eq('teacher_id', $user.id)
-			.then((res) => {
-				if (res.error) {
-					fail(res.error.message)
-					toastStore.trigger({
-						message: 'La récupération des évaluations a échoué.',
-						background: 'bg-error-500',
-					})
-					assessments = null
-				} else if (!res.data) {
-					fail('No assessments found')
-					toastStore.trigger({
-						message: 'Aucune évaluation trouvée.',
-						background: 'bg-error-500',
-					})
-					assessments = null
-				} else {
-					assessments = res.data.map((assessment) => ({
-						id: assessment.id,
-						title: assessment.title,
-						questions: JSON.parse(assessment.questions as string) as Basket,
-						teacher_id: assessment.teacher_id,
-					}))
-				}
-			})
-	}
 
-	async function assignAssessments(assessmentId: number) {
-		// fetch basket
-		let basket: Basket = []
-		const { data, error } = await supabase
-			.from('assessments')
-			.select('questions')
-			.eq('id', assessmentId)
-			.maybeSingle()
-
+	async function getAssessments() {
+		const { data, error } = await fetchTeacherAssessments(db, u.id)
+		assessments = []
 		if (error) {
 			fail(error.message)
 			toastStore.trigger({
-				message: 'La récupération des questions a échoué.',
+				message: 'La récupération des évaluations a échoué.',
 				background: 'bg-error-500',
 			})
 		} else if (!data) {
-			fail('Questions not found.')
+			fail('No assessments found')
 			toastStore.trigger({
-				message: 'Aucune question retrouvée.',
+				message: 'Aucune évaluation trouvée.',
 				background: 'bg-error-500',
 			})
 		} else {
-			basket = JSON.parse(data.questions as string)
+			assessments = data.map((assessmentData) => ({
+				...assessmentData,
+				questions: JSON.parse(assessmentData.questions) as Basket,
+			}))
 		}
+	}
 
-		if (basket.length) {
+	async function assignAssessments(assessment_id: number) {
+		const basket = assessments.find((a) => a.id === assessment_id)?.questions
+		// fetch basket
+
+		if (!basket || !basket.length) {
+			fail('No basket found.')
+			toastStore.trigger({
+				message: 'Aucun panier de questions retrouvé.',
+				background: 'bg-error-500',
+			})
+		} else {
 			const assignments = allStudents.map((student) => {
+				console.log('student', student)
 				return {
 					student_id: student.id,
-					teacher_id: $user.id,
+					teacher_id: u.id,
 					mark: 0,
 					total: basket.reduce((acc, q) => acc + q.count, 0),
-					basket: JSON.stringify(basket),
-					title: assessments?.find((a) => a.id === assessmentId)?.title,
+					basket,
+					title: assessments.find((a) => a.id === assessment_id)?.title,
 				}
 			})
 
 			console.log('assignements', assignments)
 
-			const { error } = await supabase.from('assignments').insert(assignments)
+			const { error } = await db.from('assignments').insert(assignments)
 			if (error) {
 				fail(error.message)
 				toastStore.trigger({
@@ -156,7 +132,7 @@
 </script>
 
 <PageHeader title="Gestion des évaluations" />
-{#if assessments}
+{#if assessments.length}
 	<div class="card p-4 h-80 overflow-auto">
 		{#each assessments as assessment}
 			<div
@@ -192,15 +168,15 @@
 		<div class="label">
 			<strong>Classes</strong>
 			<div class="space-y-2">
-				{#each $user.classIdsNames as classIdName}
+				{#each u.classes as classe}
 					<div class="flex items-center space-x-2">
 						<input
 							class="checkbox"
 							type="checkbox"
-							bind:group={selectedClasses}
-							value={classIdName.id}
+							bind:group={selectedClassesIds}
+							value={classe.id}
 						/>
-						<p>{classIdName.className}</p>
+						<p>{classe.name}</p>
 					</div>
 				{/each}
 			</div>
@@ -210,23 +186,23 @@
 		<label class="label">
 			<div class="flex items-center">
 				<strong>Élèves</strong>
-				<select class="ml-2 select" bind:value={selectedClassId}>
-					{#each $user.classIdsNames as classIdName}
-						<option value={classIdName.id}>{classIdName.className}</option>
+				<select class="ml-2 select" bind:value={selectedClasseId}>
+					{#each u.classes as classe}
+						<option value={classe.id}>{classe.name}</option>
 					{/each}
 				</select>
 			</div>
-			{#if $user.studentsIdsNames}
-				{#each $user.studentsIdsNames[selectedClassId] as student}
+			{#if u.students}
+				{#each u.students[selectedClasseId] as student}
 					<div class="flex items-center space-x-2">
 						<input
 							class="checkbox"
 							type="checkbox"
-							bind:group={selectedStudents[selectedClassId]}
+							bind:group={selectedStudents[selectedClasseId]}
 							value={student.id}
 						/>
 						<p>
-							{student.fullname || student.firstname + ' ' + student.lastname}
+							{student.firstname + ' ' + student.lastname}
 						</p>
 					</div>
 				{/each}

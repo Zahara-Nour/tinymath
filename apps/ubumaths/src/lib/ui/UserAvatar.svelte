@@ -3,10 +3,9 @@
 	import IconUser from '$lib/icones/IconUser.svelte'
 	import { user } from '$lib/stores'
 	import { popup } from '@skeletonlabs/skeleton'
+	import { get } from 'svelte/store'
 
 	export let place = 'TopBar'
-
-	$: console.log('useAvatar : ', $user)
 </script>
 
 {#if !$user.isGuest()}

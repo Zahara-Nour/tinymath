@@ -5,7 +5,10 @@
 	import { AppRail, AppRailTile } from '@skeletonlabs/skeleton'
 	import { writable, type Writable } from 'svelte/store'
 	import UserMgmt from './UserMgmt.svelte'
+	import type { SupabaseClient } from '@supabase/supabase-js'
+	import type { Database } from '../../../types/supabase'
 
+	export let db: SupabaseClient<Database>
 	const storeValue: Writable<number> = writable(1)
 </script>
 
@@ -24,7 +27,7 @@
 	</AppRail>
 	<div class="container mx-auto p-4">
 		{#if $storeValue === 1}
-			<UserMgmt />
+			<UserMgmt {db} />
 		{/if}
 	</div>
 </div>

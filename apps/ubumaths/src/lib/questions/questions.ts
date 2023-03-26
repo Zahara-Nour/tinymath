@@ -22638,7 +22638,7 @@ const questions: Questions = {
 // 	grade: UNKNOWN,
 // 	id: '',
 // }
-const ids: Ids = {}
+export const questions_ids: Ids = {}
 const questionsWithID: Record<
 	string,
 	Record<string, Record<string, QuestionWithID[]>>
@@ -22649,7 +22649,7 @@ const questionsWithID: Record<
 			(subdomain, subdomain_name, k) => {
 				const new_subdomain = subdomain.map((q, l) => {
 					const id = code[i!] + code[j!] + code[k!] + code[l]
-					ids[id] = {
+					questions_ids[id] = {
 						theme: theme_name,
 						domain: domain_name,
 						subdomain: subdomain_name,
@@ -22685,4 +22685,4 @@ export function getQuestion(
 	}
 }
 
-export default { questions: questionsWithID, ids }
+export default questionsWithID
