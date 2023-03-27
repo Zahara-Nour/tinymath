@@ -169,7 +169,7 @@
 					<IconFullscreen />
 				</button>
 			{/if}
-			{#if isStudent($user) && $user.assignments?.length && !url.includes('assessment') && !url.includes('dashboard')}
+			{#if isStudent($user) && $user.assignments?.length && !url.includes('assessment') && !url.includes('dashboard') && !url.includes('jeux')}
 				<div class="p-4 bg-error-500 text-white">
 					Tu as <a href="/dashboard">des évaluations</a> à faire !
 				</div>
