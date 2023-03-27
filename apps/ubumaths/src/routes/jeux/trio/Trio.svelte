@@ -47,7 +47,7 @@
 	let tileClass = ''
 
 	$: {
-		tileClass = `grid-cols-${size + 1} grid  w-max  gap-4 my-6 `
+		tileClass = `grid-cols-10 grid  w-max  gap-4 my-6 `
 		console.log('tileClass', tileClass)
 	}
 	$: changeGrid(size)
