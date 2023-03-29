@@ -170,3 +170,11 @@ export async function fetchAssessment(
 		.eq('id', assessment_id)
 		.maybeSingle()
 }
+
+export async function updateGidouille(
+	supabase: SupabaseClient<Database>,
+	student_id: number,
+	gidouilles: number,
+) {
+	return supabase.from('users').update({ gidouilles }).eq('id', student_id)
+}

@@ -364,6 +364,7 @@ export interface Database {
           role: string
           school_id: number | null
           teacher_id: number | null
+          teacher_uuid: string | null
           updated_at: string | null
           vips: string | null
         }
@@ -380,6 +381,7 @@ export interface Database {
           role?: string
           school_id?: number | null
           teacher_id?: number | null
+          teacher_uuid?: string | null
           updated_at?: string | null
           vips?: string | null
         }
@@ -396,6 +398,7 @@ export interface Database {
           role?: string
           school_id?: number | null
           teacher_id?: number | null
+          teacher_uuid?: string | null
           updated_at?: string | null
           vips?: string | null
         }

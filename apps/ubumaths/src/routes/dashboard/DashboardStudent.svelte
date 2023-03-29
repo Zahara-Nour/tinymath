@@ -6,7 +6,6 @@
 	import type { SupabaseClient } from '@supabase/supabase-js'
 	import { writable, type Writable } from 'svelte/store'
 	import type { Database } from '../../../types/supabase'
-	import AssessmentMgmt from './AssessmentMgmt.svelte'
 	import AssignmentsMgmt from './AssignmentsMgmt.svelte'
 
 	export let db: SupabaseClient<Database>

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Gidouille from '$lib/icones/Gidouille.svelte'
 	import IconUsers from '$lib/icones/IconUsers.svelte'
+	import IconAward from '$lib/icones/IconAward.svelte'
 	import PageHeader from '$lib/ui/PageHeader.svelte'
 	import UserAvatar from '$lib/ui/UserAvatar.svelte'
 	import { AppRail, AppRailTile } from '@skeletonlabs/skeleton'
@@ -8,6 +9,7 @@
 	import { writable, type Writable } from 'svelte/store'
 	import type { Database } from '../../../types/supabase'
 	import AssessmentMgmt from './AssessmentMgmt.svelte'
+	import AwardMgmt from './AwardMgmt.svelte'
 
 	export let db: SupabaseClient<Database>
 
@@ -23,6 +25,7 @@
 			<AppRailTile><UserAvatar place={'Rail'} /></AppRailTile>
 		</svelte:fragment>
 		<AppRailTile value={1}><IconUsers /></AppRailTile>
+		<AppRailTile value={2}><IconAward /></AppRailTile>
 		<svelte:fragment slot="trail">
 			<!-- AppRailTiles -->
 		</svelte:fragment>
@@ -30,6 +33,8 @@
 	<div class="container mx-auto p-4">
 		{#if $storeValue === 1}
 			<AssessmentMgmt {db} />
+		{:else if $storeValue === 2}
+			<AwardMgmt {db} />
 		{/if}
 	</div>
 </div>
