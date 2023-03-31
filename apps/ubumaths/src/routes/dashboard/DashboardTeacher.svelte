@@ -9,7 +9,7 @@
 	import { writable, type Writable } from 'svelte/store'
 	import type { Database } from '../../../types/supabase'
 	import AssessmentMgmt from './AssessmentMgmt.svelte'
-	import AwardMgmt from './AwardMgmt.svelte'
+	import TeacherAwardMgmt from './TeacherAwardMgmt.svelte'
 
 	export let db: SupabaseClient<Database>
 
@@ -34,7 +34,7 @@
 		{#if $storeValue === 1}
 			<AssessmentMgmt {db} />
 		{:else if $storeValue === 2}
-			<AwardMgmt {db} />
+			<TeacherAwardMgmt {db} />
 		{/if}
 	</div>
 </div>

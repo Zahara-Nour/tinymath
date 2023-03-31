@@ -19,10 +19,13 @@
 	import type { Database } from '../../../types/supabase'
 	import { enhance } from '$app/forms'
 	import { updateGidouille } from '$lib/db'
+	import IconCards from '$lib/icones/IconCards.svelte'
 
 	export let db: SupabaseClient<Database>
 
 	let pendingGidouille: Record<number, boolean> = {}
+	let { warn, trace, fail } = getLogger('TeacherAwardMgmt', 'warn')
+	let u = $user as Teacher
 
 	async function drawVipCard(student: StudentProfile) {
 		if (student.gidouilles >= 3) {
@@ -74,7 +77,7 @@
 			const { error } = await updateGidouille(
 				db,
 				student.id,
-				student.gidouilles - 11,
+				student.gidouilles - 1,
 			)
 			if (error) {
 				console.log(error.message)
@@ -90,8 +93,6 @@
 			pendingGidouille[student.id] = false
 		}
 	}
-	let { warn, trace, fail } = getLogger('assessmentMgmt', 'warn')
-	let u = $user as Teacher
 </script>
 
 <PageHeader title="Récompenses / Avertissements" />
@@ -130,6 +131,14 @@
 												on:click={() => addGidouille(student)}
 											>
 												<IconPlus />
+											</button>
+											<button
+												class="btn-icon variant-filled-primary"
+												disabled={pendingGidouille[student.id] ||
+													student.gidouilles < 3}
+												on:click={() => drawVipCard(student)}
+											>
+												<IconCards />
 											</button>
 										</div>
 									</div>

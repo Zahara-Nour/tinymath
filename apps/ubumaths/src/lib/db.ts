@@ -4,6 +4,14 @@ const { info, fail, warn } = getLogger('db', 'info')
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Database } from '../../types/supabase'
 import type { UserBasicProfile, UserProfile } from './type'
+import { createClient } from '@supabase/supabase-js'
+import {
+	PUBLIC_SUPABASE_URL,
+	PUBLIC_SUPABASE_ANON_KEY,
+} from '$env/static/public'
+
+const db = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY)
+export default db
 
 export function addUser(
 	supabase: SupabaseClient<Database>,

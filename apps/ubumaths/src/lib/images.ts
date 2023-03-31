@@ -4,20 +4,22 @@ import { getLogger } from '$lib/utils'
 let { info, fail, warn } = getLogger('images', 'info')
 import { browser } from '$app/environment'
 
+import db from '$lib/db'
+
 export async function fetchImage(
-	supabase: SupabaseClient<Database>,
-	name: string,
+	path: string,
+	bucket = 'public/mental',
 ): Promise<string> {
 	let base64: string | null = null
 
 	if (browser) {
-		base64 = sessionStorage.getItem(name)
+		base64 = sessionStorage.getItem(path)
 
 		if (!base64) {
-			info('fetching image', name)
-			const { data: blob, error } = await supabase.storage
-				.from('public/mental')
-				.download(name)
+			info('fetching image', path)
+			const { data: blob, error } = await db.storage
+				.from(`${bucket}`)
+				.download(path)
 
 			if (error) {
 				fail('error', error.message)
@@ -30,16 +32,16 @@ export async function fetchImage(
 						const result = reader.result as string
 						if (result) {
 							try {
-								sessionStorage.setItem(name, result as string)
+								sessionStorage.setItem(path, result as string)
 							} catch (error) {
 								warn('error', (error as Error).message)
 							}
-							info('image loaded', name)
+							info('image loaded', path)
 							return resolve(result)
-						} else return reject(new Error(`Error while loading image ${name}`))
+						} else return reject(new Error(`Error while loading image ${path}`))
 					}
 					reader.onerror = (ev) =>
-						reject(new Error(`Error while loading image ${name}`))
+						reject(new Error(`Error while loading image ${path}`))
 					reader.readAsDataURL(blob)
 				})
 			}

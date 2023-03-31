@@ -513,3 +513,10 @@ export function isTeacherData(data: UserData): data is TeacherData {
 export function isStudentData(data: UserData): data is StudentData {
 	return data.role === 'student'
 }
+export type VipCard = {
+	name: string
+	title: string
+	text: string
+	image: string
+	rarity: 'common' | 'uncommon' | 'rare' | 'legendary'
+}
