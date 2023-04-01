@@ -1,15 +1,7 @@
 <script lang="ts">
 	import PageHeader from '$lib/ui/PageHeader.svelte'
 	import { getLogger, objectMap } from '$lib/utils'
-	import {
-		Accordion,
-		AccordionItem,
-		ListBox,
-		ListBoxItem,
-		popup,
-		toastStore,
-		type PopupSettings,
-	} from '@skeletonlabs/skeleton'
+	import { Accordion, AccordionItem, toastStore } from '@skeletonlabs/skeleton'
 	import type { StudentProfile, Teacher } from '../../types/type'
 	import IconPlus from '$lib/icones/IconPlus.svelte'
 	import IconMinus from '$lib/icones/IconMinus.svelte'
@@ -17,10 +9,10 @@
 	import { user } from '$lib/stores'
 	import type { SupabaseClient } from '@supabase/supabase-js'
 	import type { Database } from '../../types/supabase'
-	import { enhance } from '$app/forms'
 	import { updateGidouille, updateVip } from '$lib/db'
 	import IconCards from '$lib/icones/IconCards.svelte'
 	import VipCard from '$lib/vips/VipCard.svelte'
+	import cards from '$lib/vips/cards'
 
 	export let db: SupabaseClient<Database>
 
@@ -29,35 +21,42 @@
 	let u = $user as Teacher
 	let selectedStudent: StudentProfile
 	let pendingVips: boolean[] = []
+	let commons: Record<string, number> = {}
+	let uncommons: Record<string, number> = {}
+	let rares: Record<string, number> = {}
+	let legendaries: Record<string, number> = {}
 
-	async function drawVipCard(student: StudentProfile) {
-		if (student.gidouilles >= 3) {
-			pendingGidouille[student.id] = true
-			const { error } = await updateGidouille(
-				db,
-				student.id,
-				(student.gidouilles -= 3),
-			)
-			if (error) {
-				console.log(error.message)
-				toastStore.trigger({
-					message: 'Le retrait de gidouilles a échoué.',
-					background: 'bg-error-500',
-				})
-			} else {
-				student.gidouilles -= 3
-				// force update
-				u = u
-			}
-			pendingGidouille[student.id] = false
-		}
-	}
+	$: commons = selectedStudent
+		? objectMap(selectedStudent.vips, (count, name) => {
+				const card = cards.find((c) => c.name === name)!
+				return count > 0 && card.rarity === 'common' ? count : 0
+		  })
+		: {}
+	$: uncommons = selectedStudent
+		? objectMap(selectedStudent.vips, (count, name) => {
+				const card = cards.find((c) => c.name === name)!
+				return count > 0 && card.rarity === 'uncommon' ? count : 0
+		  })
+		: {}
+	$: rares = selectedStudent
+		? objectMap(selectedStudent.vips, (count, name) => {
+				const card = cards.find((c) => c.name === name)!
+				return count > 0 && card.rarity === 'rare' ? count : 0
+		  })
+		: {}
+	$: legendaries = selectedStudent
+		? objectMap(selectedStudent.vips, (count, name) => {
+				const card = cards.find((c) => c.name === name)!
+				return count > 0 && card.rarity === 'legendary' ? count : 0
+		  })
+		: {}
 
-	async function useVip(student: StudentProfile, cardName: string) {
-		pendingVips[student.id] = true
-		const { error } = await updateVip(db, student.id, {
-			...student.vips,
-			[cardName]: student.vips[cardName] - 1,
+	async function useVip(cardName: string) {
+		console.log('useVip', selectedStudent, cardName)
+		pendingVips[selectedStudent.id] = true
+		const { error } = await updateVip(db, selectedStudent.id, {
+			...selectedStudent.vips,
+			[cardName]: selectedStudent.vips[cardName] - 1,
 		})
 		if (error) {
 			console.log(error.message)
@@ -66,13 +65,16 @@
 				background: 'bg-error-500',
 			})
 		} else {
-			student.vips[cardName] -= 1
+			selectedStudent.vips[cardName] -= 1
+			console.log('card used', selectedStudent.vips[cardName])
 			toastStore.trigger({
 				message: 'La carte a été utilisée.',
 				background: 'bg-success-500',
 			})
+			// force update
+			selectedStudent = selectedStudent
 		}
-		pendingVips[student.id] = false
+		pendingVips[selectedStudent.id] = false
 	}
 
 	async function addGidouille(student: StudentProfile) {
@@ -184,36 +186,140 @@
 		</header>
 		<section class="p-4">
 			<div
-				class="flex  flex-wrap justify-between items-center w-full max-w-full text-black bg-surface-500 shadow-md rounded-md p-2 mb-2"
+				class="flex flex-col w-full max-w-full bg-surface-500 shadow-md rounded-md p-2 mb-2"
 			>
-				<div class="flex gap-4 flex-wrap">
-					{#each Object.entries(selectedStudent.vips) as [name, count]}
-						{#if count > 0}
-							<div class="flex flex-col items-center">
-								<div class="relative inline-block">
-									{#if count > 1}
-										<span
-											class="badge-icon variant-filled-success absolute -top-0 -right-0 z-10 w-10 h-10"
-											><span class="text-white text-xl">{count}</span></span
-										>
-										<VipCard {name} />
-									{:else}
-										<VipCard {name} />
-									{/if}
-								</div>
-								<div>
-									<button
-										class="btn mt-2 variant-filled-primary"
-										disabled={pendingVips[selectedStudent.id]}
-										on:click={() => useVip(selectedStudent, name)}
-									>
-										Use
-									</button>
-								</div>
-							</div>
-						{/if}
-					{/each}
-				</div>
+				{#if Object.keys(commons).length}
+					<div class="mt-6">
+						<div class="font-bold text-2xl mb-4">Commons</div>
+						<div class="flex gap-8 flex-wrap justify-center items-center">
+							{#each Object.entries(commons) as [name, count]}
+								{#if count > 0}
+									<div class="flex flex-col items-center">
+										<div class="relative inline-block">
+											{#if count > 1}
+												<span
+													class="badge-icon variant-filled-success absolute -top-0 -right-0 z-10 w-10 h-10"
+													><span class="text-white text-xl">{count}</span></span
+												>
+												<VipCard {name} />
+											{:else}
+												<VipCard {name} />
+											{/if}
+										</div>
+										<div>
+											<button
+												class="btn mt-2 variant-filled-primary"
+												disabled={pendingVips[selectedStudent.id]}
+												on:click={() => useVip(name)}
+											>
+												Use
+											</button>
+										</div>
+									</div>
+								{/if}
+							{/each}
+						</div>
+					</div>
+				{/if}
+				{#if Object.keys(uncommons).length}
+					<div class="mt-6">
+						<div class="font-bold text-2xl mb-4">Uncommons</div>
+						<div class="flex gap-8 flex-wrap justify-center items-center">
+							{#each Object.entries(uncommons) as [name, count]}
+								{#if count > 0}
+									<div class="flex flex-col items-center">
+										<div class="relative inline-block">
+											{#if count > 1}
+												<span
+													class="badge-icon variant-filled-success absolute -top-0 -right-0 z-10 w-10 h-10"
+													><span class="text-white text-xl">{count}</span></span
+												>
+												<VipCard {name} />
+											{:else}
+												<VipCard {name} />
+											{/if}
+										</div>
+										<div>
+											<button
+												class="btn mt-2 variant-filled-primary"
+												disabled={pendingVips[selectedStudent.id]}
+												on:click={() => useVip(name)}
+											>
+												Use
+											</button>
+										</div>
+									</div>
+								{/if}
+							{/each}
+						</div>
+					</div>
+				{/if}
+				{#if Object.keys(rares).length}
+					<div class="mt-6">
+						<div class="font-bold text-2xl mb-4">Rares</div>
+						<div class="flex gap-8 flex-wrap justify-center items-center">
+							{#each Object.entries(rares) as [name, count]}
+								{#if count > 0}
+									<div class="flex flex-col items-center">
+										<div class="relative inline-block">
+											{#if count > 1}
+												<span
+													class="badge-icon variant-filled-success absolute -top-0 -right-0 z-10 w-10 h-10"
+													><span class="text-white text-xl">{count}</span></span
+												>
+												<VipCard {name} />
+											{:else}
+												<VipCard {name} />
+											{/if}
+										</div>
+										<div>
+											<button
+												class="btn mt-2 variant-filled-primary"
+												disabled={pendingVips[selectedStudent.id]}
+												on:click={() => useVip(name)}
+											>
+												Use
+											</button>
+										</div>
+									</div>
+								{/if}
+							{/each}
+						</div>
+					</div>
+				{/if}
+				{#if Object.keys(legendaries).length}
+					<div class="mt-6">
+						<div class="font-bold text-2xl mb-4">Legendaries</div>
+						<div class="flex gap-8 flex-wrap justify-center items-center">
+							{#each Object.entries(legendaries) as [name, count]}
+								{#if count > 0}
+									<div class="flex flex-col items-center">
+										<div class="relative inline-block">
+											{#if count > 1}
+												<span
+													class="badge-icon variant-filled-success absolute -top-0 -right-0 z-10 w-10 h-10"
+													><span class="text-white text-xl">{count}</span></span
+												>
+												<VipCard {name} />
+											{:else}
+												<VipCard {name} />
+											{/if}
+										</div>
+										<div>
+											<button
+												class="btn mt-2 variant-filled-primary"
+												disabled={pendingVips[selectedStudent.id]}
+												on:click={() => useVip(name)}
+											>
+												Use
+											</button>
+										</div>
+									</div>
+								{/if}
+							{/each}
+						</div>
+					</div>
+				{/if}
 			</div>
 		</section>
 	</div>

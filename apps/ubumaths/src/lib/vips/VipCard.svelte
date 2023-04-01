@@ -15,14 +15,16 @@
 <div
 	class="flex flex-col w-64 h-96 rounded-xl border-8 border-yellow-300 bg-white"
 >
-	<div><img alt={card.name} src={image} /></div>
-	<div class="p-2">
+	<div class="max-h-32 flex items-center justify-center">
+		<img class="h-full" alt={card.name} src={image} />
+	</div>
+	<div class="p-2 mt-6">
 		<div
-			class="my-2 font-bold text-2xl text-primary-500 w-full h-auto"
+			class="my-2 font-bold text-2xl text-primary-500 w-full h-auto text-center"
 			style="font-family: 'Baloo 2', sans-serif;"
 		>
 			{card.title}
 		</div>
-		<div>{card.text}</div>
+		<div class="text-black">{card.text}</div>
 	</div>
 </div>
