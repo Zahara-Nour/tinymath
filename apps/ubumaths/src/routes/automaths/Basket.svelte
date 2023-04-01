@@ -7,7 +7,7 @@
 		prepareAnsweredQuestion,
 		prepareCorrectedQuestion,
 	} from '$lib/questions/correction'
-	import type { Basket, Teacher } from '$lib/type'
+	import type { Basket, Teacher } from '../../types/type'
 	import QuestionCard from '$lib/ui/QuestionCard.svelte'
 	import IconPlus from '$lib/icones/IconPlus.svelte'
 	import IconMinus from '$lib/icones/IconMinus.svelte'
@@ -18,7 +18,7 @@
 	import { modalStore } from '@skeletonlabs/skeleton'
 	import { goto } from '$app/navigation'
 	import type { SupabaseClient } from '@supabase/supabase-js'
-	import type { Database } from '../../../types/supabase'
+	import type { Database } from '../../types/supabase'
 	import { fetchAssessment } from '$lib/db'
 
 	export let basket: Basket = []

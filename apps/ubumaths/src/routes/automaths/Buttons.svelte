@@ -10,7 +10,7 @@
 	import IconRun from '$lib/icones/IconRun.svelte'
 	import IconTrash from '$lib/icones/IconTrash.svelte'
 	import { user } from '$lib/stores'
-	import type { Basket } from '$lib/type'
+	import type { Basket } from '../../types/type'
 
 	export let showBasket = false
 	export let basket: Basket

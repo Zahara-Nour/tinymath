@@ -4,7 +4,7 @@
 		STATUS_CORRECT,
 		STATUS_UNOPTIMAL_FORM,
 	} from '$lib/questions/correction'
-	import type { CorrectedQuestion } from '$lib/type'
+	import type { CorrectedQuestion } from '../../../types/type'
 	import CorrectionItem from '$lib/ui/CorrectionItem.svelte'
 
 	export let items: CorrectedQuestion[]

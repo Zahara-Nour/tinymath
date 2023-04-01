@@ -2,8 +2,13 @@ import { getLogger } from '$lib/utils'
 
 const { info, fail, warn } = getLogger('db', 'info')
 import type { SupabaseClient } from '@supabase/supabase-js'
-import type { Database } from '../../types/supabase'
-import type { UserBasicProfile, UserProfile } from './type'
+import type { Database } from '../types/supabase'
+import type {
+	Assignment,
+	UserBasicProfile,
+	UserProfile,
+	VipCard,
+} from '../types/type'
 import { createClient } from '@supabase/supabase-js'
 import {
 	PUBLIC_SUPABASE_URL,
@@ -17,14 +22,22 @@ export function addUser(
 	supabase: SupabaseClient<Database>,
 	profile: UserProfile,
 ) {
-	return supabase.from('users').insert([profile])
+	return supabase.from('users').insert([
+		{
+			...profile,
+			vips: profile.vips ? JSON.stringify(profile.vips) : null,
+		},
+	])
 }
 
 export function updateUserProfile(
 	supabase: SupabaseClient<Database>,
 	{ id, ...infos }: UserProfile,
 ) {
-	return supabase.from('users').update(infos).eq('id', id)
+	return supabase
+		.from('users')
+		.update({ ...infos, vips: infos.vips ? JSON.stringify(infos.vips) : null })
+		.eq('id', id)
 }
 
 export function fetchUser(supabase: SupabaseClient<Database>, user_id: string) {
@@ -185,4 +198,27 @@ export async function updateGidouille(
 	gidouilles: number,
 ) {
 	return supabase.from('users').update({ gidouilles }).eq('id', student_id)
+}
+
+export async function updateVip(
+	supabase: SupabaseClient<Database>,
+	student_id: number,
+	vips: Record<string, number>,
+) {
+	return supabase
+		.from('users')
+		.update({ vips: JSON.stringify(vips) })
+		.eq('id', student_id)
+}
+
+export async function addAssignments(
+	supabase: SupabaseClient<Database>,
+	assignments: Assignment[],
+) {
+	return db.from('assignments').insert(
+		assignments.map(({ id, basket, ...infos }) => ({
+			...infos,
+			basket: JSON.stringify(basket),
+		})),
+	)
 }

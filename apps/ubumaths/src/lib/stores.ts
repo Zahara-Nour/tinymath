@@ -1,7 +1,7 @@
 // global store
 import type { MathfieldElement } from 'tinymathlive'
 import { get, writable, type Writable } from 'svelte/store'
-import type { FormatToHtmlArg, User } from './type'
+import type { FormatToHtmlArg, User } from '../types/type'
 import { isObjectWithText } from './utils'
 import { getLogger } from '$lib/utils'
 let { info, fail, warn } = getLogger('store', 'info')

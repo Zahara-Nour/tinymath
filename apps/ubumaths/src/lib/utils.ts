@@ -3,7 +3,7 @@ import type {
 	FormatToLatexArg,
 	FormatToTexmacsArg,
 	ObjectWithText,
-} from './type'
+} from '../types/type'
 // loggers
 type Level = 'trace' | 'debug' | 'info' | 'warn' | 'fail'
 type Noop = () => void

@@ -7,7 +7,7 @@
 		Commit,
 		CorrectedQuestion,
 		Line,
-	} from '$lib/type'
+	} from '../../types/type'
 
 	export let card: AnsweredQuestion
 	export let interactive = false

@@ -23,7 +23,7 @@
 		BasketItem,
 		CorrectedQuestion,
 		AvailableLevels,
-	} from '$lib/type'
+	} from '../../types/type'
 	import {
 		Accordion,
 		AccordionItem,

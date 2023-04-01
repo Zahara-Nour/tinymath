@@ -6,7 +6,7 @@ import type {
 	CorrectedQuestion,
 	GeneratedQuestion,
 	Option,
-} from '$lib/type'
+} from '../../types/type'
 import {
 	QUESTION_TYPE_CHOICE,
 	QUESTION_TYPE_CHOICES,
@@ -1037,7 +1037,6 @@ export function prepareCorrectedQuestion(
 	q: AnsweredQuestion,
 ): CorrectedQuestion {
 	return {
-		answers_latex: [],
 		testAnswers: [],
 		solutions: [],
 		choices: [],

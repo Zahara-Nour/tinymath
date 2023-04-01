@@ -7,7 +7,7 @@ import type {
 	Session,
 	SupabaseClient,
 } from '@supabase/supabase-js'
-import { Database } from '../types/supabase'
+import { Database } from './types/supabase'
 
 declare global {
 	declare namespace App {

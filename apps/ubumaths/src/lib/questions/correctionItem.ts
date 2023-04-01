@@ -17,7 +17,7 @@ import {
 	type CorrectedQuestion,
 	type Line,
 	type LineChoice,
-} from '$lib/type'
+} from '../../types/type'
 import {
 	QUESTION_TYPE_CHOICE,
 	QUESTION_TYPE_CHOICES,

@@ -9,13 +9,13 @@
 		STATUS_CORRECT,
 		STATUS_UNOPTIMAL_FORM,
 	} from '$lib/questions/correction'
-	import type { CorrectedQuestion } from '$lib/type'
+	import type { CorrectedQuestion } from '../../../types/type'
 	import IconHome from '$lib/icones/IconHome.svelte'
 	import IconScan from '$lib/icones/IconScan.svelte'
 	import IconReload from '$lib/icones/IconReload.svelte'
 	import { toastStore } from '@skeletonlabs/skeleton'
 	import type { SupabaseClient } from '@supabase/supabase-js'
-	import type { Database } from '../../../../types/supabase'
+	import type { Database } from '../../../types/supabase'
 
 	export let items: CorrectedQuestion[]
 	export let assignmentId: number

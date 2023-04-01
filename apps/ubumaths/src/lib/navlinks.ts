@@ -1,4 +1,4 @@
-import type { Links } from './type'
+import type { Links } from '../types/type'
 
 const links: Links = [
 	{

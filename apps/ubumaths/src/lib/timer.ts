@@ -1,4 +1,4 @@
-import type { Time } from './type'
+import type { Time } from '../types/type'
 import { convertToTime } from './utils'
 
 export function createTimer({

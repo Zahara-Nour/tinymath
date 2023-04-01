@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { correct_color } from '$lib/colors'
-	import type { Line } from '$lib/type'
+	import type { Line } from '../../types/type'
 	export let line: Line
 
 	const classBadgeCorrect =

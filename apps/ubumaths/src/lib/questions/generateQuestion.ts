@@ -16,7 +16,7 @@ import {
 	type QuestionWithID,
 	type VariableName,
 	type Variables,
-} from '$lib/type'
+} from '../../types/type'
 import {
 	getQuestion,
 	QUESTION_TYPE_CHOICE,

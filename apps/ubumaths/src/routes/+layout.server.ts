@@ -15,7 +15,7 @@ import {
 	type StudentProfile,
 	type TeacherProfile,
 	type UserProfile,
-} from '$lib/type'
+} from '../types/type'
 import { cleanProfile, createUser, guest, guestProfile } from '$lib/users'
 import type { LayoutServerLoad } from './$types'
 
@@ -126,6 +126,26 @@ export const load: LayoutServerLoad = async ({
 					addErrors(FETCH_SCHOOLS_ERROR)
 				} else {
 					profile.schools = schoolsData
+				}
+			}
+
+			// fetch pending assignments
+			if (isStudentProfile(profile)) {
+				const { data: assignmentsData, error: assignmentsError } =
+					await fetchStudentPendingAssignments(supabase, profile.id)
+				if (assignmentsError) {
+					console.log(FETCH_ASSIGNMENTS_ERROR, assignmentsError.message)
+					addErrors(FETCH_ASSIGNMENTS_ERROR)
+				} else if (!assignmentsData) {
+					console.log(FETCH_ASSIGNMENTS_ERROR)
+					addErrors(FETCH_ASSIGNMENTS_ERROR)
+				} else {
+					assignments = assignmentsData.map((assignment) => ({
+						...assignment,
+						questions: null,
+						basket: JSON.parse(assignment.basket as string) as Basket,
+					}))
+					profile.assignments = assignments
 				}
 			}
 

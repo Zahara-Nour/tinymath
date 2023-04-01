@@ -20,7 +20,7 @@ import {
 	incorrect_color,
 } from '$lib/colors'
 import { objectMap } from '../utils'
-import type { Ids, Question, Questions, QuestionWithID } from '../type'
+import type { Ids, Question, Questions, QuestionWithID } from '../../types/type'
 
 export const QUESTION_TYPE_FILL_IN = 'fill in'
 export const QUESTION_TYPE_EQUATION = 'equation'

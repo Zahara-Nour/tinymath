@@ -10,7 +10,7 @@
 		type AnsweredQuestion,
 		type Choice,
 		type Line,
-	} from '$lib/type'
+	} from '../../types/type'
 	import { magnify_3xl } from '$lib/utils'
 	import IconOrbitVariant from '$lib/icones/IconOrbitVariant.svelte'
 

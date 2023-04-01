@@ -23,7 +23,7 @@
 		type Commit,
 		type CorrectedQuestion,
 		type Line,
-	} from '$lib/type'
+	} from '../../types/type'
 	import type { MathfieldElement } from 'tinymathlive'
 
 	export let question: AnsweredQuestion

@@ -1,5 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
-import type { Database } from '../../types/supabase'
+import type { Database } from '../types/supabase'
 import { getLogger } from '$lib/utils'
 let { info, fail, warn } = getLogger('images', 'info')
 import { browser } from '$app/environment'

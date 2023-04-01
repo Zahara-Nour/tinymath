@@ -3,14 +3,23 @@
 		generateQuestionsFromBasket,
 	} from '$lib/questions/generateQuestion'
 	import { onDestroy, setContext } from 'svelte'
-	import datas, { getQuestion } from '$lib/questions/questions.js'
+	import questions, {
+		questions_ids,
+		getQuestion,
+	} from '$lib/questions/questions.js'
 	import { convertToTime, getLogger, shuffle } from '$lib/utils'
 	import { createTimer } from '$lib/timer'
 	import { page } from '$app/stores'
 	import { virtualKeyboardMode, touchDevice, mathliveReady } from '$lib/stores'
 
 	import Correction from './Correction.svelte'
-	import type { AnsweredQuestion, Basket, Commit, Time, Timer } from '$lib/type'
+	import type {
+		AnsweredQuestion,
+		Basket,
+		Commit,
+		Time,
+		Timer,
+	} from '../../../types/type'
 	import Spinner from '$lib/ui/Spinner.svelte'
 	import QuestionCard from '$lib/ui/QuestionCard.svelte'
 	import CircularProgress from '$lib/ui/CircularProgress.svelte'
@@ -26,7 +35,6 @@
 
 	export let data
 
-	const ids = datas.ids
 	let { info, fail, trace } = getLogger('Assessment', 'trace')
 	let current: number
 	let delay: number
@@ -177,7 +185,7 @@
 		generateQuestionsFromBasket(basket, cards)
 		if (!basket) basket = []
 		if (basket.length === 1) {
-			;({ theme, domain, subdomain, level } = ids[basket[0].id])
+			;({ theme, domain, subdomain, level } = questions_ids[basket[0].id])
 			query = encodeURI(
 				`?theme=${theme}&domain=${domain}&subdomain=${subdomain}&level=${level}`,
 			)
@@ -200,7 +208,7 @@
 	}
 
 	function generateExemple() {
-		const { theme, domain, subdomain, level } = ids[basket[0].id]
+		const { theme, domain, subdomain, level } = questions_ids[basket[0].id]
 		const question = getQuestion(theme, domain, subdomain, level)
 		console.log('getQuestion', question)
 		const generated = generate(question)

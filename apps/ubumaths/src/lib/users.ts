@@ -5,7 +5,7 @@ import {
 	type User,
 	type UserData,
 	type UserProfile,
-} from './type'
+} from '../types/type'
 
 const userPrototype = {
 	isStudent(this: User) {
@@ -50,7 +50,7 @@ export function cleanProfile(dirtyProfile: UserData) {
 		profile.school_id = dirtyProfile.school_id!
 		profile.classe_ids = dirtyProfile.classe_ids!
 		profile.gidouilles = dirtyProfile.gidouilles!
-		profile.vips = JSON.parse(dirtyProfile.vips)
+		profile.vips = JSON.parse(dirtyProfile.vips as string)
 		// profile.vips = dirtyProfile.vips!
 	} else if (isTeacherData(dirtyProfile)) {
 		profile.school_id = dirtyProfile.school_id!

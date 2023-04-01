@@ -1,4 +1,4 @@
-import type { Database } from '../../types/supabase'
+import type { Database } from './supabase'
 import type {
 	CP,
 	CM1,
@@ -12,7 +12,7 @@ import type {
 	TROISIEME,
 	PREMIERE_SPE_MATHS,
 	TERMINALE_SPE_MATHS,
-} from './grades.js'
+} from '../lib/grades.js'
 import type {
 	STATUS_BAD_FORM,
 	STATUS_BAD_UNIT,
@@ -20,7 +20,7 @@ import type {
 	STATUS_EMPTY,
 	STATUS_INCORRECT,
 	STATUS_UNOPTIMAL_FORM,
-} from './questions/correction.js'
+} from '../lib/questions/correction.js'
 import {
 	QUESTION_TYPE_CHOICE,
 	QUESTION_TYPE_CHOICES,
@@ -28,8 +28,8 @@ import {
 	type QUESTION_TYPE_ENONCE,
 	type QUESTION_TYPE_EQUATION,
 	type QUESTION_TYPE_FILL_IN,
-} from './questions/questions.js'
-import { isInteger, isNumeric } from './utils.js'
+} from '../lib/questions/questions.js'
+import { isInteger, isNumeric } from '../lib/utils.js'
 
 export type Option =
 	| 'enounce-no-spaces'
@@ -336,10 +336,6 @@ export type Commit = {
 	exec: () => void
 }
 
-export type Vip = {
-	name: string
-}
-
 // creation d'un nouvel utilisateur
 
 export type UserBasicProfile = {
@@ -356,7 +352,7 @@ export type UserBasicProfile = {
 	classes?: Classe[]
 	avatar?: string
 	gidouilles?: number
-	vips?: Vip[]
+	vips?: Record<string, number>
 	students?: Record<number, StudentProfile[]>
 }
 
@@ -380,7 +376,7 @@ export type StudentProfile = UserBasicProfile & {
 	school_id: number
 	teacher_id: number
 	gidouilles: number
-	vips: Vip[]
+	vips: Record<string, number>
 	assignments: Assignment[]
 }
 
@@ -478,12 +474,18 @@ export type Assignment = {
 
 export type StudentData = Omit<
 	Database['public']['Tables']['users']['Row'],
-	'created_at' | 'updated_at'
+	'created_at' | 'updated_at' | 'teacher_uuid'
 >
 
 export type TeacherData = Omit<
 	Database['public']['Tables']['users']['Row'],
-	'created_at' | 'updated_at' | 'vips' | 'teacher_id' | 'gidouilles' | 'grade'
+	| 'created_at'
+	| 'updated_at'
+	| 'vips'
+	| 'teacher_id'
+	| 'gidouilles'
+	| 'grade'
+	| 'teacher_uuid'
 >
 
 export type AdminData = Omit<
@@ -496,6 +498,7 @@ export type AdminData = Omit<
 	| 'grade'
 	| 'classe_ids'
 	| 'school_id'
+	| 'teacher_uuid'
 >
 
 export type UserData = StudentData | TeacherData | AdminData

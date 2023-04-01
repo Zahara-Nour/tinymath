@@ -8,7 +8,7 @@
 		Commit,
 		CorrectedQuestion,
 		Line,
-	} from '$lib/type'
+	} from '../../types/type'
 	import IconOrbitVariant from '$lib/icones/IconOrbitVariant.svelte'
 
 	export let toggleFlip = () => {}

@@ -5,7 +5,7 @@
 	import { getLogger } from '$lib/utils'
 	import { toastStore } from '@skeletonlabs/skeleton'
 	import { user } from '$lib/stores'
-	import type { Student } from '$lib/type'
+	import type { Student } from '../../types/type'
 
 	let { warn, trace, fail } = getLogger('UserMgmt', 'warn')
 	let u = $user as Student

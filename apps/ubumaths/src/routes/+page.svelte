@@ -1,8 +1,5 @@
 <script lang="ts">
-	import type { PageData } from './$types'
-	import VipCard from '$lib/vips/VipCard.svelte'
-
-	export let data: PageData
+	export let data
 </script>
 
 <div
@@ -14,8 +11,6 @@
 			Les maths de la chandelle <span class="text-primary-500">verte</span>
 		</div>
 	</h2>
-
-	<VipCard name="ecrabouilleur" />
 
 	<figure>
 		<section class="img-bg" />

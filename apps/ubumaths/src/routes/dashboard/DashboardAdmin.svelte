@@ -6,7 +6,7 @@
 	import { writable, type Writable } from 'svelte/store'
 	import UserMgmt from './UserMgmt.svelte'
 	import type { SupabaseClient } from '@supabase/supabase-js'
-	import type { Database } from '../../../types/supabase'
+	import type { Database } from '../../types/supabase'
 
 	export let db: SupabaseClient<Database>
 	const storeValue: Writable<number> = writable(1)

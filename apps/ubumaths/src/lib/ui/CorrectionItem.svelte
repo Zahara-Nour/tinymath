@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { CorrectedQuestion } from '$lib/type'
+	import type { CorrectedQuestion } from '../../types/type'
 	import QuestionCard from './QuestionCard.svelte'
 	export let item: CorrectedQuestion
 

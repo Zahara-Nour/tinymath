@@ -6,7 +6,7 @@
 	import { AppRail, AppRailTile } from '@skeletonlabs/skeleton'
 	import type { SupabaseClient } from '@supabase/supabase-js'
 	import { writable, type Writable } from 'svelte/store'
-	import type { Database } from '../../../types/supabase'
+	import type { Database } from '../../types/supabase'
 	import AssignmentsMgmt from './AssignmentsMgmt.svelte'
 	import StudentAwardMgmt from './StudentAwardMgmt.svelte'
 

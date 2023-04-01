@@ -8,11 +8,11 @@
 		School,
 		StudentProfile,
 		Teacher,
-	} from '$lib/type'
+	} from '../../types/type'
 	import { user } from '$lib/stores'
 	import type { SupabaseClient } from '@supabase/supabase-js'
-	import type { Database } from '../../../types/supabase'
-	import { fetchTeacherAssessments } from '$lib/db'
+	import type { Database } from '../../types/supabase'
+	import { addAssignments, fetchTeacherAssessments } from '$lib/db'
 
 	export let db: SupabaseClient<Database>
 
@@ -25,7 +25,7 @@
 			acc[classe.id] = []
 			return acc
 		},
-		{} as Record<number, StudentProfile[]>,
+		{} as Record<number, number[]>,
 	)
 	let selectedClassesIds: number[] = []
 	let allStudents: StudentProfile[] = []
@@ -103,18 +103,20 @@
 			const assignments = allStudents.map((student) => {
 				console.log('student', student)
 				return {
+					id: 0,
 					student_id: student.id,
 					teacher_id: u.id,
 					mark: 0,
 					total: basket.reduce((acc, q) => acc + q.count, 0),
 					basket,
-					title: assessments.find((a) => a.id === assessment_id)?.title,
+					title: assessments.find((a) => a.id === assessment_id)?.title!,
+					status: 'pending',
 				}
 			})
 
 			console.log('assignements', assignments)
 
-			const { error } = await db.from('assignments').insert(assignments)
+			const { error } = await addAssignments(db, assignments)
 			if (error) {
 				fail(error.message)
 				toastStore.trigger({

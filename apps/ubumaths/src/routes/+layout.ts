@@ -4,7 +4,7 @@ import {
 } from '$env/static/public'
 import { createSupabaseLoadClient } from '@supabase/auth-helpers-sveltekit'
 import type { LayoutLoad } from './$types'
-import type { Database } from '../../types/supabase'
+import type { Database } from '../types/supabase'
 
 // The client can be accessed inside pages by $page.data.supabase or data.supabase when using export let data: PageData.
 // The usage of depends tells sveltekit that this load function should be executed whenever invalidate is called to keep the page store in sync.

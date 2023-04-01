@@ -33,7 +33,7 @@
 	import type { Session } from '@supabase/supabase-js'
 	import { createUser, guest } from '$lib/users'
 	import IconFullscreen from '$lib/icones/IconFullscreen.svelte'
-	import { isStudent } from '$lib/type'
+	import { isStudent } from '../types/type'
 
 	type ScrollEvent = UIEvent & { currentTarget: EventTarget & HTMLDivElement }
 
