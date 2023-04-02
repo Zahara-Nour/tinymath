@@ -9,6 +9,8 @@
 	import type { Database } from '../../types/supabase'
 	import AssignmentsMgmt from './AssignmentsMgmt.svelte'
 	import StudentAwardMgmt from './StudentAwardMgmt.svelte'
+	import IconAlert from '$lib/icones/IconAlert.svelte'
+	import StudentWarningMgmt from './StudentWarningMgmt.svelte'
 
 	export let db: SupabaseClient<Database>
 
@@ -24,8 +26,15 @@
 			<AppRailTile><UserAvatar place={'Rail'} /></AppRailTile>
 		</svelte:fragment>
 		<!-- AppRailTiles -->
-		<AppRailTile value={1}><IconUsers /></AppRailTile>
-		<AppRailTile value={2}><IconAward /></AppRailTile>
+		<AppRailTile value={1}
+			><span class="text-3xl text-white"><IconUsers /></span></AppRailTile
+		>
+		<AppRailTile value={2}
+			><span class="text-3xl text-white"><IconAward /></span></AppRailTile
+		>
+		<AppRailTile value={3}
+			><span class="text-3xl text-white"><IconAlert /></span></AppRailTile
+		>
 		<svelte:fragment slot="trail">
 			<!-- AppRailTiles -->
 		</svelte:fragment>
@@ -35,6 +44,8 @@
 			<AssignmentsMgmt />
 		{:else if $storeValue === 2}
 			<StudentAwardMgmt {db} />
+		{:else if $storeValue === 3}
+			<StudentWarningMgmt {db} />
 		{/if}
 	</div>
 </div>

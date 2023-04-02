@@ -258,3 +258,14 @@ export async function fetchDayStudentsTeacherWarnings(
 		.eq('users.teacher_id', teacher_id)
 		.eq('date', date)
 }
+
+export async function fetchStudentWarnings(
+	supabase: SupabaseClient<Database>,
+	student_id: number,
+) {
+	return supabase
+		.from('warnings')
+		.select('id, date, student_id, warnings')
+		.eq('student_id', student_id)
+		.order('date', { ascending: false })
+}

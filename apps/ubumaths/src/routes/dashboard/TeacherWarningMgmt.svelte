@@ -23,7 +23,7 @@
 		'retard',
 		'Oubli de matériel',
 		'Devoirs non faits',
-		'Déplacement non autorisée',
+		'Déplacement non autorisé',
 		'Prise de parole non autorisée',
 	]
 	let classe_ids: number[] = []
