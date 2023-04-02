@@ -40,9 +40,7 @@
 
 	function updateClasses(date: DateTime) {
 		classe_ids = u.classes
-			.filter((classe) =>
-				classe.schedule.includes(selectedDateTime.weekday % 7),
-			)
+			.filter((classe) => classe.schedule.includes(date.weekday % 7))
 			.map((classe) => classe.id)
 
 		console.log('classe_ids', classe_ids)
@@ -152,9 +150,7 @@
 		disabled={!selectedDateTime.isValid ||
 			pendingWarning ||
 			(warnings && !isEmptyObject(warnings)) ||
-			!u.classes.filter((classe) =>
-				classe.schedule.includes(selectedDateTime.weekday - 1),
-			)}
+			!classe_ids.length}
 	>
 		Initialiser
 	</button>
@@ -165,7 +161,7 @@
 		<section class="p-4">
 			<Accordion class="mt-4">
 				{#each u.classes as classe}
-					{#if classe.schedule.includes(selectedDateTime.weekday - 1)}
+					{#if classe.schedule.includes(selectedDateTime.weekday % 7)}
 						<AccordionItem open>
 							<svelte:fragment slot="summary">{classe.name}</svelte:fragment>
 							<svelte:fragment slot="content">
