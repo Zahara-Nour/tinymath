@@ -17,6 +17,7 @@ declare global {
 		}
 		interface Locals {
 			supabase: SupabaseClient<Database>
+			supabaseService: SupabaseClient<Database>
 			getSession(): Promise<Session | null>
 			adminAuth: GoTrueAdminApi
 		}

@@ -87,7 +87,7 @@ export async function fetchUserClasses(
 	const classe_ids = classeIdsData.classe_ids
 	return supabase
 		.from('classes')
-		.select('name, id, grade, school_id')
+		.select('name, id, grade, school_id, schedule')
 		.in('id', classe_ids)
 }
 
@@ -114,6 +114,30 @@ export async function fetchTeacherStudents(
 		)
 		.eq('role', 'student')
 		.eq('teacher_id', teacher_id)
+}
+
+export async function fetchDayTeacherStudents(
+	supabase: SupabaseClient<Database>,
+	teacher_id: number,
+	day: number,
+) {
+	const request = await fetchUserClasses(supabase, teacher_id)
+	if (request.error) {
+		console.log('fetchDayTeacherStudents * Error * :', request.error.message)
+		return request
+	} else if (!request.data) {
+		console.log('fetchDayTeacherStudents :', 'no classes returned')
+		return request
+	} else {
+		const classe_ids = request.data
+			.filter((c) => c.schedule.includes(day))
+			.map((c) => c.id)
+		return supabase
+			.from('users')
+			.select('*')
+			.containedBy('classe_ids', classe_ids)
+			.eq('role', 'student')
+	}
 }
 
 export async function fetchClasseStudents(
@@ -221,4 +245,16 @@ export async function addAssignments(
 			basket: JSON.stringify(basket),
 		})),
 	)
+}
+
+export async function fetchDayStudentsTeacherWarnings(
+	supabase: SupabaseClient<Database>,
+	teacher_id: number,
+	date: string,
+) {
+	return supabase
+		.from('warnings')
+		.select('id, date, student_id, warnings, users(teacher_id)')
+		.eq('users.teacher_id', teacher_id)
+		.eq('date', date)
 }

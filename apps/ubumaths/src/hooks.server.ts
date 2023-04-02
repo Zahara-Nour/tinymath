@@ -25,6 +25,11 @@ export const handle: Handle = async ({ event, resolve }) => {
 		},
 	).auth.admin
 
+	event.locals.supabaseService = createClient(
+		PUBLIC_SUPABASE_URL,
+		SECRET_SUPABASE_SERVICE_ROLE,
+	)
+
 	/**
 	 * a little helper that is written for convenience so that instead
 	 * of calling `const { data: { session } } = await supabase.auth.getSession()`

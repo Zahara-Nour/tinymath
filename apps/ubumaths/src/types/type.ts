@@ -451,6 +451,7 @@ export type Classe = {
 	name: string
 	school_id: number
 	grade: string
+	schedule: number[]
 }
 
 export type Assessment = {

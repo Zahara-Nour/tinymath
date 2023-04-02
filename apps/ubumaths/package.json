@@ -10,7 +10,7 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"test:unit": "vitest",
-		"supabase-types": "npx supabase gen types typescript --project-id 'vlqgmctfhesdhaifmyab' --schema public   > types/supabase.ts"
+		"supabase-types": "npx supabase gen types typescript --project-id 'vlqgmctfhesdhaifmyab' --schema public   > src/types/supabase.ts"
 	},
 	"dependencies": {
 		"@floating-ui/dom": "^1.2.4",
@@ -19,6 +19,7 @@
 		"@supabase/auth-helpers-sveltekit": "^0.9.0",
 		"@supabase/supabase-js": "^2.11.0",
 		"iconify-icon": "^1.0.7",
+		"luxon": "^3.3.0",
 		"svelte-confetti": "^1.2.2",
 		"svelte-loading-spinners": "^0.3.4",
 		"tinycas": "workspace:*",
@@ -31,6 +32,7 @@
 		"@sveltejs/kit": "^1.12.0",
 		"@tailwindcss/forms": "^0.5.3",
 		"@tailwindcss/typography": "^0.5.9",
+		"@types/luxon": "^3.2.0",
 		"autoprefixer": "^10.4.14",
 		"postcss": "^8.4.21",
 		"supabase": "^1.42.7",

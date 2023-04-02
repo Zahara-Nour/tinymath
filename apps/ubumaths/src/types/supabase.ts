@@ -79,6 +79,7 @@ export interface Database {
           grade: string
           id: number
           name: string
+          schedule: number[]
           school_id: number
         }
         Insert: {
@@ -86,6 +87,7 @@ export interface Database {
           grade?: string
           id?: number
           name?: string
+          schedule?: number[]
           school_id: number
         }
         Update: {
@@ -93,6 +95,7 @@ export interface Database {
           grade?: string
           id?: number
           name?: string
+          schedule?: number[]
           school_id?: number
         }
       }
@@ -401,6 +404,29 @@ export interface Database {
           teacher_uuid?: string | null
           updated_at?: string | null
           vips?: string | null
+        }
+      }
+      warnings: {
+        Row: {
+          created_at: string | null
+          date: string
+          id: number
+          student_id: number
+          warnings: string[]
+        }
+        Insert: {
+          created_at?: string | null
+          date: string
+          id?: number
+          student_id: number
+          warnings?: string[]
+        }
+        Update: {
+          created_at?: string | null
+          date?: string
+          id?: number
+          student_id?: number
+          warnings?: string[]
         }
       }
     }
