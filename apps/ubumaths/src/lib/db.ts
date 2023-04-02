@@ -159,7 +159,7 @@ export async function fetchSchoolClasses(
 ) {
 	return supabase
 		.from('classes')
-		.select('id, name, grade, school_id')
+		.select('id, name, grade, school_id, schedule')
 		.eq('school_id', school_id)
 }
 

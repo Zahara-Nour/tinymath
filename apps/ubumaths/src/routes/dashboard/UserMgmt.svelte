@@ -197,6 +197,8 @@
 					school_id: selectedSchoolId,
 					teacher_id: teachers.find((teacher) => teacher.email === cells[5])
 						?.id,
+					teacher_uuid: teachers.find((teacher) => teacher.email === cells[5])
+						?.auth_id,
 					gidouilles: 0,
 					vips: JSON.stringify({}),
 				}
