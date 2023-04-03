@@ -166,13 +166,18 @@
 							<svelte:fragment slot="summary">{classe.name}</svelte:fragment>
 							<svelte:fragment slot="content">
 								<ul class="list">
-									{#each u.students[classe.id] as student}
+									{#each u.students[classe.id].sort( (a, b) => a.firstname.localeCompare(b.firstname), ) as student}
 										<li>
 											<div
 												class="flex  justify-between items-center w-full max-w-full text-black bg-surface-500 shadow-md rounded-md p-2 mb-2"
 											>
-												<div class="text-xl font-bold overflow-hidden">
-													{student.firstname + ' ' + student.lastname}
+												<div class="flex flex-col overflow-hidden">
+													<div class="text-xl font-bold ">
+														{student.firstname}
+													</div>
+													<div class="text-xs">
+														{student.lastname}
+													</div>
 												</div>
 												<div class="flex flex-wrap items-center gap-4">
 													{#each warningCases as warning}
@@ -185,7 +190,7 @@
 																bind:group={warnings[student.id]}
 																value={warning}
 															/>
-															<span>
+															<span class="ml-1">
 																{warning}
 															</span>
 														</div>

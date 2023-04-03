@@ -26,9 +26,15 @@
 			>
 			<AppRailTile><UserAvatar place={'Rail'} /></AppRailTile>
 		</svelte:fragment>
-		<AppRailTile value={1}><IconUsers /></AppRailTile>
-		<AppRailTile value={2}><IconAward /></AppRailTile>
-		<AppRailTile value={3}><IconAlert /></AppRailTile>
+		<AppRailTile value={1}
+			><span class="text-3xl"><IconUsers /></span></AppRailTile
+		>
+		<AppRailTile value={2}
+			><span class="text-3xl"><IconAward /></span></AppRailTile
+		>
+		<AppRailTile value={3}
+			><span class="text-3xl"><IconAlert /></span></AppRailTile
+		>
 		<svelte:fragment slot="trail">
 			<!-- AppRailTiles -->
 		</svelte:fragment>

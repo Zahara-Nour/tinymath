@@ -18,7 +18,7 @@
 </script>
 
 <div class="flex h-full">
-	<AppRail selected={storeValue}>
+	<AppRail background="bg-surface-100-800-token" selected={storeValue}>
 		<svelte:fragment slot="lead">
 			<AppRailTile
 				><a href="/"><Gidouille class=" text-primary-500" /></a></AppRailTile
@@ -27,13 +27,13 @@
 		</svelte:fragment>
 		<!-- AppRailTiles -->
 		<AppRailTile value={1}
-			><span class="text-3xl text-white"><IconUsers /></span></AppRailTile
+			><span class="text-3xl"><IconUsers /></span></AppRailTile
 		>
 		<AppRailTile value={2}
-			><span class="text-3xl text-white"><IconAward /></span></AppRailTile
+			><span class="text-3xl"><IconAward /></span></AppRailTile
 		>
 		<AppRailTile value={3}
-			><span class="text-3xl text-white"><IconAlert /></span></AppRailTile
+			><span class="text-3xl"><IconAlert /></span></AppRailTile
 		>
 		<svelte:fragment slot="trail">
 			<!-- AppRailTiles -->
