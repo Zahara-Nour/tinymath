@@ -138,8 +138,13 @@
 									<div
 										class="flex  justify-between items-center w-full max-w-full text-black bg-surface-500 shadow-md rounded-md p-2 mb-2"
 									>
-										<div class="text-xl font-bold overflow-hidden">
-											{student.firstname + ' ' + student.lastname}
+										<div class="flex flex-col mr-4">
+											<div class="text-xl font-bold ">
+												{student.firstname}
+											</div>
+											<div class="text-xs">
+												{student.lastname}
+											</div>
 										</div>
 
 										<div class="flex gap-1 items-center">
@@ -184,143 +189,141 @@
 		<header class="card-header">
 			<h3 class="card-title">{`cartes VIP de ${selectedStudent.firstname}`}</h3>
 		</header>
-		<section class="p-4">
-			<div
-				class="flex flex-col w-full max-w-full bg-surface-500 shadow-md rounded-md p-2 mb-2"
-			>
-				{#if Object.keys(commons).length}
-					<div class="mt-6">
-						<div class="font-bold text-2xl mb-4">Commons</div>
-						<div class="flex gap-8 flex-wrap justify-center items-center">
-							{#each Object.entries(commons) as [name, count]}
-								{#if count > 0}
-									<div class="flex flex-col items-center">
-										<div class="relative inline-block">
-											{#if count > 1}
-												<span
-													class="badge-icon variant-filled-success absolute -top-0 -right-0 z-10 w-10 h-10"
-													><span class="text-white text-xl">{count}</span></span
-												>
-												<VipCard {name} />
-											{:else}
-												<VipCard {name} />
-											{/if}
-										</div>
-										<div>
-											<button
-												class="btn mt-2 variant-filled-primary"
-												disabled={pendingVips[selectedStudent.id]}
-												on:click={() => useVip(name)}
+		<section
+			class="p-4 flex flex-col w-full max-w-full bg-surface-500 shadow-md"
+		>
+			{#if Object.keys(commons).length}
+				<div class="mt-6">
+					<div class="font-bold text-2xl mb-4">Commons</div>
+					<div class="flex gap-8 flex-wrap justify-center items-center">
+						{#each Object.entries(commons) as [name, count]}
+							{#if count > 0}
+								<div class="flex flex-col items-center">
+									<div class="relative inline-block">
+										{#if count > 1}
+											<span
+												class="badge-icon variant-filled-success absolute -top-0 -right-0 z-10 w-10 h-10"
+												><span class="text-white text-xl">{count}</span></span
 											>
-												Use
-											</button>
-										</div>
+											<VipCard {name} />
+										{:else}
+											<VipCard {name} />
+										{/if}
 									</div>
-								{/if}
-							{/each}
-						</div>
+									<div>
+										<button
+											class="btn mt-2 variant-filled-primary"
+											disabled={pendingVips[selectedStudent.id]}
+											on:click={() => useVip(name)}
+										>
+											Use
+										</button>
+									</div>
+								</div>
+							{/if}
+						{/each}
 					</div>
-				{/if}
-				{#if Object.keys(uncommons).length}
-					<div class="mt-6">
-						<div class="font-bold text-2xl mb-4">Uncommons</div>
-						<div class="flex gap-8 flex-wrap justify-center items-center">
-							{#each Object.entries(uncommons) as [name, count]}
-								{#if count > 0}
-									<div class="flex flex-col items-center">
-										<div class="relative inline-block">
-											{#if count > 1}
-												<span
-													class="badge-icon variant-filled-success absolute -top-0 -right-0 z-10 w-10 h-10"
-													><span class="text-white text-xl">{count}</span></span
-												>
-												<VipCard {name} />
-											{:else}
-												<VipCard {name} />
-											{/if}
-										</div>
-										<div>
-											<button
-												class="btn mt-2 variant-filled-primary"
-												disabled={pendingVips[selectedStudent.id]}
-												on:click={() => useVip(name)}
+				</div>
+			{/if}
+			{#if Object.keys(uncommons).length}
+				<div class="mt-6">
+					<div class="font-bold text-2xl mb-4">Uncommons</div>
+					<div class="flex gap-8 flex-wrap justify-center items-center">
+						{#each Object.entries(uncommons) as [name, count]}
+							{#if count > 0}
+								<div class="flex flex-col items-center">
+									<div class="relative inline-block">
+										{#if count > 1}
+											<span
+												class="badge-icon variant-filled-success absolute -top-0 -right-0 z-10 w-10 h-10"
+												><span class="text-white text-xl">{count}</span></span
 											>
-												Use
-											</button>
-										</div>
+											<VipCard {name} />
+										{:else}
+											<VipCard {name} />
+										{/if}
 									</div>
-								{/if}
-							{/each}
-						</div>
+									<div>
+										<button
+											class="btn mt-2 variant-filled-primary"
+											disabled={pendingVips[selectedStudent.id]}
+											on:click={() => useVip(name)}
+										>
+											Use
+										</button>
+									</div>
+								</div>
+							{/if}
+						{/each}
 					</div>
-				{/if}
-				{#if Object.keys(rares).length}
-					<div class="mt-6">
-						<div class="font-bold text-2xl mb-4">Rares</div>
-						<div class="flex gap-8 flex-wrap justify-center items-center">
-							{#each Object.entries(rares) as [name, count]}
-								{#if count > 0}
-									<div class="flex flex-col items-center">
-										<div class="relative inline-block">
-											{#if count > 1}
-												<span
-													class="badge-icon variant-filled-success absolute -top-0 -right-0 z-10 w-10 h-10"
-													><span class="text-white text-xl">{count}</span></span
-												>
-												<VipCard {name} />
-											{:else}
-												<VipCard {name} />
-											{/if}
-										</div>
-										<div>
-											<button
-												class="btn mt-2 variant-filled-primary"
-												disabled={pendingVips[selectedStudent.id]}
-												on:click={() => useVip(name)}
+				</div>
+			{/if}
+			{#if Object.keys(rares).length}
+				<div class="mt-6">
+					<div class="font-bold text-2xl mb-4">Rares</div>
+					<div class="flex gap-8 flex-wrap justify-center items-center">
+						{#each Object.entries(rares) as [name, count]}
+							{#if count > 0}
+								<div class="flex flex-col items-center">
+									<div class="relative inline-block">
+										{#if count > 1}
+											<span
+												class="badge-icon variant-filled-success absolute -top-0 -right-0 z-10 w-10 h-10"
+												><span class="text-white text-xl">{count}</span></span
 											>
-												Use
-											</button>
-										</div>
+											<VipCard {name} />
+										{:else}
+											<VipCard {name} />
+										{/if}
 									</div>
-								{/if}
-							{/each}
-						</div>
+									<div>
+										<button
+											class="btn mt-2 variant-filled-primary"
+											disabled={pendingVips[selectedStudent.id]}
+											on:click={() => useVip(name)}
+										>
+											Use
+										</button>
+									</div>
+								</div>
+							{/if}
+						{/each}
 					</div>
-				{/if}
-				{#if Object.keys(legendaries).length}
-					<div class="mt-6">
-						<div class="font-bold text-2xl mb-4">Legendaries</div>
-						<div class="flex gap-8 flex-wrap justify-center items-center">
-							{#each Object.entries(legendaries) as [name, count]}
-								{#if count > 0}
-									<div class="flex flex-col items-center">
-										<div class="relative inline-block">
-											{#if count > 1}
-												<span
-													class="badge-icon variant-filled-success absolute -top-0 -right-0 z-10 w-10 h-10"
-													><span class="text-white text-xl">{count}</span></span
-												>
-												<VipCard {name} />
-											{:else}
-												<VipCard {name} />
-											{/if}
-										</div>
-										<div>
-											<button
-												class="btn mt-2 variant-filled-primary"
-												disabled={pendingVips[selectedStudent.id]}
-												on:click={() => useVip(name)}
+				</div>
+			{/if}
+			{#if Object.keys(legendaries).length}
+				<div class="mt-6">
+					<div class="font-bold text-2xl mb-4">Legendaries</div>
+					<div class="flex gap-8 flex-wrap justify-center items-center">
+						{#each Object.entries(legendaries) as [name, count]}
+							{#if count > 0}
+								<div class="flex flex-col items-center">
+									<div class="relative inline-block">
+										{#if count > 1}
+											<span
+												class="badge-icon variant-filled-success absolute -top-0 -right-0 z-10 w-10 h-10"
+												><span class="text-white text-xl">{count}</span></span
 											>
-												Use
-											</button>
-										</div>
+											<VipCard {name} />
+										{:else}
+											<VipCard {name} />
+										{/if}
 									</div>
-								{/if}
-							{/each}
-						</div>
+									<div>
+										<button
+											class="btn mt-2 variant-filled-primary"
+											disabled={pendingVips[selectedStudent.id]}
+											on:click={() => useVip(name)}
+										>
+											Use
+										</button>
+									</div>
+								</div>
+							{/if}
+						{/each}
 					</div>
-				{/if}
-			</div>
+				</div>
+			{/if}
 		</section>
 	</div>
 {/if}

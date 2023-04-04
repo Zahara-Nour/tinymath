@@ -7,11 +7,8 @@
 		Admin,
 		Classe,
 		InsertUserData,
-		School,
-		Student,
 		StudentProfile,
 		TeacherProfile,
-		UserBasicProfile,
 	} from '../../types/type'
 	import { user } from '$lib/stores'
 	import type { SupabaseClient } from '@supabase/supabase-js'
@@ -70,8 +67,6 @@
 		target: 'popupAddClass',
 	}
 
-	console.log('schools', schools)
-
 	$: processCells(textarea)
 
 	$: selectedSchoolId =
@@ -79,13 +74,9 @@
 
 	$: getClasses(selectedSchoolId)
 
-	$: console.log('selectedClasses', selectedClasses)
-
 	$: getStudents(selectedClasses)
 
 	$: getTeachers(selectedSchoolId)
-
-	$: console.log('students', students)
 
 	async function getTeachers(school_id: number) {
 		const { data: teachersData, error: teachersError } =

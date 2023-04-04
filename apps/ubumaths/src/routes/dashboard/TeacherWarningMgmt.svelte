@@ -8,7 +8,7 @@
 	import type { Database } from '../../types/supabase'
 	import { fetchDayStudentsTeacherWarnings } from '$lib/db'
 	import { DateTime } from 'luxon'
-	import StudentAwardMgmt from './StudentAwardMgmt.svelte'
+	import { warningCasesShort } from '$lib/warnings'
 	export let db: SupabaseClient<Database>
 
 	let { warn, trace, fail } = getLogger('TeacherAwardMgmt', 'warn')
@@ -19,13 +19,7 @@
 	let pendingWarning = false
 	let warnings: Record<number, string[]> = {}
 	let oldWarnings: Record<number, string[]>
-	let warningCases = [
-		'retard',
-		'Oubli de matériel',
-		'Devoirs non faits',
-		'Déplacement non autorisé',
-		'Prise de parole non autorisée',
-	]
+
 	let classe_ids: number[] = []
 
 	$: {
@@ -171,7 +165,7 @@
 											<div
 												class="flex  justify-between items-center w-full max-w-full text-black bg-surface-500 shadow-md rounded-md p-2 mb-2"
 											>
-												<div class="flex flex-col overflow-hidden">
+												<div class="flex flex-col mr-4">
 													<div class="text-xl font-bold ">
 														{student.firstname}
 													</div>
@@ -180,7 +174,7 @@
 													</div>
 												</div>
 												<div class="flex flex-wrap items-center gap-4">
-													{#each warningCases as warning}
+													{#each warningCasesShort as warning}
 														<div class="flex items-center">
 															<input
 																on:change={() => (student_id = student.id)}

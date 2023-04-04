@@ -33,9 +33,6 @@
 			<nav class="list-nav">
 				<!-- (optionally you can provde a label here) -->
 				<ul>
-					<li>
-						<a href="/logout" class="btn variant-filled-error">Déconnexion</a>
-					</li>
 					{#if place === 'TopBar'}
 						<li>
 							<a href="/dashboard">
@@ -43,6 +40,9 @@
 							</a>
 						</li>
 					{/if}
+					<li>
+						<a href="/logout" class="btn variant-filled-error">Déconnexion</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

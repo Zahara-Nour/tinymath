@@ -15,12 +15,31 @@
 	import IconCards from '$lib/icones/IconCards.svelte'
 	import vipCards from '$lib/vips/cards'
 	import VipCard from '$lib/vips/VipCard.svelte'
+	import cards from '$lib/vips/cards'
 
 	export let db: SupabaseClient<Database>
 
 	let pendingVip = false
 	let { warn, trace, fail } = getLogger('StudentAwardMgmt', 'warn')
 	let u = $user as Student
+	let commons: Record<string, number> = objectMap(u.vips, (count, name) => {
+		const card = cards.find((c) => c.name === name)!
+		return count > 0 && card.rarity === 'common' ? count : 0
+	})
+	let uncommons: Record<string, number> = objectMap(u.vips, (count, name) => {
+		const card = cards.find((c) => c.name === name)!
+		return count > 0 && card.rarity === 'uncommon' ? count : 0
+	})
+
+	let rares: Record<string, number> = objectMap(u.vips, (count, name) => {
+		const card = cards.find((c) => c.name === name)!
+		return count > 0 && card.rarity === 'rare' ? count : 0
+	})
+
+	let legendaries: Record<string, number> = objectMap(u.vips, (count, name) => {
+		const card = cards.find((c) => c.name === name)!
+		return count > 0 && card.rarity === 'legendary' ? count : 0
+	})
 
 	// import MyCustomComponent from '...';
 
@@ -89,7 +108,7 @@
 	}
 </script>
 
-<PageHeader title="Récompenses / Avertissements" />
+<PageHeader title="Récompenses" />
 
 <div class="mt-8 card">
 	<header class="card-header"><h3 class="card-title">Gidouilles</h3></header>
@@ -118,27 +137,102 @@
 
 <div class="mt-8 card">
 	<header class="card-header"><h3 class="card-title">cartes VIP</h3></header>
-	<section class="p-4">
-		<div
-			class="flex  flex-wrap justify-between items-center w-full max-w-full text-black bg-surface-500 shadow-md rounded-md p-2 mb-2"
-		>
-			<div class="flex gap-4 flex-wrap">
-				{#each Object.entries(u.vips) as [name, count]}
-					{#if count > 0}
-						<div class="relative inline-block">
-							{#if count > 1}
-								<span
-									class="badge-icon variant-filled-success absolute -top-0 -right-0 z-10 w-10 h-10"
-									><span class="text-white text-xl">{count}</span></span
-								>
-								<VipCard {name} />
-							{:else}
-								<VipCard {name} />
-							{/if}
-						</div>
-					{/if}
-				{/each}
+	<section class="p-4 flex flex-col">
+		{#if Object.keys(commons).length}
+			<div class="mt-6">
+				<h4 class=" mb-4">Commons</h4>
+				<div class="flex gap-8 flex-wrap justify-center items-center">
+					{#each Object.entries(commons) as [name, count]}
+						{#if count > 0}
+							<div class="flex flex-col items-center">
+								<div class="relative inline-block">
+									{#if count > 1}
+										<span
+											class="badge-icon variant-filled-success absolute -top-0 -right-0 z-10 w-10 h-10"
+											><span class="text-white text-xl">{count}</span></span
+										>
+										<VipCard {name} />
+									{:else}
+										<VipCard {name} />
+									{/if}
+								</div>
+							</div>
+						{/if}
+					{/each}
+				</div>
 			</div>
-		</div>
+		{/if}
+		{#if Object.keys(uncommons).length}
+			<div class="mt-6">
+				<h4 class="mb-4">Uncommons</h4>
+				<div class="flex gap-8 flex-wrap justify-center items-center">
+					{#each Object.entries(uncommons) as [name, count]}
+						{#if count > 0}
+							<div class="flex flex-col items-center">
+								<div class="relative inline-block">
+									{#if count > 1}
+										<span
+											class="badge-icon variant-filled-success absolute -top-0 -right-0 z-10 w-10 h-10"
+											><span class="text-white text-xl">{count}</span></span
+										>
+										<VipCard {name} />
+									{:else}
+										<VipCard {name} />
+									{/if}
+								</div>
+							</div>
+						{/if}
+					{/each}
+				</div>
+			</div>
+		{/if}
+		{#if Object.keys(rares).length}
+			<div class="mt-6">
+				<h4 class="mb-4">Rares</h4>
+				<div class="flex gap-8 flex-wrap justify-center items-center">
+					{#each Object.entries(rares) as [name, count]}
+						{#if count > 0}
+							<div class="flex flex-col items-center">
+								<div class="relative inline-block">
+									{#if count > 1}
+										<span
+											class="badge-icon variant-filled-success absolute -top-0 -right-0 z-10 w-10 h-10"
+											><span class="text-white text-xl">{count}</span></span
+										>
+										<VipCard {name} />
+									{:else}
+										<VipCard {name} />
+									{/if}
+								</div>
+							</div>
+						{/if}
+					{/each}
+				</div>
+			</div>
+		{/if}
+		{#if Object.keys(legendaries).length}
+			<div class="mt-6">
+				<h4 class="mb-4">Legendaries</h4>
+				<div class="flex gap-8 flex-wrap justify-center items-center">
+					{#each Object.entries(legendaries) as [name, count]}
+						{#if count > 0}
+							<div class="flex flex-col items-center">
+								<div class="relative inline-block">
+									{#if count > 1}
+										<span
+											class="badge-icon variant-filled-success absolute -top-0 -right-0 z-10 w-10 h-10"
+											><span class="text-white text-xl">{count}</span></span
+										>
+										<VipCard {name} />
+									{:else}
+										<VipCard {name} />
+									{/if}
+								</div>
+							</div>
+						{/if}
+					{/each}
+				</div>
+			</div>
+		{/if}
 	</section>
 </div>
