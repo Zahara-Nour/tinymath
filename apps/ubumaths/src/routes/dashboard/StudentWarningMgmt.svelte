@@ -133,7 +133,7 @@
 						</h3></svelte:fragment
 					>
 					<svelte:fragment slot="content">
-						{#each Object.entries(warningsTerm3ByDate) as [date, warnings]}
+						{#each Object.entries(warningsTerm3ByDate) as [date, warnings] (date)}
 							{#if warnings.length > 0}
 								<h4 class="mt-4">
 									{DateTime.fromISO(date).toLocaleString(DateTime.DATE_FULL)}

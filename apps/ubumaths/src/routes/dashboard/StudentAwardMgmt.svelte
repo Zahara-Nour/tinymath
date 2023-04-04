@@ -15,7 +15,6 @@
 	import IconCards from '$lib/icones/IconCards.svelte'
 	import vipCards from '$lib/vips/cards'
 	import VipCard from '$lib/vips/VipCard.svelte'
-	import cards from '$lib/vips/cards'
 
 	export let db: SupabaseClient<Database>
 
@@ -23,24 +22,29 @@
 	let { warn, trace, fail } = getLogger('StudentAwardMgmt', 'warn')
 	let u = $user as Student
 	let commons: Record<string, number>
-	$: commons = objectMap(u.vips, (count, name) => {
-		const card = cards.find((c) => c.name === name)!
-		return count > 0 && card.rarity === 'common' ? count : 0
-	})
-	let uncommons: Record<string, number> = objectMap(u.vips, (count, name) => {
-		const card = cards.find((c) => c.name === name)!
-		return count > 0 && card.rarity === 'uncommon' ? count : 0
-	})
+	let uncommons: Record<string, number>
+	let rares: Record<string, number>
+	let legendaries: Record<string, number>
 
-	let rares: Record<string, number> = objectMap(u.vips, (count, name) => {
-		const card = cards.find((c) => c.name === name)!
-		return count > 0 && card.rarity === 'rare' ? count : 0
-	})
-
-	let legendaries: Record<string, number> = objectMap(u.vips, (count, name) => {
-		const card = cards.find((c) => c.name === name)!
-		return count > 0 && card.rarity === 'legendary' ? count : 0
-	})
+	$: updateCards(u.vips)
+	function updateCards(vips: Record<string, number>) {
+		commons = objectMap(vips, (count, name) => {
+			const card = vipCards.find((c) => c.name === name)!
+			return count > 0 && card.rarity === 'common' ? count : 0
+		})
+		uncommons = objectMap(vips, (count, name) => {
+			const card = vipCards.find((c) => c.name === name)!
+			return count > 0 && card.rarity === 'uncommon' ? count : 0
+		})
+		rares = objectMap(vips, (count, name) => {
+			const card = vipCards.find((c) => c.name === name)!
+			return count > 0 && card.rarity === 'rare' ? count : 0
+		})
+		legendaries = objectMap(vips, (count, name) => {
+			const card = vipCards.find((c) => c.name === name)!
+			return count > 0 && card.rarity === 'legendary' ? count : 0
+		})
+	}
 
 	// import MyCustomComponent from '...';
 
@@ -150,7 +154,7 @@
 			<div class="mt-6">
 				<h4 class=" mb-4">Commons</h4>
 				<div class="flex gap-8 flex-wrap justify-center items-center">
-					{#each Object.entries(commons) as [name, count]}
+					{#each Object.entries(commons) as [name, count] (name)}
 						{#if count > 0}
 							<div class="flex flex-col items-center">
 								<div class="relative inline-block">
@@ -174,7 +178,7 @@
 			<div class="mt-6">
 				<h4 class="mb-4">Uncommons</h4>
 				<div class="flex gap-8 flex-wrap justify-center items-center">
-					{#each Object.entries(uncommons) as [name, count]}
+					{#each Object.entries(uncommons) as [name, count] (name)}
 						{#if count > 0}
 							<div class="flex flex-col items-center">
 								<div class="relative inline-block">
@@ -198,7 +202,7 @@
 			<div class="mt-6">
 				<h4 class="mb-4">Rares</h4>
 				<div class="flex gap-8 flex-wrap justify-center items-center">
-					{#each Object.entries(rares) as [name, count]}
+					{#each Object.entries(rares) as [name, count] (name)}
 						{#if count > 0}
 							<div class="flex flex-col items-center">
 								<div class="relative inline-block">
@@ -222,7 +226,7 @@
 			<div class="mt-6">
 				<h4 class="mb-4">Legendaries</h4>
 				<div class="flex gap-8 flex-wrap justify-center items-center">
-					{#each Object.entries(legendaries) as [name, count]}
+					{#each Object.entries(legendaries) as [name, count] (name)}
 						{#if count > 0}
 							<div class="flex flex-col items-center">
 								<div class="relative inline-block">
