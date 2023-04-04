@@ -425,12 +425,12 @@ export default function generateQuestion(
 							question.limits.reached),
 				)
 			}
-			console.log('limit', limit)
-			console.log(
-				'question.limits.limits[i].count',
-				i,
-				question.limits.limits[i].count,
-			)
+			// console.log('limit', limit)
+			// console.log(
+			// 	'question.limits.limits[i].count',
+			// 	i,
+			// 	question.limits.limits[i].count,
+			// )
 
 			question.limits.limits[i].limit = limit
 			if (question.limits.limits[i].count !== limit) {
@@ -619,21 +619,22 @@ export default function generateQuestion(
 	else if (expression) {
 		let params: EvalArg = { decimal: question['result-type'] === 'decimal' }
 
+		const values: Record<string, string> = {}
 		if (letters) {
 			Object.getOwnPropertyNames(letters).forEach((letter) => {
 				if (isVariableName(letter)) {
 					const value = letters[letter]
 					const real_letter = variables[letter]
 					const real_value = isVariableName(value) ? variables[value] : value
-					letters[real_letter] = real_value
+					values[real_letter] = real_value
 				} else {
 					// letter est une lettre
 					const value = letters[letter] as VariableName
-					letters[letter] = variables[value]
+					values[letter] = variables[value]
 				}
 			})
 
-			params = { ...params, ...letters }
+			params = { ...params, values }
 		}
 
 		if (unit) {
