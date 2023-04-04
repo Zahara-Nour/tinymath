@@ -166,8 +166,7 @@
 											</button>
 											<button
 												class="btn-icon variant-filled-primary"
-												disabled={pendingGidouille[student.id] ||
-													student.gidouilles < 3}
+												disabled={pendingGidouille[student.id]}
 												on:click={() => (selectedStudent = student)}
 											>
 												<IconCards />
