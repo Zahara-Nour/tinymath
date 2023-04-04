@@ -22,7 +22,8 @@
 	let pendingVip = false
 	let { warn, trace, fail } = getLogger('StudentAwardMgmt', 'warn')
 	let u = $user as Student
-	let commons: Record<string, number> = objectMap(u.vips, (count, name) => {
+	let commons: Record<string, number>
+	$: commons = objectMap(u.vips, (count, name) => {
 		const card = cards.find((c) => c.name === name)!
 		return count > 0 && card.rarity === 'common' ? count : 0
 	})
@@ -73,7 +74,13 @@
 				const card = cards[Math.floor(Math.random() * cards.length)]
 				console.log('card', card.name)
 
-				const { error } = await updateVip(db, u.id, u.vips)
+				const { error } = await updateVip(
+					db,
+					u.id,
+					!u.vips[card.name]
+						? { ...u.vips, [card.name]: 1 }
+						: { ...u.vips, [card.name]: u.vips[card.name] + 1 },
+				)
 				if (error) {
 					console.log(error.message)
 					toastStore.trigger({
@@ -104,6 +111,7 @@
 				}
 			}
 			pendingVip = false
+			u = u
 		}
 	}
 </script>
