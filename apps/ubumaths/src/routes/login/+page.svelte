@@ -33,7 +33,7 @@
 					}}
 					disabled={pending}
 					type="submit"
-					class="mt-4 btn variant-filled-primary">'Login'</button
+					class="mt-4 btn variant-filled-primary">Connexion</button
 				>
 			</div>
 			<a href="/password-recovery" class="mt-4 text-center block"

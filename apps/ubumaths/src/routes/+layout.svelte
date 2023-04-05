@@ -142,7 +142,6 @@
 	on:scroll={scrollHandler}
 	slotSidebarLeft="bg-surface-100-800-token"
 	regionPage="relative"
-	slotPageHeader="sticky top-0 z-10"
 >
 	<svelte:fragment slot="header">
 		{#if !url.includes('dashboard') && !$fullScreen}
