@@ -8,4 +8,7 @@
 	<div>
 		<a style="text-decoration:none" href="/jeux/sverdle">mathémo</a>
 	</div>
+	<div>
+		<a style="text-decoration:none" href="/rickroll">mégamax</a>
+	</div>
 </div>
