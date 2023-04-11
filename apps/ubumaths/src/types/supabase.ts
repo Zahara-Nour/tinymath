@@ -138,13 +138,10 @@ export interface Database {
           dead: boolean
           element: string
           id: number
-          img: string
-          imgHead: string | null
           level: number
           name: string
-          nbHunters: number
-          position: Json
-          userId: string
+          nb_hunters: number
+          position: string
         }
         Insert: {
           category: string
@@ -152,13 +149,10 @@ export interface Database {
           dead?: boolean
           element: string
           id?: number
-          img: string
-          imgHead?: string | null
-          level: number
+          level?: number
           name: string
-          nbHunters: number
-          position: Json
-          userId: string
+          nb_hunters?: number
+          position: string
         }
         Update: {
           category?: string
@@ -166,89 +160,80 @@ export interface Database {
           dead?: boolean
           element?: string
           id?: number
-          img?: string
-          imgHead?: string | null
           level?: number
           name?: string
-          nbHunters?: number
-          position?: Json
-          userId?: string
+          nb_hunters?: number
+          position?: string
         }
       }
       navadra_players: {
         Row: {
           avatar: string
-          avatarHead: string
           created_at: string | null
-          earthPyrs: number
-          firePyrs: number
+          earth_pyrs: number
+          fire_pyrs: number
           id: number
           level: number
-          monsters: number[] | null
-          position: Json | null
+          monsters_ids: number[]
+          position: string
           prestige: number
           pseudo: string
           sex: string
-          spentEarthPyrs: number | null
-          spentFirePyrs: number | null
-          spentWaterPyrs: number
-          spentWindPyrs: number | null
-          tuto: string | null
-          tutor: string | null
-          tutorImage: string | null
-          userId: string | null
-          waterPyrs: number
-          windPyrs: number
+          spent_earth_pyrs: number
+          spent_fire_pyrs: number
+          spent_water_pyrs: number
+          spent_wind_pyrs: number
+          tuto: string
+          tutor: string
+          user_id: number
+          water_pyrs: number
+          wind_pyrs: number
           xp: number
         }
         Insert: {
           avatar: string
-          avatarHead: string
           created_at?: string | null
-          earthPyrs?: number
-          firePyrs?: number
+          earth_pyrs?: number
+          fire_pyrs?: number
           id?: number
           level?: number
-          monsters?: number[] | null
-          position?: Json | null
-          prestige?: number
+          monsters_ids: number[]
+          position: string
+          prestige: number
           pseudo: string
           sex: string
-          spentEarthPyrs?: number | null
-          spentFirePyrs?: number | null
-          spentWaterPyrs?: number
-          spentWindPyrs?: number | null
-          tuto?: string | null
-          tutor?: string | null
-          tutorImage?: string | null
-          userId?: string | null
-          waterPyrs?: number
-          windPyrs?: number
+          spent_earth_pyrs?: number
+          spent_fire_pyrs?: number
+          spent_water_pyrs?: number
+          spent_wind_pyrs?: number
+          tuto: string
+          tutor: string
+          user_id: number
+          water_pyrs?: number
+          wind_pyrs?: number
           xp?: number
         }
         Update: {
           avatar?: string
-          avatarHead?: string
           created_at?: string | null
-          earthPyrs?: number
-          firePyrs?: number
+          earth_pyrs?: number
+          fire_pyrs?: number
           id?: number
           level?: number
-          monsters?: number[] | null
-          position?: Json | null
+          monsters_ids?: number[]
+          position?: string
           prestige?: number
           pseudo?: string
           sex?: string
-          spentEarthPyrs?: number | null
-          spentFirePyrs?: number | null
-          spentWaterPyrs?: number
-          spentWindPyrs?: number | null
-          tuto?: string | null
-          tutor?: string | null
-          tutorImage?: string | null
-          userId?: string | null
-          waterPyrs?: number
-          windPyrs?: number
+          spent_earth_pyrs?: number
+          spent_fire_pyrs?: number
+          spent_water_pyrs?: number
+          spent_wind_pyrs?: number
+          tuto?: string
+          tutor?: string
+          user_id?: number
+          water_pyrs?: number
+          wind_pyrs?: number
           xp?: number
         }
       }

@@ -1,4 +1,5 @@
 import {
+	fetchPlayer,
 	fetchSchools,
 	fetchStudentPendingAssignments,
 	fetchTeacherStudents,
@@ -18,6 +19,8 @@ import {
 } from '../types/type'
 import { cleanProfile, createUser, guest, guestProfile } from '$lib/users'
 import type { LayoutServerLoad } from './$types'
+import { playersManager } from './navadra/js/player'
+import type { Player } from '../types/navadra_types'
 
 export const load: LayoutServerLoad = async ({
 	locals: { getSession, supabase, adminAuth },
@@ -30,6 +33,8 @@ export const load: LayoutServerLoad = async ({
 	const FETCH_ASSIGNMENTS_ERROR = 'Erreur lors de la récupération des devoirs.'
 	const FETCH_SCHOOLS_ERROR = 'Erreur lors de la récupération des écoles.'
 	const FETCH_STUDENTS_ERROR = 'Erreur lors de la récupération des élèves.'
+	const FETCH_PLAYER_ERROR =
+		'Erreur lors de la récupération des joueur navadra.'
 	const NOT_CREATED_ERROR =
 		"Le compte n'existe pas. Il faut demander à M. Le Jolly de le créer."
 	const USER_UPDATE_FAILED =
@@ -40,6 +45,7 @@ export const load: LayoutServerLoad = async ({
 	}
 
 	let profile: UserProfile = guestProfile
+	let player: Player | null = null
 	let assignments: Assignment[] = []
 
 	if (session) {
@@ -168,11 +174,18 @@ export const load: LayoutServerLoad = async ({
 					profile.assignments = assignments
 				}
 			}
+
+			// fetch navadra Player
+			if (isStudentProfile(profile)) {
+				player = await playersManager.loadDB(profile.id)
+			}
 		}
 	}
 	return {
 		session: getSession(),
 		userProfile: profile,
+		playerProfile: player?.profile,
+		monstersProfiles: player?.monsters.map((monster) => monster.profile),
 		errors,
 	}
 }

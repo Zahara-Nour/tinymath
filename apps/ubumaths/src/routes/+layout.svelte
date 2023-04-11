@@ -1,26 +1,11 @@
 <script lang="ts">
 	// import '@skeletonlabs/skeleton/themes/theme-hamlindigo.css';
-	import '../theme.postcss'
-	import '@skeletonlabs/skeleton/styles/all.css'
-	import '../app.postcss'
-	import { page } from '$app/stores'
-	import { AppShell, Modal, Toast, toastStore } from '@skeletonlabs/skeleton'
-	import {
-		connected,
-		fullScreen,
-		prepareMathlive,
-		touchDevice,
-		user,
-	} from '$lib/stores'
-	import TobBar from '$lib/ui/TobBar.svelte'
-	import links from '$lib/navlinks'
-	import Footer from '$lib/ui/Footer.svelte'
-	import Navigation from '$lib/ui/Navigation.svelte'
-	import { Drawer, drawerStore } from '@skeletonlabs/skeleton'
+
+	import { Modal, Toast, toastStore } from '@skeletonlabs/skeleton'
+	import { prepareMathlive, touchDevice, user } from '$lib/stores'
 	import { onMount } from 'svelte'
-	import { getLogger, isEmptyObject } from '$lib/utils'
+	import { getLogger } from '$lib/utils'
 	import { invalidate } from '$app/navigation'
-	import type { LayoutData, PageData } from './$types'
 	import {
 		computePosition,
 		autoUpdate,
@@ -31,13 +16,12 @@
 	} from '@floating-ui/dom'
 	import { storePopup } from '@skeletonlabs/skeleton'
 	import type { Session } from '@supabase/supabase-js'
-	import { createUser, guest } from '$lib/users'
-	import IconFullscreen from '$lib/icones/IconFullscreen.svelte'
-	import { isStudent } from '../types/type'
+	import { createUser } from '$lib/users'
+	import { player } from '$lib/navadraStore'
+	import { defaultPlayerProfile, playersManager } from './navadra/js/player'
+	import { monstersManager } from './navadra/js/monsters'
 
-	type ScrollEvent = UIEvent & { currentTarget: EventTarget & HTMLDivElement }
-
-	export let data: LayoutData
+	export let data
 
 	let { info, fail, warn } = getLogger('Layout', 'info')
 	let header = ''
@@ -74,14 +58,7 @@
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow })
 
 	$: ({ supabase } = data)
-	$: url = $page.url.pathname
-	$: setPageHeader(url)
 	$: manageSession(data.session)
-
-	function setPageHeader(url: string) {
-		const link = links.find((l) => url.includes(l.url))
-		header = link ? link.text : ''
-	}
 
 	function manageSession(session: Session | null) {
 		console.log('session', session)
@@ -102,6 +79,11 @@
 					background: 'bg-success-500',
 				})
 				info(`User ${data.userProfile.email} signed in.`)
+				if (data.playerProfile) {
+					const monsters =
+						data.monstersProfiles?.map(monstersManager.hydrateMonster) || []
+					player.set(playersManager.createPlayer(data.playerProfile, monsters))
+				}
 			}
 		} else {
 			// Signed out
@@ -113,21 +95,10 @@
 					}`,
 					background: 'bg-success-500',
 				})
+				player.set(playersManager.createPlayer(defaultPlayerProfile))
 			}
 		}
 		user.set(createUser(data.userProfile))
-	}
-
-	function scrollHandler(event: Event) {
-		// console.log((event as ScrollEvent).currentTarget.scrollTop)
-	}
-
-	function drawerOpen(): void {
-		drawerStore.open({})
-	}
-
-	function drawerClose(): void {
-		drawerStore.close()
 	}
 </script>
 
@@ -136,57 +107,7 @@
 	<meta />
 </svelte:head>
 
-<Drawer><Navigation {drawerClose} /></Drawer>
-
-<AppShell
-	on:scroll={scrollHandler}
-	slotSidebarLeft="bg-surface-100-800-token"
-	regionPage="relative"
->
-	<svelte:fragment slot="header">
-		{#if !url.includes('dashboard') && !$fullScreen}
-			<TobBar {drawerOpen} />
-		{/if}
-	</svelte:fragment>
-	<svelte:fragment slot="sidebarLeft">
-		{#if !url.includes('assessment') && !url.includes('dashboard') && !$fullScreen}
-			<div id="sidebar-left" class="hidden lg:block lg:w-60">
-				<Navigation />
-			</div>
-		{/if}
-	</svelte:fragment>
-	<svelte:fragment slot="sidebarRight">
-		<div id="sidebar-left" class="hidden lg:block" />
-	</svelte:fragment>
-	<svelte:fragment slot="pageHeader">
-		<div>
-			{#if $fullScreen}
-				<button
-					class="btn-icon variant-filled-primary"
-					on:click={() => fullScreen.update((state) => !state)}
-				>
-					<IconFullscreen />
-				</button>
-			{/if}
-			{#if isStudent($user) && $user.assignments?.length && !url.includes('assessment') && !url.includes('dashboard') && !url.includes('jeux')}
-				<div class="p-4 bg-error-500 text-white z-0">
-					Tu as <a href="/dashboard">des évaluations</a> à faire !
-				</div>
-			{/if}
-		</div>
-	</svelte:fragment>
-
-	<!-- Router Slot -->
-
-	<slot />
-	<!-- ---- / ---- -->
-	<svelte:fragment slot="pageFooter" />
-	<svelte:fragment slot="footer">
-		{#if url === '/' && !$fullScreen}
-			<Footer />
-		{/if}
-	</svelte:fragment>
-</AppShell>
+<slot />
 
 <Toast />
 <Modal />

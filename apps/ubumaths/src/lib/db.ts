@@ -269,3 +269,59 @@ export async function fetchStudentWarnings(
 		.eq('student_id', student_id)
 		.order('date', { ascending: false })
 }
+
+/**
+ * Navadra
+ */
+
+export async function fetchPlayer(
+	supabase: SupabaseClient<Database>,
+	user_id: number,
+) {
+	return supabase
+		.from('navadra_players')
+		.select(
+			'id,sex,pseudo,avatar,level,xp,fire_pyrs,wind_pyrs,water_pyrs,earth_pyrs,spent_fire_pyrs,spent_wind_pyrs,spent_water_pyrs,spent_earth_pyrs,prestige,tutor, position, monsters_ids, tuto',
+		)
+		.eq('user_id', user_id)
+		.maybeSingle()
+}
+
+export async function insertPlayer(
+	supabase: SupabaseClient<Database>,
+	{ id, ...rest }: Database['public']['Tables']['navadra_players']['Insert'],
+) {
+	return supabase.from('navadra_players').insert(rest).select().single()
+}
+
+export async function updatePlayer(
+	supabase: SupabaseClient<Database>,
+	row: Database['public']['Tables']['navadra_players']['Update'],
+) {
+	return supabase.from('navadra_players').update(row).eq('id', row.id)
+}
+
+export async function fetchMonster(
+	supabase: SupabaseClient<Database>,
+	monster_id: number,
+) {
+	return supabase
+		.from('navadra_monsters')
+		.select('id, name, element, level, category, position, dead, nb_hunters')
+		.eq('id', monster_id)
+		.maybeSingle()
+}
+
+export async function insertMonster(
+	supabase: SupabaseClient<Database>,
+	{ id, ...rest }: Database['public']['Tables']['navadra_monsters']['Insert'],
+) {
+	return supabase.from('navadra_monsters').insert(rest).select().single()
+}
+
+export async function updateMonster(
+	supabase: SupabaseClient<Database>,
+	row: Database['public']['Tables']['navadra_monsters']['Update'],
+) {
+	return supabase.from('navadra_monsters').update(row).eq('id', row.id)
+}
