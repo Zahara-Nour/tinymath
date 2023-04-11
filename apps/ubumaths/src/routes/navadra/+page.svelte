@@ -15,7 +15,6 @@
 	let displayChevron1 = false
 	let displayChevron2 = false
 
-	$tuto.value
 	// function manageTuto() {
 	// 	msg_tuteur = tutoriel(1)
 	// }
