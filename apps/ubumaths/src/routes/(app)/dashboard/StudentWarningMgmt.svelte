@@ -95,7 +95,10 @@
 				? (Object.entries(warningsTerm3ByDate).filter(
 						(entry) => !entry[1].length,
 				  ).length /
-						Object.entries(warningsTerm3ByDate).length) *
+						Object.values(warningsTerm3ByDate).filter(
+							(warnings) =>
+								!(warnings.length === 1 && warnings[0] === 'Absent'),
+						).length) *
 				  20
 				: null
 		}

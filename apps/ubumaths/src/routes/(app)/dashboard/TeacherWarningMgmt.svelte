@@ -9,6 +9,9 @@
 	import { fetchDayStudentsTeacherWarnings } from '$lib/db'
 	import { DateTime } from 'luxon'
 	import { warningCasesShort } from '$lib/warnings'
+	import IconChevronLeft from '$lib/icones/IconChevronLeft.svelte'
+	import IconChevronRight from '$lib/icones/IconChevronRight.svelte'
+
 	export let db: SupabaseClient<Database>
 
 	let { warn, trace, fail } = getLogger('TeacherAwardMgmt', 'warn')
@@ -131,7 +134,23 @@
 
 <PageHeader title="Avertissements" />
 
-<div class="flex">
+<div class="flex items-center gap-2">
+	<button
+		class="btn-icon variant-filled-primary"
+		on:click={() => {
+			selectedDate = selectedDateTime
+				.minus({
+					days:
+						selectedDateTime.weekday === 7
+							? 3
+							: selectedDateTime.weekday === 6
+							? 2
+							: 1,
+				})
+				.toISODate()
+		}}><IconChevronLeft /></button
+	>
+	{selectedDateTime.weekdayLong}
 	<input
 		class="input"
 		class:input-error={!selectedDateTime.isValid}
@@ -148,6 +167,21 @@
 	>
 		Initialiser
 	</button>
+	<button
+		class="btn-icon variant-filled-primary"
+		on:click={() => {
+			selectedDate = selectedDateTime
+				.plus({
+					days:
+						selectedDateTime.weekday === 4
+							? 3
+							: selectedDateTime.weekday === 5
+							? 2
+							: 1,
+				})
+				.toISODate()
+		}}><IconChevronRight /></button
+	>
 </div>
 {#if !isEmptyObject(warnings) && selectedDateTime.isValid}
 	<div class="mt-8 card">
@@ -163,10 +197,10 @@
 									{#each u.students[classe.id].sort( (a, b) => a.firstname.localeCompare(b.firstname), ) as student}
 										<li>
 											<div
-												class="flex  justify-between items-center w-full max-w-full text-black bg-surface-500 shadow-md rounded-md p-2 mb-2"
+												class="flex justify-between items-center w-full max-w-full text-black bg-surface-500 shadow-md rounded-md p-2 mb-2"
 											>
 												<div class="flex flex-col mr-4">
-													<div class="text-xl font-bold ">
+													<div class="text-xl font-bold">
 														{student.firstname}
 													</div>
 													<div class="text-xs">
@@ -175,10 +209,23 @@
 												</div>
 												<div class="flex flex-wrap items-center gap-4">
 													{#each warningCasesShort as warning}
+														{@const disabled =
+															pendingWarning ||
+															(warnings[student.id].includes('Absent') &&
+																warning !== 'Absent')}
 														<div class="flex items-center">
 															<input
-																on:change={() => (student_id = student.id)}
-																disabled={pendingWarning}
+																on:change={() => {
+																	student_id = student.id
+																	if (warning === 'Absent') {
+																		warnings[student.id] = warnings[
+																			student.id
+																		].includes('Absent')
+																			? []
+																			: ['Absent']
+																	}
+																}}
+																{disabled}
 																class="checkbox"
 																type="checkbox"
 																bind:group={warnings[student.id]}
