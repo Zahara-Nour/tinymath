@@ -8,6 +8,7 @@ export const warningCasesShort = [
 	'Refus de travail',
 	'Bavarde',
 	'Triche',
+	'Absent',
 ]
 
 export const warningCases: Record<string, Record<string, string>> = {
