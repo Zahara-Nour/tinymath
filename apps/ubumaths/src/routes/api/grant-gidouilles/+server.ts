@@ -1,11 +1,13 @@
 import {
 	fetchDayTeacherStudents,
 	fetchStudentWarnings,
+	fetchStudentWarningsFromDateToDate,
 	fetchTeacherStudents,
 } from '$lib/db'
 import { cleanProfile } from '$lib/users'
 import { error, json } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
+import type { StudentProfile } from '../../../types/type'
 
 export const GET = (async ({ locals: { supabaseService }, url }) => {
 	const day = new Date().getDay()
@@ -16,11 +18,43 @@ export const GET = (async ({ locals: { supabaseService }, url }) => {
 		throw error(500, ' ' + err.message)
 	} else if (!data) {
 		console.log('grant-gidouilles Get : no data returned')
-		throw error(500, 'init-warnings Get : no data returned')
+		throw error(500, 'grant-gidouilles Get : no data returned')
 	} else {
-		data.forEach(async ({ id: student_id }) => {
-			const warnings = await fetchStudentWarnings(supabaseService, student_id)
-		})
+		data
+			.map((profile) => cleanProfile(profile) as StudentProfile)
+			.forEach(async ({ id: student_id, gidouilles }) => {
+				const { error: err, data } = await fetchStudentWarningsFromDateToDate(
+					supabaseService,
+					student_id,
+					'2021-03-29',
+					'2023-03-29',
+				)
+
+				if (err) {
+					console.log('grant-gidouilles Get * Error * :', err.message)
+					throw error(500, ' ' + err.message)
+				} else if (!data) {
+					console.log('grant-gidouilles Get : no data returned')
+					throw error(500, 'grant-gidouilles Get : no data returned')
+				} else {
+					const warningss = data.map(({ warnings }) => warnings)
+					const granted = warningss.every(
+						(warnings) =>
+							warningss.length === 0 ||
+							(warnings.length === 1 && warnings[0] === 'Absent'),
+					)
+					if (granted) {
+						const { error: errorUpdate } = await supabaseService
+							.from('users')
+							.update({ gidouilles: gidouilles + 1 })
+							.eq('id', student_id)
+						if (errorUpdate) {
+							console.log(errorUpdate.message)
+							throw error(500, errorUpdate.message)
+						}
+					}
+				}
+			})
 
 		const rows: { student_id: number; warnings: string[]; date: string }[] = []
 		data

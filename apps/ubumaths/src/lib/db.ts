@@ -270,6 +270,20 @@ export async function fetchStudentWarnings(
 		.order('date', { ascending: false })
 }
 
+export async function fetchStudentWarningsFromDateToDate(
+	supabase: SupabaseClient<Database>,
+	student_id: number,
+	begining: string,
+	end: string,
+) {
+	return supabase
+		.from('warnings')
+		.select('id, date, student_id, warnings')
+		.eq('student_id', student_id)
+		.lte('date', end)
+		.gte('date', begining)
+}
+
 /**
  * Navadra
  */
