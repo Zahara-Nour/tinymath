@@ -137,9 +137,10 @@
 					>
 					<svelte:fragment slot="content">
 						{#each Object.entries(warningsTerm3ByDate) as [date, warnings] (date)}
+							{@const dateTime = DateTime.fromISO(date)}
 							{#if warnings.length > 0}
 								<h4 class="mt-4">
-									{DateTime.fromISO(date).toLocaleString(DateTime.DATE_FULL)}
+									{dateTime.toLocaleString(DateTime.DATE_FULL)}
 								</h4>
 
 								<ul class="list">
