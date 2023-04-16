@@ -84,8 +84,6 @@
 	}
 
 	function manageSession(session: Session | null) {
-		console.log('session', session)
-		console.log('userProfile', data.userProfile)
 		data.errors.forEach((error) =>
 			toastStore.trigger({
 				message: error,

@@ -22,6 +22,7 @@ export const warningCases: Record<string, Record<string, string>> = {
 		'Refus de travail': 'Ne fait pas le travail demandé',
 		Bavarde: "Bavarde au lieu d'écouter ou de travailler",
 		Triche: "Triche pendant l'évaluation",
+		Absent: 'Absent',
 	},
 	ar: {
 		Retard: 'Arrive en retard en cours',
@@ -33,6 +34,7 @@ export const warningCases: Record<string, Record<string, string>> = {
 		'Refus de travail': 'Ne fait pas le travail demandé',
 		Bavarde: "Bavarde au lieu d'écouter ou de travailler",
 		Triche: "Triche pendant l'évaluation",
+		Absent: 'Absent',
 	},
 	en: {
 		Retard: 'Arrive en retard en cours',
@@ -44,5 +46,6 @@ export const warningCases: Record<string, Record<string, string>> = {
 		'Refus de travail': 'Ne fait pas le travail demandé',
 		Bavarde: "Bavarde au lieu d'écouter ou de travailler",
 		Triche: "Triche pendant l'évaluation",
+		Absent: 'Absent',
 	},
 }
