@@ -268,10 +268,15 @@ export function createCorrection(item: CorrectedQuestion) {
 				}
 				text += '\\end{align*}$$'
 				// }
-				const texmacs =
-					'<math|' +
-					math(expression as string).texmacs +
-					`=<with|color|#66bb6a|${math(solutions[0]).texmacs}>>`
+				console.log('expression', expression)
+				console.log('solutions[0]', solutions[0])
+				let texmacs = ''
+				if (expression) {
+					texmacs =
+						'<math|' +
+						math(expression as string).texmacs +
+						`=<with|color|#66bb6a|${math(solutions[0]).texmacs}>>`
+				}
 
 				lines.push({
 					text,
