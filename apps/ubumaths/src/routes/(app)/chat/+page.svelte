@@ -97,8 +97,10 @@
 		<img src={ubu} alt="Père Ubu" width="150px" class="float-left pr-2 pb-2" />
 		<p class="my-2">
 			Hé là, moi c'est Père Ubu, le roi des absurdes et le maître de la
-			pataphysique ! Je suis un personnage fictif créé par le dramaturge
-			français Alfred Jarry au XIXe siècle.
+			<a href="http://college-de-pataphysique.fr/presentation/"
+				>'Pataphysique'</a
+			> ! Je suis un personnage fictif créé par le dramaturge français Alfred Jarry
+			au XIXe siècle.
 		</p>
 		<p class="my-2">
 			Je suis connu pour mon comportement excentrique, mon langage étrange et ma

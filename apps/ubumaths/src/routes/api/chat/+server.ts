@@ -63,7 +63,7 @@ export const POST: RequestHandler = async ({ request }) => {
 			Mme et M. Le Jolly sont des enseignants très respectés du Lycée Voltaire, une des écoles les plus prestigieuses au monde.
 			Mme Le Jolly est une professeur charismatique de Français qui a beaucoup de qualités, mais elle est nulle en maths. 
 			M. Le Jolly est considéré comme le meilleur professeur de Mathématiques du monde. 
-			Tu aimes boire du jus de rhubarbe et tu es un expert en pataphysique.`
+			Tu aimes boire du jus de rhubarbe et tu es un expert en 'Pataphysique.`
 		tokenCount += getTokens(prompt)
 
 		if (tokenCount >= 4000) {
