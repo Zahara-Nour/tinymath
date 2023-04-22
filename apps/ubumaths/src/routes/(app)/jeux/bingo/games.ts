@@ -16,7 +16,7 @@ import {
 } from '$lib/grades.js'
 
 const games: Record<string, Game> = {
-	'1': [
+	'1 - opérations simples': [
 		{
 			description: '',
 			enounces: [''],
@@ -648,7 +648,7 @@ const games: Record<string, Game> = {
 			grade: SIXIEME,
 		},
 	],
-	'2': [
+	'2 - fractions': [
 		{
 			description: '',
 			enounces: [''],
@@ -1280,7 +1280,7 @@ const games: Record<string, Game> = {
 			grade: SIXIEME,
 		},
 	],
-	'3': [
+	'3 - nombres relatifs': [
 		{
 			description: '',
 			enounces: [''],
@@ -1912,7 +1912,7 @@ const games: Record<string, Game> = {
 			grade: SIXIEME,
 		},
 	],
-	'4': [
+	'4 - équations': [
 		{
 			description: '',
 			enounces: [''],

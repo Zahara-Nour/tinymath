@@ -13,6 +13,7 @@
 	import { createTimer } from '$lib/timer'
 	import { tick as svelte_tick } from 'svelte'
 	import { toastStore } from '@skeletonlabs/skeleton'
+	import { page } from '$app/stores'
 
 	let game: Game
 	let draws: Array<AnsweredQuestion> = []
@@ -29,6 +30,10 @@
 	let question: AnsweredQuestion
 	let drawStackRef: HTMLDivElement
 
+	$: chosen = $page.url.searchParams.get('game')
+		? JSON.parse(decodeURI($page.url.searchParams.get('game') as string))
+		: ''
+
 	onDestroy(() => {
 		if (timer) timer.stop()
 	})
@@ -38,6 +43,10 @@
 	function start(chosen: string) {
 		if (chosen) {
 			game = games[chosen]
+			console.log('game', game, games, Object.keys(games))
+			console.log(Object.keys(games)[1] === chosen)
+			console.log(chosen)
+			console.log(Object.keys(games)[1])
 			if (game.length !== 90) {
 				console.log('Le jeu doit contenir 90 questions')
 				toastStore.trigger({
@@ -151,15 +160,12 @@
 		class="flex flex-col items-center justify-center gap-16 text-4xl h-full"
 		style="font-family: 'Baloo 2', sans-serif;"
 	>
-		{#each Object.entries(games) as [description, game]}
-			<div
-				on:click={() => {
-					chosen = description
-				}}
-				on:keyup={() => {}}
+		{#each Object.entries(games) as [description, game] (description)}
+			<a
+				style="text-decoration:none"
+				href="/jeux/bingo?game={encodeURI(JSON.stringify(description))}"
+				>{description}</a
 			>
-				{description}
-			</div>
 		{/each}
 	</div>
 {/if}
