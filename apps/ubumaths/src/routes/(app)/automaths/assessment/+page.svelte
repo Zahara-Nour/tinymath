@@ -19,7 +19,7 @@
 		Commit,
 		Time,
 		Timer,
-	} from '../../../types/type'
+	} from '../../../../types/type'
 	import Spinner from '$lib/ui/Spinner.svelte'
 	import QuestionCard from '$lib/ui/QuestionCard.svelte'
 	import CircularProgress from '$lib/ui/CircularProgress.svelte'
@@ -305,7 +305,7 @@
 <svelte:window on:keydown={handleKeydown} />
 <div class="container mx-auto px-2 h-full">
 	{#if !$mathliveReady}
-		<div class="h-full flex justify-center items-center ">
+		<div class="h-full flex justify-center items-center">
 			<Spinner />
 		</div>
 	{:else if showExemple}
@@ -348,7 +348,7 @@
 					on:click={() => {
 						showCorrection = true
 					}}
-					class="p-4  variant-filled-primary text-xl"
+					class="p-4 variant-filled-primary text-xl"
 					>Afficher la correction</button
 				>
 			</div>

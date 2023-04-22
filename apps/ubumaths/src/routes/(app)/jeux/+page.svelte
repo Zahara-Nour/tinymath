@@ -16,6 +16,9 @@
 		<a style="text-decoration:none" href="/rickroll">mégamax</a>
 	</div>
 	<div>
+		<a style="text-decoration:none" href="/jeux/bingo">bingo</a>
+	</div>
+	<div>
 		<a style="text-decoration:none" href="/jeux/navadra"
 			><img class="w-48" src={navadra} alt="logo-navadra" /></a
 		>
