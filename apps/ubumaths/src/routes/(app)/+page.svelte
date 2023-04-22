@@ -1,5 +1,5 @@
 <div
-	class="container p-4 h-full mx-auto flex flex-col justify-center items-center space-y-20 text-center "
+	class="container p-4 h-full mx-auto flex flex-col justify-center items-center space-y-20 text-center"
 >
 	<h2 class="font-bold" style="font-family: 'Averia Serif Libre', sans-serif;">
 		<div class="my-2">Ubumaths</div>
@@ -10,7 +10,7 @@
 
 	<figure>
 		<section class="img-bg" />
-		<a href="/pere-ubu" aria-label="Découvre qui est Père Ubu.">
+		<a href="/chat" aria-label="Découvre qui est Père Ubu et tchat avec lui.">
 			<svg
 				height="100%"
 				stroke-miterlimit="10"
