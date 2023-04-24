@@ -1,3 +1,12 @@
+<script>
+	import Seo from '$lib/components/Seo.svelte'
+</script>
+
+<Seo
+	title="Ubumaths : mes maths de la chandelle verte"
+	description="Le site de M. Le Jolly, professeur de Mathématiques au lycée Voltaire de Doha"
+/>
+
 <div
 	class="container p-4 h-full mx-auto flex flex-col justify-center items-center space-y-20 text-center"
 >
