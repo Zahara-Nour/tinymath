@@ -28,7 +28,7 @@
 		}
 	}
 
-	$: if (content) setEditor(content)
+	$: setEditor(content)
 	// $: console.log('content', content)
 
 	function handleDrop(
@@ -111,6 +111,7 @@
 {#if editor}
 	<div class="flex flex-wrap items-center gap-1">
 		<button
+			type="button"
 			on:click={() => editor.chain().focus().toggleBold().run()}
 			disabled={!editor.can().chain().focus().toggleBold().run()}
 			class:active={editor.isActive('bold')}
@@ -119,6 +120,7 @@
 			B
 		</button>
 		<button
+			type="button"
 			on:click={() => editor.chain().focus().toggleItalic().run()}
 			disabled={!editor.can().chain().focus().toggleItalic().run()}
 			class:active={editor.isActive('italic')}
@@ -127,6 +129,7 @@
 			<i>I</i>
 		</button>
 		<button
+			type="button"
 			on:click={() => editor.chain().focus().toggleStrike().run()}
 			disabled={!editor.can().chain().focus().toggleStrike().run()}
 			class:active={editor.isActive('strike')}
@@ -135,6 +138,7 @@
 			<strike>S</strike>
 		</button>
 		<button
+			type="button"
 			on:click={() => editor.chain().focus().toggleCode().run()}
 			disabled={!editor.can().chain().focus().toggleCode().run()}
 			class:active={editor.isActive('code')}
@@ -143,6 +147,7 @@
 			<IconCode />
 		</button>
 		<button
+			type="button"
 			on:click={() => editor.chain().focus().toggleCodeBlock().run()}
 			class:active={editor.isActive('codeBlock')}
 			class="editor-button"
@@ -156,6 +161,7 @@
 			clear nodes
 		</button> -->
 		<button
+			type="button"
 			on:click={() => editor.chain().focus().setParagraph().run()}
 			class:active={editor.isActive('paragraph')}
 			class="editor-button"
@@ -163,6 +169,7 @@
 			p
 		</button>
 		<button
+			type="button"
 			on:click={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
 			class:active={editor.isActive('heading', { level: 1 })}
 			class="editor-button"
@@ -170,6 +177,7 @@
 			h1
 		</button>
 		<button
+			type="button"
 			on:click={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
 			class:active={editor.isActive('heading', { level: 2 })}
 			class="editor-button"
@@ -177,6 +185,7 @@
 			h2
 		</button>
 		<button
+			type="button"
 			on:click={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
 			class:active={editor.isActive('heading', { level: 3 })}
 			class="editor-button"
@@ -184,6 +193,7 @@
 			h3
 		</button>
 		<button
+			type="button"
 			on:click={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
 			class:active={editor.isActive('heading', { level: 4 })}
 			class="editor-button"
@@ -191,6 +201,7 @@
 			h4
 		</button>
 		<button
+			type="button"
 			on:click={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
 			class:active={editor.isActive('heading', { level: 5 })}
 			class="editor-button"
@@ -198,6 +209,7 @@
 			h5
 		</button>
 		<button
+			type="button"
 			on:click={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
 			class:active={editor.isActive('heading', { level: 6 })}
 			class="editor-button"
@@ -205,6 +217,7 @@
 			h6
 		</button>
 		<button
+			type="button"
 			on:click={() => editor.chain().focus().toggleBulletList().run()}
 			class:active={editor.isActive('bulletList')}
 			class="editor-button"
@@ -212,6 +225,7 @@
 			<IconBulletList />
 		</button>
 		<button
+			type="button"
 			on:click={() => editor.chain().focus().toggleOrderedList().run()}
 			class:active={editor.isActive('orderedList')}
 			class="editor-button"
@@ -220,6 +234,7 @@
 		</button>
 
 		<button
+			type="button"
 			on:click={() => editor.chain().focus().toggleBlockquote().run()}
 			class:active={editor.isActive('blockquote')}
 			class="editor-button"
@@ -227,18 +242,21 @@
 			<IconQuote />
 		</button>
 		<button
+			type="button"
 			on:click={() => editor.chain().focus().setHorizontalRule().run()}
 			class="editor-button"
 		>
 			<IconMinus />
 		</button>
 		<button
+			type="button"
 			on:click={() => editor.chain().focus().setHardBreak().run()}
 			class="editor-button"
 		>
 			<IconReturn />
 		</button>
 		<button
+			type="button"
 			on:click={() => editor.chain().focus().undo().run()}
 			disabled={!editor.can().chain().focus().undo().run()}
 			class="editor-button"
@@ -246,6 +264,7 @@
 			<IconUndo />
 		</button>
 		<button
+			type="button"
 			on:click={() => editor.chain().focus().redo().run()}
 			disabled={!editor.can().chain().focus().redo().run()}
 			class="editor-button"
@@ -255,7 +274,7 @@
 	</div>
 {/if}
 
-<div bind:this={element} />
+<div class="textarea" bind:this={element} />
 
 <style lang="postcss">
 	button.active {

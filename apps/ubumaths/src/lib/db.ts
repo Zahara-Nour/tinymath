@@ -339,3 +339,46 @@ export async function updateMonster(
 ) {
 	return supabase.from('navadra_monsters').update(row).eq('id', row.id)
 }
+
+export async function insertPost(
+	supabase: SupabaseClient<Database>,
+	row: Database['public']['Tables']['posts']['Insert'],
+) {
+	return supabase.from('posts').insert(row).select().single()
+}
+
+export async function updatePost(
+	supabase: SupabaseClient<Database>,
+	row: Database['public']['Tables']['posts']['Update'],
+) {
+	return supabase.from('posts').update(row).eq('id', row.id)
+}
+
+export async function fetchPost(
+	supabase: SupabaseClient<Database>,
+	post_id: number,
+) {
+	return supabase
+		.from('posts')
+		.select('id, title, content, tags, summary')
+		.eq('id', post_id)
+		.maybeSingle()
+}
+
+export async function fetchPosts(supabase: SupabaseClient<Database>) {
+	return supabase.from('posts').select('id, title, content, tags, summary')
+}
+
+export async function fetchPostsByTags(
+	supabase: SupabaseClient<Database>,
+	tags: string[],
+) {
+	return supabase
+		.from('posts')
+		.select('id, title, content, tags, summary')
+		.contains('tags', tags)
+}
+
+export async function fetchTags(supabase: SupabaseClient<Database>) {
+	return supabase.from('tags').select('id, name')
+}
