@@ -7,11 +7,14 @@
 	import { AppRail, AppRailTile } from '@skeletonlabs/skeleton'
 	import type { SupabaseClient } from '@supabase/supabase-js'
 	import { writable, type Writable } from 'svelte/store'
-	import type { Database } from '../../types/supabase'
+	import type { Database } from '../../../types/supabase'
 	import AssessmentMgmt from './AssessmentMgmt.svelte'
 	import TeacherAwardMgmt from './TeacherAwardMgmt.svelte'
 	import IconAlert from '$lib/icones/IconAlert.svelte'
 	import TeacherWarningMgmt from './TeacherWarningMgmt.svelte'
+	import { user } from '$lib/stores'
+	import IconPost from '$lib/icones/IconPost.svelte'
+	import PostMgmt from './PostMgmt.svelte'
 
 	export let db: SupabaseClient<Database>
 
@@ -35,6 +38,11 @@
 		<AppRailTile value={3}
 			><span class="text-3xl"><IconAlert /></span></AppRailTile
 		>
+		{#if $user.email === 'd.lejolly@voltairedoha.com'}
+			<AppRailTile value={4}
+				><span class="text-3xl"><IconPost /></span></AppRailTile
+			>
+		{/if}
 		<svelte:fragment slot="trail">
 			<!-- AppRailTiles -->
 		</svelte:fragment>
@@ -46,6 +54,8 @@
 			<TeacherAwardMgmt {db} />
 		{:else if $storeValue === 3}
 			<TeacherWarningMgmt {db} />
+		{:else if $storeValue === 4}
+			<PostMgmt {db} />
 		{/if}
 	</div>
 </div>

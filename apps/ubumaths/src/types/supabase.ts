@@ -240,27 +240,59 @@ export interface Database {
       navadra_spells: {
         Row: {
           created_at: string | null
-          element1: string | null
           id: number
           level: number
-          num: number
-          user_id: string
+          player_id: number | null
+          spell_id: number
         }
         Insert: {
           created_at?: string | null
-          element1?: string | null
           id?: number
           level: number
-          num: number
-          user_id: string
+          player_id?: number | null
+          spell_id: number
         }
         Update: {
           created_at?: string | null
-          element1?: string | null
           id?: number
           level?: number
-          num?: number
-          user_id?: string
+          player_id?: number | null
+          spell_id?: number
+        }
+      }
+      posts: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: number
+          metadescription: string
+          published_at: string
+          summary: string
+          tags: string[]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          id?: number
+          metadescription?: string
+          published_at?: string
+          summary: string
+          tags: string[]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          id?: number
+          metadescription?: string
+          published_at?: string
+          summary?: string
+          tags?: string[]
+          title?: string
+          updated_at?: string
         }
       }
       progression: {
@@ -336,6 +368,23 @@ export interface Database {
           id?: number
           name?: string
           updated_at?: string | null
+        }
+      }
+      tags: {
+        Row: {
+          created_at: string | null
+          id: number
+          name: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: number
+          name: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: number
+          name?: string
         }
       }
       users: {

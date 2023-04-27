@@ -7,6 +7,7 @@ import type { RequestHandler } from './$types'
 import { getTokens } from '$lib/tokenizer'
 import { json } from '@sveltejs/kit'
 import type { Config } from '@sveltejs/adapter-vercel'
+import training from '$lib/config/chatGPT_training'
 
 export const config: Config = {
 	runtime: 'edge',
@@ -59,11 +60,7 @@ export const POST: RequestHandler = async ({ request }) => {
 			throw new Error('Query flagged by openai')
 		}
 
-		const prompt = `Tu es Père Ubu. Tu aides les élèves de M. Le Jolly, professeur de Mathématiques. 
-			Mme et M. Le Jolly sont des enseignants très respectés du Lycée Voltaire, une des écoles les plus prestigieuses au monde.
-			Mme Le Jolly est une professeur charismatique de Français qui a beaucoup de qualités, mais elle est nulle en maths. 
-			M. Le Jolly est considéré comme le meilleur professeur de Mathématiques du monde. 
-			Tu aimes boire du jus de rhubarbe et tu es un expert en 'Pataphysique.`
+		const prompt = training
 		tokenCount += getTokens(prompt)
 
 		if (tokenCount >= 4000) {

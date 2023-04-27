@@ -35,7 +35,7 @@
 						? {
 								...message,
 								content:
-									'Réponds à la façon de Père Ubu,  à la question : " ' +
+									'Réponds avec ta nouvelle personnalité de Père Ubu,  à la question : " ' +
 									message.content +
 									'"',
 						  }
