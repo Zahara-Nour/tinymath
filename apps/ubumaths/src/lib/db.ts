@@ -3,12 +3,7 @@ import { getLogger } from '$lib/utils'
 const { info, fail, warn } = getLogger('db', 'info')
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Database } from '../types/supabase'
-import type {
-	Assignment,
-	UserBasicProfile,
-	UserProfile,
-	VipCard,
-} from '../types/type'
+import type { Assignment, UserProfile } from '../types/type'
 import { createClient } from '@supabase/supabase-js'
 import {
 	PUBLIC_SUPABASE_URL,
@@ -360,23 +355,27 @@ export async function fetchPost(
 ) {
 	return supabase
 		.from('posts')
-		.select('id, title, content, tags, summary')
+		.select('id, title, content, tags, summary, metadescription')
 		.eq('id', post_id)
 		.maybeSingle()
 }
 
 export async function fetchPosts(supabase: SupabaseClient<Database>) {
-	return supabase.from('posts').select('id, title, content, tags, summary')
+	return supabase
+		.from('posts')
+		.select('id, title, content, tags, summary, metadescription')
 }
 
 export async function fetchPostsByTags(
 	supabase: SupabaseClient<Database>,
 	tags: string[],
 ) {
-	return supabase
+	const filter = tags.map((tag) => `tags.cs.{"${tag}"}`).join(',')
+	let promise = supabase
 		.from('posts')
-		.select('id, title, content, tags, summary')
-		.contains('tags', tags)
+		.select('id, title, content, tags, summary, metadescription')
+		.or(filter)
+	return promise
 }
 
 export async function fetchTags(supabase: SupabaseClient<Database>) {

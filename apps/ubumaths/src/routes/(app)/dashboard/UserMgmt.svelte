@@ -1,6 +1,6 @@
 <script lang="ts">
 	import PageHeader from '$lib/ui/PageHeader.svelte'
-	import { CE1, grades } from '$lib/grades'
+	import { grades } from '$lib/grades'
 	import { enhance, type SubmitFunction } from '$app/forms'
 	import { getLogger } from '$lib/utils'
 	import type {

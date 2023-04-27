@@ -1,19 +1,19 @@
 <script lang="ts">
 	import Tiptap from '$lib/ui/Tiptap.svelte'
-	import type { SupabaseClient } from '@supabase/supabase-js'
-	import type { Database } from '../../../types/supabase'
 	import { enhance, type SubmitFunction } from '$app/forms'
 	import { Pulse } from 'svelte-loading-spinners'
 	import { popup, toastStore, type PopupSettings } from '@skeletonlabs/skeleton'
 	import { fetchPosts, fetchTags, insertPost } from '$lib/db'
 	import db from '$lib/db'
 	import IconPencil from '$lib/icones/IconPencil.svelte'
-	import { exclude_internal_props } from 'svelte/internal'
 	import IconCheck from '$lib/icones/IconCheck.svelte'
 	import IconNew from '$lib/icones/IconNew.svelte'
+	import type { Post, Tag } from '../../../types/type'
+	import { mapValues } from 'xstate/lib/utils'
 
 	let title = ''
 	let summary = ''
+	let metadescription = ''
 	let content = ''
 	let post_id: number | null = null
 	let pendingUpdatePost = false
@@ -26,32 +26,18 @@
 	let posts: Post[] = []
 	let selectedTags: string[] = []
 
-	type Tag = {
-		id: number
-		name: string
-	}
 	let tags: Tag[] = []
-
-	type Post = {
-		id: number
-		title: string
-		summary: string
-		content: string
-		tags: string[]
-	}
 
 	updatePosts()
 	$: updatePost(post_id, posts)
 
 	function updatePost(post_id: number | null, posts: Post[]) {
-		console.log('post_id', post_id)
-		console.log('posts', posts)
 		if (post_id) {
 			const post = posts.find((post) => post.id === post_id)
-			console.log('post', post)
 			if (post) {
 				title = post.title
 				summary = post.summary
+				metadescription = post.metadescription
 				content = post.content
 				selectedTags = post.tags
 			}
@@ -66,12 +52,9 @@
 			selectedTags.push(tag)
 		}
 		selectedTags = selectedTags
-		console.log('selectedTags', selectedTags)
 	}
 	function updatePosts() {
-		console.log('updatePosts')
 		fetchPosts(db).then(({ data, error }) => {
-			console.log('data', data)
 			if (error) {
 				toastStore.trigger({
 					message: 'La récupération des posts a échoué :' + error.message,
@@ -84,7 +67,6 @@
 				})
 			} else {
 				posts = data
-				console.log('posts', posts)
 			}
 		})
 	}
@@ -101,11 +83,8 @@
 			})
 		} else {
 			tags = data
-			console.log('tags', tags)
 		}
 	})
-
-	function displayPost(post_id: number | null) {}
 
 	const submitPost: SubmitFunction = async ({ action, cancel }) => {
 		pendingUpdatePost = true
@@ -113,7 +92,13 @@
 		if (post_id) {
 			const { data, error } = await db
 				.from('posts')
-				.update({ title, summary, content, tags: selectedTags })
+				.update({
+					title,
+					summary,
+					content,
+					tags: selectedTags,
+					metadescription,
+				})
 				.match({ id: post_id })
 			if (error) {
 				// fail(error.message)
@@ -133,6 +118,7 @@
 				title,
 				summary,
 				content,
+				metadescription,
 				tags: selectedTags,
 			})
 			if (error) {
@@ -158,6 +144,7 @@
 		post_id = null
 		title = ''
 		summary = ''
+		metadescription = ''
 		content = ''
 		selectedTags = []
 	}
@@ -180,6 +167,15 @@
 					<span>Résumé</span>
 					<textarea class="textarea" rows="4" bind:value={summary} />
 				</label>
+				<label class="label">
+					<span>Metadescription</span>
+					<textarea
+						class="textarea"
+						class:input-error={metadescription.length >= 150}
+						rows="4"
+						bind:value={metadescription}
+					/>
+				</label>
 				<div class="label">
 					<span>Tags</span>
 					<div class="flex flex-wrap gap-1 items-center">
@@ -188,7 +184,6 @@
 							<span
 								class="chip {selected ? 'variant-filled' : 'variant-soft'}"
 								on:click={() => {
-									console.log('toggle')
 									toggleTag(tag.name)
 								}}
 								on:keypress

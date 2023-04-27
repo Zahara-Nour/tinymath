@@ -4,7 +4,7 @@
 
 <Seo
 	title="Ubumaths : mes maths de la chandelle verte"
-	description="Le site de M. Le Jolly, professeur de Mathématiques au lycée Voltaire de Doha"
+	metadescription="Le site de M. Le Jolly, professeur de Mathématiques au lycée Voltaire de Doha."
 />
 
 <div

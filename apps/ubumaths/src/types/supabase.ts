@@ -265,25 +265,34 @@ export interface Database {
           content: string
           created_at: string | null
           id: number
+          metadescription: string
+          published_at: string
           summary: string
           tags: string[]
           title: string
+          updated_at: string
         }
         Insert: {
           content: string
           created_at?: string | null
           id?: number
+          metadescription?: string
+          published_at?: string
           summary: string
           tags: string[]
           title: string
+          updated_at?: string
         }
         Update: {
           content?: string
           created_at?: string | null
           id?: number
+          metadescription?: string
+          published_at?: string
           summary?: string
           tags?: string[]
           title?: string
+          updated_at?: string
         }
       }
       progression: {
@@ -359,6 +368,23 @@ export interface Database {
           id?: number
           name?: string
           updated_at?: string | null
+        }
+      }
+      tags: {
+        Row: {
+          created_at: string | null
+          id: number
+          name: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: number
+          name: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: number
+          name?: string
         }
       }
       users: {

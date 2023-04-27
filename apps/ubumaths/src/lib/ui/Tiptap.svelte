@@ -2,6 +2,7 @@
 	import { onMount, onDestroy } from 'svelte'
 	import { Editor } from '@tiptap/core'
 	import StarterKit from '@tiptap/starter-kit'
+	import Link from '@tiptap/extension-link'
 	import Image from '@tiptap/extension-image'
 	import supabase from '$lib/db'
 	import IconBulletList from '$lib/icones/IconBulletList.svelte'
@@ -13,6 +14,9 @@
 	import IconUndo from '$lib/icones/IconUndo.svelte'
 	import IconRedo from '$lib/icones/IconRedo.svelte'
 	import IconMinus from '$lib/icones/IconMinus.svelte'
+	import IconLink from '$lib/icones/IconLink.svelte'
+	import Iframe from './iframe'
+	import IconYoutube from '$lib/icones/IconYoutube.svelte'
 
 	export let content = `
 			<p>Hello World! 🌍️ </p> 
@@ -29,7 +33,6 @@
 	}
 
 	$: setEditor(content)
-	// $: console.log('content', content)
 
 	function handleDrop(
 		view: EditorView,
@@ -84,15 +87,34 @@
 		return false // not handled use default behaviour
 	}
 
+	function youtube_parser(url: string) {
+		var regExp =
+			/^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/
+		var match = url.match(regExp)
+		return match && match[7].length == 11 ? match[7] : false
+	}
+
 	onMount(() => {
 		editor = new Editor({
 			element,
-			extensions: [StarterKit, Image],
+			extensions: [
+				StarterKit,
+				Image,
+				Iframe,
+				Link.configure({
+					protocols: [],
+					linkOnPaste: true,
+					autolink: true,
+					openOnClick: true,
+					HTMLAttributes: {
+						class: 'my-custom-class',
+					},
+				}),
+			],
 			content,
 			onTransaction: () => {
 				// force re-render so `editor.isActive` works as expected
 				editor = editor
-				console.log('getHtml', editor.getHTML())
 				content = editor.getHTML()
 			},
 			editorProps: {
@@ -106,6 +128,47 @@
 			editor.destroy()
 		}
 	})
+
+	function setLink() {
+		console.log('setLink')
+		const previousUrl = editor.getAttributes('link').href
+		const url = window.prompt('URL', previousUrl)
+
+		// cancelled
+		if (url === null) {
+			return
+		}
+
+		// empty
+		if (url === '') {
+			editor.chain().focus().extendMarkRange('link').unsetLink().run()
+
+			return
+		}
+
+		// update link
+		editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
+	}
+
+	async function addIframe() {
+		const url = window.prompt('Youtube url')
+
+		if (url) {
+			const video_id = youtube_parser(url)
+
+			const html = `
+			<div class='flex justify-center'>
+			<iframe  src="https://www.youtube.com/embed/${video_id}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+			</div>
+			`
+
+			editor.commands.insertContent(html, {
+				parseOptions: {
+					preserveWhitespace: false,
+				},
+			})
+		}
+	}
 </script>
 
 {#if editor}
@@ -270,6 +333,20 @@
 			class="editor-button"
 		>
 			<IconRedo />
+		</button>
+		<button
+			type="button"
+			on:click={() =>
+				!editor.isActive('link')
+					? setLink()
+					: editor.chain().focus().unsetLink().run()}
+			class="editor-button"
+			class:active={editor.isActive('link')}
+		>
+			<IconLink />
+		</button>
+		<button type="button" on:click={addIframe} class="editor-button">
+			<IconYoutube />
 		</button>
 	</div>
 {/if}

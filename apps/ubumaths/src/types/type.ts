@@ -524,3 +524,17 @@ export type VipCard = {
 	image: string
 	rarity: 'common' | 'uncommon' | 'rare' | 'legendary'
 }
+
+export type Post = {
+	id: number
+	title: string
+	summary: string
+	content: string
+	tags: string[]
+	metadescription: string
+}
+
+export type Tag = {
+	id: number
+	name: string
+}
