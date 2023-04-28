@@ -1,8 +1,9 @@
-import type { PageServerLoad } from './$types'
 import { error } from '@sveltejs/kit'
+import type { PageServerLoad } from './[slug]/$types'
 
-export const load: PageServerLoad = async ({ fetch }) => {
-	const tags = encodeURI(JSON.stringify(['Histoire', 'Personnalité']))
+export const load: PageServerLoad = async ({ fetch, params, url }) => {
+	const tags = url.searchParams.get('tags')
+	console.log('tags', tags)
 	const response = await fetch(`/api/posts?tags=${tags}`)
 
 	if (response.status === 404) {

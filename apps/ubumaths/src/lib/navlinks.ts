@@ -7,6 +7,11 @@ const links: Links = [
 		tooltip: 'Travailler les automatismes',
 	},
 	{ text: 'Blog', url: '/blog', tooltip: 'Le blog' },
+	{
+		text: 'Histoire',
+		url: `/histoire`,
+		tooltip: 'Histoire des Maths',
+	},
 	{ text: 'Jeux', url: '/jeux', tooltip: 'Jeux mathématiques' },
 	// {text:'Navadra', url:'/navadra', tooltip:''},
 ]
