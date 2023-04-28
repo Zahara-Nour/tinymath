@@ -15,7 +15,7 @@
 	import IconRedo from '$lib/icones/IconRedo.svelte'
 	import IconMinus from '$lib/icones/IconMinus.svelte'
 	import IconLink from '$lib/icones/IconLink.svelte'
-	import Iframe from './iframe'
+	import Iframe from './tiptap-extensions/iframe'
 	import IconYoutube from '$lib/icones/IconYoutube.svelte'
 
 	export let content = `
@@ -99,7 +99,11 @@
 			element,
 			extensions: [
 				StarterKit,
-				Image,
+				Image.configure({
+					HTMLAttributes: {
+						class: 'my-custom-class toto',
+					},
+				}),
 				Iframe,
 				Link.configure({
 					protocols: [],
