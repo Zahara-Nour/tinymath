@@ -67,15 +67,40 @@
 	}
 </script>
 
-<label class="label max-w-xs">
-	<span>Classe</span>
-	<select class="select" bind:value={selectedClass}>
-		{#each classes as classe}
-			<option value={classe}>{classe.name}</option>
-		{/each}
-	</select>
-</label>
-<div class="flex flex-col items-center">
+<div class="flex items-end gap-2">
+	<label class="label max-w-xs">
+		<span>Classe</span>
+		<select class="select" bind:value={selectedClass}>
+			{#each classes as classe}
+				<option value={classe}>{classe.name}</option>
+			{/each}
+		</select>
+	</label>
+	<button
+		disabled={spinning}
+		class="btn variant-filled-primary"
+		on:click={() => {
+			let number
+			do {
+				number = Math.floor(Math.random() * 360) + 1
+			} while (number % Math.floor(360 / size) < 2)
+
+			// const number = Math.floor(Math.random() * 360) + 1
+			// const number = 45
+			console.log('number', number)
+			deg = 360 * 9 + number
+			winner = names[Math.floor((number * size) / 360)]
+			console.log('winner', winner)
+			wheel.style.transition = 'all 4s ease-out'
+			wheel.style.transform = `rotate(-${deg + 90}deg)`
+			spinning = true
+		}}
+	>
+		spin
+	</button>
+</div>
+
+<div class="mt-6 flex flex-col items-center">
 	<div class="relative inline-block">
 		{#if size % 2 === 0}
 			<svg
@@ -141,13 +166,13 @@
 					<text
 						fill="white"
 						font-weight="bold"
+						font-size="1em"
 						x="{(3 / 4) * (2 * radius + 3)}em"
 						y="50%"
 						text-anchor="middle"
 						dominant-baseline="middle"
 						transform-origin="50% 50%"
-						transform="rotate({((i + 1 / 2) * 360) / size} )"
-						style="transform:translate(-80% 20)">{name}</text
+						transform="rotate({((i + 1 / 2) * 360) / size} )">{name}</text
 					>
 				{/each}
 			</svg>
@@ -158,28 +183,6 @@
 			<img alt="marker" src={marker} />
 		</span>
 	</div>
-	<button
-		disabled={spinning}
-		class="btn variant-filled-primary"
-		on:click={() => {
-			let number
-			do {
-				number = Math.floor(Math.random() * 360) + 1
-			} while (number % Math.floor(360 / size) < 2)
-
-			// const number = Math.floor(Math.random() * 360) + 1
-			// const number = 45
-			console.log('number', number)
-			deg = 360 * 9 + number
-			winner = names[Math.floor((number * size) / 360)]
-			console.log('winner', winner)
-			wheel.style.transition = 'all 4s ease-out'
-			wheel.style.transform = `rotate(-${deg + 90}deg)`
-			spinning = true
-		}}
-	>
-		spin
-	</button>
 </div>
 
 <style>
