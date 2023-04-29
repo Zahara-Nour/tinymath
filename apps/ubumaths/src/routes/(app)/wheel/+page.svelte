@@ -2,9 +2,7 @@
 	import marker from '$lib/images/marker.png'
 	import { onMount } from 'svelte'
 	import type { TeacherProfile } from '../../../types/type.js'
-	const radius_wheel = 18
-	const thick = radius_wheel - 3
-	const radius_pie = radius_wheel - thick / 2
+	const radius = 18
 	let winner = ''
 
 	export let data
@@ -85,8 +83,8 @@
 				on:transitionend={onTransitionEnd}
 				class="spin"
 				class:blur={spinning}
-				height="{2 * radius_wheel + 3}em"
-				width="{2 * radius_wheel + 3}em"
+				height="{2 * radius + 3}em"
+				width="{2 * radius + 3}em"
 			>
 				<defs>
 					<filter id="shadow">
@@ -96,19 +94,20 @@
 						<feDropShadow dx="0" dy="0" stdDeviation="5" />
 					</filter>
 				</defs>
-				<circle r="{radius_wheel}em" cx="50%" cy="50%" fill="#e7c9de" />
+				<circle r="{radius}em" cx="50%" cy="50%" fill="#e7c9de" />
 				<circle
-					r="{radius_pie}em"
+					r="{radius / 2}em"
 					cx="50%"
 					cy="50%"
 					fill="transparent"
 					stroke="#3a507e"
-					stroke-width="{thick}em"
-					stroke-dasharray="{piece_angle * radius_pie}em {piece_angle *
-						radius_pie}em"
+					stroke-width="{radius}em"
+					stroke-dasharray="{(piece_angle * radius) / 2}em {(piece_angle *
+						radius) /
+						2}em"
 				/>
 				<circle
-					r="{radius_wheel - 1}em"
+					r="{radius - 1}em"
 					cx="50%"
 					cy="50%"
 					fill="transparent"
@@ -129,7 +128,7 @@
 				{#each Array(size * 3).fill(0) as _, i}
 					<circle
 						r="0.1em"
-						cx="{2 * radius_wheel + 0.5}em"
+						cx="{2 * radius + 0.5}em"
 						cy="50%"
 						fill="#f9ef69"
 						stroke="#f9ef69"
@@ -142,11 +141,13 @@
 					<text
 						fill="white"
 						font-weight="bold"
-						x="{radius_wheel + (radius_wheel - name.length) / 2}em"
+						x="{(3 / 4) * (2 * radius + 3)}em"
 						y="50%"
+						text-anchor="middle"
 						dominant-baseline="middle"
 						transform-origin="50% 50%"
-						transform="rotate({((i + 1 / 2) * 360) / size} )">{name}</text
+						transform="rotate({((i + 1 / 2) * 360) / size} )"
+						style="transform:translate(-80% 20)">{name}</text
 					>
 				{/each}
 			</svg>
