@@ -3,4 +3,6 @@
 	export let data
 </script>
 
-<Posts posts={data.posts} />
+<div class="container mx-auto p-4 max-w-screen-md">
+	<Posts posts={data.posts} />
+</div>
