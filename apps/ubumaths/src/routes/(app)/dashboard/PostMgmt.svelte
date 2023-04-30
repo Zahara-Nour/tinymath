@@ -27,6 +27,8 @@
 	let selectedTags: string[] = []
 
 	let tags: Tag[] = []
+	let updated_at = ''
+	let published_at = ''
 
 	updatePosts()
 	$: updatePost(post_id, posts)
@@ -40,6 +42,8 @@
 				metadescription = post.metadescription
 				content = post.content
 				selectedTags = post.tags
+				updated_at = post.updated_at
+				published_at = post.published_at
 			}
 		} else {
 			resetPost()

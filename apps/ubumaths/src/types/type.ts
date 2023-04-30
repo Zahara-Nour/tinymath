@@ -532,6 +532,8 @@ export type Post = {
 	content: string
 	tags: string[]
 	metadescription: string
+	published_at: string
+	update_at: string
 }
 
 export type Tag = {
