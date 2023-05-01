@@ -1,8 +1,6 @@
 <script lang="ts">
 	import Gidouille from '$lib/icones/Gidouille.svelte'
-	import IconUsers from '$lib/icones/IconUsers.svelte'
 	import IconAward from '$lib/icones/IconAward.svelte'
-	import PageHeader from '$lib/ui/PageHeader.svelte'
 	import UserAvatar from '$lib/ui/UserAvatar.svelte'
 	import { AppRail, AppRailTile } from '@skeletonlabs/skeleton'
 	import type { SupabaseClient } from '@supabase/supabase-js'
@@ -15,6 +13,9 @@
 	import { user } from '$lib/stores'
 	import IconPost from '$lib/icones/IconPost.svelte'
 	import PostMgmt from './PostMgmt.svelte'
+	import IconListStatus from '$lib/icones/IconListStatus.svelte'
+	import TeacherUsersMgmt from './TeacherUsersMgmt.svelte'
+	import IconUsers from '$lib/icones/IconUsers.svelte'
 
 	export let db: SupabaseClient<Database>
 
@@ -30,7 +31,7 @@
 			<AppRailTile><UserAvatar place={'Rail'} /></AppRailTile>
 		</svelte:fragment>
 		<AppRailTile value={1}
-			><span class="text-3xl"><IconUsers /></span></AppRailTile
+			><span class="text-3xl"><IconListStatus /></span></AppRailTile
 		>
 		<AppRailTile value={2}
 			><span class="text-3xl"><IconAward /></span></AppRailTile
@@ -43,6 +44,9 @@
 				><span class="text-3xl"><IconPost /></span></AppRailTile
 			>
 		{/if}
+		<AppRailTile value={5}
+			><span class="text-3xl"><IconUsers /></span></AppRailTile
+		>
 		<svelte:fragment slot="trail">
 			<!-- AppRailTiles -->
 		</svelte:fragment>
@@ -56,6 +60,8 @@
 			<TeacherWarningMgmt {db} />
 		{:else if $storeValue === 4}
 			<PostMgmt {db} />
+		{:else if $storeValue === 5}
+			<TeacherUsersMgmt {db} />
 		{/if}
 	</div>
 </div>

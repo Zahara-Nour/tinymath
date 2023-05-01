@@ -16,11 +16,9 @@
 		class="max-h-40 max-w-full m-auto"
 	/>
 </div>
-<div class="container mx-auto p-4 max-w-screen-md">
-	<h1 class="mb-6">{title}</h1>
-	<div>
-		{@html $formatLatexToHtml(content)}
-	</div>
+<h1 class="mb-6 mt-4">{title}</h1>
+<div class="content">
+	{@html $formatLatexToHtml(content)}
 </div>
 
 <style lang="postcss">
@@ -28,11 +26,11 @@
 		@apply my-2;
 	}
 
-	div :global(.iframe-wrapper) {
+	.content :global(.iframe-wrapper) {
 		@apply flex justify-center my-6;
 	}
 
-	.container div :global(img) {
+	.content :global(img) {
 		margin-left: auto;
 		margin-right: auto;
 		max-width: 350px;

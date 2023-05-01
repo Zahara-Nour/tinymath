@@ -355,7 +355,9 @@ export async function fetchPost(
 ) {
 	return supabase
 		.from('posts')
-		.select('id, title, content, tags, summary, metadescription')
+		.select(
+			'id, title, content, tags, summary, metadescription, updated_at, published_at',
+		)
 		.eq('id', post_id)
 		.maybeSingle()
 }
@@ -363,7 +365,9 @@ export async function fetchPost(
 export async function fetchPosts(supabase: SupabaseClient<Database>) {
 	return supabase
 		.from('posts')
-		.select('id, title, content, tags, summary, metadescription')
+		.select(
+			'id, title, content, tags, summary, metadescription, updated_at, published_at',
+		)
 }
 
 export async function fetchPostsByTags(
@@ -373,7 +377,9 @@ export async function fetchPostsByTags(
 	const filter = tags.map((tag) => `tags.cs.{"${tag}"}`).join(',')
 	let promise = supabase
 		.from('posts')
-		.select('id, title, content, tags, summary, metadescription')
+		.select(
+			'id, title, content, tags, summary, metadescription, updated_at, published_at',
+		)
 		.or(filter)
 	return promise
 }

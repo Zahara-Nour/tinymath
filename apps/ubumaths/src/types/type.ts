@@ -533,7 +533,7 @@ export type Post = {
 	tags: string[]
 	metadescription: string
 	published_at: string
-	update_at: string
+	updated_at: string
 }
 
 export type Tag = {

@@ -4,8 +4,10 @@
 	export let data
 </script>
 
-{#if data.post}
-	<Post post={data.post} />
-{:else}
-	No post
-{/if}
+<div class="container mx-auto p-4 max-w-screen-md">
+	{#if data.post}
+		<Post post={data.post} />
+	{:else}
+		No post
+	{/if}
+</div>
