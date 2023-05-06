@@ -1,6 +1,6 @@
 import { error, json } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
-import { fetchPost, fetchPostsByTags } from '$lib/db'
+import { DB_fetchPost, DB_fetchPostsByTags } from '$lib/db'
 
 export const GET = (async ({ locals: { supabaseService }, url }) => {
 	const url_param_post_id = url.searchParams.get('post_id')
@@ -11,7 +11,7 @@ export const GET = (async ({ locals: { supabaseService }, url }) => {
 	console.log('tags', tags)
 
 	if (post_id) {
-		const { data, error: err } = await fetchPost(supabaseService, post_id)
+		const { data, error: err } = await DB_fetchPost(supabaseService, post_id)
 		if (err) {
 			console.log('error', err.message)
 			throw error(500, ' ' + err.message)
@@ -22,7 +22,10 @@ export const GET = (async ({ locals: { supabaseService }, url }) => {
 			return json(data)
 		}
 	} else if (tags) {
-		const { data, error: err } = await fetchPostsByTags(supabaseService, tags)
+		const { data, error: err } = await DB_fetchPostsByTags(
+			supabaseService,
+			tags,
+		)
 		if (err) {
 			console.log('error', err.message)
 			throw error(500, ' ' + err.message)

@@ -352,7 +352,6 @@ export type UserBasicProfile = {
 	classes?: Classe[]
 	avatar?: string
 	gidouilles?: number
-	vips?: Record<string, number>
 	students?: Record<number, StudentProfile[]>
 }
 
@@ -376,7 +375,7 @@ export type StudentProfile = UserBasicProfile & {
 	school_id: number
 	teacher_id: number
 	gidouilles: number
-	vips: Record<string, number>
+	vips: CardWallet
 	assignments: Assignment[]
 }
 
@@ -523,7 +522,16 @@ export type VipCard = {
 	text: string
 	image: string
 	rarity: 'common' | 'uncommon' | 'rare' | 'legendary'
+	effect?: {
+		name: string
+		param: number
+	}
 }
+
+export type CardWallet = {
+	card: VipCard
+	count: number
+}[]
 
 export type Post = {
 	id: number

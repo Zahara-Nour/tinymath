@@ -1,7 +1,7 @@
 import { getLogger, getRandomIntInclusive, objectMap } from '$lib/utils'
 import { get } from 'svelte/store'
 import { player } from '$lib/navadraStore'
-import db, { fetchPlayer, insertPlayer, updatePlayer } from '$lib/db'
+import db, { DB_fetchPlayer, DB_insertPlayer, DB_updatePlayer } from '$lib/db'
 import { monstersManager } from './monsters'
 import type {
 	Monster,
@@ -200,7 +200,7 @@ export const playersManager = {
 
 	async loadDB(user_id?: number) {
 		if (!user_id) user_id = get(user).id
-		const { error, data } = await fetchPlayer(db, user_id)
+		const { error, data } = await DB_fetchPlayer(db, user_id)
 		if (error) {
 			fail('error while loading player', error.message)
 			return null
@@ -236,7 +236,7 @@ export const playersManager = {
 			position: JSON.stringify(profile.position),
 			user_id,
 		}
-		const { error, data } = await insertPlayer(db, row)
+		const { error, data } = await DB_insertPlayer(db, row)
 		if (error) {
 			fail('coud not insert player', error.message)
 		} else if (!data) {
@@ -253,7 +253,7 @@ export const playersManager = {
 			position: JSON.stringify(profile.position),
 			user_id,
 		}
-		const { error } = await updatePlayer(db, row)
+		const { error } = await DB_updatePlayer(db, row)
 		if (error) {
 			fail('coud not update player', error.message)
 		} else {

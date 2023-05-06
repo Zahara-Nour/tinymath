@@ -8,11 +8,11 @@
 		School,
 		StudentProfile,
 		Teacher,
-	} from '../../types/type'
+	} from '../../../types/type'
 	import { user } from '$lib/stores'
 	import type { SupabaseClient } from '@supabase/supabase-js'
-	import type { Database } from '../../types/supabase'
-	import { addAssignments, fetchTeacherAssessments } from '$lib/db'
+	import type { Database } from '../../../types/supabase'
+	import { DB_insertAssignments, DB_fetchTeacherAssessments } from '$lib/db'
 
 	export let db: SupabaseClient<Database>
 
@@ -67,7 +67,7 @@
 	}
 
 	async function getAssessments() {
-		const { data, error } = await fetchTeacherAssessments(db, u.id)
+		const { data, error } = await DB_fetchTeacherAssessments(db, u.id)
 		assessments = []
 		if (error) {
 			fail(error.message)
@@ -116,7 +116,7 @@
 
 			console.log('assignements', assignments)
 
-			const { error } = await addAssignments(db, assignments)
+			const { error } = await DB_insertAssignments(db, assignments)
 			if (error) {
 				fail(error.message)
 				toastStore.trigger({
@@ -138,7 +138,7 @@
 	<div class="card p-4 h-80 overflow-auto">
 		{#each assessments as assessment}
 			<div
-				class="flex flex-col  text-black bg-surface-500 shadow-md rounded-md p-4 mb-4"
+				class="flex flex-col text-black bg-surface-500 shadow-md rounded-md p-4 mb-4"
 			>
 				<div class="flex flex-row justify-between">
 					<div class="flex flex-col">

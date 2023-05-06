@@ -1,41 +1,36 @@
 <script lang="ts">
-	import PageHeader from '$lib/ui/PageHeader.svelte'
-	import { getLogger, isEmptyObject, objectMap } from '$lib/utils'
-	import { Accordion, AccordionItem, toastStore } from '@skeletonlabs/skeleton'
-	import type { Student, StudentProfile, Teacher } from '../../../types/type'
-	import { user } from '$lib/stores'
+	import { DB_fetchStudentWarnings } from '$lib/db'
 	import type { SupabaseClient } from '@supabase/supabase-js'
+	import type { StudentProfile } from '../../../types/type'
 	import type { Database } from '../../../types/supabase'
-	import {
-		DB_fetchDayStudentsTeacherWarnings,
-		DB_fetchStudentWarnings,
-	} from '$lib/db'
 	import { DateTime } from 'luxon'
+	import { Accordion, AccordionItem, toastStore } from '@skeletonlabs/skeleton'
 	import { warningCases } from '$lib/warnings'
+
+	export let student: StudentProfile
 	export let db: SupabaseClient<Database>
 
-	let { warn, trace, fail } = getLogger('TeacherAwardMgmt', 'warn')
-	let u = $user as Student
-	let lang = 'fr'
 	let warningsTerm1ByDate: Record<string, string[]> = {}
 	let warningsTerm2ByDate: Record<string, string[]> = {}
 	let warningsTerm3ByDate: Record<string, string[]> = {}
 	let markTerm1: number | null
 	let markTerm2: number | null
 	let markTerm3: number | null
+	let lang = 'fr'
 
-	getWarnings()
 	const today = DateTime.now()
 	const term1Start = DateTime.fromISO('2022-09-01')
 	const term2Start = DateTime.fromISO('2022-12-15')
 	const term3Start = DateTime.fromISO('2023-03-15')
 	const yearEnd = DateTime.fromISO('2023-06-01')
 
-	async function getWarnings() {
+	$: getWarnings(student)
+
+	async function getWarnings(student: StudentProfile) {
 		warningsTerm1ByDate = {}
 		warningsTerm2ByDate = {}
 		warningsTerm3ByDate = {}
-		const { data, error } = await DB_fetchStudentWarnings(db, u.id)
+		const { data, error } = await DB_fetchStudentWarnings(db, student.id)
 		if (error) {
 			console.log(error.message)
 			toastStore.trigger({
@@ -105,51 +100,65 @@
 	}
 </script>
 
-<PageHeader title="Avertissements" />
-<div class="flex w-full justify-end">
-	<button
-		class={'m-2 btn ' +
-			(lang === 'fr' ? 'variant-filled-primary' : 'variant-filled-tertiary')}
-		on:click={() => (lang = 'fr')}>Français</button
-	>
-	<button
-		class={'m-2 btn ' +
-			(lang === 'en' ? 'variant-filled-primary' : 'variant-filled-tertiary')}
-		on:click={() => (lang = 'en')}>English</button
-	>
-	<button
-		class={'m-2 btn ' +
-			(lang === 'ar' ? 'variant-filled-primary' : 'variant-filled-tertiary')}
-		on:click={() => (lang = 'ar')}>Arabic</button
-	>
-</div>
-
 <div class="mt-8 card">
-	<header class="card-header" />
+	<header class="card-header">
+		<h3>
+			Remarques de {student.firstname}
+			{student.lastname.toLocaleUpperCase()}
+		</h3>
+		<div class="flex w-full justify-end">
+			<button
+				class={'m-2 btn ' +
+					(lang === 'fr'
+						? 'variant-filled-primary'
+						: 'variant-filled-tertiary')}
+				on:click={() => (lang = 'fr')}>Français</button
+			>
+			<button
+				class={'m-2 btn ' +
+					(lang === 'en'
+						? 'variant-filled-primary'
+						: 'variant-filled-tertiary')}
+				on:click={() => (lang = 'en')}>English</button
+			>
+			<button
+				class={'m-2 btn ' +
+					(lang === 'ar'
+						? 'variant-filled-primary'
+						: 'variant-filled-tertiary')}
+				on:click={() => (lang = 'ar')}>Arabic</button
+			>
+		</div>
+	</header>
+
 	<section class="p-4">
 		<Accordion class="mt-4">
 			{#if today >= term3Start}
 				<AccordionItem open>
 					<svelte:fragment slot="summary"
-						><h3>
-							Trimestre 3 - Note de travail et de comportement : {markTerm3}/20
-						</h3></svelte:fragment
+						><div class="bg-tertiary-500 rounded p-2">
+							<h3>
+								Trimestre 3 - Note de travail et de comportement : {markTerm3}/20
+							</h3>
+						</div></svelte:fragment
 					>
 					<svelte:fragment slot="content">
-						{#each Object.entries(warningsTerm3ByDate) as [date, warnings] (date)}
-							{@const dateTime = DateTime.fromISO(date)}
-							{#if warnings.length > 0}
-								<h4 class="mt-4">
-									{dateTime.toLocaleString(DateTime.DATE_FULL)}
-								</h4>
+						<div class="border-l-2 pl-2">
+							{#each Object.entries(warningsTerm3ByDate) as [date, warnings] (date)}
+								{@const dateTime = DateTime.fromISO(date)}
+								{#if warnings.length > 0}
+									<h4 class="mt-4">
+										{dateTime.toLocaleString(DateTime.DATE_FULL)}
+									</h4>
 
-								<ul class="list">
-									{#each warnings as warning}
-										<li>{warningCases[lang][warning]}</li>
-									{/each}
-								</ul>
-							{/if}
-						{/each}
+									<ul class="list">
+										{#each warnings as warning}
+											<li>{warningCases[lang][warning]}</li>
+										{/each}
+									</ul>
+								{/if}
+							{/each}
+						</div>
 					</svelte:fragment>
 				</AccordionItem>
 			{/if}

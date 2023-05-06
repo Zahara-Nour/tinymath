@@ -1,9 +1,5 @@
 <script lang="ts">
-	import { objectMap } from '$lib/utils'
-	import VipCard from '$lib/vips/VipCard.svelte'
-	import type { StudentProfile } from '../../../types/type'
-	import vipCards from '$lib/vips/cards'
-	import { updateVip } from '$lib/db'
+	import { drawVipCards } from '$lib/vips/cards'
 	import type { SupabaseClient } from '@supabase/supabase-js'
 	import type { Database } from '../../../types/supabase'
 	import IconCards from '$lib/icones/IconCards.svelte'
@@ -13,145 +9,127 @@
 		type ModalSettings,
 		modalStore,
 	} from '@skeletonlabs/skeleton'
+	import VipCardUI from '$lib/vips/VipCard.svelte'
+	import DrawnCards from './DrawnCards.svelte'
+	import { createEventDispatcher } from 'svelte'
+	import type { CardWallet, StudentProfile, User } from '../../../types/type'
 
 	export let student: StudentProfile
 	export let db: SupabaseClient<Database>
+	export let short = false
+	export let user: User
 
-	let commons: Record<string, number> = {}
-	let uncommons: Record<string, number> = {}
-	let rares: Record<string, number> = {}
-	let legendaries: Record<string, number> = {}
+	let commons: CardWallet
+	let uncommons: CardWallet
+	let rares: CardWallet
+	let legendaries: CardWallet
 	let pendingVip = false
 	let modalComponent
+	let disabled = false
 
-	updateCards(student.vips)
+	const dispatch = createEventDispatcher()
 
-	function updateCards(vips: Record<string, number>) {
-		commons = objectMap(vips, (count, name) => {
-			const card = vipCards.find((c) => c.name === name)!
-			return count > 0 && card.rarity === 'common' ? count : 0
-		})
+	$: updateCards(student.vips)
 
-		uncommons = objectMap(vips, (count, name) => {
-			const card = vipCards.find((c) => c.name === name)!
-			return count > 0 && card.rarity === 'uncommon' ? count : 0
-		})
-		rares = objectMap(vips, (count, name) => {
-			const card = vipCards.find((c) => c.name === name)!
-			return count > 0 && card.rarity === 'rare' ? count : 0
-		})
-		legendaries = objectMap(vips, (count, name) => {
-			const card = vipCards.find((c) => c.name === name)!
-			return count > 0 && card.rarity === 'legendary' ? count : 0
-		})
-		console.log(
-			'update cards',
-			vips,
-			{ ...commons },
-			{ ...uncommons },
-			{ ...rares },
-			{ ...legendaries },
-		)
+	function updateCards(vips: CardWallet) {
+		commons = vips.filter((c) => c.card.rarity === 'common')
+		uncommons = vips.filter((c) => c.card.rarity === 'uncommon')
+		rares = vips.filter((c) => c.card.rarity === 'rare')
+		legendaries = vips.filter((c) => c.card.rarity === 'legendary')
 	}
 
-	async function drawVipCard() {
-		if (student) {
-			pendingVip = true
+	async function onDrawCard() {
+		disabled = true
+		const { error, draws } = await drawVipCards(student)
 
-			const alea = Math.random()
-
-			const rarity =
-				alea < 0.5
-					? 'common'
-					: alea < 0.8
-					? 'uncommon'
-					: alea < 0.95
-					? 'rare'
-					: 'legendary'
-			const cards = vipCards.filter((c) => c.rarity === rarity)
-			const card = cards[Math.floor(Math.random() * cards.length)]
-
-			const { error } = await updateVip(
-				db,
-				student.id,
-				!student.vips[card.name]
-					? { ...student.vips, [card.name]: 1 }
-					: {
-							...student.vips,
-							[card.name]: student.vips[card.name] + 1,
-					  },
-			)
-			if (error) {
-				console.log(error.message)
-				toastStore.trigger({
-					message: 'La mise à jour des cartes VIP a échoué.',
-					background: 'bg-error-500',
-				})
-			} else {
-				if (!student.vips[card.name]) {
-					student.vips[card.name] = 1
-				} else {
-					student.vips[card.name]++
-				}
-				modalComponent = {
-					// Pass a reference to your custom component
-					ref: VipCard,
-					// Add the component properties as key/value pairs
-					props: { name: card.name },
-					// Provide a template literal for the default component slot
-					slot: '<p>Skeleton</p>',
-				}
-				const d: ModalSettings = {
-					backdropClasses: '!bg-surface-800 text-black',
-					type: 'component',
-					// Pass the component directly:
-					component: modalComponent,
-				}
-				modalStore.trigger(d)
-				updateCards(student.vips)
+		if (error) {
+			toastStore.trigger({
+				message: error.message,
+				background: 'bg-error-500',
+			})
+		} else {
+			updateCards(student.vips)
+			dispatch('updateGidouilles', {
+				text: 'Gidouilles updated',
+			})
+			// force update
+			student.gidouilles = student.gidouilles
+			modalComponent = {
+				// Pass a reference to your custom component
+				ref: DrawnCards,
+				// Add the component properties as key/value pairs
+				props: { cards: draws, student, user },
+				// Provide a template literal for the default component slot
+				slot: '<p>Skeleton</p>',
 			}
-
-			pendingVip = false
+			const d: ModalSettings = {
+				backdropClasses: '!bg-surface-800 text-black',
+				type: 'component',
+				// Pass the component directly:
+				component: modalComponent,
+			}
+			modalStore.trigger(d)
 		}
+		disabled = false
 	}
 </script>
 
 <div class="mt-8 card">
-	<header class="card-header flex gap-2 items-center bg-surface-500 text-black">
+	<header class="card-header flex gap-2 items-center">
 		<h3 class="card-title">
 			{`cartes VIP de ${student.firstname}`}
 		</h3>
 		<button
 			class="btn-icon variant-filled-primary"
-			disabled={pendingVip}
-			on:click={drawVipCard}
+			disabled={disabled || student.gidouilles < 3}
+			on:click={onDrawCard}
 		>
 			<IconCards />
 		</button>
 	</header>
-	<section
-		class="p-4 flex flex-col w-full max-w-full bg-surface-500 text-black shadow-md"
-	>
+	<section class="p-4 flex flex-col w-full max-w-full shadow-md">
 		{#if Object.keys(commons).length}
-			<VipCardsByCategory {student} {db} cards={commons} category="commons" />
+			<VipCardsByCategory
+				on:updateVips={() => updateCards(student.vips)}
+				{short}
+				{student}
+				{db}
+				wallet={commons}
+				category="commons"
+				{user}
+			/>
 		{/if}
 		{#if Object.keys(uncommons).length}
 			<VipCardsByCategory
+				on:updateVips={() => updateCards(student.vips)}
+				{short}
 				{student}
 				{db}
-				cards={uncommons}
+				wallet={uncommons}
 				category="uncommons"
+				{user}
 			/>
 		{/if}
 		{#if Object.keys(rares).length}
-			<VipCardsByCategory {student} {db} cards={rares} category="rares" />
+			<VipCardsByCategory
+				on:updateVips={() => updateCards(student.vips)}
+				{short}
+				{student}
+				{db}
+				wallet={rares}
+				category="rares"
+				{user}
+			/>
 		{/if}
 		{#if Object.keys(legendaries).length}
 			<VipCardsByCategory
+				on:updateVips={() => updateCards(student.vips)}
+				{short}
 				{student}
 				{db}
-				cards={legendaries}
+				wallet={legendaries}
 				category="legendaries"
+				{user}
 			/>
 		{/if}
 	</section>

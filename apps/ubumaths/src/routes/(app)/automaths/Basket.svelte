@@ -7,7 +7,7 @@
 		prepareAnsweredQuestion,
 		prepareCorrectedQuestion,
 	} from '$lib/questions/correction'
-	import type { Basket, Teacher } from '../../types/type'
+	import type { Basket, Teacher } from '../../../types/type'
 	import QuestionCard from '$lib/ui/QuestionCard.svelte'
 	import IconPlus from '$lib/icones/IconPlus.svelte'
 	import IconMinus from '$lib/icones/IconMinus.svelte'
@@ -18,8 +18,8 @@
 	import { modalStore } from '@skeletonlabs/skeleton'
 	import { goto } from '$app/navigation'
 	import type { SupabaseClient } from '@supabase/supabase-js'
-	import type { Database } from '../../types/supabase'
-	import { fetchAssessment } from '$lib/db'
+	import type { Database } from '../../../types/supabase'
+	import { DB_fetchAssessment } from '$lib/db'
 
 	export let basket: Basket = []
 	export let courseAuxNombres = false
@@ -43,7 +43,7 @@
 	$: console.log('isTitleAvailable: ', isTitleAvailable)
 
 	async function loadBasket(assessment_id: number) {
-		const { error, data } = await fetchAssessment(db, assessment_id)
+		const { error, data } = await DB_fetchAssessment(db, assessment_id)
 		if (error) {
 			fail(error)
 			toastStore.trigger({
@@ -222,7 +222,7 @@
 							<div class="flex flex-row justify-center items-center">
 								temps: {basket[i].delay} s
 							</div>
-							<div class="flex flex-row justify-center  items-center">
+							<div class="flex flex-row justify-center items-center">
 								<button
 									on:click={() => lessTime(i)}
 									class="mx-1 btn-icon variant-filled-primary"

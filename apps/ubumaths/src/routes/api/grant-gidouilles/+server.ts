@@ -1,8 +1,8 @@
 import {
-	fetchDayTeacherStudents,
-	fetchStudentWarnings,
-	fetchStudentWarningsFromDateToDate,
-	fetchTeacherStudents,
+	DB_fetchDayTeacherStudents,
+	DB_fetchStudentWarnings,
+	DB_fetchStudentWarningsFromDateToDate,
+	DB_fetchTeacherStudents,
 } from '$lib/db'
 import { DateTime } from 'luxon'
 import { cleanProfile } from '$lib/users'
@@ -12,7 +12,10 @@ import type { StudentProfile } from '../../../types/type'
 
 export const GET = (async ({ locals: { supabaseService }, url }) => {
 	// first fetch all my students
-	const { error: err, data } = await fetchTeacherStudents(supabaseService, 152)
+	const { error: err, data } = await DB_fetchTeacherStudents(
+		supabaseService,
+		152,
+	)
 	if (err) {
 		console.log('grant-gidouilles Get * Error * :', err.message)
 		throw error(500, ' ' + err.message)
@@ -31,12 +34,13 @@ export const GET = (async ({ locals: { supabaseService }, url }) => {
 			.map((profile) => cleanProfile(profile) as StudentProfile)
 			.forEach(async ({ id: student_id, gidouilles, firstname }) => {
 				try {
-					const { error: err, data } = await fetchStudentWarningsFromDateToDate(
-						supabaseService,
-						student_id,
-						beginning.toISODate(),
-						end.toISODate(),
-					)
+					const { error: err, data } =
+						await DB_fetchStudentWarningsFromDateToDate(
+							supabaseService,
+							student_id,
+							beginning.toISODate(),
+							end.toISODate(),
+						)
 
 					if (err) {
 						console.log('grant-gidouilles Get * Error * :', err.message)

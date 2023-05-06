@@ -2,10 +2,13 @@ import {
 	isStudentData,
 	isStudentProfile,
 	isTeacherData,
+	type StudentProfile,
 	type User,
 	type UserData,
 	type UserProfile,
 } from '../types/type'
+
+import cardPool from './vips/cards'
 
 const userPrototype = {
 	isStudent(this: User) {
@@ -46,12 +49,23 @@ export function cleanProfile(dirtyProfile: UserData) {
 	profile.role = dirtyProfile.role as 'admin' | 'teacher' | 'student'
 	profile.auth_id = dirtyProfile.auth_id
 	if (isStudentData(dirtyProfile)) {
-		profile.grade = dirtyProfile.grade!
-		profile.school_id = dirtyProfile.school_id!
-		profile.classe_ids = dirtyProfile.classe_ids!
-		profile.gidouilles = dirtyProfile.gidouilles!
-		profile.vips = JSON.parse(dirtyProfile.vips as string)
-		// profile.vips = dirtyProfile.vips!
+		const studentProfile = profile as StudentProfile
+		studentProfile.grade = dirtyProfile.grade!
+		studentProfile.school_id = dirtyProfile.school_id!
+		studentProfile.classe_ids = dirtyProfile.classe_ids!
+		studentProfile.gidouilles = dirtyProfile.gidouilles!
+		studentProfile.vips = []
+		const vips = JSON.parse(dirtyProfile.vips as string) as Record<
+			string,
+			number
+		>
+		Object.entries(vips).forEach(([name, count]) => {
+			studentProfile.vips.push({
+				card: cardPool.find((card) => card.name === name)!,
+				count,
+			})
+		})
+		return studentProfile
 	} else if (isTeacherData(dirtyProfile)) {
 		profile.school_id = dirtyProfile.school_id!
 		profile.classe_ids = dirtyProfile.classe_ids!

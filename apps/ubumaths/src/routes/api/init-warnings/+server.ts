@@ -1,4 +1,4 @@
-import { fetchDayTeacherStudents, fetchTeacherStudents } from '$lib/db'
+import { DB_fetchDayTeacherStudents, DB_fetchTeacherStudents } from '$lib/db'
 import { cleanProfile } from '$lib/users'
 import { error, json } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
@@ -6,7 +6,7 @@ import type { RequestHandler } from './$types'
 export const GET = (async ({ locals: { supabaseService }, url }) => {
 	const day = new Date().getDay()
 	console.log('day', day)
-	const { error: err, data } = await fetchDayTeacherStudents(
+	const { error: err, data } = await DB_fetchDayTeacherStudents(
 		supabaseService,
 		152,
 		2,

@@ -9,7 +9,7 @@
 	import { user } from '$lib/stores'
 	import type { SupabaseClient } from '@supabase/supabase-js'
 	import type { Database } from '../../../types/supabase'
-	import { updateGidouille, updateVip } from '$lib/db'
+	import { DB_updateStudentGidouille, DB_updateStudentVipWallet } from '$lib/db'
 	import IconCards from '$lib/icones/IconCards.svelte'
 
 	import VipCards from './VIPCards.svelte'
@@ -20,11 +20,12 @@
 	let { warn, trace, fail } = getLogger('TeacherAwardMgmt', 'warn')
 	let u = $user as Teacher
 	let selectedStudent: StudentProfile | null = null
+	let students = u.students
 
 	async function addGidouille(student: StudentProfile) {
 		console.log('adding gidouille')
 		pendingGidouille[student.id] = true
-		const { error } = await updateGidouille(
+		const { error } = await DB_updateStudentGidouille(
 			db,
 			student.id,
 			student.gidouilles + 1,
@@ -45,7 +46,7 @@
 	async function removeGidouille(student: StudentProfile) {
 		if (student.gidouilles > 0) {
 			pendingGidouille[student.id] = true
-			const { error } = await updateGidouille(
+			const { error } = await DB_updateStudentGidouille(
 				db,
 				student.id,
 				student.gidouilles - 1,
@@ -64,6 +65,10 @@
 			pendingGidouille[student.id] = false
 		}
 	}
+
+	function handleUpdateGidouilles() {
+		students = students
+	}
 </script>
 
 <PageHeader title="Récompenses" />
@@ -77,7 +82,7 @@
 					<svelte:fragment slot="summary">{classe.name}</svelte:fragment>
 					<svelte:fragment slot="content">
 						<ul class="list">
-							{#each u.students[classe.id].sort( (a, b) => a.firstname.localeCompare(b.firstname), ) as student (student.id)}
+							{#each students[classe.id].sort( (a, b) => a.firstname.localeCompare(b.firstname), ) as student (student.id)}
 								<li>
 									<div
 										class="flex justify-between items-center w-full max-w-full text-black bg-surface-500 shadow-md rounded-md p-2 mb-2"
@@ -121,7 +126,13 @@
 									</div>
 								</li>
 								{#if selectedStudent === student}
-									<VipCards {student} {db} />
+									<VipCards
+										on:updateGidouilles={handleUpdateGidouilles}
+										{student}
+										{db}
+										user={u}
+										short
+									/>
 								{/if}
 							{/each}
 						</ul>

@@ -15,10 +15,10 @@
 	import type { Database } from '../../../types/supabase'
 	import { get } from 'svelte/store'
 	import {
-		addClass,
-		fetchClasseStudents,
-		fetchSchoolClasses,
-		fetchSchoolTeachers,
+		DB_insertClass,
+		DB_fetchClasseStudents,
+		DB_fetchSchoolClasses,
+		DB_fetchSchoolTeachers,
 	} from '$lib/db'
 	import { Pulse } from 'svelte-loading-spinners'
 	import {
@@ -80,7 +80,7 @@
 
 	async function getTeachers(school_id: number) {
 		const { data: teachersData, error: teachersError } =
-			await fetchSchoolTeachers(db, school_id)
+			await DB_fetchSchoolTeachers(db, school_id)
 		teachers = []
 		if (teachersError) {
 			fail(teachersError.message)
@@ -104,7 +104,9 @@
 		console.log('classe_indexes', classe_indexes, 'classes', classes)
 		const promises = classe_indexes
 			.filter((classe_index) => !students[classes[classe_index].id])
-			.map((classe_index) => fetchClasseStudents(db, classes[classe_index].id))
+			.map((classe_index) =>
+				DB_fetchClasseStudents(db, classes[classe_index].id),
+			)
 		const results = await Promise.all(promises)
 		console.log('results', results)
 		results.forEach(({ data, error }, i) => {
@@ -145,10 +147,8 @@
 
 	async function getClasses(school_id: number) {
 		const oldsSelectedClassesIds = selectedClasses.map((i) => classes[i].id)
-		const { data: classesData, error: classesError } = await fetchSchoolClasses(
-			db,
-			school_id,
-		)
+		const { data: classesData, error: classesError } =
+			await DB_fetchSchoolClasses(db, school_id)
 		classes = []
 		if (classesError) {
 			fail(classesError.message)
@@ -200,7 +200,7 @@
 
 	const submitAddClass: SubmitFunction = async ({ action, cancel }) => {
 		pendingAddClass = true
-		const { error } = await addClass(db, {
+		const { error } = await DB_insertClass(db, {
 			name: className,
 			grade: selectedGrade,
 			school_id: schools![selectedSchool].id,

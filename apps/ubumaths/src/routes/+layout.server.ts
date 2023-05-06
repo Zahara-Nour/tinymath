@@ -1,11 +1,11 @@
 import {
-	fetchPlayer,
-	fetchSchools,
-	fetchStudentPendingAssignments,
-	fetchTeacherStudents,
-	fetchUserByEmail,
-	fetchUserClasses,
-	updateUserProfile,
+	DB_fetchPlayer,
+	DB_fetchSchools,
+	DB_fetchStudentPendingAssignments,
+	DB_fetchTeacherStudents,
+	DB_fetchUserByEmail,
+	DB_fetchUserClasses,
+	DB_updateUser,
 } from '$lib/db'
 import {
 	isAdminProfile,
@@ -51,7 +51,7 @@ export const load: LayoutServerLoad = async ({
 	if (session) {
 		// get user data from supabase
 		// email is set in user session
-		const { data: userData, error: userError } = await fetchUserByEmail(
+		const { data: userData, error: userError } = await DB_fetchUserByEmail(
 			supabase,
 			session.user.email!,
 		)
@@ -70,10 +70,7 @@ export const load: LayoutServerLoad = async ({
 			if (!userData.auth_id) {
 				profile.auth_id = session.user.id
 				// update supabase id
-				const { error: updateError } = await updateUserProfile(
-					supabase,
-					profile,
-				)
+				const { error: updateError } = await DB_updateUser(supabase, profile)
 				if (updateError) {
 					console.log(USER_UPDATE_FAILED, updateError.message)
 					addErrors(USER_UPDATE_FAILED)
@@ -83,7 +80,7 @@ export const load: LayoutServerLoad = async ({
 			// fetch user classes
 			if (isTeacherProfile(profile) || isStudentProfile(profile)) {
 				const { data: userClassesData, error: userClassesError } =
-					await fetchUserClasses(supabase, profile.id)
+					await DB_fetchUserClasses(supabase, profile.id)
 
 				if (userClassesError || !userClassesData) {
 					console.log(
@@ -101,7 +98,7 @@ export const load: LayoutServerLoad = async ({
 				profile.students = {}
 
 				const { data: studentsData, error: studentsError } =
-					await fetchTeacherStudents(supabase, profile.id)
+					await DB_fetchTeacherStudents(supabase, profile.id)
 				if (studentsError || !studentsData) {
 					console.log(studentsError?.message || 'no data returned for students')
 					addErrors(FETCH_CLASSES_ERROR)
@@ -121,9 +118,8 @@ export const load: LayoutServerLoad = async ({
 
 			// fetch schools
 			if (isAdminProfile(profile)) {
-				const { data: schoolsData, error: schoolsError } = await fetchSchools(
-					supabase,
-				)
+				const { data: schoolsData, error: schoolsError } =
+					await DB_fetchSchools(supabase)
 				if (schoolsError) {
 					console.log(FETCH_SCHOOLS_ERROR, schoolsError.message)
 					addErrors(FETCH_SCHOOLS_ERROR)
@@ -138,7 +134,7 @@ export const load: LayoutServerLoad = async ({
 			// fetch pending assignments
 			if (isStudentProfile(profile)) {
 				const { data: assignmentsData, error: assignmentsError } =
-					await fetchStudentPendingAssignments(supabase, profile.id)
+					await DB_fetchStudentPendingAssignments(supabase, profile.id)
 				if (assignmentsError) {
 					console.log(FETCH_ASSIGNMENTS_ERROR, assignmentsError.message)
 					addErrors(FETCH_ASSIGNMENTS_ERROR)
@@ -158,7 +154,7 @@ export const load: LayoutServerLoad = async ({
 			// fetch pending assignments
 			if (isStudentProfile(profile)) {
 				const { data: assignmentsData, error: assignmentsError } =
-					await fetchStudentPendingAssignments(supabase, profile.id)
+					await DB_fetchStudentPendingAssignments(supabase, profile.id)
 				if (assignmentsError) {
 					console.log(FETCH_ASSIGNMENTS_ERROR, assignmentsError.message)
 					addErrors(FETCH_ASSIGNMENTS_ERROR)

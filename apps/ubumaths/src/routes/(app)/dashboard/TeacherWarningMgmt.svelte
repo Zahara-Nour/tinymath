@@ -6,7 +6,7 @@
 	import { user } from '$lib/stores'
 	import type { SupabaseClient } from '@supabase/supabase-js'
 	import type { Database } from '../../../types/supabase'
-	import { fetchDayStudentsTeacherWarnings } from '$lib/db'
+	import { DB_fetchDayStudentsTeacherWarnings } from '$lib/db'
 	import { DateTime } from 'luxon'
 	import { warningCasesShort } from '$lib/warnings'
 	import IconChevronLeft from '$lib/icones/IconChevronLeft.svelte'
@@ -101,7 +101,7 @@
 	async function getWarnings(date: DateTime) {
 		warnings = {}
 		if (date.isValid) {
-			const { data, error } = await fetchDayStudentsTeacherWarnings(
+			const { data, error } = await DB_fetchDayStudentsTeacherWarnings(
 				db,
 				u.id,
 				date.toFormat('yyyy-MM-dd'),

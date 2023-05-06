@@ -9,13 +9,13 @@
 		STATUS_CORRECT,
 		STATUS_UNOPTIMAL_FORM,
 	} from '$lib/questions/correction'
-	import type { CorrectedQuestion } from '../../../types/type'
+	import type { CorrectedQuestion } from '../../../../types/type'
 	import IconHome from '$lib/icones/IconHome.svelte'
 	import IconScan from '$lib/icones/IconScan.svelte'
 	import IconReload from '$lib/icones/IconReload.svelte'
 	import { toastStore } from '@skeletonlabs/skeleton'
 	import type { SupabaseClient } from '@supabase/supabase-js'
-	import type { Database } from '../../../types/supabase'
+	import type { Database } from '../../../../types/supabase'
 
 	export let items: CorrectedQuestion[]
 	export let assignmentId: number
@@ -133,7 +133,7 @@ z-index:100"
 	</div>
 
 	{#if classroom}
-		<div class="flex  justify-around w-full" style="overflow-x:auto;">
+		<div class="flex justify-around w-full" style="overflow-x:auto;">
 			<div class="w-full">
 				<CorrectionListItems items={items.filter((_, i) => i % 2 === 0)} />
 			</div>
@@ -157,11 +157,11 @@ z-index:100"
 			<div class="flex flex-col items-center justify-around h-full">
 				<button
 					on:click={() => (restart = true)}
-					class="text-black bg-white my-2 btn-icon   text-2xl"
+					class="text-black bg-white my-2 btn-icon text-2xl"
 					><IconReload /></button
 				>
 				<a href={`/automaths${query}`}>
-					<button class="text-black bg-white my-2 btn-icon   text-2xl"
+					<button class="text-black bg-white my-2 btn-icon text-2xl"
 						><IconHome /></button
 					>
 				</a>

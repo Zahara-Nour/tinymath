@@ -3,7 +3,14 @@ import { getLogger } from '$lib/utils'
 const { info, fail, warn } = getLogger('db', 'info')
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Database } from '../types/supabase'
-import type { Assignment, UserProfile } from '../types/type'
+import {
+	isStudentProfile,
+	type Assignment,
+	type UserProfile,
+	type StudentProfile,
+	type InsertUserData,
+	type CardWallet,
+} from '../types/type'
 import { createClient } from '@supabase/supabase-js'
 import {
 	PUBLIC_SUPABASE_URL,
@@ -13,29 +20,60 @@ import {
 const db = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY)
 export default db
 
-export function addUser(
+export function DB_insertUser(
 	supabase: SupabaseClient<Database>,
 	profile: UserProfile,
 ) {
-	return supabase.from('users').insert([
-		{
-			...profile,
-			vips: profile.vips ? JSON.stringify(profile.vips) : null,
-		},
-	])
+	const row = isStudentProfile(profile)
+		? {
+				...profile,
+				vips: JSON.stringify(convertArrayWalletToObjectWallet(profile.vips)),
+		  }
+		: profile
+	return supabase.from('users').insert(row)
 }
 
-export function updateUserProfile(
+// general update with user profile
+export function DB_updateUser(
 	supabase: SupabaseClient<Database>,
-	{ id, ...infos }: UserProfile,
+	profile: UserProfile,
 ) {
-	return supabase
-		.from('users')
-		.update({ ...infos, vips: infos.vips ? JSON.stringify(infos.vips) : null })
-		.eq('id', id)
+	const row = isStudentProfile(profile)
+		? {
+				...profile,
+				vips: JSON.stringify(convertArrayWalletToObjectWallet(profile.vips)),
+		  }
+		: profile
+	return supabase.from('users').update(row).eq('id', profile.id)
 }
 
-export function fetchUser(supabase: SupabaseClient<Database>, user_id: string) {
+export async function DB_updateStudentGidouille(
+	supabase: SupabaseClient<Database>,
+	student_id: number,
+	gidouilles: number,
+) {
+	return supabase.from('users').update({ gidouilles }).eq('id', student_id)
+}
+
+export async function DB_updateStudentVipWallet(
+	supabase: SupabaseClient<Database>,
+	student_id: number,
+	vips: CardWallet,
+) {
+	const row: InsertUserData = {
+		vips: JSON.stringify(convertArrayWalletToObjectWallet(vips)),
+		gidouilles: 13,
+	}
+	console.log('row', row, supabase)
+	console.log('student_id', student_id)
+	// return supabase.from('users').update(row).eq('id', 156)
+	return supabase.from('users').update(row).eq('id', student_id)
+}
+
+export function DB_fetchUser(
+	supabase: SupabaseClient<Database>,
+	user_id: string,
+) {
 	return supabase
 		.from('users')
 		.select(
@@ -45,7 +83,7 @@ export function fetchUser(supabase: SupabaseClient<Database>, user_id: string) {
 		.maybeSingle()
 }
 
-export function fetchUserByEmail(
+export function DB_fetchUserByEmail(
 	supabase: SupabaseClient<Database>,
 	email: string,
 ) {
@@ -59,7 +97,7 @@ export function fetchUserByEmail(
 }
 
 // fetch teacher and students classes
-export async function fetchUserClasses(
+export async function DB_fetchUserClasses(
 	supabase: SupabaseClient<Database>,
 	user_id: number,
 ) {
@@ -86,7 +124,7 @@ export async function fetchUserClasses(
 		.in('id', classe_ids)
 }
 
-export async function fetchStudentPendingAssignments(
+export async function DB_fetchStudentPendingAssignments(
 	supabase: SupabaseClient<Database>,
 	student_id: number,
 ) {
@@ -98,7 +136,7 @@ export async function fetchStudentPendingAssignments(
 		.match({ student_id, status: 'pending' })
 }
 
-export async function fetchTeacherStudents(
+export async function DB_fetchTeacherStudents(
 	supabase: SupabaseClient<Database>,
 	teacher_id: number,
 ) {
@@ -111,12 +149,12 @@ export async function fetchTeacherStudents(
 		.eq('teacher_id', teacher_id)
 }
 
-export async function fetchDayTeacherStudents(
+export async function DB_fetchDayTeacherStudents(
 	supabase: SupabaseClient<Database>,
 	teacher_id: number,
 	day: number,
 ) {
-	const request = await fetchUserClasses(supabase, teacher_id)
+	const request = await DB_fetchUserClasses(supabase, teacher_id)
 	if (request.error) {
 		console.log('fetchDayTeacherStudents * Error * :', request.error.message)
 		return request
@@ -135,7 +173,7 @@ export async function fetchDayTeacherStudents(
 	}
 }
 
-export async function fetchClasseStudents(
+export async function DB_fetchClasseStudents(
 	supabase: SupabaseClient<Database>,
 	classe_id: number,
 ) {
@@ -148,7 +186,7 @@ export async function fetchClasseStudents(
 		.contains('classe_ids', [classe_id])
 }
 
-export async function fetchSchoolClasses(
+export async function DB_fetchSchoolClasses(
 	supabase: SupabaseClient<Database>,
 	school_id: number,
 ) {
@@ -158,7 +196,7 @@ export async function fetchSchoolClasses(
 		.eq('school_id', school_id)
 }
 
-export function addClass(
+export function DB_insertClass(
 	supabase: SupabaseClient<Database>,
 	{
 		name,
@@ -173,11 +211,11 @@ export function addClass(
 	return supabase.from('classes').insert([{ name, grade, school_id }])
 }
 
-export async function fetchSchools(supabase: SupabaseClient<Database>) {
+export async function DB_fetchSchools(supabase: SupabaseClient<Database>) {
 	return supabase.from('schools').select('id, city, country, name')
 }
 
-export async function fetchSchoolTeachers(
+export async function DB_fetchSchoolTeachers(
 	supabase: SupabaseClient<Database>,
 	school_id: number,
 ) {
@@ -190,7 +228,7 @@ export async function fetchSchoolTeachers(
 		.eq('school_id', school_id)
 }
 
-export async function fetchTeacherAssessments(
+export async function DB_fetchTeacherAssessments(
 	supabase: SupabaseClient<Database>,
 	teacher_id: number,
 ) {
@@ -200,7 +238,7 @@ export async function fetchTeacherAssessments(
 		.eq('teacher_id', teacher_id)
 }
 
-export async function fetchAssessment(
+export async function DB_fetchAssessment(
 	supabase: SupabaseClient<Database>,
 	assessment_id: number,
 ) {
@@ -211,30 +249,11 @@ export async function fetchAssessment(
 		.maybeSingle()
 }
 
-export async function updateGidouille(
-	supabase: SupabaseClient<Database>,
-	student_id: number,
-	gidouilles: number,
-) {
-	return supabase.from('users').update({ gidouilles }).eq('id', student_id)
-}
-
-export async function updateVip(
-	supabase: SupabaseClient<Database>,
-	student_id: number,
-	vips: Record<string, number>,
-) {
-	return supabase
-		.from('users')
-		.update({ vips: JSON.stringify(vips) })
-		.eq('id', student_id)
-}
-
-export async function addAssignments(
+export async function DB_insertAssignments(
 	supabase: SupabaseClient<Database>,
 	assignments: Assignment[],
 ) {
-	return db.from('assignments').insert(
+	return supabase.from('assignments').insert(
 		assignments.map(({ id, basket, ...infos }) => ({
 			...infos,
 			basket: JSON.stringify(basket),
@@ -242,7 +261,7 @@ export async function addAssignments(
 	)
 }
 
-export async function fetchDayStudentsTeacherWarnings(
+export async function DB_fetchDayStudentsTeacherWarnings(
 	supabase: SupabaseClient<Database>,
 	teacher_id: number,
 	date: string,
@@ -254,7 +273,7 @@ export async function fetchDayStudentsTeacherWarnings(
 		.eq('date', date)
 }
 
-export async function fetchStudentWarnings(
+export async function DB_fetchStudentWarnings(
 	supabase: SupabaseClient<Database>,
 	student_id: number,
 ) {
@@ -265,7 +284,7 @@ export async function fetchStudentWarnings(
 		.order('date', { ascending: false })
 }
 
-export async function fetchStudentWarningsFromDateToDate(
+export async function DB_fetchStudentWarningsFromDateToDate(
 	supabase: SupabaseClient<Database>,
 	student_id: number,
 	begining: string,
@@ -283,7 +302,7 @@ export async function fetchStudentWarningsFromDateToDate(
  * Navadra
  */
 
-export async function fetchPlayer(
+export async function DB_fetchPlayer(
 	supabase: SupabaseClient<Database>,
 	user_id: number,
 ) {
@@ -296,21 +315,21 @@ export async function fetchPlayer(
 		.maybeSingle()
 }
 
-export async function insertPlayer(
+export async function DB_insertPlayer(
 	supabase: SupabaseClient<Database>,
 	{ id, ...rest }: Database['public']['Tables']['navadra_players']['Insert'],
 ) {
 	return supabase.from('navadra_players').insert(rest).select().single()
 }
 
-export async function updatePlayer(
+export async function DB_updatePlayer(
 	supabase: SupabaseClient<Database>,
 	row: Database['public']['Tables']['navadra_players']['Update'],
 ) {
 	return supabase.from('navadra_players').update(row).eq('id', row.id)
 }
 
-export async function fetchMonster(
+export async function DB_fetchMonster(
 	supabase: SupabaseClient<Database>,
 	monster_id: number,
 ) {
@@ -321,35 +340,35 @@ export async function fetchMonster(
 		.maybeSingle()
 }
 
-export async function insertMonster(
+export async function DB_insertMonster(
 	supabase: SupabaseClient<Database>,
 	{ id, ...rest }: Database['public']['Tables']['navadra_monsters']['Insert'],
 ) {
 	return supabase.from('navadra_monsters').insert(rest).select().single()
 }
 
-export async function updateMonster(
+export async function DB_updateMonster(
 	supabase: SupabaseClient<Database>,
 	row: Database['public']['Tables']['navadra_monsters']['Update'],
 ) {
 	return supabase.from('navadra_monsters').update(row).eq('id', row.id)
 }
 
-export async function insertPost(
+export async function DB_insertPost(
 	supabase: SupabaseClient<Database>,
 	row: Database['public']['Tables']['posts']['Insert'],
 ) {
 	return supabase.from('posts').insert(row).select().single()
 }
 
-export async function updatePost(
+export async function DB_updatePost(
 	supabase: SupabaseClient<Database>,
 	row: Database['public']['Tables']['posts']['Update'],
 ) {
 	return supabase.from('posts').update(row).eq('id', row.id)
 }
 
-export async function fetchPost(
+export async function DB_fetchPost(
 	supabase: SupabaseClient<Database>,
 	post_id: number,
 ) {
@@ -362,7 +381,7 @@ export async function fetchPost(
 		.maybeSingle()
 }
 
-export async function fetchPosts(supabase: SupabaseClient<Database>) {
+export async function DB_fetchPosts(supabase: SupabaseClient<Database>) {
 	return supabase
 		.from('posts')
 		.select(
@@ -370,7 +389,7 @@ export async function fetchPosts(supabase: SupabaseClient<Database>) {
 		)
 }
 
-export async function fetchPostsByTags(
+export async function DB_fetchPostsByTags(
 	supabase: SupabaseClient<Database>,
 	tags: string[],
 ) {
@@ -384,6 +403,13 @@ export async function fetchPostsByTags(
 	return promise
 }
 
-export async function fetchTags(supabase: SupabaseClient<Database>) {
+export async function DB_fetchTags(supabase: SupabaseClient<Database>) {
 	return supabase.from('tags').select('id, name')
+}
+
+function convertArrayWalletToObjectWallet(wallet: CardWallet) {
+	return wallet.reduce((wallet, { card, count }) => {
+		wallet[card.name] = count
+		return wallet
+	}, {} as Record<string, number>)
 }

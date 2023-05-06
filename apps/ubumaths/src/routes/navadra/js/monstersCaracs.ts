@@ -1,4 +1,4 @@
-import type { MonsterCaracs } from '../../../../types/navadra_types'
+import type { MonsterCaracs } from '../../../types/navadra_types'
 
 const list: Record<number, MonsterCaracs[]> = {
 	1: [

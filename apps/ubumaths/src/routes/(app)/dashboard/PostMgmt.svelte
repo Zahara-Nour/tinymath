@@ -3,7 +3,7 @@
 	import { enhance, type SubmitFunction } from '$app/forms'
 	import { Pulse } from 'svelte-loading-spinners'
 	import { popup, toastStore, type PopupSettings } from '@skeletonlabs/skeleton'
-	import { fetchPosts, fetchTags, insertPost } from '$lib/db'
+	import { DB_fetchPosts, DB_fetchTags, DB_insertPost } from '$lib/db'
 	import db from '$lib/db'
 	import IconPencil from '$lib/icones/IconPencil.svelte'
 	import IconCheck from '$lib/icones/IconCheck.svelte'
@@ -64,7 +64,7 @@
 		selectedTags = selectedTags
 	}
 	function updatePosts() {
-		fetchPosts(db).then(({ data, error }) => {
+		DB_fetchPosts(db).then(({ data, error }) => {
 			if (error) {
 				toastStore.trigger({
 					message: 'La récupération des posts a échoué :' + error.message,
@@ -80,7 +80,7 @@
 			}
 		})
 	}
-	fetchTags(db).then(({ data, error }) => {
+	DB_fetchTags(db).then(({ data, error }) => {
 		if (error) {
 			toastStore.trigger({
 				message: 'La récupération des tags a échoué :' + error.message,
@@ -126,7 +126,7 @@
 				updatePosts()
 			}
 		} else {
-			const { data, error } = await insertPost(db, {
+			const { data, error } = await DB_insertPost(db, {
 				title,
 				summary,
 				content,
