@@ -87,14 +87,17 @@
 					return acc
 				}, {} as Record<string, string[]>)
 			markTerm3 = Object.entries(warningsTerm3ByDate).length
-				? (Object.entries(warningsTerm3ByDate).filter(
-						(entry) => !entry[1].length,
-				  ).length /
-						Object.values(warningsTerm3ByDate).filter(
-							(warnings) =>
-								!(warnings.length === 1 && warnings[0] === 'Absent'),
-						).length) *
-				  20
+				? Math.round(
+						(Object.entries(warningsTerm3ByDate).filter(
+							(entry) => !entry[1].length,
+						).length /
+							Object.values(warningsTerm3ByDate).filter(
+								(warnings) =>
+									!(warnings.length === 1 && warnings[0] === 'Absent'),
+							).length) *
+							20 *
+							10,
+				  ) / 10
 				: null
 		}
 	}
@@ -126,7 +129,7 @@
 					(lang === 'ar'
 						? 'variant-filled-primary'
 						: 'variant-filled-tertiary')}
-				on:click={() => (lang = 'ar')}>Arabic</button
+				on:click={() => (lang = 'ar')}>عربي</button
 			>
 		</div>
 	</header>
@@ -138,7 +141,8 @@
 					<svelte:fragment slot="summary"
 						><div class="bg-tertiary-500 rounded p-2">
 							<h3>
-								Trimestre 3 - Note de travail et de comportement : {markTerm3}/20
+								{`Trimestre 3 - Note de travail et de comportement : ${markTerm3}
+								/20`}
 							</h3>
 						</div></svelte:fragment
 					>

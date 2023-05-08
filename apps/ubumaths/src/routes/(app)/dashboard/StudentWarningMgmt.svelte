@@ -12,6 +12,7 @@
 	} from '$lib/db'
 	import { DateTime } from 'luxon'
 	import { warningCases } from '$lib/warnings'
+	import Warnings from './Warnings.svelte'
 	export let db: SupabaseClient<Database>
 
 	let { warn, trace, fail } = getLogger('TeacherAwardMgmt', 'warn')
@@ -106,53 +107,5 @@
 </script>
 
 <PageHeader title="Avertissements" />
-<div class="flex w-full justify-end">
-	<button
-		class={'m-2 btn ' +
-			(lang === 'fr' ? 'variant-filled-primary' : 'variant-filled-tertiary')}
-		on:click={() => (lang = 'fr')}>Français</button
-	>
-	<button
-		class={'m-2 btn ' +
-			(lang === 'en' ? 'variant-filled-primary' : 'variant-filled-tertiary')}
-		on:click={() => (lang = 'en')}>English</button
-	>
-	<button
-		class={'m-2 btn ' +
-			(lang === 'ar' ? 'variant-filled-primary' : 'variant-filled-tertiary')}
-		on:click={() => (lang = 'ar')}>Arabic</button
-	>
-</div>
 
-<div class="mt-8 card">
-	<header class="card-header" />
-	<section class="p-4">
-		<Accordion class="mt-4">
-			{#if today >= term3Start}
-				<AccordionItem open>
-					<svelte:fragment slot="summary"
-						><h3>
-							Trimestre 3 - Note de travail et de comportement : {markTerm3}/20
-						</h3></svelte:fragment
-					>
-					<svelte:fragment slot="content">
-						{#each Object.entries(warningsTerm3ByDate) as [date, warnings] (date)}
-							{@const dateTime = DateTime.fromISO(date)}
-							{#if warnings.length > 0}
-								<h4 class="mt-4">
-									{dateTime.toLocaleString(DateTime.DATE_FULL)}
-								</h4>
-
-								<ul class="list">
-									{#each warnings as warning}
-										<li>{warningCases[lang][warning]}</li>
-									{/each}
-								</ul>
-							{/if}
-						{/each}
-					</svelte:fragment>
-				</AccordionItem>
-			{/if}
-		</Accordion>
-	</section>
-</div>
+<Warnings {db} student={u} />

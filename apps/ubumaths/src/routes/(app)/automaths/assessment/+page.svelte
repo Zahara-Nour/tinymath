@@ -11,6 +11,7 @@
 	import { createTimer } from '$lib/timer'
 	import { page } from '$app/stores'
 	import { virtualKeyboardMode, touchDevice, mathliveReady } from '$lib/stores'
+	import { fly } from 'svelte/transition'
 
 	import Correction from './Correction.svelte'
 	import type {
@@ -437,17 +438,23 @@
 				</div>
 			{/if}
 
-			<div id="cards-container" class="flex justify-center">
-				{#each [cards[current]] as card (current)}
-					<QuestionCard
-						class={classroom ? 'max-w-3xl' : 'max-w-xl'}
-						{card}
-						interactive={!classroom && !flash}
-						{commit}
-						immediateCommit={true}
-						flashcard={flash}
-					/>
-				{/each}
+			<div id="cards-container" class="m-auto">
+				{#key card}
+					<div
+						in:fly={{ x: 500, duration: 500, delay: 200 }}
+						out:fly={{ x: -500, duration: 500 }}
+						class="flex justify-center"
+					>
+						<QuestionCard
+							class={classroom ? 'max-w-3xl' : 'max-w-xl'}
+							{card}
+							interactive={!classroom && !flash}
+							{commit}
+							immediateCommit={true}
+							flashcard={flash}
+						/>
+					</div>
+				{/key}
 			</div>
 			<div>
 				<a href={`/automaths${query}`}>
@@ -465,11 +472,19 @@
 		margin-top: 20px;
 		margin-bottom: 20px;
 		position: relative;
+		display: grid;
+		grid-template-rows: 1fr;
+		grid-template-columns: 1fr;
 		/* display: flex; */
 		/* flex-direction: column; */
 		/* overflow-x: hidden; */
 		/* height: 500px; */
 		/* max-height: 70vh; */
 		/* width: 100%; */
+	}
+
+	#cards-container > * {
+		grid-row: 1;
+		grid-column: 1;
 	}
 </style>
