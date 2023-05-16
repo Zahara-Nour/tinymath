@@ -575,7 +575,7 @@ export const words = [
 	'radius',
 	'reciprocal',
 	'rectangle',
-	'rule',
+	'ruler',
 	'relative',
 	'rotation',
 	'diagram',

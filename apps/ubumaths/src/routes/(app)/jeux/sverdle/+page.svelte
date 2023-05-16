@@ -162,8 +162,10 @@
 			<div class="flex items-center justify-center gap-8">
 				{#if !won && data.answer}
 					<div class="flex flex-col">
-						<p>La mot mathématique était :</p>
-						<p class="font-bold text-primary-500">{data.answer}</p>
+						<p>Le mot mathématique était :</p>
+						<span class="font-bold text-primary-500 text-3xl"
+							>{data.answer}</span
+						>
 					</div>
 				{:else if won}
 					<div class="flex justify-center w-full h-32">
@@ -178,7 +180,7 @@
 					</div>
 					<button
 						data-key="enter"
-						class=" my-2 btn-icon  variant-filled-primary"
+						class=" my-2 btn-icon variant-filled-primary"
 						formaction="?/restart"
 					>
 						<IconReload />
@@ -390,11 +392,11 @@
 
 	.keyboard button.missing {
 		background: rgba(var(--color-surface-400));
-		color: rgba(var(--on-surface));
+		color: rgba(var(--color-surface-400));
 	}
 
 	.keyboard button.close {
-		border: 2px solid rgba(var(--color-primary-500));
+		border: 4px solid rgba(var(--color-primary-500));
 	}
 
 	.keyboard button:focus {
