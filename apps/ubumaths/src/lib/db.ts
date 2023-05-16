@@ -62,7 +62,6 @@ export async function DB_updateStudentVipWallet(
 ) {
 	const row: InsertUserData = {
 		vips: JSON.stringify(convertArrayWalletToObjectWallet(vips)),
-		gidouilles: 13,
 	}
 	console.log('row', row, supabase)
 	console.log('student_id', student_id)
