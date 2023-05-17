@@ -42,7 +42,7 @@
 			<span>Elève</span>
 
 			<select class="select" bind:value={selectedStudent}>
-				{#each u.students[selectedClasseId] as student}
+				{#each u.students[selectedClasseId].sort( (a, b) => a.firstname.localeCompare(b.firstname), ) as student}
 					<option value={student}>{student.firstname} {student.lastname}</option
 					>
 				{/each}

@@ -520,7 +520,6 @@ export type VipCard = {
 	name: string
 	title: string
 	text: string
-	image: string
 	rarity: 'common' | 'uncommon' | 'rare' | 'legendary'
 	effect?: {
 		name: string

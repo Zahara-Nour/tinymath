@@ -1,6 +1,5 @@
 <script lang="ts">
 	import cards, { drawVipCards, useVipCard } from './cards'
-	import { fetchImage } from '$lib/images'
 	import {
 		isTeacher,
 		type StudentProfile,
@@ -23,12 +22,12 @@
 	export let student: StudentProfile
 
 	let disabled = false
-	let image: string
+	let image: string = 'images/vips/' + card.name + '1' + '@0.5x.jpg'
 	let modalComponent
 
-	fetchImage(card.image, 'public/vips').then((img) => {
-		image = img
-	})
+	// fetchImage(card.image, 'public/vips').then((img) => {
+	// 	image = img
+	// })
 
 	async function onUseCard(card: VipCard) {
 		console.log('using card', card.name)
@@ -91,9 +90,8 @@
 	class={' w-64 rounded-xl border-8 border-yellow-300 bg-white ' +
 		(short ? 'h-72 max-h-72' : 'h-96 max-h-96')}
 >
-	<div class="h-32">
-		<img class="m-auto max-h-full max-w-full" alt={card.name} src={image} />
-	</div>
+	<img class="w-full" alt={card.name} src={image} />
+
 	<div class="p-2 flex flex-col items-center justify-start h-2/3">
 		<div
 			class="my-2 font-bold text-2xl text-primary-500 w-full h-auto text-center"
