@@ -20,6 +20,7 @@
 	import { player } from '$lib/navadraStore'
 	import { defaultPlayerProfile, playersManager } from './navadra/js/player'
 	import { monstersManager } from './navadra/js/monsters'
+	import { get } from 'svelte/store'
 
 	export let data
 
@@ -57,8 +58,8 @@
 	// poper store initialized with Floating UI
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow })
 
-	$: ({ supabase } = data)
-	$: manageSession(data.session)
+	$: ({ supabase, session, userProfile } = data)
+	$: manageSession(session)
 
 	function manageSession(session: Session | null) {
 		console.log('session', session)
@@ -71,7 +72,10 @@
 		)
 
 		if (session) {
-			if (data.userProfile.role !== 'guest') {
+			if (
+				data.userProfile.role !== 'guest' &&
+				session.user.id !== get(user).auth_id
+			) {
 				toastStore.trigger({
 					message: `Bienvenue ${
 						data.userProfile.firstname || data.userProfile.email
