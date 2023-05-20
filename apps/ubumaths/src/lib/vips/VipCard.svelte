@@ -10,9 +10,12 @@
 		modalStore,
 		toastStore,
 		type ModalSettings,
+		type ModalComponent,
 	} from '@skeletonlabs/skeleton'
 	import { createEventDispatcher } from 'svelte'
 	import DrawnCards from '../../routes/(app)/dashboard/DrawnCards.svelte'
+	import IconMult from '$lib/icones/IconMult.svelte'
+	import db, { DB_updateStudentVipWallet } from '$lib/db'
 
 	const dispatch = createEventDispatcher()
 
@@ -23,7 +26,7 @@
 
 	let disabled = false
 	let image: string = 'images/vips/' + card.name + '1' + '@0.5x.jpg'
-	let modalComponent
+	let modalComponent: ModalComponent
 
 	// fetchImage(card.image, 'public/vips').then((img) => {
 	// 	image = img
@@ -84,6 +87,32 @@
 		}
 		disabled = false
 	}
+
+	async function onRemoveCard(card: VipCard) {
+		console.log('removing card', card.name)
+		disabled = true
+		const newWallet = student.vips
+			.map(({ card: c, count }) => ({
+				card: c,
+				count: c.name === card.name ? count - 1 : count,
+			}))
+			.filter(({ count }) => count > 0)
+		const { error } = await DB_updateStudentVipWallet(db, student.id, newWallet)
+		if (error) {
+			console.log("La carte n'a pas pu être retirée : " + error.message)
+			toastStore.trigger({
+				message: "La carte n'a pas pu être retirée : " + error.message,
+			})
+		} else {
+			console.log('La carte a été retirée avec succès')
+			console.log('vips', student.vips)
+			student.vips = newWallet
+			dispatch('updateVips', {
+				text: 'Vips updated',
+			})
+		}
+		disabled = false
+	}
 </script>
 
 <div
@@ -103,13 +132,21 @@
 			<div class="text-black">{card.text}</div>
 		{/if}
 		{#if isTeacher(user)}
-			<button
-				class="btn mt-2 variant-filled-primary"
-				{disabled}
-				on:click={() => onUseCard(card)}
-			>
-				Utiliser
-			</button>
+			<div class="flex justify-center gap-4">
+				<button
+					class="btn mt-2 variant-filled-primary"
+					{disabled}
+					on:click={() => onUseCard(card)}
+				>
+					Utiliser
+				</button>
+				<button
+					class="btn-icon mt-2 variant-filled-error"
+					on:click={() => onRemoveCard(card)}
+				>
+					<IconMult />
+				</button>
+			</div>
 		{/if}
 	</div>
 </div>

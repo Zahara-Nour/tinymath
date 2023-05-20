@@ -197,6 +197,30 @@ async function useVipCard(card: VipCard, student: StudentProfile) {
 	}
 }
 
+async function addVipCard(card: VipCard, student: StudentProfile) {
+	const newWallet = [...student.vips]
+	const vipCard = newWallet.find(({ card: c }) => c.name === card.name)
+	if (vipCard) {
+		vipCard.count++
+	} else {
+		newWallet.push({ card, count: 1 })
+	}
+	console.log('new wallet', newWallet)
+
+	const result = await DB_updateStudentVipWallet(db, student.id, newWallet)
+	console.log('result', result)
+	if (result.error) {
+		console.log(result.error.message)
+
+		return new Error(
+			"La carte VIP n'a pas pu être ajoutée : " + result.error.message,
+		)
+	} else {
+		student.vips = newWallet
+		return null
+	}
+}
+
 async function drawVipCards(student: StudentProfile, n = 1, gidouilles = 3) {
 	const draws: VipCard[] = []
 	const newWallet = [...student.vips]
@@ -254,5 +278,5 @@ async function drawVipCards(student: StudentProfile, n = 1, gidouilles = 3) {
 		return { error: null, draws }
 	}
 }
-export { useVipCard, drawVipCards }
+export { useVipCard, drawVipCards, addVipCard }
 export default cardPool

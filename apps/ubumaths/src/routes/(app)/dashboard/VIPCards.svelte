@@ -90,7 +90,12 @@
 	<section class="p-4 flex flex-col w-full max-w-full shadow-md">
 		{#if Object.keys(commons).length}
 			<VipCardsByCategory
-				on:updateVips={() => updateCards(student.vips)}
+				on:updateVips={() => {
+					updateCards(student.vips)
+					dispatch('updateVips', {
+						text: 'Vips updated',
+					})
+				}}
 				{short}
 				{student}
 				{db}
@@ -101,7 +106,12 @@
 		{/if}
 		{#if Object.keys(uncommons).length}
 			<VipCardsByCategory
-				on:updateVips={() => updateCards(student.vips)}
+				on:updateVips={() => {
+					updateCards(student.vips)
+					dispatch('updateVips', {
+						text: 'Vips updated',
+					})
+				}}
 				{short}
 				{student}
 				{db}
@@ -112,7 +122,12 @@
 		{/if}
 		{#if Object.keys(rares).length}
 			<VipCardsByCategory
-				on:updateVips={() => updateCards(student.vips)}
+				on:updateVips={() => {
+					updateCards(student.vips)
+					dispatch('updateVips', {
+						text: 'Vips updated',
+					})
+				}}
 				{short}
 				{student}
 				{db}
@@ -123,7 +138,12 @@
 		{/if}
 		{#if Object.keys(legendaries).length}
 			<VipCardsByCategory
-				on:updateVips={() => updateCards(student.vips)}
+				on:updateVips={() => {
+					updateCards(student.vips)
+					dispatch('updateVips', {
+						text: 'Vips updated',
+					})
+				}}
 				{short}
 				{student}
 				{db}
