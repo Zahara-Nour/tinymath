@@ -2,7 +2,7 @@
 	import generate, {
 		generateQuestionsFromBasket,
 	} from '$lib/questions/generateQuestion'
-	import { onDestroy, setContext } from 'svelte'
+	import { afterUpdate, onDestroy, onMount, setContext } from 'svelte'
 	import questions, {
 		questions_ids,
 		getQuestion,

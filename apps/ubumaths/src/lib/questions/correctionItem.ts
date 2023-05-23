@@ -107,7 +107,7 @@ export function createCorrection(item: CorrectedQuestion) {
 	const regexAns = /&ans([1-9]?)/g
 	function replaceAnsCorrect(match: string, p1: number) {
 		return (
-			`\\enclose{roundedbox}[3px solid ${correct_color}, padding="auto"]{\\textcolor{${correct_color}}{` +
+			`\\enclose{roundedbox}[3px solid ${correct_color}]{\\textcolor{${correct_color}}{` +
 			answers_latex[p1 ? p1 - 1 : 0] +
 			'}}'
 		)
@@ -135,7 +135,7 @@ export function createCorrection(item: CorrectedQuestion) {
 	function replaceSol(match: string, p1: number) {
 		return item.type === 'choice'
 			? (item.choices[solutions[p1 ? p1 - 1 : 0] as number].text as string)
-			: `\\enclose{roundedbox}[3px solid ${correct_color}, padding="6"]{\\textcolor{${correct_color}}{` +
+			: `\\enclose{roundedbox}[3px solid ${correct_color}]{\\textcolor{${correct_color}}{` +
 					solutions_latex[p1 ? p1 - 1 : 0] +
 					'}}'
 	}
@@ -262,12 +262,12 @@ export function createCorrection(item: CorrectedQuestion) {
 					text += `&= \\textcolor{${unoptimal_color}}{${answers_latex[0]}} \\\\`
 				}
 				if (status === STATUS_CORRECT) {
-					text += `&=\\enclose{roundedbox}[2px solid ${correct_color}, padding='2']{\\textcolor{${correct_color}}{${answers_latex[0]}}}`
+					text += `&=\\enclose{roundedbox}[2px solid ${correct_color}]{\\textcolor{${correct_color}}{${answers_latex[0]}}}`
 				} else {
-					text += `&=\\enclose{roundedbox}[2px solid ${correct_color}, padding='2']{\\textcolor{${correct_color}}{${solutions_latex[0]}}}`
+					text += `&=\\enclose{roundedbox}[2px solid ${correct_color}]{\\textcolor{${correct_color}}{${solutions_latex[0]}}}`
 				}
 				text += '\\end{align*}$$'
-				// }
+
 				console.log('expression', expression)
 				console.log('solutions[0]', solutions[0])
 				let texmacs = ''

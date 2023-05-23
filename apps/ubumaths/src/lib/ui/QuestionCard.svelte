@@ -2,12 +2,7 @@
 	import BackCard from './BackCard.svelte'
 	import FrontCard from './FrontCard.svelte'
 	// import { fontSize } from '$lib/stores'
-	import type {
-		AnsweredQuestion,
-		Commit,
-		CorrectedQuestion,
-		Line,
-	} from '../../types/type'
+	import type { AnsweredQuestion, Commit, Line } from '../../types/type'
 
 	export let card: AnsweredQuestion
 	export let interactive = false

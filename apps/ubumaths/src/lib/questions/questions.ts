@@ -23,8 +23,6 @@ import { objectMap } from '../utils'
 import type { Ids, Question, Questions, QuestionWithID } from '../../types/type'
 
 export const QUESTION_TYPE_FILL_IN = 'fill in'
-export const QUESTION_TYPE_EQUATION = 'equation'
-export const QUESTION_TYPE_ENONCE = 'enonce'
 export const QUESTION_TYPE_CHOICE = 'choice'
 export const QUESTION_TYPE_CHOICES = 'choices'
 export const QUESTION_TYPE_RESULT = 'result'
@@ -4957,7 +4955,7 @@ const questions: Questions = {
 					variabless: [
 						{ '&1': '$e[2;9]', '&2': '$e[2;10]', '&3': '$e[1;&1-1]' },
 					],
-					expressions: ['[_&1*&2+&3_]=(&1*?)+?'],
+					answerFields: ['$$[_&1\\times&2+&3_]=(&1\\times...)+...$$'],
 					solutionss: [['&2', '&3']],
 					defaultDelay: 30,
 					correctionFormats: [
@@ -5298,7 +5296,6 @@ const questions: Questions = {
 						},
 					],
 
-					type: QUESTION_TYPE_ENONCE,
 					defaultDelay: 20,
 					grade: SIXIEME,
 				},
@@ -5329,7 +5326,6 @@ const questions: Questions = {
 						},
 					],
 					options: ['no-penalty-for-explicit-products'],
-					type: QUESTION_TYPE_ENONCE,
 					defaultDelay: 20,
 					grade: CINQUIEME,
 				},
@@ -18256,7 +18252,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_EQUATION,
+
 					defaultDelay: 30,
 					grade: CINQUIEME,
 				},
@@ -18283,7 +18279,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_EQUATION,
+
 					defaultDelay: 30,
 					grade: CINQUIEME,
 				},
@@ -18310,7 +18306,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_EQUATION,
+
 					defaultDelay: 30,
 					grade: CINQUIEME,
 				},
@@ -18347,7 +18343,6 @@ const questions: Questions = {
 					],
 					solutionss: [['&2']],
 
-					type: QUESTION_TYPE_EQUATION,
 					defaultDelay: 30,
 					grade: CINQUIEME,
 				},
@@ -18363,7 +18358,7 @@ const questions: Questions = {
 						},
 					],
 					solutionss: [['[_&1*&2_]']],
-					type: QUESTION_TYPE_EQUATION,
+
 					correctionDetailss: [
 						[
 							{
@@ -18405,7 +18400,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_EQUATION,
+
 					defaultDelay: 30,
 					grade: CINQUIEME,
 				},
@@ -18434,7 +18429,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_EQUATION,
+
 					defaultDelay: 30,
 					grade: CINQUIEME,
 				},
@@ -18492,7 +18487,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_EQUATION,
+
 					defaultDelay: 30,
 					grade: CINQUIEME,
 				},
@@ -18519,7 +18514,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_EQUATION,
+
 					defaultDelay: 30,
 					grade: CINQUIEME,
 				},
@@ -18560,7 +18555,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_EQUATION,
+
 					defaultDelay: 30,
 					grade: CINQUIEME,
 				},
@@ -18632,7 +18627,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_EQUATION,
+
 					defaultDelay: 30,
 					grade: QUATRIEME,
 				},
@@ -18672,7 +18667,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_EQUATION,
+
 					defaultDelay: 30,
 					grade: QUATRIEME,
 				},
@@ -18709,7 +18704,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_EQUATION,
+
 					defaultDelay: 30,
 					grade: QUATRIEME,
 				},
@@ -18750,7 +18745,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_EQUATION,
+
 					defaultDelay: 30,
 					grade: CINQUIEME,
 				},
@@ -18779,7 +18774,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_EQUATION,
+
 					defaultDelay: 30,
 					grade: CINQUIEME,
 				},
@@ -18808,7 +18803,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_EQUATION,
+
 					defaultDelay: 30,
 					grade: CINQUIEME,
 				},
@@ -18923,7 +18918,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_EQUATION,
+
 					defaultDelay: 30,
 					grade: QUATRIEME,
 				},
@@ -18953,7 +18948,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_EQUATION,
+
 					defaultDelay: 30,
 					grade: QUATRIEME,
 				},
@@ -19000,7 +18995,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_EQUATION,
+
 					defaultDelay: 30,
 					grade: QUATRIEME,
 				},
@@ -19043,7 +19038,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_EQUATION,
+
 					defaultDelay: 30,
 					grade: QUATRIEME,
 				},
@@ -19167,7 +19162,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_EQUATION,
+
 					defaultDelay: 30,
 					grade: QUATRIEME,
 				},
@@ -19198,7 +19193,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_EQUATION,
+
 					defaultDelay: 30,
 					grade: QUATRIEME,
 				},
@@ -19245,7 +19240,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_EQUATION,
+
 					defaultDelay: 30,
 					grade: QUATRIEME,
 				},
@@ -19277,7 +19272,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_EQUATION,
+
 					defaultDelay: 30,
 					grade: QUATRIEME,
 				},
@@ -19311,7 +19306,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_EQUATION,
+
 					defaultDelay: 30,
 					grade: QUATRIEME,
 				},

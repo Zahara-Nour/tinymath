@@ -3,12 +3,7 @@
 	import Question from './Question.svelte'
 	import { formatLatexToHtml } from '$lib/stores'
 	import { formatToLatex } from '$lib/utils'
-	import type {
-		AnsweredQuestion,
-		Commit,
-		CorrectedQuestion,
-		Line,
-	} from '../../types/type'
+	import type { AnsweredQuestion, Commit, Line } from '../../types/type'
 	import IconOrbitVariant from '$lib/icones/IconOrbitVariant.svelte'
 
 	export let toggleFlip = () => {}
