@@ -22,10 +22,30 @@ import {
 import { objectMap } from '../utils'
 import type { Ids, Question, Questions, QuestionWithID } from '../../types/type'
 
-export const QUESTION_TYPE_FILL_IN = 'fill in'
-export const QUESTION_TYPE_CHOICE = 'choice'
-export const QUESTION_TYPE_CHOICES = 'choices'
-export const QUESTION_TYPE_RESULT = 'result'
+// Les questions doivent-être structurées afin de pouvoir générer des fiches d'exercices
+// sans avoir à répéter la même consigne pour un même type de question.
+// Une question peut contenir une expression mathématique générée aléatoirement
+// et qui est mise en valeur à l'écran afin de centrer l'attention. Cette expression :
+//
+//   - peut être une donnée liée à l'énoncé de la question : un champ réponse doit être ajouté
+//     (et l'expression est affichée), vide ou non selon le type de question.
+//     Les solutions sont données explicitement ou un test de vérification est fourni.
+//
+//   - peut être un calcul à effectuer : le champ réponse est construit à partir de
+//      cette expression en rajoutant '=?' à la fin (et l'expression n'est pas affichée).
+//     La solution est calculé à partir de l'expression.
+//
+//   - peut être une expression à compléter (elle contient alors des ?) : les ?
+//     sont remplacés par des champs de saisie. Si un  test de vérification n'est pas fourni,
+//     les solutions sont explicitement données.
+// Dans tous les cas si un answerField est présent, c'est lui qui définit la forme
+// du champ réponse.
+
+// Types de questions :
+// - choix multiples
+// - choix multiples avec plusieurs réponses possibles
+// - réponse à saisir :
+//   -
 
 // OPTIONS
 //
@@ -1142,7 +1162,7 @@ const questions: Questions = {
 					expressions: ['?+&1=10', '&1+?=10'],
 					solutionss: [['[_10-&1_]']],
 					variabless: [{ '&1': '$e[1;9]' }],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 20,
 					grade: CP,
 				},
@@ -1153,7 +1173,7 @@ const questions: Questions = {
 					expressions: ['?+[_&3-&2_]=&3', '[_&3-&2_]+?=&3'],
 					solutionss: [['&2']],
 					variabless: [{ '&1': '$e[2;9]', '&2': '$e[1;9]', '&3': '[_&1*10_]' }],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 10,
 					grade: CE1,
 				},
@@ -1164,7 +1184,7 @@ const questions: Questions = {
 					expressions: ['?+&2=[_&1*10_]', '&2+?=[_&1*10_]'],
 					solutionss: [['[_&1*10-&2_]']],
 					variabless: [{ '&1': '$e[2;9]', '&2': '$e[2;&1*10-2]' }],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 20,
 					grade: CE1,
 				},
@@ -1175,7 +1195,7 @@ const questions: Questions = {
 					expressions: ['?+&2=100', '&2+?=100'],
 					solutionss: [['[_100-&2_]']],
 					variabless: [{ '&1': '$e[1;9]', '&2': '[_10*&1_]' }],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 10,
 					grade: CE1,
 				},
@@ -1193,7 +1213,7 @@ const questions: Questions = {
 							'&4': '[_&1*100_]',
 						},
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 15,
 					grade: CE1,
 				},
@@ -1204,7 +1224,7 @@ const questions: Questions = {
 					expressions: ['?+&1=100', '&1+?=100'],
 					solutionss: [['[_100-&1_]']],
 					variabless: [{ '&1': '$e[1;99]' }],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 20,
 					grade: CE2,
 				},
@@ -1215,7 +1235,7 @@ const questions: Questions = {
 					expressions: ['?+&1=1000', '&1+?=1000'],
 					solutionss: [['[_1000-&1_]']],
 					variabless: [{ '&1': '$e[1;999]' }],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 20,
 					grade: CE2,
 				},
@@ -1228,7 +1248,7 @@ const questions: Questions = {
 					variabless: [
 						{ '&1': '$e[2;9]', '&3': '$e[1;999]', '&4': '[_&1*1000_]' },
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 20,
 					grade: CE2,
 				},
@@ -1241,7 +1261,7 @@ const questions: Questions = {
 					variabless: [
 						{ '&1': '$e[1;9]', '&2': '$e[1;9]', '&3': '&1*1000+&2*100' },
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 20,
 					grade: CM1,
 				},
@@ -1279,7 +1299,7 @@ const questions: Questions = {
 							//  '&3':'$e[2;&2]'
 						},
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&2']],
 					defaultDelay: 5,
 					grade: CP,
@@ -1300,7 +1320,7 @@ const questions: Questions = {
 						{ '&1': '$e[5;7]', '&2': '$e[2;9-&1]' },
 						{ '&1': '$e[2;4]', '&2': '$e[2;9-&1]' },
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&2']],
 					defaultDelay: 15,
 					grade: CP,
@@ -1317,7 +1337,7 @@ const questions: Questions = {
 							//  '&3':'$e[2;&2]'
 						},
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&2']],
 					defaultDelay: 10,
 					grade: CP,
@@ -1383,7 +1403,7 @@ const questions: Questions = {
 							'&4': '$e[2;9-&2]',
 						},
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [
 						['[_&3*10 + &4_]'],
 						['[_&3*10 + &4_]'],
@@ -1410,7 +1430,7 @@ const questions: Questions = {
 							'&3': '$e[11-&2;9]',
 						},
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&3']],
 					defaultDelay: 20,
 					grade: CP,
@@ -1428,7 +1448,7 @@ const questions: Questions = {
 							'&3': '$e[1;9-&1]',
 						},
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['[_&3*10_]']],
 					defaultDelay: 10,
 					grade: CP,
@@ -1439,7 +1459,7 @@ const questions: Questions = {
 					enounces: ['Complète.'],
 					expressions: ['&1+? = [_&1+&2_]', '?+&1 = [_&1+&2_]'],
 					variabless: [{ '&1': '$e[2;9]', '&2': '$e[2;9]' }],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&2']],
 					defaultDelay: 15,
 					grade: CE1,
@@ -1458,7 +1478,7 @@ const questions: Questions = {
 							'&4': '$e[1;9-&2]',
 						},
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['[_&3*10+&4_]']],
 					defaultDelay: 15,
 					grade: CE1,
@@ -1480,7 +1500,7 @@ const questions: Questions = {
 							'&5': '$e[1;9]',
 						},
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['[_&5*10^&4_]']],
 					defaultDelay: 15,
 					grade: CE1,
@@ -1492,7 +1512,7 @@ const questions: Questions = {
 					enounces: ['Complète.'],
 					expressions: ['&1 + ? =  [_&2+&1_]', '? + &2 = [_&2+&1_]'],
 					variabless: [{ '&1': '$e[1;98]', '&2': '$e[1;99-&1]' }],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&2'], ['&1']],
 					defaultDelay: 20,
 					grade: CE2,
@@ -1515,7 +1535,7 @@ const questions: Questions = {
 							'&6': '$e[1;9]',
 						},
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['[_&6*10^&5_]']],
 					defaultDelay: 15,
 					grade: CE2,
@@ -1533,7 +1553,7 @@ const questions: Questions = {
 							'&4': '$e[11-&2;9]',
 						},
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['[_&3*10+&4_]']],
 					defaultDelay: 15,
 					grade: CM1,
@@ -1555,7 +1575,7 @@ const questions: Questions = {
 							'&6': '$e[1;9-&3]',
 						},
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['[_&4*100 + &5*10 + &6_]']],
 					defaultDelay: 30,
 					grade: CM2,
@@ -1605,7 +1625,7 @@ const questions: Questions = {
 				// 			'&6': '&3*10 + &4',
 				// 		},
 				// 	],
-				// 	type: QUESTION_TYPE_FILL_IN,
+
 				// 	solutionss: [['[_&6_]']],
 				// 	defaultDelay: 20,
 				// 	grade: UNKNOWN,
@@ -1638,7 +1658,7 @@ const questions: Questions = {
 				// 		},
 				// 	],
 				// 	solutionss: [['[_&8_]']],
-				// 	type: QUESTION_TYPE_FILL_IN,
+
 				// 	defaultDelay: 20,
 				// 	grade: UNKNOWN,
 				// },
@@ -1649,7 +1669,7 @@ const questions: Questions = {
 				// 	expressions: ['?+&1 = &2', '&1+? = &2'],
 				// 	solutionss: [['[_&2-&1_]']],
 				// 	variabless: [{ '&1': '$e[2;9]', '&2': '$e[11;&1+9]' }],
-				// 	type: QUESTION_TYPE_FILL_IN,
+
 				// 	defaultDelay: 20,
 				// 	grade: UNKNOWN,
 				// },
@@ -1660,7 +1680,7 @@ const questions: Questions = {
 				// 	expressions: ['?+&1 = &2', '&1+? = &2'],
 				// 	solutionss: [['[_&2-&1_]']],
 				// 	variabless: [{ '&1': '$e{2;2}', '&2': '$e[&1+12;&1+99]' }],
-				// 	type: QUESTION_TYPE_FILL_IN,
+
 				// 	defaultDelay: 20,
 				// 	grade: UNKNOWN,
 				// },
@@ -1671,7 +1691,7 @@ const questions: Questions = {
 				// 	expressions: ['?+&1 = &2', '&1+? = &2'],
 				// 	solutionss: [['[_&2-&1_]', '[_&2-&1_]']],
 				// 	variabless: [{ '&1': '$e[101;897]', '&2': '$e[&1+102;999]' }],
-				// 	type: QUESTION_TYPE_FILL_IN,
+
 				// 	defaultDelay: 30,
 				// 	grade: UNKNOWN,
 				// },
@@ -2525,7 +2545,7 @@ const questions: Questions = {
 						{ '&1': '$e[2;9]', '&2': '$e[1;&1-1]' },
 					],
 					solutionss: [['[_&1+&2_]'], ['[_&1-&2_]']],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 20,
 					grade: CP,
 				},
@@ -2542,7 +2562,7 @@ const questions: Questions = {
 							'&3': '$e[&2+1;9]',
 						},
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&2']],
 					defaultDelay: 10,
 					grade: CP,
@@ -2559,7 +2579,7 @@ const questions: Questions = {
 							'&3': '$e[0;9]',
 						},
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['[_&1*10_]']],
 					defaultDelay: 10,
 					grade: CP,
@@ -2576,7 +2596,7 @@ const questions: Questions = {
 							'&2': '$e[11-&1;9]',
 						},
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&1']],
 					defaultDelay: 15,
 					grade: CE1,
@@ -2594,7 +2614,7 @@ const questions: Questions = {
 							'&3': '$e[&2+1;9]',
 						},
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&3']],
 					defaultDelay: 15,
 					grade: CE1,
@@ -2616,7 +2636,7 @@ const questions: Questions = {
 							'&5': '$e[0;&3-1]',
 						},
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['[_ &4*10 + &5 _]']],
 					defaultDelay: 15,
 					grade: CE1,
@@ -2636,7 +2656,7 @@ const questions: Questions = {
 							'&4': '$e[1;&1-1]',
 						},
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['[_&4*100_]']],
 					defaultDelay: 15,
 					grade: CE1,
@@ -2660,7 +2680,7 @@ const questions: Questions = {
 							'&7': '$e[1;&4-1]',
 						},
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['[_ &5*100 + &6*10+&7 _]']],
 					defaultDelay: 15,
 					grade: CE1,
@@ -2712,7 +2732,7 @@ const questions: Questions = {
 							'&5': '$e[1;9]',
 						},
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [
 						['[_&5*100_]'],
 						['[_&5*10_]'],
@@ -2749,7 +2769,7 @@ const questions: Questions = {
 				// 		['[_ &1*10 + &2 -  ( &3*10 + &4) _]'],
 				// 		['[_ &1*10 + &2 + &3*10 + &4 _]'],
 				// 	],
-				// 	type: QUESTION_TYPE_FILL_IN,
+
 				// 	defaultDelay: 15,
 				// 	grade: UNKNOWN,
 				// },
@@ -2784,7 +2804,6 @@ const questions: Questions = {
 				// 		['[_ &1*100 + &2*10 + &3 + &4*100 + &5*10 + &6 _]'],
 				// 	],
 
-				// 	type: QUESTION_TYPE_FILL_IN,
 				// 	defaultDelay: 20,
 				// 	grade: UNKNOWN,
 				// },
@@ -2801,7 +2820,6 @@ const questions: Questions = {
 				// 	],
 				// 	solutionss: [['&1'], ['[_&1+&2_]']],
 
-				// 	type: QUESTION_TYPE_FILL_IN,
 				// 	defaultDelay: 15,
 				// 	grade: UNKNOWN,
 				// },
@@ -2831,7 +2849,7 @@ const questions: Questions = {
 				// 		['[_ &1*10 + &4 - (&3*10 + &2 )_]'],
 				// 		['[_ &1*10 + &2 + &3*10 + &4 _]'],
 				// 	],
-				// 	type: QUESTION_TYPE_FILL_IN,
+
 				// 	defaultDelay: 15,
 				// 	grade: UNKNOWN,
 				// },
@@ -2866,7 +2884,6 @@ const questions: Questions = {
 				// 		['[_&1*100 + &2*10 + &3 + &4*100 + &5*10 + &6_]'],
 				// 	],
 
-				// 	type: QUESTION_TYPE_FILL_IN,
 				// 	defaultDelay: 20,
 				// 	grade: UNKNOWN,
 				// },
@@ -3715,7 +3732,7 @@ const questions: Questions = {
 					expressions: ['?*2=[_&1*2_]', '2*?=[_&1*2_]'],
 					variabless: [{ '&1': '$e[2;9]' }],
 					solutionss: [['&1']],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 10,
 					grade: CE1,
 				},
@@ -3726,7 +3743,7 @@ const questions: Questions = {
 					expressions: ['?*3=[_&1*3_]', '3*?=[_&1*3_]'],
 					variabless: [{ '&1': '$e[2;9]' }],
 					solutionss: [['&1']],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 10,
 					grade: CE1,
 				},
@@ -3737,7 +3754,7 @@ const questions: Questions = {
 					expressions: ['?*4=[_&1*4_]', '4*?=[_&1*4_]'],
 					variabless: [{ '&1': '$e[2;9]' }],
 					solutionss: [['&1']],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 10,
 					grade: CE1,
 				},
@@ -3748,7 +3765,7 @@ const questions: Questions = {
 					expressions: ['?*5=[_&1*5_]', '5*?=[_&1*5_]'],
 					variabless: [{ '&1': '$e[2;9]' }],
 					solutionss: [['&1']],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 10,
 					grade: CE1,
 				},
@@ -3759,7 +3776,7 @@ const questions: Questions = {
 					expressions: ['?*6=[_&1*6_]', '6*?=[_&1*6_]'],
 					variabless: [{ '&1': '$e[2;9]' }],
 					solutionss: [['&1']],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 10,
 					grade: CE2,
 				},
@@ -3770,7 +3787,7 @@ const questions: Questions = {
 					expressions: ['?*7=[_&1*7_]', '7*?=[_&1*7_]'],
 					variabless: [{ '&1': '$e[2;9]' }],
 					solutionss: [['&1']],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 10,
 					grade: CE2,
 				},
@@ -3781,7 +3798,7 @@ const questions: Questions = {
 					expressions: ['?*8=[_&1*8_]', '8*?=[_&1*8_]'],
 					variabless: [{ '&1': '$e[2;9]' }],
 					solutionss: [['&1']],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 10,
 					grade: CE2,
 				},
@@ -3792,7 +3809,7 @@ const questions: Questions = {
 					expressions: ['?*9=[_&1*9_]', '9*?=[_&1*9_]'],
 					variabless: [{ '&1': '$e[2;9]' }],
 					solutionss: [['&1']],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 10,
 					grade: CE2,
 				},
@@ -3803,7 +3820,7 @@ const questions: Questions = {
 					expressions: ['?*&1=[_&1*&2_]', '&1*?=[_&1*&2_]'],
 					variabless: [{ '&1': '$e[2;9]', '&2': '$e[3;9]' }],
 					solutionss: [['&2']],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 20,
 					grade: CE2,
 				},
@@ -3813,7 +3830,7 @@ const questions: Questions = {
 					enounces: ['Complète.'],
 					expressions: ['?*20=[_&1*20_]', '20*?=[_20*&1_]'],
 					variabless: [{ '&1': '$e[0;9]' }],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&1']],
 					defaultDelay: 20,
 					grade: CE2,
@@ -3824,7 +3841,7 @@ const questions: Questions = {
 					enounces: ['Complète.'],
 					expressions: ['?*20=[_&1*20_]', '20*?=[_20*&1_]'],
 					variabless: [{ '&1': '$l{$e[11;15];$e[15;20];25;30;40;50}' }],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&1']],
 					defaultDelay: 20,
 					grade: CE2,
@@ -3839,7 +3856,7 @@ const questions: Questions = {
 						'?*[_&1*10_] = [_&2*&1*10_]',
 					],
 					variabless: [{ '&1': '$e[3;9]', '&2': '$e[2;9]' }],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&2']],
 					defaultDelay: 15,
 					grade: CM1,
@@ -3851,7 +3868,7 @@ const questions: Questions = {
 					enounces: ['Complète.'],
 					expressions: ['?*&2 = [_&1*10*&2_]', '&2*? = [_&2*&1*10_]'],
 					variabless: [{ '&1': '$e[3;9]', '&2': '$e[2;9]' }],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['[_&1*10_]']],
 					defaultDelay: 15,
 					grade: CM1,
@@ -3881,7 +3898,7 @@ const questions: Questions = {
 						'?*[_&1*10_]=[_&2*10*&1*10_]',
 					],
 					variabless: [{ '&1': '$e[2;9]', '&2': '$e[2;9]' }],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['[_&2*10_]']],
 					defaultDelay: 15,
 					grade: CM1,
@@ -3891,7 +3908,7 @@ const questions: Questions = {
 					subdescription: 'Premiers multiples de $$25$$ et $$50$$',
 					enounces: ['Complète.'],
 					expressions: ['?*50=[_&1*50_]', '?*25=[_&1*25_]'],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&1']],
 					variabless: [{ '&1': '$e[0;4]' }],
 					defaultDelay: 10,
@@ -3915,7 +3932,7 @@ const questions: Questions = {
 						},
 					],
 					solutionss: [['[_&3*10^&4_]']],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 20,
 					grade: CM2,
 				},
@@ -3963,7 +3980,7 @@ const questions: Questions = {
 					],
 
 					options: ['exhaust'],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 20,
 					grade: CM2,
 				},
@@ -3972,7 +3989,7 @@ const questions: Questions = {
 					subdescription: 'Multiplication par $$50$$',
 					enounces: ['Complète.'],
 					expressions: ['?*50=[_(&1*2+1)*50_]', '?*50 = [_&1*2*50_]'],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['[_&1*2+1_]'], ['[_&1*2_]']],
 					variabless: [{ '&1': '$e[1;6]' }],
 					defaultDelay: 20,
@@ -3983,7 +4000,7 @@ const questions: Questions = {
 					subdescription: 'Multiplication par $$25$$',
 					enounces: ['Complète.'],
 					expressions: ['?*25=[_(&1*4+&2)*25_]', '?*25=[_&1*4*25_]'],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['[_&1*4+&2_]'], ['[_&1*4_]']],
 					variabless: [{ '&1': '$e[2;5]', '&2': '$e[1;3]' }],
 					defaultDelay: 20,
@@ -4583,7 +4600,7 @@ const questions: Questions = {
 					expressions: ['?:&2=&1'],
 					variabless: [{ '&1': '$e[2;9]', '&2': '$e[2;9]' }],
 					solutionss: [['[_&1*&2_]']],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 20,
 					grade: CE2,
 				},
@@ -4594,7 +4611,7 @@ const questions: Questions = {
 					expressions: ['[_&1*&2_]:?=&1'],
 					variabless: [{ '&1': '$e[2;9]', '&2': '$e[2;9]' }],
 					solutionss: [['&2']],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 20,
 					grade: CE2,
 				},
@@ -4963,7 +4980,7 @@ const questions: Questions = {
 							correct: ['$$[_&1*&2+&3_]=(&1\\times &ans1) + &ans2$$'],
 						},
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					options: ['no-penalty-for-extraneous-brackets'],
 					grade: CE2,
 				},
@@ -5877,7 +5894,7 @@ const questions: Questions = {
 							correct: ['$$&ans1<&3<&ans2$$'],
 						},
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 20,
 					grade: CM1,
 				},
@@ -5900,7 +5917,7 @@ const questions: Questions = {
 							correct: ['$$&ans1<[°&4°]<&ans2$$'],
 						},
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					options: ['no-penalty-for-extraneous-zeros'],
 					defaultDelay: 20,
 					grade: CM1,
@@ -5927,7 +5944,7 @@ const questions: Questions = {
 							correct: ['$$&ans1<[°&5°]<&ans2$$'],
 						},
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					options: ['no-penalty-for-extraneous-zeros'],
 					defaultDelay: 20,
 					grade: CM1,
@@ -6033,7 +6050,7 @@ const questions: Questions = {
 						},
 					],
 					expressions: ['?+[._&1-&2_]=&1', '[._&1-&2_]+?=&1'],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&2']],
 					defaultDelay: 15,
 					grade: CM1,
@@ -6054,7 +6071,7 @@ const questions: Questions = {
 						},
 					],
 					expressions: ['&3+?=[._&3+&6_]', '?+&3=[._&3+&6_]'],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&6']],
 					'result-type': 'decimal',
 					defaultDelay: 20,
@@ -6078,7 +6095,7 @@ const questions: Questions = {
 					],
 					expressions: ['&3+?=[._&7+&3_]', '?+&3=[._&7+&3_]'],
 					solutionss: [['&7']],
-					type: QUESTION_TYPE_FILL_IN,
+
 					'result-type': 'decimal',
 					defaultDelay: 20,
 					grade: CM1,
@@ -6099,7 +6116,7 @@ const questions: Questions = {
 						},
 					],
 					expressions: ['&3+?=[._&6+&3_]', '?+&3=[._&6+&3_]'],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&6']],
 					'result-type': 'decimal',
 					defaultDelay: 20,
@@ -6122,7 +6139,7 @@ const questions: Questions = {
 					],
 					expressions: ['&3+?=[._&6+&3_]', '?+&3=[._&6+&3_]'],
 					solutionss: [['&6']],
-					type: QUESTION_TYPE_FILL_IN,
+
 					'result-type': 'decimal',
 					defaultDelay: 20,
 					grade: CM1,
@@ -6410,7 +6427,7 @@ const questions: Questions = {
 					],
 
 					'result-type': 'decimal',
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 20,
 					grade: SIXIEME,
 				},
@@ -7163,7 +7180,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&1']],
 
 					defaultDelay: 15,
@@ -7193,7 +7210,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&3']],
 					// 'result-type': 'decimal',
 					defaultDelay: 15,
@@ -7221,7 +7238,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&1']],
 					defaultDelay: 15,
 					grade: CM1,
@@ -7248,7 +7265,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&1']],
 					// 'result-type': 'decimal',
 					defaultDelay: 15,
@@ -7276,7 +7293,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&1']],
 					defaultDelay: 15,
 					grade: CM1,
@@ -7307,7 +7324,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&2']],
 					// 'result-type': 'decimal',
 					defaultDelay: 20,
@@ -7326,7 +7343,7 @@ const questions: Questions = {
 						},
 					],
 					expressions: ['?*0,1 = [._&3*0,1_]', '0,1*? = [._0,1*&3_]'],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&3']],
 					correctionDetailss: [
 						[
@@ -7368,7 +7385,7 @@ const questions: Questions = {
 						],
 					],
 					expressions: ['?*0,01 = [._&3*0,01_]', '0,01*? = [._0,01*&3_]'],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&3']],
 					// 'result-type': 'decimal',
 					defaultDelay: 15,
@@ -7398,7 +7415,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&3']],
 					// 'result-type': 'decimal',
 					defaultDelay: 15,
@@ -7431,7 +7448,7 @@ const questions: Questions = {
 						],
 					],
 					solutionss: [['&2']],
-					type: QUESTION_TYPE_FILL_IN,
+
 					// 'result-type': 'decimal',
 					defaultDelay: 20,
 					grade: SIXIEME,
@@ -7592,7 +7609,7 @@ const questions: Questions = {
 						},
 					],
 					expressions: ['?:10 = [._&1:10_]'],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&1']],
 					// 'result-type': 'decimal',
 					defaultDelay: 15,
@@ -7608,7 +7625,7 @@ const questions: Questions = {
 						},
 					],
 					expressions: ['?:100 = [._&1:100_]'],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&1']],
 					// 'result-type': 'decimal',
 					defaultDelay: 15,
@@ -7625,7 +7642,7 @@ const questions: Questions = {
 						},
 					],
 					expressions: ['?:1000 = [._&2:1000_]'],
-					type: QUESTION_TYPE_FILL_IN,
+
 					// 'result-type': 'decimal',
 					solutionss: [['&2']],
 					defaultDelay: 15,
@@ -7642,7 +7659,7 @@ const questions: Questions = {
 						},
 					],
 					expressions: ['?:[_10^&1_]=[._&2:10^&1_]'],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&2']],
 					// 'result-type': 'decimal',
 					defaultDelay: 20,
@@ -7661,7 +7678,7 @@ const questions: Questions = {
 						},
 					],
 					expressions: ['?:[._&2_] = [._&3:&2_]', '?:[._&2_] = [._&1:&2_]'],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['[._&3_]'], ['&1']],
 					// 'result-type': 'decimal',
 					defaultDelay: 20,
@@ -7765,7 +7782,7 @@ const questions: Questions = {
 				// 			correct: ['$$-&2 &ans -&1$$'],
 				// 		},
 				// 	],
-				// 	type: QUESTION_TYPE_FILL_IN,
+
 				// 	defaultDelay: 20,
 				// 	grade: CINQUIEME,
 				// },
@@ -7829,7 +7846,7 @@ const questions: Questions = {
 				// 			correct: ['$$[._&6_] &ans [._&7_]$$'],
 				// 		},
 				// 	],
-				// 	type: QUESTION_TYPE_FILL_IN,
+
 				// 	defaultDelay: 20,
 				// 	grade: CINQUIEME,
 				// },
@@ -7892,7 +7909,6 @@ const questions: Questions = {
 						'relatifs/droite-graduee-operations/droite-graduee--4-4-600.png',
 					],
 
-					type: QUESTION_TYPE_FILL_IN,
 					solutionss: [['&2']],
 					options: [
 						'no-penalty-for-extraneous-brackets-in-first-negative-term',
@@ -7918,7 +7934,7 @@ const questions: Questions = {
 					images: [
 						'relatifs/droite-graduee-operations/droite-graduee--7-7-600.png',
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&2']],
 					options: [
 						'no-penalty-for-extraneous-brackets-in-first-negative-term',
@@ -8070,7 +8086,7 @@ const questions: Questions = {
 						['(-&2)'],
 						['(-&2)'],
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					options: [
 						'no-penalty-for-extraneous-brackets-in-first-negative-term',
 					],
@@ -8162,7 +8178,7 @@ const questions: Questions = {
 					variabless: [
 						{ '&1': '$e[2;9]', '&2': '$e[2;9]', '&3': '$e[1;&1-1]' },
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [['&2'], ['&2'], ['&1']],
 					defaultDelay: 20,
 					grade: CINQUIEME,
@@ -8301,7 +8317,7 @@ const questions: Questions = {
 						['(-&2)'],
 						['(-&2)'],
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 20,
 					grade: QUATRIEME,
 				},
@@ -8387,7 +8403,7 @@ const questions: Questions = {
 						'?:(-&2) = -&1',
 					],
 					variabless: [{ '&1': '$e[2;9]', '&2': '$e[2;9]' }],
-					type: QUESTION_TYPE_FILL_IN,
+
 					solutionss: [
 						['&2'],
 						['(-&2)'],
@@ -8412,7 +8428,7 @@ const questions: Questions = {
 					expressions: ['&2*?=&1', '?*&2=&1'],
 					variabless: [{ '&1': '$e[2;19]', '&2': '$e[2;19]\\{cd(&1)}' }],
 					solutionss: [['&1/&2']],
-					type: QUESTION_TYPE_FILL_IN,
+
 					correctionDetailss: [
 						[
 							{
@@ -8738,7 +8754,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 12000,
 					grade: SIXIEME,
 					help: `<section>
@@ -8797,7 +8813,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 20,
 					grade: CINQUIEME,
 				},
@@ -8841,7 +8857,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 20,
 					grade: CINQUIEME,
 				},
@@ -8885,7 +8901,7 @@ const questions: Questions = {
 							},
 						],
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 20,
 					grade: CINQUIEME,
 				},
@@ -9225,7 +9241,7 @@ const questions: Questions = {
 						},
 					],
 					solutionss: [['&1'], ['&3'], ['&2'], ['&3'], ['&1'], ['&2']],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 20,
 					grade: CINQUIEME,
 				},
@@ -9249,7 +9265,7 @@ const questions: Questions = {
 						},
 					],
 					solutionss: [['&1'], ['&3'], ['&2'], ['&3'], ['&1'], ['&2']],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 20,
 					grade: QUATRIEME,
 				},
@@ -9274,7 +9290,7 @@ const questions: Questions = {
 						},
 					],
 					solutionss: [['&1'], ['&3'], ['&2'], ['&4']],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 20,
 					grade: QUATRIEME,
 				},
@@ -9297,7 +9313,7 @@ const questions: Questions = {
 						},
 					],
 					solutionss: [['&1'], ['&3'], ['&2'], ['&4']],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 20,
 					grade: QUATRIEME,
 				},
@@ -10201,6 +10217,26 @@ const questions: Questions = {
 				},
 				{
 					description:
+						"Ecrire un nombre décimal à l'aide de la notation scientifique",
+					enounces: ['Ecris ce nombre en notation scientifique.'],
+					expressions: ['[._&1,&3*10^{&4}_]=?*10^?'],
+					solutionss: [['&1,&3', '&4']],
+					variabless: [
+						{
+							'&1': '$e[1;9]',
+							'&2': '$e[1;3]',
+							'&3': '$e{&2;&2}',
+							'&4': '$er[2;4]',
+						},
+					],
+					// bug de mathlive sur les puissances
+					// qui rajoute des parenthèses à l'exposant
+					options: ['no-penalty-for-extraneous-brackets'],
+					defaultDelay: 20,
+					grade: QUATRIEME,
+				},
+				{
+					description:
 						"Ecrire un nombre écrit avec une puissance de $$10$$ à l'aide de la notation scientifique",
 					enounces: ['Ecris ce nombre en notation scientifique.'],
 					expressions: ['[._&1,&3*10^{&4}_]*10^{&5}'],
@@ -10682,7 +10718,7 @@ const questions: Questions = {
 						['[._&1*0.01_]'],
 						['[._&1*0.001_]'],
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					'result-type': 'decimal',
 					defaultDelay: 20,
 					grade: SIXIEME,
@@ -11022,7 +11058,7 @@ const questions: Questions = {
 
 						['[._&1:10_]'],
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 20,
 					grade: SIXIEME,
 				},
@@ -11170,7 +11206,7 @@ const questions: Questions = {
 						['[._&1*0.01_]'],
 						['[._&1*0.01_]'],
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					'result-type': 'decimal',
 					defaultDelay: 20,
 					grade: SIXIEME,
@@ -11222,7 +11258,7 @@ const questions: Questions = {
 						['[._&1*0.001_]'],
 						['[._&1*0.001_]'],
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					'result-type': 'decimal',
 					defaultDelay: 20,
 					grade: SIXIEME,
@@ -12601,7 +12637,7 @@ const questions: Questions = {
 						['[._&1:1000_]'],
 						['[._&1*1000_]'],
 					],
-					type: QUESTION_TYPE_FILL_IN,
+
 					'result-type': 'decimal',
 					defaultDelay: 20,
 					grade: SIXIEME,
@@ -13673,7 +13709,7 @@ const questions: Questions = {
 					],
 					// units: ['min'],
 					// options: ['require-specific-unit'],
-					type: QUESTION_TYPE_FILL_IN,
+
 					'result-type': 'decimal',
 					defaultDelay: 20,
 					grade: QUATRIEME,
@@ -13722,7 +13758,7 @@ const questions: Questions = {
 					expressions: ['?^2=[_&1^2_]'],
 					variabless: [{ '&1': '$e[1;12]' }],
 					solutionss: [['&1']],
-					type: QUESTION_TYPE_FILL_IN,
+
 					defaultDelay: 10,
 					grade: CINQUIEME,
 				},

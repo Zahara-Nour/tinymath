@@ -21,14 +21,6 @@ import type {
 	STATUS_INCORRECT,
 	STATUS_UNOPTIMAL_FORM,
 } from '../lib/questions/correction.js'
-import {
-	QUESTION_TYPE_CHOICE,
-	QUESTION_TYPE_CHOICES,
-	QUESTION_TYPE_RESULT,
-	type QUESTION_TYPE_ENONCE,
-	type QUESTION_TYPE_EQUATION,
-	type QUESTION_TYPE_FILL_IN,
-} from '../lib/questions/questions.js'
 import { isInteger, isNumeric } from '../lib/utils.js'
 
 export type Option =
@@ -119,14 +111,6 @@ export type CorrectionDetail = {
 
 export type Letters = Record<string, string>
 
-export type QuestionType =
-	| typeof QUESTION_TYPE_FILL_IN
-	| typeof QUESTION_TYPE_EQUATION
-	| typeof QUESTION_TYPE_ENONCE
-	| typeof QUESTION_TYPE_CHOICE
-	| typeof QUESTION_TYPE_CHOICES
-	| typeof QUESTION_TYPE_RESULT
-
 type Subdomain = Question[]
 type Domain = Record<string, Subdomain>
 type Theme = Record<string, Domain>
@@ -167,17 +151,9 @@ export type Question = {
 	solutionss?: (string | number)[][]
 	subdescription?: string
 	testAnswerss?: string[][]
-	type?: QuestionType
 	units?: string[]
 	variabless?: { [index: VariableName]: string }[]
-}
-
-export type QuestionResult = Question & {
-	expression: string
-}
-
-export function isQuestionResult(q: Question): q is QuestionResult {
-	return q.type === QUESTION_TYPE_RESULT
+	multipleAnswers?: boolean
 }
 
 export type QuestionChoice = Question & {
@@ -186,16 +162,15 @@ export type QuestionChoice = Question & {
 }
 
 export function isQuestionChoice(q: Question): q is QuestionChoice {
-	return q.type === QUESTION_TYPE_CHOICE
+	return !!q.choicess && !q.multipleAnswers
 }
 
-export type QuestionChoices = Question & {
-	choices: Choice[]
-	solutions: number[]
+export type QuestionChoices = QuestionChoice & {
+	multipleAnswers: true
 }
 
 export function isQuestionChoices(q: Question): q is QuestionChoices {
-	return q.type === QUESTION_TYPE_CHOICES
+	return isQuestionChoice(q) && !!q.multipleAnswers
 }
 
 export type QuestionWithID = Question & {

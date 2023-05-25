@@ -11,9 +11,11 @@
 		type Commit,
 		type CorrectedQuestion,
 		type Line,
+		isQuestionChoice,
 	} from '../../types/type'
 	import type { MathfieldElement } from 'tinymathlive'
 	import { start } from 'xstate/lib/actions'
+	import math from 'tinycas'
 
 	export let question: AnsweredQuestion
 	export let interactive = false
@@ -61,6 +63,13 @@
 
 	$: manageCorrection(correction)
 
+	// $: setFocus($virtualKeyboardMode)
+
+	// les corrections doivent être produites à l'initialisation
+	// et à chaque fois que l'utilisatur modifie ses réponses (qcm ou chams-réponses)
+	// il faut vérifier que l'update d'answers est bien triggé
+	$: makeCorrection(answers)
+
 	function manageCorrection(correction: boolean) {
 		if (!correction && interactive) {
 			prepareInteractive()
@@ -76,14 +85,6 @@
 			stopInteractive()
 		}
 	}
-
-	// $: setFocus($virtualKeyboardMode)
-
-	// les corrections doivent être produites à l'initialisation
-	// et à chaque fois que l'utilisatur modifie ses réponses (qcm ou chams-réponses)
-	// il faut vérifier que l'update d'answers est bien triggé
-	$: makeCorrection(answers)
-
 	function isQuestionWithJustAnEnounce() {
 		return !question.expression && !question.answerField
 	}
@@ -152,6 +153,7 @@
 
 	function onInput(ev: Event) {
 		recordAnswers()
+		console.log('mf', mathField.getValue())
 	}
 
 	// keystroke on physical keyboard
@@ -203,7 +205,7 @@
 	}
 
 	function addPlaceholder() {
-		return `\\placeholder[${nfields++}]`
+		return `\\placeholder[${nfields++}]{}`
 	}
 
 	function manageFocus(ev: FocusEvent) {
@@ -260,20 +262,15 @@
 		nfields = 0
 
 		field = question.answerField
-			? question.answerField
-			: question.expression && question.type === 'result'
-			? question.expression + '=?'
-			: !question.expression &&
-			  question.type !== 'choice' &&
-			  question.type !== 'choices'
-			? ''
+			? question.answerField.replace(/\.\.\./g, addPlaceholder)
+			: expression && expression.includes('\\ldots')
+			? expression.replace(/\\ldots/g, addPlaceholder)
+			: expression && !isQuestionChoice(question)
+			? expression + '=' + addPlaceholder()
+			: !isQuestionChoice(question)
+			? addPlaceholder()
 			: null
-		console.log('prepare interactive', field)
-		if (field) {
-			field = field
-				.replace(/\?/g, addPlaceholder)
-				.replace(/\.\.\./g, addPlaceholder)
-		}
+		console.log('field', field)
 
 		// TODO : et avec un champs de plusieurs réponses ?
 		if (!answers.length) {
@@ -307,6 +304,36 @@
 			initialized = true
 		}
 		if (!masked && mathField && !mathField.hasFocus()) mathField.focus()
+	}
+
+	function shouldDisplayExpression(correction: boolean, interactive: boolean) {
+		const test1 = !correction && !interactive
+		const test2 =
+			correction &&
+			// l'expression n'a pas été remplacée par un mathfield
+			!(
+				// l'expression est remplaçable
+				(
+					question.expression?.includes('?') ||
+					(!question.answerField && !isQuestionChoice(question))
+				)
+			)
+
+		const test3 =
+			!correction &&
+			interactive &&
+			// l'expression n'a pas été remplacée par un mathfield
+			!(
+				// l'expression est remplaçable
+				(
+					question.expression?.includes('?') ||
+					(!question.answerField && !isQuestionChoice(question))
+				)
+			)
+		const result = !!expression && (test1 || test2 || test3)
+		console.log('shouldDisplayExpression', test1, test2, test3, result)
+
+		return result
 	}
 </script>
 
@@ -360,7 +387,7 @@
 					{error}
 				{/await}
 			{/if}
-		{:else if element === 'expression' && expression && (!correction || question.answerField || (question.type !== 'result' && question.type !== 'fill in'))}
+		{:else if element === 'expression' && shouldDisplayExpression(correction, interactive)}
 			<div
 				id="expressions"
 				class=" flex flex-col items-center justify-center"
@@ -373,16 +400,16 @@
 				>
 					{@html $toMarkup(expression)}
 				</div>
-				{#if expression2 && !(!interactive && question.type === 'equation')}
+				<!-- {#if expression2 && !(!interactive && question.type === 'equation')}
 					<div
 						id={`expression2-${question.num}${masked ? '-masked' : ''}`}
 						class={correction ? 'my-1' : 'my-3'}
 					>
 						{@html expression2}
 					</div>
-				{/if}
+				{/if} -->
 			</div>
-		{:else if !correction && element === 'choices' && question.choices}
+		{:else if !correction && element === 'choices' && isQuestionChoice(question)}
 			<div
 				class="mt-3 flex flex-wrap justify-around"
 				style={`font-size:${magnify_2xl};`}
@@ -421,18 +448,14 @@
 		{/if}
 	{/each}
 	{#if !correction && field !== null}
-		<math-field
-			placeholderSymbol="X"
-			readOnly={!!field}
-			bind:this={mathField}
-		/>
+		<math-field readOnly={!!field} bind:this={mathField} />
 	{/if}
-	{#if !correction && interactive && (question.type === 'choices' || nfields > 1) && immediateCommit}
+	{#if !correction && interactive && (isQuestionChoices(question) || nfields > 1) && immediateCommit}
 		<button
 			on:click={() => {
 				commit.exec()
 			}}
-			class="mt-3 p-1 variant-filled-primary">Valider 2</button
+			class="mt-3 p-1 variant-filled-primary">Valider</button
 		>
 	{/if}
 

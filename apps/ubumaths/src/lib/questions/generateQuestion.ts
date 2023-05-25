@@ -16,13 +16,9 @@ import {
 	type QuestionWithID,
 	type VariableName,
 	type Variables,
+	isQuestionChoice,
 } from '../../types/type'
-import {
-	getQuestion,
-	QUESTION_TYPE_CHOICE,
-	QUESTION_TYPE_CHOICES,
-	QUESTION_TYPE_RESULT,
-} from './questions'
+import { getQuestion } from './questions'
 import type { Bool, Node, Numbr } from 'tinycas/dist/math/types'
 import type { EvalArg } from 'tinycas'
 import { fetchImage } from '$lib/images'
@@ -80,10 +76,6 @@ export default function generateQuestion(
 	let test: string
 	let tests: string[]
 	let answerField: string
-	let type =
-		question.type || question.choicess
-			? QUESTION_TYPE_CHOICE
-			: QUESTION_TYPE_RESULT
 
 	const options: Option[] = question.options || []
 
@@ -598,7 +590,7 @@ export default function generateQuestion(
 					const failureExp = math(replaceVariables(found[3]) as string)
 					let success: string | number
 					let failure: string | number
-					if (type === QUESTION_TYPE_CHOICE || type === QUESTION_TYPE_CHOICES) {
+					if (isQuestionChoice(question)) {
 						success = (successExp as Numbr).value.toNumber()
 						failure = (failureExp as Numbr).value.toNumber()
 					} else {
@@ -608,9 +600,6 @@ export default function generateQuestion(
 					return test.isTrue() ? success : failure
 				}
 			}
-			// if (question.type === 'choice' && typeof solution === 'number') {
-			//   solution = choices[solution]
-			// }
 
 			return solution
 		})
@@ -646,18 +635,11 @@ export default function generateQuestion(
 			math(expression).eval(params).removeMultOperator().removeFactorsOne()
 				.string,
 		]
+	} else if (!testAnswers) {
+		throw new Error('impossible de determiner une bonne réponse')
 	}
 
 	if (choices) {
-		// choices = choices.map(c => {
-		//   const choice = { ...c }
-		//   if (c.image) {
-		//     choice.imageBase64P = fetchImage(c.image)
-		//     choice.imageBase64P.then(base64 => { choice.imageBase64 = base64 })
-		//   }
-		//   return choice
-		// })
-
 		// mélange des choix
 		if (!options.includes('no-shuffle-choices')) {
 			const a: number[] = []
@@ -674,9 +656,10 @@ export default function generateQuestion(
 						? a.indexOf(solution) // il faut retrouver le nouvel index de la solution
 						: solution,
 				)
-				if (type === 'choices') {
-					solutions.sort()
-				}
+				// ????
+				// 	if (type === 'choices') {
+				// 		solutions.sort()
+				// 	}
 			}
 		}
 	}
@@ -714,7 +697,6 @@ export default function generateQuestion(
 	const generated: GeneratedQuestion = {
 		points: 1,
 		i,
-		type: type as QuestionType,
 		generatedVariables: variables,
 		enounce: '',
 		delay: question.defaultDelay,

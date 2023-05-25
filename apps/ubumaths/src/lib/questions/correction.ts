@@ -1,17 +1,14 @@
 import math from 'tinycas'
 import { getLogger } from '$lib/utils'
 import { createCorrection, createDetailedCorrection } from './correctionItem'
-import type {
-	AnsweredQuestion,
-	CorrectedQuestion,
-	GeneratedQuestion,
-	Option,
-} from '../../types/type'
 import {
-	QUESTION_TYPE_CHOICE,
-	QUESTION_TYPE_CHOICES,
-	QUESTION_TYPE_FILL_IN,
-} from './questions'
+	isQuestionChoice,
+	type AnsweredQuestion,
+	type CorrectedQuestion,
+	type GeneratedQuestion,
+	type Option,
+	isQuestionChoices,
+} from '../../types/type'
 import type { Bool } from 'tinycas/dist/math/types'
 export const STATUS_EMPTY = 'empty'
 export const STATUS_CORRECT = 'correct'
@@ -758,10 +755,7 @@ export function assessItem(item: AnsweredQuestion) {
 		// le statut de chaque réponse si il y a plusieurs champs réponses
 		// initialisée à CORRECT ou EMPTY
 		correctedItem.statuss = correctedItem.answers.map((answer) =>
-			((correctedItem.type === QUESTION_TYPE_CHOICE ||
-				correctedItem.type === QUESTION_TYPE_CHOICES) &&
-				answer !== '' &&
-				answer >= 0) ||
+			(isQuestionChoice(correctedItem) && answer !== '' && answer >= 0) ||
 			answer
 				? STATUS_CORRECT
 				: STATUS_EMPTY,
@@ -773,15 +767,7 @@ export function assessItem(item: AnsweredQuestion) {
 		}
 		// le cas simple à traiter des réponses à choix (multiples ou non)
 		else if (
-			correctedItem.type === QUESTION_TYPE_CHOICE &&
-			correctedItem.solutions.toString() !== correctedItem.answers.toString()
-		) {
-			correctedItem.statuss = [STATUS_INCORRECT]
-			correctedItem.status = STATUS_INCORRECT
-		}
-		// choix multiples
-		else if (
-			correctedItem.type === QUESTION_TYPE_CHOICES &&
+			isQuestionChoices(correctedItem) &&
 			correctedItem.solutions.toString() !== correctedItem.answers.toString()
 		) {
 			// on veut compter une partie des points si la ou les réponses choisies
@@ -796,7 +782,15 @@ export function assessItem(item: AnsweredQuestion) {
 				correctedItem.status = STATUS_UNOPTIMAL_FORM
 				correctedItem.coms.push(INCOMPLETE_CHOICES)
 			}
+		} else if (
+			isQuestionChoice(correctedItem) &&
+			correctedItem.solutions.toString() !== correctedItem.answers.toString()
+		) {
+			correctedItem.statuss = [STATUS_INCORRECT]
+			correctedItem.status = STATUS_INCORRECT
 		}
+		// choix multiples
+
 		// cas général
 		else {
 			if (correctedItem.statuss.some((status) => status === STATUS_EMPTY)) {
@@ -807,39 +801,13 @@ export function assessItem(item: AnsweredQuestion) {
 			// dans le cas d'une expression à trou, il faut vérifier que l'expression globale est
 			// écrite correctement
 			// TODO: ne faudrait-il pas mettre toutes les égalités à compléter dans un answerFields ?
-			if (item.type === QUESTION_TYPE_FILL_IN) {
+			if (item.expression?.includes('?')) {
 				let i = -1
 				const putAnswers = () => {
 					i++
 					return correctedItem.answers[i] as string
 				}
 
-				// if (item.answerFields) {
-				// dans ce cas c'est un answerFields qu'il faut compléter, et il correspond à une
-				// expression mathématique. La différence c'est que le champs réponse peut contenir une expression
-				//  qui n'est pas une expression mathématique correcte mais juste un symboel par exemple.
-				// donc pas besoin de positionner item.statuss[i]
-
-				// ENFAIT, c'est trop compliqué car l'expression est en latex
-				// {
-				// 	const regex = /\$\$.*?\.\.\..*?\$\$/g
-				// 	const matched = item.answerFields.match(regex)
-				// 	matched.forEach((match) => {
-				// 		// on enlève les $$ au début et à la fin
-				// 		match = match.replace(/\$\$/g, '')
-				// 		const exp = match.replace(/\.\.\./g, putAnswers)
-				// 		console.log('exp', exp)
-				// 		if (math(exp).isIncorrect()) {
-				// 			item.status = STATUS_INCORRECT
-				// 			item.coms.push(
-				// 				"L'expression $$" + exp + "$$ n'est pas écrite correctement.",
-				// 			)
-				// 		}
-				// 	})
-				// }
-				// }
-				// c'est une expression à compléter
-				// else {
 				if (correctedItem.expression && !correctedItem.answerFields) {
 					let incorrectForm = false
 					correctedItem.answers.forEach((answer, i) => {
@@ -920,7 +888,7 @@ export function assessItem(item: AnsweredQuestion) {
 					})
 				}
 				// les solutions sont explicites et sont dans item.solutions
-				else if (correctedItem.type === QUESTION_TYPE_FILL_IN) {
+				else if (correctedItem.expression?.includes('?')) {
 					let i = -1
 					const putAnswers = () => {
 						i++
@@ -1000,7 +968,7 @@ export function assessItem(item: AnsweredQuestion) {
 					) {
 						correctedItem.status = STATUS_INCORRECT
 					} else if (
-						correctedItem.type === QUESTION_TYPE_CHOICES &&
+						isQuestionChoices(correctedItem) &&
 						correctedItem.answers &&
 						correctedItem.answers.length &&
 						correctedItem.answers.length >=
