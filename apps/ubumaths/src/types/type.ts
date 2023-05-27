@@ -111,7 +111,7 @@ export type CorrectionDetail = {
 
 export type Letters = Record<string, string>
 
-type Subdomain = Question[]
+type Subdomain = QuestionBase[]
 type Domain = Record<string, Subdomain>
 type Theme = Record<string, Domain>
 export type Questions = Record<string, Theme>
@@ -119,9 +119,10 @@ export type AvailableLevels = Record<
 	string,
 	Record<string, Record<string, number[]>>
 >
-export type Question = {
+export type QuestionBase = {
 	'result-type'?: 'decimal'
 	answerFields?: string[]
+	answerFormats?: string[]
 	choicess?: Choice[][]
 	conditions?: string[]
 	correctionDetailss?: CorrectionDetail[][]
@@ -156,29 +157,14 @@ export type Question = {
 	multipleAnswers?: boolean
 }
 
-export type QuestionChoice = Question & {
-	choices: Choice[]
-	solutions: number[]
-}
-
-export function isQuestionChoice(q: Question): q is QuestionChoice {
-	return !!q.choicess && !q.multipleAnswers
-}
-
-export type QuestionChoices = QuestionChoice & {
-	multipleAnswers: true
-}
-
-export function isQuestionChoices(q: Question): q is QuestionChoices {
-	return isQuestionChoice(q) && !!q.multipleAnswers
-}
-
-export type QuestionWithID = Question & {
+export type QuestionWithID = QuestionBase & {
 	id: string
 }
 
 export type GeneratedQuestion = QuestionWithID & {
 	answerField?: string
+	answerFormat?: string
+	answerFormat_latex?: string
 	choices?: Choice[]
 	correctionDetails?: CorrectionDetail[]
 	correctionFormat?: CorrectionFormat
@@ -202,11 +188,85 @@ export type GeneratedQuestion = QuestionWithID & {
 	unit?: string
 }
 
-export type AnsweredQuestion = GeneratedQuestion & {
-	answers: (string | number)[] // pas de réponse en mode projection
+export type QuestionChoice = GeneratedQuestion & {
+	choices: Choice[]
+	solutions: number[]
+}
+
+export type QuestionChoices = QuestionChoice & {
+	multipleAnswers: true
+}
+
+export type QuestionFillIn = GeneratedQuestion & {
+	expression: string
+	expression_latex: string
+}
+
+export type QuestionResultOrRewrite = GeneratedQuestion & {
+	expression: string
+	expression_latex: string
+	answerFormat: string
+	answerFormat_latex: string
+}
+
+export type QuestionAnswerField = GeneratedQuestion & {
+	answerField: string
+}
+
+export function isQuestionChoice(q: Question): q is QuestionChoice {
+	return !!q.choicess && !q.multipleAnswers
+}
+
+export function isQuestionChoices(q: Question): q is QuestionChoices {
+	return !!q.choicess && !!q.multipleAnswers
+}
+
+export function isQuestionFillIn(q: Question): q is QuestionFillIn {
+	return !!q.expression?.includes('?')
+}
+
+export function isQuestionAnswerField(q: Question): q is QuestionAnswerField {
+	return !!q.answerField
+}
+
+export function isQuestionResultOrRewrite(
+	q: Question,
+): q is QuestionResultOrRewrite {
+	return !(
+		isQuestionChoice(q) ||
+		isQuestionFillIn(q) ||
+		isQuestionAnswerField(q) ||
+		isQuestionChoices(q)
+	)
+}
+
+export type Question =
+	| QuestionChoice
+	| QuestionChoices
+	| QuestionFillIn
+	| QuestionResultOrRewrite
+	| QuestionAnswerField
+
+export type AnsweredQuestionBase = Question & {
 	answers_latex: string[] // pas de réponse en mode projection
 	options: Option[]
 	time?: number
+}
+
+export type AnsweredQuestionChoice = AnsweredQuestionBase & {
+	answers: number[] // pas de réponse en mode projection
+}
+
+export type AnsweredQuestionOther = AnsweredQuestionBase & {
+	answers: string[] // pas de réponse en mode projection
+}
+
+export type AnsweredQuestion = AnsweredQuestionChoice | AnsweredQuestionOther
+
+export function isAnsweredQuestionChoice(
+	q: AnsweredQuestion,
+): q is AnsweredQuestionChoice {
+	return isQuestionChoice(q) || isQuestionChoices(q)
 }
 
 export type CorrectionStatus =

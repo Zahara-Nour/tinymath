@@ -12,6 +12,9 @@
 		type CorrectedQuestion,
 		type Line,
 		isQuestionChoice,
+		isQuestionAnswerField,
+		isQuestionFillIn,
+		isQuestionResultOrRewrite,
 	} from '../../types/type'
 	import type { MathfieldElement } from 'tinymathlive'
 	import { start } from 'xstate/lib/actions'
@@ -261,15 +264,21 @@
 	function prepareInteractive() {
 		nfields = 0
 
-		field = question.answerField
+		field = isQuestionAnswerField(question)
 			? question.answerField.replace(/\.\.\./g, addPlaceholder)
-			: expression && expression.includes('\\ldots')
-			? expression.replace(/\\ldots/g, addPlaceholder)
-			: expression && !isQuestionChoice(question)
-			? expression + '=' + addPlaceholder()
-			: !isQuestionChoice(question)
+			: isQuestionFillIn(question)
+			? question.expression_latex.replace(/\\ldots/g, addPlaceholder)
+			: isQuestionResultOrRewrite(question)
+			? question.expression_latex +
+			  '=' +
+			  (question.answerFormat_latex || '\\ldots').replace(
+					/\\ldots/g,
+					addPlaceholder,
+			  )
+			: isQuestionAnswerField(question)
 			? addPlaceholder()
 			: null
+
 		console.log('field', field)
 
 		// TODO : et avec un champs de plusieurs réponses ?
@@ -293,10 +302,13 @@
 			mathField.addEventListener('focus', manageFocus)
 			mathField.addEventListener('blur', manageFocus)
 			mathField.setValue(field!)
+			console.log('initMathfield', answers_latex)
+			// need to copy answers which can be overrided during onIput Call
+			const answers_latex2 = [...answers_latex]
 			mathField.getPrompts().forEach((prompt) => {
 				mathField.setPromptContent(
 					prompt,
-					answers_latex[parseInt(prompt, 10)] || '',
+					answers_latex2[parseInt(prompt, 10)],
 					{ selectionMode: 'after', focus: true },
 				)
 			})
@@ -309,29 +321,12 @@
 	function shouldDisplayExpression(correction: boolean, interactive: boolean) {
 		const test1 = !correction && !interactive
 		const test2 =
-			correction &&
-			// l'expression n'a pas été remplacée par un mathfield
-			!(
-				// l'expression est remplaçable
-				(
-					question.expression?.includes('?') ||
-					(!question.answerField && !isQuestionChoice(question))
-				)
-			)
+			((!correction && interactive) || correction) &&
+			!isQuestionFillIn(question) &&
+			!isQuestionResultOrRewrite(question)
 
-		const test3 =
-			!correction &&
-			interactive &&
-			// l'expression n'a pas été remplacée par un mathfield
-			!(
-				// l'expression est remplaçable
-				(
-					question.expression?.includes('?') ||
-					(!question.answerField && !isQuestionChoice(question))
-				)
-			)
-		const result = !!expression && (test1 || test2 || test3)
-		console.log('shouldDisplayExpression', test1, test2, test3, result)
+		const result = !!expression && (test1 || test2)
+		console.log('shouldDisplayExpression', test1, test2, result)
 
 		return result
 	}
@@ -495,7 +490,7 @@
 		--caret-color: red;
 		--selection-background-color: lightgoldenrodyellow;
 		--selection-color: darkblue;
-		--contains-highlight-backround-color: green;
+		/* --contains-highlight-backround-color: green; */
 		--placeholder-color: violet;
 	}
 	math-field:focus-within {

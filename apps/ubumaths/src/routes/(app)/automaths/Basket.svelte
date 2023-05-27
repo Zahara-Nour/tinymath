@@ -1,7 +1,7 @@
 <script lang="ts">
 	import generate from '$lib/questions/generateQuestion'
 	import { getQuestion, questions_ids } from '$lib/questions/questions'
-	import Question from '$lib/ui/Question.svelte'
+	import QuestionBase from '$lib/ui/Question.svelte'
 	import {
 		assessItem,
 		prepareAnsweredQuestion,

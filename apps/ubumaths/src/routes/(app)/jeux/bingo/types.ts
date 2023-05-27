@@ -1,3 +1,3 @@
-import type { Question } from '../../../../types/type'
+import type { QuestionBase } from '../../../../types/type'
 
-export type Game = Array<Question>
+export type Game = Array<QuestionBase>

@@ -8,6 +8,9 @@ import {
 	type GeneratedQuestion,
 	type Option,
 	isQuestionChoices,
+	isAnsweredQuestionChoice,
+	isQuestionFillIn,
+	isQuestionResultOrRewrite,
 } from '../../types/type'
 import type { Bool } from 'tinycas/dist/math/types'
 export const STATUS_EMPTY = 'empty'
@@ -33,85 +36,68 @@ let { fail, trace, info } = getLogger('correction', 'info')
 // 6) Sinon après avoir mis en ordre les termes et facteurs, on compare strictement la réponse à la solution explicite -> STATUS_BAD_FORM ou STATUS_CORRECT
 // TODO: Formats
 
-const EMPTY_ANSWER = "Tu n'as rien répondu."
-const EMPTY_MULTIPLE_ANSWERS = "Tu n'as pas tout complété."
-const ZEROS =
-	"<span style='color:_COLORANSWER_'>Ta réponse</span> contient un ou des zéros inutiles."
-const ZEROS_MULTIPLE_ANSWERS =
-	'Il y a un ou des zéros inutiles dans tes réponses :'
-const FACTORE_ONE =
-	"Dans <span style='color:_COLORANSWER_'>ta réponse</span>, tu peux simplifier le ou les facteurs 1."
-const FACTORE_ONE_MULTIPLE_ANSWERS =
-	'Il y a un ou des facteurs 1 inutiles dans tes réponses :'
-const FACTORE_ZERO =
-	"Tu peux simplifier <span style='color:_COLORANSWER_'>ta réponse</span> qui contient un ou des facteurs nuls."
+const EMPTY_ANSWER = "Tu n'as rien répondu. "
+const EMPTY_MULTIPLE_ANSWERS = "Tu n'as pas tout complété. "
+const ZEROS = 'Il y a un ou des zéros inutiles. '
+const ZEROS_MULTIPLE_ANSWERS = 'Il y a un ou des zéros inutiles. '
+const FACTORE_ONE = 'Tu peux simplifier le ou les facteurs 1. '
+const FACTORE_ONE_MULTIPLE_ANSWERS = 'Tu peux simplifier le ou les facteurs 1. '
+const FACTORE_ZERO = 'Tu peux simplifier un ou des facteurs nuls. '
 const FACTORE_ZERO_MULTIPLE_ANSWERS =
-	'Dans tes réponses, tu peux simplifier un ou des facteurs nuls.'
+	'Tu peux simplifier un ou des facteurs nuls. '
 
-const NULL_TERMS =
-	"<span style='color:_COLORANSWER_'>Ta réponse</span> contient un terme nul que tu peux enlever."
+const NULL_TERMS = 'Il y a un ou des termes nuls que tu peux enlever. '
 const NULL_TERMS_MULTIPLE_ANSWERS =
-	'Il y a un ou des termes nuls que tu peux enlever dans tes réponses.'
-const BRACKETS =
-	"<span style='color:_COLORANSWER_'>Ta réponse</span> contient des parenthèses inutiles."
-const BRACKETS_MULTIPLE_ANSWERS =
-	'il y a des parenthèses inutiles dans tes réponses.'
+	'Il y a un ou des termes nuls que tu peux enlever. '
+const BRACKETS = 'Il y a des parenthèses inutiles. '
+const BRACKETS_MULTIPLE_ANSWERS = 'Il y a des parenthèses inutiles. '
 const BRACKETS_FIRST_TERM =
-	"<span style='color:_COLORANSWER_'>Ta réponse</span> contient des parenthèses inutiles en début de somme."
-const SPACES =
-	"Les chiffres sont mal espacés dans <span style='color:_COLORANSWER_'>ta réponse</span>."
-const SPACES_MULTIPLE_ANSWERS =
-	'Les chiffres sont mal espacés dans tes réponses'
-const SIGNS =
-	"Tu peux faire des simplifications de signes dans <span style='color:_COLORANSWER_'>ta réponse</span>."
+	'Il y a des parenthèses inutiles en début de somme. '
+const SPACES = 'Les chiffres sont mal espacés. '
+const SPACES_MULTIPLE_ANSWERS = 'Les chiffres sont mal espacés. '
+const SIGNS = 'Tu peux faire des simplifications de signes. '
 const SIGNS_MULTIPLE_ANSWERS =
-	'Tu peux faire des simplifications de signes dans tes réponses.'
-const MATH_INCORRECT =
-	"<span style='color:_COLORANSWER_'>Ta réponse</span> n'est pas écrite correctement."
-const MATH_INCORRECT_MULTIPLE_ANSWERS =
-	'Une ou plusieurs de tes réponses ne sont pas écrites correctement:'
+	'Tu peux faire des simplifications de signes dans tes réponses. '
+const MATH_INCORRECT = "Ta n'est pas écrite correctement. "
+const MATH_INCORRECT_MULTIPLE_ANSWERS = "Ta n'est pas écrite correctement. "
 const MATH_GLOBALLY_INCORRECT =
-	"L'expression obtenue n'est pas mathématiquement correcte."
-const PRODUCTS =
-	"Tu peux simplifier certains symboles de multiplication dans <span style='color:_COLORANSWER_'>ta réponse</span>."
+	"L'expression obtenue n'est pas mathématiquement correcte. "
+const PRODUCTS = 'Tu peux simplifier certains symboles de multiplication. '
 const PRODUCTS_MULTIPLE_ANSWERS =
-	'Tu peux simplifier certains symboles de multiplication dans tes réponses>.'
-const FRACTIONS =
-	"<span style='color:_COLORANSWER_'>Ta réponse</span> contient une ou des fractions non simplifiées."
+	'Tu peux simplifier certains symboles de multiplication. '
+const FRACTIONS = 'Il y a une ou des fractions non simplifiées. '
 
 const FRACTIONS_MULTIPLE_ANSWERS =
-	'Il y a une ou des fractions non simplifiées dans tes réponses.'
+	'Il y a une ou des fractions non simplifiées. '
 
-const BAD_FORM =
-	"<span style='color:_COLORANSWER_'>Ta réponse</span> n'est pas écrite sous la forme demandée."
+const BAD_FORM = "Ta réponse n'est pas écrite sous la forme demandée. "
 
 const BAD_FORM_MULTIPLE_ANSWERS =
-	"La forme demandée n'est pas respectée dans tes réponses."
+	"Ta réponse n'est pas écrite sous la forme demandée. "
 
-const BAD_UNIT =
-	"<span style='color:_COLORANSWER_'>Ta réponse</span> n'est pas écrite avec l'unité demandée."
+const BAD_UNIT = "Ta réponse n'est pas écrite avec l'unité demandée. "
 const BAD_UNIT_MULTIPLE_ANSWERS =
-	"Tes réponses n'utilisent pas l'unité demandée."
+	"Ta réponse n'est pas écrite avec l'unité demandée. "
 
 const TERMS_PERMUTATION =
-	"Dans <span style='color:_COLORANSWER_'>ta réponse</span> les termes doivent être écrits dans un certain ordre."
+	'Les termes doivent être écrits dans un certain ordre. '
 
 const TERMS_PERMUTATION_MULTIPLE_ANSWERS =
-	'Les termes doivent être écrits dans un certain ordre dans tes réponses.'
+	'Les termes doivent être écrits dans un certain ordre. '
 
 const FACTORS_PERMUTATION =
-	"Dans <span style='color:_COLORANSWER_'>ta réponse</span> les facteurs doivent être écrits dans un certain ordre."
+	'Les facteurs doivent être écrits dans un certain ordre. '
 
 const FACTORS_PERMUTATION_MULTIPLE_ANSWERS =
-	'Les facteurs doivent être écrits dans un certain ordre dans tes réponses.'
+	'Les facteurs doivent être écrits dans un certain ordre. '
 
 const TERMS_FACTORS_PERMUTATION =
-	"Dans <span style='color:_COLORANSWER_'>ta réponse</span> les termes et facteurs doivent être écrits dans un certain ordre."
+	'Les termes et facteurs doivent être écrits dans un certain ordre. '
 
 const TERMS_FACTORS_PERMUTATION_MULTIPLE_ANSWERS =
-	'Les termes et facteurs doivent être écrits dans un certain ordre dans tes réponses.'
+	'Les termes et facteurs doivent être écrits dans un certain ordre. '
 
-const INCOMPLETE_CHOICES = "Tu n'as pas choisi toutes les bonnes réponses."
+const INCOMPLETE_CHOICES = "Tu n'as pas choisi toutes les bonnes réponses. "
 
 // retourne un tableau des contraintes non respectées
 
@@ -754,12 +740,16 @@ export function assessItem(item: AnsweredQuestion) {
 	} else {
 		// le statut de chaque réponse si il y a plusieurs champs réponses
 		// initialisée à CORRECT ou EMPTY
-		correctedItem.statuss = correctedItem.answers.map((answer) =>
-			(isQuestionChoice(correctedItem) && answer !== '' && answer >= 0) ||
-			answer
-				? STATUS_CORRECT
-				: STATUS_EMPTY,
-		)
+		if (isAnsweredQuestionChoice(correctedItem)) {
+			correctedItem.statuss = correctedItem.answers.map((answer) =>
+				answer >= 0 ? STATUS_CORRECT : STATUS_EMPTY,
+			)
+		} else {
+			correctedItem.statuss = correctedItem.answers.map((answer) =>
+				answer ? STATUS_CORRECT : STATUS_EMPTY,
+			)
+		}
+
 		// si toutes les réponses sont vides, pas besoin d'aller plus loin
 		if (correctedItem.statuss.every((status) => status === STATUS_EMPTY)) {
 			if (correctedItem.answers) correctedItem.coms.push(EMPTY_ANSWER)
@@ -793,63 +783,62 @@ export function assessItem(item: AnsweredQuestion) {
 
 		// cas général
 		else {
+			// et si un seul champ reponse ?
+			// normalement traité avant
 			if (correctedItem.statuss.some((status) => status === STATUS_EMPTY)) {
 				correctedItem.coms.push(EMPTY_MULTIPLE_ANSWERS)
 			}
 
-			// On vérifie que les réponses sont écrites correctement
+			// On vérifie que les réponses NON VIDES sont écrites correctement
 			// dans le cas d'une expression à trou, il faut vérifier que l'expression globale est
 			// écrite correctement
-			// TODO: ne faudrait-il pas mettre toutes les égalités à compléter dans un answerFields ?
-			if (item.expression?.includes('?')) {
-				let i = -1
-				const putAnswers = () => {
-					i++
-					return correctedItem.answers[i] as string
-				}
 
-				if (correctedItem.expression && !correctedItem.answerFields) {
-					let incorrectForm = false
-					correctedItem.answers.forEach((answer, i) => {
-						if (
-							correctedItem.statuss[i] !== STATUS_EMPTY &&
-							math(answer).isIncorrect()
-						) {
-							correctedItem.statuss[i] = STATUS_INCORRECT
-							correctedItem.status = STATUS_INCORRECT
-							incorrectForm = true
-						}
-					})
-					const exp = math(correctedItem.expression.replace(/\?/g, putAnswers))
-					if (exp.isIncorrect()) {
-						correctedItem.status = STATUS_INCORRECT
-						if (!incorrectForm) correctedItem.coms.push(MATH_GLOBALLY_INCORRECT)
-					}
-					if (incorrectForm && correctedItem.answers.length === 1) {
-						correctedItem.coms.push(MATH_INCORRECT)
-					} else if (incorrectForm) {
-						correctedItem.coms.push(MATH_INCORRECT_MULTIPLE_ANSWERS)
-					}
-				}
-			} else {
-				const answer = correctedItem.answers[0]
+			let i = -1
+			const putAnswers = () => {
+				i++
+				return (('{' + correctedItem.answers[i]) as string) + '}'
+			}
+
+			let incorrectForm = false
+			correctedItem.answers.forEach((answer, i) => {
 				if (
-					correctedItem.status !== STATUS_EMPTY &&
+					correctedItem.statuss[i] !== STATUS_EMPTY &&
 					math(answer).isIncorrect()
 				) {
+					correctedItem.statuss[i] = STATUS_INCORRECT
 					correctedItem.status = STATUS_INCORRECT
-					correctedItem.coms.push(MATH_INCORRECT)
+					incorrectForm = true
 				}
+			})
 
-				// correctedItem.answers.forEach((answer, i) => {
-				// 	if (
-				// 		correctedItem.statuss[i] !== STATUS_EMPTY &&
-				// 		math(answer).isIncorrect()
-				// 	) {
-				// 		correctedItem.statuss[i] = STATUS_INCORRECT
-				// 		correctedItem.status = STATUS_INCORRECT
-				// 	}
-				// })
+			if (isQuestionFillIn(correctedItem)) {
+				i = -1
+				const exp = math(correctedItem.expression.replace(/\?/g, putAnswers))
+				if (exp.isIncorrect()) {
+					correctedItem.status = STATUS_INCORRECT
+					if (
+						!incorrectForm &&
+						!correctedItem.statuss.some((status) => status === STATUS_EMPTY)
+					)
+						correctedItem.coms.push(MATH_GLOBALLY_INCORRECT)
+				}
+			}
+
+			if (isQuestionResultOrRewrite(correctedItem)) {
+				i = -1
+				const exp = math(correctedItem.answerFormat.replace(/\?/g, putAnswers))
+				if (exp.isIncorrect()) {
+					correctedItem.status = STATUS_INCORRECT
+					if (
+						!incorrectForm &&
+						!correctedItem.statuss.some((status) => status === STATUS_EMPTY)
+					)
+						correctedItem.coms.push(MATH_GLOBALLY_INCORRECT)
+				}
+			}
+
+			if (incorrectForm) {
+				correctedItem.coms.push(MATH_INCORRECT)
 			}
 
 			if (
@@ -886,23 +875,6 @@ export function assessItem(item: AnsweredQuestion) {
 							}
 						}
 					})
-				}
-				// les solutions sont explicites et sont dans item.solutions
-				else if (correctedItem.expression?.includes('?')) {
-					let i = -1
-					const putAnswers = () => {
-						i++
-						return correctedItem.answers[i] as string
-					}
-
-					const exp = math(
-						(correctedItem.expression as string).replace(/\?/g, putAnswers),
-					)
-
-					// TODO: est ce qu'une question de type FILL IN propose toujours une (in)égalité à compléter ?
-					if ((exp.eval() as Bool).isFalse()) {
-						correctedItem.status = STATUS_INCORRECT
-					}
 				} else {
 					correctedItem.answers.forEach((answer, i) => {
 						if (

@@ -10,9 +10,12 @@
 		type AnsweredQuestion,
 		type Choice,
 		type Line,
+		isQuestionResultOrRewrite,
+		isQuestionFillIn,
 	} from '../../types/type'
 	import { magnify_3xl } from '$lib/utils'
 	import IconOrbitVariant from '$lib/icones/IconOrbitVariant.svelte'
+	import { putSolutions } from '$lib/questions/correctionItem'
 
 	export let card: AnsweredQuestion
 	export let toggleFlip = () => {}
@@ -37,7 +40,10 @@
 			)
 		}
 
-		if (isQuestionChoices(card)) {
+		if (isQuestionFillIn(card)) {
+			console.log('putSolutions', putSolutions(card.expression_latex, card))
+			s = '$$' + putSolutions(card.expression_latex, card) + '$$'
+		} else if (isQuestionChoices(card)) {
 			s = '<div class="flex flex-wrap justify-start">'
 			card.choices.forEach((choice, i) => {
 				let color = 'grey'
@@ -68,14 +74,9 @@
 			} else if (s.image) {
 				s = `<img src=${s.image}>`
 			}
-		} else if (card.type === 'fill in') {
-			if (card.expression) {
-				s = '$$' + card.expression.replace(/\?/g, replaceSol) + '$$'
-			} else if (card.answerField) {
-				s = card.answerField.replace(/\.\.\./g, replaceSol)
-			} else {
-				s = 'solution non trouvée'
-			}
+		} else if (isQuestionResultOrRewrite(card)) {
+			console.log('card', card)
+			s = '$$' + putSolutions(card.answerFormat_latex, card) + '$$'
 		} else if (card.type === 'equation') {
 			s = card.answerField!.replace(/\.\.\./g, replaceSol)
 		} else {

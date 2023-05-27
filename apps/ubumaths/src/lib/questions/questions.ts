@@ -20,7 +20,12 @@ import {
 	incorrect_color,
 } from '$lib/colors'
 import { objectMap } from '../utils'
-import type { Ids, Question, Questions, QuestionWithID } from '../../types/type'
+import type {
+	Ids,
+	QuestionBase,
+	Questions,
+	QuestionWithID,
+} from '../../types/type'
 
 // Les questions doivent-être structurées afin de pouvoir générer des fiches d'exercices
 // sans avoir à répéter la même consigne pour un même type de question.
@@ -4567,7 +4572,6 @@ const questions: Questions = {
 					enounces: ['Calcule.'],
 					expressions: ['[_&1*&2_]:&2'],
 					variabless: [{ '&1': '$e[2;9]', '&2': '$e[2;9]' }],
-
 					defaultDelay: 20,
 					grade: CE2,
 				},
@@ -4625,17 +4629,9 @@ const questions: Questions = {
 					],
 					variabless: [{ '&1': '$e[2;9]', '&2': '$e[2;9]\\{&1}' }],
 					expressions: ['[_&1*&2_]=&1*&2'],
-					answerFields: ['$$...$$'],
+					answerFields: ['\text{Un diviseur est }$$...$$'],
 					testAnswerss: [
 						['&answer!=1 && &answer!=&1*&2 && mod(&1*&2; &answer)=0'],
-					],
-					correctionFormats: [
-						{
-							correct: ['&answer est un diviseur de $$[_&1*&2_]$$'],
-							uncorrect: [
-								'<span style="color:green;">$$&1$$</span> et <span style="color:green;">$$&2$$</span> sont des diviseurs de $$[_&1*&2_]$$',
-							],
-						},
 					],
 					defaultDelay: 15,
 					grade: CE2,
@@ -4897,7 +4893,10 @@ const questions: Questions = {
 						"En regardant l'égalité ci-dessous, quel est le <b>reste</b> de la division euclidienne de $$[_&1*&2+&3_]$$ par $$&1$$ ?",
 					],
 					expressions: ['$$[_&1*&2+&3_]=(&1 \\times &2)+&3$$'],
-					answerFields: ['$$...$$'],
+					answerFields: [
+						'\\text{Le quotient est }$$...$$',
+						'\\text{Le reste est }$$...$$',
+					],
 					variabless: [
 						{
 							'&1': '$e[2;9]',
@@ -4906,23 +4905,16 @@ const questions: Questions = {
 						},
 					],
 					solutionss: [['&2'], ['&3']],
-					correctionFormats: [
-						{
-							correct: ['Le quotient est &answer.'],
-						},
-						{
-							correct: ['Le reste est &answer.'],
-						},
-					],
+
 					correctionDetailss: [
 						[
 							{
-								text: `Le quotient est &solution car $$[_&1*&2+&3_]=(&1 \\times &sol) + &3$$`,
+								text: `Le quotient est &solution car $$[_&1*&2+&3_]=(&1 \\times &sol1) + &3$$`,
 							},
 						],
 						[
 							{
-								text: `Le reste est &solution car $$[_&1*&2+&3_]=(&1 \\times &2) + &sol$$ et $$&3 \\le &1$$`,
+								text: `Le reste est &solution car $$[_&1*&2+&3_]=(&1 \\times &2) + &sol1$$ et $$&3 \\le &1$$`,
 							},
 						],
 					],
@@ -4972,15 +4964,9 @@ const questions: Questions = {
 					variabless: [
 						{ '&1': '$e[2;9]', '&2': '$e[2;10]', '&3': '$e[1;&1-1]' },
 					],
-					answerFields: ['$$[_&1\\times&2+&3_]=(&1\\times...)+...$$'],
+					expressions: ['[_&1*&2+&3_]=(&1*?)+?'],
 					solutionss: [['&2', '&3']],
 					defaultDelay: 30,
-					correctionFormats: [
-						{
-							correct: ['$$[_&1*&2+&3_]=(&1\\times &ans1) + &ans2$$'],
-						},
-					],
-
 					options: ['no-penalty-for-extraneous-brackets'],
 					grade: CE2,
 				},
@@ -7723,15 +7709,6 @@ const questions: Questions = {
 					],
 					variabless: [{ '&1': '$e[1;20]' }],
 					solutionss: [['-&1'], ['&1']],
-					correctionFormats: [
-						{
-							correct: ["L'opposé de $$&1$$ est &answer"],
-						},
-						{
-							correct: ["L'opposé de $$-&1$$ est &answer"],
-						},
-					],
-
 					defaultDelay: 20,
 					grade: CINQUIEME,
 				},
@@ -8735,22 +8712,22 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\dfrac{&2}{&1} = \\dfrac{&sol}{[_&1*&3_]}$$ car $$&1 \\textcolor{${color1}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${color1}}{\\times &3} = &sol $$`,
+								text: `$$\\dfrac{&2}{&1} = \\dfrac{&sol1}{[_&1*&3_]}$$ car $$&1 \\textcolor{${color1}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${color1}}{\\times &3} = &sol1 $$`,
 							},
 						],
 						[
 							{
-								text: `$$\\dfrac{&2}{&1} = \\dfrac{[_&2*&3_]}{&sol}$$ car $$&2 \\textcolor{${color1}}{\\times &3} = [_&2*&3_]$$ et $$&1 \\textcolor{${color1}}{\\times &3} = &sol $$`,
+								text: `$$\\dfrac{&2}{&1} = \\dfrac{[_&2*&3_]}{&sol1}$$ car $$&2 \\textcolor{${color1}}{\\times &3} = [_&2*&3_]$$ et $$&1 \\textcolor{${color1}}{\\times &3} = &sol1 $$`,
 							},
 						],
 						[
 							{
-								text: `$$\\dfrac{&sol}{[_&1*&3_]} = \\dfrac{&2}{&1}$$ car $$&1 \\textcolor{${color1}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${color1}}{\\times &3} = &sol $$`,
+								text: `$$\\dfrac{&sol1}{[_&1*&3_]} = \\dfrac{&2}{&1}$$ car $$&1 \\textcolor{${color1}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${color1}}{\\times &3} = &sol1 $$`,
 							},
 						],
 						[
 							{
-								text: `$$\\dfrac{[_&2*&3_]}{&sol}  = \\dfrac{&2}{&1}$$ car $$&2 \\textcolor{${color1}}{\\times &3} = [_&2*&3_]$$ et $$&1 \\textcolor{${color1}}{\\times &3} = &sol $$`,
+								text: `$$\\dfrac{[_&2*&3_]}{&sol1}  = \\dfrac{&2}{&1}$$ car $$&2 \\textcolor{${color1}}{\\times &3} = [_&2*&3_]$$ et $$&1 \\textcolor{${color1}}{\\times &3} = &sol1 $$`,
 							},
 						],
 					],
@@ -8794,22 +8771,22 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\dfrac{[_&2*&3_]}{[_&1*&3_]} = \\dfrac{&sol}{&1}$$ car $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &sol $$`,
+								text: `$$\\dfrac{[_&2*&3_]}{[_&1*&3_]} = \\dfrac{&sol1}{&1}$$ car $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &sol1 $$`,
 							},
 						],
 						[
 							{
-								text: `$$\\dfrac{[_&2*&3_]}{[_&1*&3_]} = \\dfrac{&2}{&sol}$$ car $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &2$$ et $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &sol $$`,
+								text: `$$\\dfrac{[_&2*&3_]}{[_&1*&3_]} = \\dfrac{&2}{&sol1}$$ car $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &2$$ et $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &sol1 $$`,
 							},
 						],
 						[
 							{
-								text: `$$\\dfrac{&sol}{&1}  = \\dfrac{[_&2*&3_]}{[_&1*&3_]}$$ car $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &sol $$`,
+								text: `$$\\dfrac{&sol1}{&1}  = \\dfrac{[_&2*&3_]}{[_&1*&3_]}$$ car $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &sol1 $$`,
 							},
 						],
 						[
 							{
-								text: `$$\\dfrac{&2}{&sol}  = \\dfrac{[_&2*&3_]}{[_&1*&3_]}$$ car $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &2$$ et $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &sol $$`,
+								text: `$$\\dfrac{&2}{&sol1}  = \\dfrac{[_&2*&3_]}{[_&1*&3_]}$$ car $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &2$$ et $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &sol1 $$`,
 							},
 						],
 					],
@@ -8838,22 +8815,22 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\dfrac{&1}{[_&1*&3_]} = \\dfrac{&2}{&sol}$$ car $$&1 \\textcolor{${color1}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${color1}}{\\times &3} = &sol $$`,
+								text: `$$\\dfrac{&1}{[_&1*&3_]} = \\dfrac{&2}{&sol1}$$ car $$&1 \\textcolor{${color1}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${color1}}{\\times &3} = &sol1 $$`,
 							},
 						],
 						[
 							{
-								text: `$$ \\dfrac{[_&1*&3_]}{&1}  = \\dfrac{&sol}{&2}$$ car $$&1 \\textcolor{${color1}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${color1}}{\\times &3} = &sol $$`,
+								text: `$$ \\dfrac{[_&1*&3_]}{&1}  = \\dfrac{&sol1}{&2}$$ car $$&1 \\textcolor{${color1}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${color1}}{\\times &3} = &sol1 $$`,
 							},
 						],
 						[
 							{
-								text: `$$\\dfrac{&2}{&sol}  = \\dfrac{&1}{[_&1*&3_]}$$ car $$&1 \\textcolor{${color1}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${color1}}{\\times &3} = &sol $$`,
+								text: `$$\\dfrac{&2}{&sol1}  = \\dfrac{&1}{[_&1*&3_]}$$ car $$&1 \\textcolor{${color1}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${color1}}{\\times &3} = &sol1 $$`,
 							},
 						],
 						[
 							{
-								text: `$$ \\dfrac{&sol}{&2} = \\dfrac{[_&1*&3_]}{&1}$$ car $$&1 \\textcolor{${color1}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${color1}}{\\times &3} = &sol $$`,
+								text: `$$ \\dfrac{&sol1}{&2} = \\dfrac{[_&1*&3_]}{&1}$$ car $$&1 \\textcolor{${color1}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${color1}}{\\times &3} = &sol1 $$`,
 							},
 						],
 					],
@@ -8882,22 +8859,22 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\dfrac{&1}{[_&1*&3_]} = \\dfrac{&sol}{[_&2*&3_]}$$ car $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &sol $$`,
+								text: `$$\\dfrac{&1}{[_&1*&3_]} = \\dfrac{&sol1}{[_&2*&3_]}$$ car $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &sol1 $$`,
 							},
 						],
 						[
 							{
-								text: `$$ \\dfrac{[_&1*&3_]}{&1}  = \\dfrac{[_&2*&3_]}{&sol}$$ car $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &sol $$`,
+								text: `$$ \\dfrac{[_&1*&3_]}{&1}  = \\dfrac{[_&2*&3_]}{&sol1}$$ car $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &sol1 $$`,
 							},
 						],
 						[
 							{
-								text: `$$\\dfrac{&sol}{[_&2*&3_]}  = \\dfrac{&1}{[_&1*&3_]}$$ car $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &sol $$`,
+								text: `$$\\dfrac{&sol1}{[_&2*&3_]}  = \\dfrac{&1}{[_&1*&3_]}$$ car $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &sol1 $$`,
 							},
 						],
 						[
 							{
-								text: `$$ \\dfrac{[_&2*&3_]}{&sol}  = \\dfrac{[_&1*&3_]}{&1}$$ car $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &sol $$`,
+								text: `$$ \\dfrac{[_&2*&3_]}{&sol1}  = \\dfrac{[_&1*&3_]}{&1}$$ car $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &sol1 $$`,
 							},
 						],
 					],
@@ -9933,11 +9910,6 @@ const questions: Questions = {
 					variabless: [{ '&1': '$e[2;19]', '&2': '$e[2;19]\\{cd(&1)}' }],
 					answerFields: ["L'inverse de ce nombre est $$...$$"],
 					solutionss: [['1/&1'], ['&1'], ['&2/&1']],
-					correctionFormats: [
-						{
-							correct: ["L'inverse de &expression est &answer"],
-						},
-					],
 					defaultDelay: 20,
 					grade: QUATRIEME,
 				},
@@ -10195,31 +10167,32 @@ const questions: Questions = {
 				},
 			],
 			'Notation scientifique': [
+				// {
+				// 	description:
+				// 		"Ecrire un nombre décimal à l'aide de la notation scientifique",
+				// 	enounces: ['Ecris ce nombre en notation scientifique.'],
+				// 	expressions: ['[._&1,&3*10^{&4}_]'],
+				// 	solutionss: [['&1,&3*10^{&4}']],
+				// 	variabless: [
+				// 		{
+				// 			'&1': '$e[1;9]',
+				// 			'&2': '$e[1;3]',
+				// 			'&3': '$e{&2;&2}',
+				// 			'&4': '$er[2;4]',
+				// 		},
+				// 	],
+				// 	// bug de mathlive sur les puissances
+				// 	// qui rajoute des parenthèses à l'exposant
+				// 	options: ['no-penalty-for-extraneous-brackets'],
+				// 	defaultDelay: 20,
+				// 	grade: QUATRIEME,
+				// },
 				{
 					description:
 						"Ecrire un nombre décimal à l'aide de la notation scientifique",
 					enounces: ['Ecris ce nombre en notation scientifique.'],
 					expressions: ['[._&1,&3*10^{&4}_]'],
-					solutionss: [['&1,&3*10^{&4}']],
-					variabless: [
-						{
-							'&1': '$e[1;9]',
-							'&2': '$e[1;3]',
-							'&3': '$e{&2;&2}',
-							'&4': '$er[2;4]',
-						},
-					],
-					// bug de mathlive sur les puissances
-					// qui rajoute des parenthèses à l'exposant
-					options: ['no-penalty-for-extraneous-brackets'],
-					defaultDelay: 20,
-					grade: QUATRIEME,
-				},
-				{
-					description:
-						"Ecrire un nombre décimal à l'aide de la notation scientifique",
-					enounces: ['Ecris ce nombre en notation scientifique.'],
-					expressions: ['[._&1,&3*10^{&4}_]=?*10^?'],
+					answerFormats: ['?*10^?'],
 					solutionss: [['&1,&3', '&4']],
 					variabless: [
 						{
@@ -10235,12 +10208,41 @@ const questions: Questions = {
 					defaultDelay: 20,
 					grade: QUATRIEME,
 				},
+				// {
+				// 	description:
+				// 		"Ecrire un nombre écrit avec une puissance de $$10$$ à l'aide de la notation scientifique",
+				// 	enounces: ['Ecris ce nombre en notation scientifique.'],
+				// 	expressions: ['[._&1,&3*10^{&4}_]*10^{&5}'],
+				// 	solutionss: [['&1,&3*10^{[_&4+(&5)_]}']],
+				// 	variabless: [
+				// 		{
+				// 			'&1': '$e[1;9]',
+				// 			'&2': '$e[1;3]',
+				// 			'&3': '$e{&2;&2}\\{m(10)}',
+				// 			'&4': '$er[2;4]',
+				// 			'&5': '$er[2;4]\\{-(&4)}',
+				// 		},
+				// 	],
+				// 	correctionDetailss: [
+				// 		[
+				// 			{
+				// 				text: '$$[._&1,&3*10^{&4}_] \\times 10^{&5}=&1,&3 \\times 10^{&4} \\times 10^{&5}=$$ &solution',
+				// 			},
+				// 		],
+				// 	],
+				// 	// bug de mathlive sur les puissances
+				// 	// qui rajoute des parenthèses à l'exposant
+				// 	options: ['no-penalty-for-extraneous-brackets'],
+				// 	defaultDelay: 20,
+				// 	grade: QUATRIEME,
+				// },
 				{
 					description:
 						"Ecrire un nombre écrit avec une puissance de $$10$$ à l'aide de la notation scientifique",
 					enounces: ['Ecris ce nombre en notation scientifique.'],
 					expressions: ['[._&1,&3*10^{&4}_]*10^{&5}'],
-					solutionss: [['&1,&3*10^{[_&4+(&5)_]}']],
+					answerFormats: ['?*10^?'],
+					solutionss: [['&1,&3', '[_&4+(&5)_]']],
 					variabless: [
 						{
 							'&1': '$e[1;9]',
@@ -10253,7 +10255,10 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: '$$[._&1,&3*10^{&4}_] \\times 10^{&5}=&1,&3 \\times 10^{&4} \\times 10^{&5}=$$ &solution',
+								text: `$$\\begin{align} \
+								[._&1,&3*10^{&4}_] \\times 10^{&5} &= &1,&3 \\times 10^{&4} \\times 10^{&5} \\\\ \
+								&=&sol \
+								\\end{align}$$`,
 							},
 						],
 					],
@@ -11106,17 +11111,6 @@ const questions: Questions = {
 					// 	['&3+&4 = &answer g'],
 					// 	['&3+&4 = &answer L'],
 					// ],
-					correctionFormats: [
-						{
-							correct: ['$$&3+&4=$$&answer m'],
-						},
-						{
-							correct: ['$$&3+&4=$$&answer g'],
-						},
-						{
-							correct: ['$$&3+&4=$$&answer L'],
-						},
-					],
 					'result-type': 'decimal',
 					defaultDelay: 20,
 					grade: SIXIEME,
@@ -12658,11 +12652,6 @@ const questions: Questions = {
 					],
 					answerFields: ['$$&1\\,h = ...\\,min$$'],
 					solutionss: [['[_&2/(1 min)_]']],
-					correctionFormats: [
-						{
-							correct: ['$$&1\\,h =$$&answer $$min$$'],
-						},
-					],
 					correctionDetailss: [
 						[{ text: '$$&1\\,h = &1 \\times 60\\,min=$$&solution $$min$$' }],
 					],
@@ -12703,11 +12692,6 @@ const questions: Questions = {
 					],
 					answerFields: ['$$[_&1*60_]\\,min= ...\\,h$$'],
 					solutionss: [['&1']],
-					correctionFormats: [
-						{
-							correct: ['$$[_&1*60_]\\,min =$$&answer $$h$$'],
-						},
-					],
 					correctionDetailss: [
 						[
 							{
@@ -12754,11 +12738,6 @@ const questions: Questions = {
 					],
 					answerFields: ['$$&1\\,min = ...\\,s$$'],
 					solutionss: [['[_&2/(1 s)_]']],
-					correctionFormats: [
-						{
-							correct: ['$$&1\\,min =$$&answer $$s$$'],
-						},
-					],
 					correctionDetailss: [
 						[{ text: '$$&1\\,min = &1 \\times 60\\,s=$$&solution $$s$$' }],
 					],
@@ -12798,11 +12777,6 @@ const questions: Questions = {
 					],
 					answerFields: ['$$[_&1*60_]\\,s= ...\\,min$$'],
 					solutionss: [['&1']],
-					correctionFormats: [
-						{
-							correct: ['$$[_&1*60_]\\,s =$$&answer $$min$$'],
-						},
-					],
 					correctionDetailss: [
 						[
 							{
@@ -12849,12 +12823,6 @@ const questions: Questions = {
 					],
 					answerFields: ['$$&1\\,h\\,[_&2_]\\,min = ...\\,min$$'],
 					solutionss: [['[_&4/(1 min)_]']],
-
-					correctionFormats: [
-						{
-							correct: ['$$&1\\,h\\,[_&2_]\\,min  =$$&answer $$min$$'],
-						},
-					],
 					correctionDetailss: [
 						[
 							{
@@ -12906,12 +12874,6 @@ const questions: Questions = {
 					],
 					answerFields: ['$$&1\\,h\\,[_&2_]\\,min = ...\\,min$$'],
 					solutionss: [['[_&4/(1 min)_]']],
-
-					correctionFormats: [
-						{
-							correct: ['$$&1\\,h\\,[_&2_]\\,min  =$$&answer $$min$$'],
-						},
-					],
 					correctionDetailss: [
 						[
 							{
@@ -12961,13 +12923,6 @@ const questions: Questions = {
 					],
 					answerFields: ['$$[_&1*60+&2_]\\,min= ...\\,h\\,...\\,min$$'],
 					solutionss: [['&1', '[_&2_]']],
-					correctionFormats: [
-						{
-							correct: [
-								'$$[_&1*60+&2_]\\,min=$$ &answer1 $$h$$ &answer2 $$min$$',
-							],
-						},
-					],
 					correctionDetailss: [
 						[
 							{
@@ -13017,13 +12972,6 @@ const questions: Questions = {
 					],
 					answerFields: ['$$[_&1*60+&2_]\\,min= ...\\,h\\,...\\,min$$'],
 					solutionss: [['&1', '&2']],
-					correctionFormats: [
-						{
-							correct: [
-								'$$[_&1*60+&2_]\\,min=$$ &answer1 $$h$$ &answer2 $$min$$',
-							],
-						},
-					],
 					correctionDetailss: [
 						[
 							{
@@ -13073,11 +13021,6 @@ const questions: Questions = {
 					],
 					answerFields: ['$$&1{,}&2\\,h= ...\\,h\\,...\\,min$$'],
 					solutionss: [['&1', '[_0,&2*60_]']],
-					correctionFormats: [
-						{
-							correct: ['$$&1{,}&2\\,h=$$ &answer1 $$h$$ &answer2 $$min$$'],
-						},
-					],
 					correctionDetailss: [
 						[
 							{
@@ -13129,12 +13072,6 @@ const questions: Questions = {
 					],
 					answerFields: ['$$[°&3°]\\,h= ...\\,min$$'],
 					solutionss: [['[_&3*60_]']],
-					correctionFormats: [
-						{
-							correct: ['$$&3\\,h=$$ &answer $$min$$'],
-						},
-					],
-
 					correctionDetailss: [
 						[
 							{
@@ -13186,11 +13123,6 @@ const questions: Questions = {
 					],
 					answerFields: ['$$&1{,}&2\\,h= ...\\,h\\,...\\,min$$'],
 					solutionss: [['&1', '[_0,&2*60_]']],
-					correctionFormats: [
-						{
-							correct: ['$$&1{,}&2 \\, h=$$ &answer1 $$h$$ &answer2 $$min$$'],
-						},
-					],
 					correctionDetailss: [
 						[
 							{
@@ -13247,11 +13179,6 @@ const questions: Questions = {
 					],
 					answerFields: ['$$&1{,}&2\\,h= ...\\,min$$'],
 					solutionss: [['[_&1,&2*60_]']],
-					correctionFormats: [
-						{
-							correct: ['$$&1,&2 \\, h=$$ &answer $$min$$'],
-						},
-					],
 					correctionDetailss: [
 						[
 							{
@@ -13316,13 +13243,6 @@ const questions: Questions = {
 							'&2+&3>59 ?? [_&1+1_] :: &1 ',
 							'&2+&3>59 ?? [_&2+&3-60_] :: [_&2+&3_] ',
 						],
-					],
-					correctionFormats: [
-						{
-							correct: [
-								'$$&1 \\, h \\, &2 \\, min \\, + \\, &3 \\, min=$$ &answer1 $$ h $$ &answer2 $$\\, min$$',
-							],
-						},
 					],
 					correctionDetailss: [
 						[
@@ -13396,13 +13316,6 @@ const questions: Questions = {
 							'(&4+&3)*10>59 ?? [_&1+&2+1_] :: [_&1+&2_] ',
 							'(&4+&3)*10>59 ?? [_(&4+&3)*10-60_] :: [_(&4+&3)*10_] ',
 						],
-					],
-					correctionFormats: [
-						{
-							correct: [
-								'$$&1 \\, h \\, [_&3*10_] \\, min \\, + \\, &2 \\, h \\, [_&4*10_] \\, min=$$ &answer1 $$h$$ &answer2 $$min$$',
-							],
-						},
 					],
 					correctionDetailss: [
 						[
@@ -13485,13 +13398,6 @@ const questions: Questions = {
 							'&4+&3>59 ?? [_&1+&2+1_] :: [_&1+&2_] ',
 							'&4+&3>59 ?? [_&4+&3-60_] :: [_&4+&3_] ',
 						],
-					],
-					correctionFormats: [
-						{
-							correct: [
-								'$$&1 \\, h \\, &3 \\, min \\, + \\, &2 \\, h \\, &4 \\, min=$$ &answer1 $$h$$ &answer2 $$min$$',
-							],
-						},
 					],
 					correctionDetailss: [
 						[
@@ -14442,40 +14348,6 @@ const questions: Questions = {
 						},
 					],
 					solutionss: [['[_&1*&3_]'], ['[_&2*&3_]'], ['&2'], ['&1']],
-					correctionFormats: [
-						{
-							correct: [
-								'$$\\begin{array}{c|c} \
-            &1  &   &ans \\\\ \
-            &2  &   [_&2*&3_] \
-          \\end{array}$$',
-							],
-						},
-						{
-							correct: [
-								'$$\\begin{array}{c|c} \
-            &1  &   [_&1*&3_] \\\\ \
-            &2  &   &ans \
-          \\end{array}$$',
-							],
-						},
-						{
-							correct: [
-								'$$\\begin{array}{c|c} \
-              &1  &   [_&1*&3_] \\\\ \
-                &ans  &  [_&2*&3_]  \
-          \\end{array}$$',
-							],
-						},
-						{
-							correct: [
-								'$$\\begin{array}{c|c} \
-              &ans  &   [_&1*&3_] \\\\ \
-            &2  &  [_&2*&3_]  \
-          \\end{array}$$',
-							],
-						},
-					],
 					correctionDetailss: [
 						[
 							{
@@ -14546,40 +14418,6 @@ const questions: Questions = {
 						},
 					],
 					solutionss: [['[_&1*&3_]'], ['[_&2*&3_]'], ['&2'], ['&1']],
-					correctionFormats: [
-						{
-							correct: [
-								'$$\\begin{array}{c|c} \
-            						&1  &  &2  \\\\ \
-            						&ans  &   [_&2*&3_] \
-          						\\end{array}$$',
-							],
-						},
-						{
-							correct: [
-								'$$\\begin{array}{c|c} \
-            						&1  &  &2  \\\\ \
-            						[_&1*&3_]  &  &ans \
-          						\\end{array}$$',
-							],
-						},
-						{
-							correct: [
-								'$$\\begin{array}{c|c} \
-              						&1  &  &ans  \\\\ \
-              						[_&1*&3_]   &  [_&2*&3_]  \
-          						\\end{array}$$',
-							],
-						},
-						{
-							correct: [
-								'$$\\begin{array}{c|c} \
-              						&ans  &   &2 \\\\ \
-              						[_&1*&3_]  &  [_&2*&3_]  \
-          					\\end{array}$$',
-							],
-						},
-					],
 					correctionDetailss: [
 						[
 							{
@@ -14652,40 +14490,6 @@ const questions: Questions = {
 						},
 					],
 					solutionss: [['[_&1*&3/&2_]'], ['[_&1*&3/&2_]'], ['&1'], ['&1']],
-					correctionFormats: [
-						{
-							correct: [
-								'$$\\begin{array}{c|c} \
-            &1  &  &2  \\\\ \
-            &ans  &   &3 \
-          \\end{array}$$',
-							],
-						},
-						{
-							correct: [
-								'$$\\begin{array}{c|c} \
-            &2  &  &1  \\\\ \
-            &3 & &ans \
-          \\end{array}$$',
-							],
-						},
-						{
-							correct: [
-								'$$\\begin{array}{c|c} \
-              &2  &  &ans  \\\\ \
-              &3 & [_&1*&3/&2_] \
-            \\end{array}$$',
-							],
-						},
-						{
-							correct: [
-								'$$\\begin{array}{c|c} \
-              &ans  &  &2  \\\\ \
-              [_&1*&3/&2_] &  &3 \
-            \\end{array}$$',
-							],
-						},
-					],
 					correctionDetailss: [
 						[
 							{
@@ -15252,11 +15056,6 @@ const questions: Questions = {
 						},
 					],
 					// units: ['cm'],
-					correctionFormats: [
-						{
-							correct: ['Sur la carte, la longueur est de &answer $$cm$$.'],
-						},
-					],
 					correctionDetailss: [
 						[
 							{
@@ -17145,12 +16944,6 @@ const questions: Questions = {
 							'&3': '$e[2;9]\\{&1;cd(&2)}',
 						},
 					],
-					correctionFormats: [
-						{
-							correct: ['Un facteur commun est &answer.'],
-						},
-					],
-
 					solutionss: [['&1']],
 
 					defaultDelay: 30,
@@ -17302,11 +17095,6 @@ const questions: Questions = {
 						},
 					],
 					answerFields: ['Un facteur commun est $$...$$'],
-					correctionFormats: [
-						{
-							correct: ['Un facteur commun est &answer'],
-						},
-					],
 					solutionss: [
 						['&1'],
 						['&1'],
@@ -17515,11 +17303,6 @@ const questions: Questions = {
 						},
 					],
 					answerFields: ['Le plus grand facteur commun est $$...$$'],
-					correctionFormats: [
-						{
-							correct: ['Le plus grand facteur commun est &answer.'],
-						},
-					],
 					correctionDetailss: [
 						[
 							{
@@ -17625,11 +17408,6 @@ const questions: Questions = {
 						},
 					],
 					answerFields: ['Le plus grand facteur commun est $$...$$'],
-					correctionFormats: [
-						{
-							correct: ['Le plus grand facteur commun est &answer.'],
-						},
-					],
 					correctionDetailss: [
 						[
 							{
@@ -18719,12 +18497,6 @@ const questions: Questions = {
 						},
 					],
 					solutionss: [['&1']],
-					correctionFormats: [
-						{
-							correct: ["La solution de l'équation est &answer."],
-							answer: 'La solution est &answer.',
-						},
-					],
 					correctionDetailss: [
 						[
 							{
@@ -19797,12 +19569,6 @@ const questions: Questions = {
 					],
 					answerFields: ['$$f(&3)=...$$'],
 					solutionss: [['[_&4_]']],
-
-					correctionFormats: [
-						{
-							correct: ["L'image de $$&3$$ est &answer."],
-						},
-					],
 					correctionDetailss: [
 						[{ text: '$$f(&3)=&1 \\times [(_&3_][+_&2_]=$$&solution.' }],
 					],
@@ -20292,11 +20058,6 @@ const questions: Questions = {
 							'&2': '$er[1;9]',
 						},
 					],
-					correctionFormats: [
-						{
-							correct: ["La fonction s'annule en &answer"],
-						},
-					],
 					solutionss: [['[_-(&2)/(&1)_]']],
 					defaultDelay: 20,
 					grade: TROISIEME,
@@ -20494,11 +20255,6 @@ const questions: Questions = {
 						['0'],
 						['3'],
 					],
-					correctionFormats: [
-						{
-							correct: ["La solution de l'équation est &answer."],
-						},
-					],
 					defaultDelay: 20,
 					grade: SECONDE,
 				},
@@ -20518,11 +20274,6 @@ const questions: Questions = {
 						},
 					],
 					solutionss: [['[_-(&1)x_]'], ['-x[+_-(&2)_]'], ['[_-(&2)_]+x']],
-					correctionFormats: [
-						{
-							correct: ["L'opposé est &answer."],
-						},
-					],
 					defaultDelay: 20,
 					grade: SECONDE,
 				},
@@ -20839,11 +20590,6 @@ const questions: Questions = {
 					conditions: ['abs(&1) != abs(&2)'],
 					solutionss: [['[_&1+&2_]', '[_&1-&2_]']],
 					answerFields: ['$$x=\\ldots$$ ou $$x=\\ldots$$'],
-					correctionFormats: [
-						{
-							correct: ['Les solutionss sont $$x=$$&answer1 et $$x=$$&answer2'],
-						},
-					],
 					correctionDetailss: [
 						[
 							{
@@ -21032,11 +20778,6 @@ const questions: Questions = {
 							'&5': '$er[1;5]',
 						},
 					],
-					correctionFormats: [
-						{
-							correct: ['Le coefficient est &answer.'],
-						},
-					],
 					correctionDetailss: [
 						[
 							{
@@ -21194,13 +20935,6 @@ const questions: Questions = {
 						},
 					],
 					solutionss: [['[_-(&2)_]', '&3']],
-					correctionFormats: [
-						{
-							correct: [
-								'Les coordonnées sont $$\\left( \\, &ans1 \\, ; \\, &ans2 \\, \\right)$$.',
-							],
-						},
-					],
 					correctionDetailss: [
 						[
 							{
@@ -21230,11 +20964,6 @@ const questions: Questions = {
 						},
 					],
 					solutionss: [['x=[_-(&2)_]']],
-					correctionFormats: [
-						{
-							correct: ["L'équation est  &answer."],
-						},
-					],
 					correctionDetailss: [
 						[
 							{
@@ -21305,11 +21034,6 @@ const questions: Questions = {
 						['-1', '1'],
 						['-1', '3'],
 						['-2', '-1'],
-					],
-					correctionFormats: [
-						{
-							correct: ['Les racines sont &answer1 et &answer2.'],
-						},
 					],
 					defaultDelay: 15,
 					grade: PREMIERE_SPE_MATHS,
@@ -21422,11 +21146,6 @@ const questions: Questions = {
 						['(x[+_-(1)_])^2[+_-3_]'],
 						['{[_-1/2_]}(x[+_-(2)_])^2[+_-1_]'],
 					],
-					correctionFormats: [
-						{
-							correct: ['La forme canonique est &answer.'],
-						},
-					],
 					defaultDelay: 40,
 					grade: PREMIERE_SPE_MATHS,
 				},
@@ -21503,11 +21222,6 @@ const questions: Questions = {
 						},
 					],
 					testAnswerss: [['(&answer)^2-(&1+(&2))*(&answer)+(&1)*(&2)=0']],
-					correctionFormats: [
-						{
-							correct: ['&answer est une racine évidente.'],
-						},
-					],
 					correctionDetailss: [
 						[
 							{
@@ -21548,11 +21262,6 @@ const questions: Questions = {
 					conditions: ['abs(&2) != abs(&3)'],
 					answerFields: ['Las racines sont $$...$$ et $$...$$'],
 					solutionss: [['[_-(&2)_]', '[_-(&3)_]']],
-					correctionFormats: [
-						{
-							correct: ['Les racines sont &answer1 et &answer2'],
-						},
-					],
 					options: ['solutions-order-not-important'],
 					defaultDelay: 20,
 					grade: PREMIERE_SPE_MATHS,
@@ -21577,11 +21286,6 @@ const questions: Questions = {
 					conditions: ['abs(&2) != abs(&3)'],
 					answerFields: ['Las racines sont $$...$$ et $$...$$'],
 					solutionss: [['[_-(&2)_]', '[_-(&3)_]']],
-					correctionFormats: [
-						{
-							correct: ['Les racines sont &answer1 et &answer2'],
-						},
-					],
 					correctionDetailss: [
 						[
 							{ text: "Le polynôme n'est <b>pas</b> sous forme factorisée. " },
@@ -21683,11 +21387,6 @@ const questions: Questions = {
 					],
 					// pb mathlive : ascimath output
 					options: ['no-penalty-for-extraneous-brackets'],
-					correctionFormats: [
-						{
-							correct: ["$$f'(x)=&ans$$"],
-						},
-					],
 					correctionDetailss: [
 						[
 							{
@@ -21725,11 +21424,6 @@ const questions: Questions = {
 					],
 					// pb mathlive : ascimath output
 					options: ['no-penalty-for-extraneous-brackets'],
-					correctionFormats: [
-						{
-							correct: ["$$f'(x)=&ans$$"],
-						},
-					],
 					correctionDetailss: [
 						[
 							{
@@ -21768,12 +21462,6 @@ const questions: Questions = {
 							'&1': '$e[2;9]',
 						},
 					],
-					correctionFormats: [
-						{
-							correct: ['$$u_&1=&ans$$'],
-						},
-					],
-
 					correctionDetailss: [
 						[
 							{
@@ -21810,12 +21498,6 @@ const questions: Questions = {
 							'&4': '[_&2*(&1)+(&3)_]',
 						},
 					],
-					correctionFormats: [
-						{
-							correct: ['$$u_1=&ans$$'],
-						},
-					],
-
 					correctionDetailss: [
 						[
 							{
@@ -21846,12 +21528,6 @@ const questions: Questions = {
 							'&5': '[_&2*(&4)+(&3)_]',
 						},
 					],
-					correctionFormats: [
-						{
-							correct: [`$$u_2=&ans$$`],
-						},
-					],
-
 					correctionDetailss: [
 						[
 							{
@@ -21894,39 +21570,6 @@ const questions: Questions = {
 						['&answer=&1n+[_&1+&2_]}'],
 						['&answer=&1n[+_&1-&2_]}'],
 					],
-					correctionFormats: [
-						{
-							correct: ['$$u_{n+1}=&ans$$'],
-							uncorrect: [
-								'$$u_{n+1}=\\enclose{roundedbox}[3px solid green]{\\textcolor{green}{&1(n+1)^2}}$$',
-							],
-						},
-						{
-							correct: ['$$u_{n+1}=&ans$$'],
-							uncorrect: [
-								'$$u_{n+1}=\\enclose{roundedbox}[3px solid green]{\\textcolor{green}{&1n+&1}}$$',
-							],
-						},
-						{
-							correct: ['$$u_{n+1}=&ans$$'],
-							uncorrect: [
-								'$$u_{n+1}=\\enclose{roundedbox}[3px solid green]{\\textcolor{green}{\\frac{n+[_&1+1_]}{n+[_&2+1_]}}}$$',
-							],
-						},
-						{
-							correct: ['$$u_{n+1}=&ans$$'],
-							uncorrect: [
-								'$$u_{n+1}=\\enclose{roundedbox}[3px solid green]{\\textcolor{green}{&1n+[_&1+&2_]}}$$',
-							],
-						},
-						{
-							correct: ['$$u_{n+1}=&ans$$'],
-							uncorrect: [
-								'$$u_{n+1}=\\enclose{roundedbox}[3px solid green]{\\textcolor{green}{&1n[+_&1-&2_]}}$$',
-							],
-						},
-					],
-
 					correctionDetailss: [
 						[
 							{
@@ -21981,13 +21624,6 @@ const questions: Questions = {
 							'&7': '[_&1+(&2)*4_]',
 						},
 					],
-
-					correctionFormats: [
-						{
-							correct: [`$$u_n=$$&answer`],
-						},
-					],
-
 					correctionDetailss: [
 						[
 							{
@@ -22021,12 +21657,6 @@ const questions: Questions = {
 						},
 					],
 					conditions: ['abs(&1) != abs(&2)'],
-					correctionFormats: [
-						{
-							correct: ['$$u_n=$$&answer'],
-						},
-					],
-
 					correctionDetailss: [
 						[
 							{
@@ -22071,12 +21701,6 @@ const questions: Questions = {
 						},
 					],
 					options: ['no-penalty-for-explicit-products'],
-					correctionFormats: [
-						{
-							correct: ['Le terme général est $$u_n=&ans$$'],
-						},
-					],
-
 					correctionDetailss: [
 						[
 							{
@@ -22547,12 +22171,6 @@ const questions: Questions = {
 							'&3': '$er[2;9]\\{&1}',
 						},
 					],
-
-					correctionFormats: [
-						{
-							correct: ['$$u_&2=&answer$$'],
-						},
-					],
 					correctionDetailss: [
 						[
 							{
@@ -22577,12 +22195,6 @@ const questions: Questions = {
 							'&1': '$e[1;8]',
 							'&2': '$e[&1+1;9]',
 							'&3': '$er[2;9]\\{&1}',
-						},
-					],
-
-					correctionFormats: [
-						{
-							correct: ['$$u_&2=&answer$$'],
 						},
 					],
 					correctionDetailss: [

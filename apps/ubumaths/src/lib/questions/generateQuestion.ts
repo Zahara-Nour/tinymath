@@ -11,12 +11,12 @@ import {
 	type GeneratedQuestion,
 	type Letters,
 	type Option,
-	type Question,
-	type QuestionType,
+	type QuestionBase,
 	type QuestionWithID,
 	type VariableName,
 	type Variables,
 	isQuestionChoice,
+	type Question,
 } from '../../types/type'
 import { getQuestion } from './questions'
 import type { Bool, Node, Numbr } from 'tinycas/dist/math/types'
@@ -53,7 +53,7 @@ export function generateQuestionsFromBasket(
 }
 export default function generateQuestion(
 	question: QuestionWithID,
-	generateds: GeneratedQuestion[] = [],
+	generateds: Question[] = [],
 	nbquestions = 1,
 	offset = 0,
 ) {
@@ -76,6 +76,7 @@ export default function generateQuestion(
 	let test: string
 	let tests: string[]
 	let answerField: string
+	let answerFormat: string
 
 	const options: Option[] = question.options || []
 
@@ -223,7 +224,7 @@ export default function generateQuestion(
 			: o
 	}
 
-	function getSelectedElement(field: keyof Question) {
+	function getSelectedElement(field: keyof QuestionBase) {
 		const elements = question[field]
 
 		if (elements && Array.isArray(elements) && elements.length) {
@@ -348,14 +349,15 @@ export default function generateQuestion(
 
 	// sur combien d'éléments peut-onchour une question
 	const n = Math.max(
-		(question.choicess && question.choicess.length) || 0,
-		(question.expressions && question.expressions.length) || 0,
-		(question.expressions2 && question.expressions2.length) || 0,
-		(question.enounces && question.enounces.length) || 0,
-		(question.enounces2 && question.enounces2.length) || 0,
-		(question.variabless && question.variabless.length) || 0,
-		(question.images && question.images.length) || 0,
-		(question.answerFields && question.answerFields.length) || 0,
+		question.choicess?.length || 0,
+		question.expressions?.length || 0,
+		question.expressions2?.length || 0,
+		question.enounces?.length || 0,
+		question.enounces2?.length || 0,
+		question.variabless?.length || 0,
+		question.images?.length || 0,
+		question.answerFields?.length || 0,
+		question.answerFormats?.length || 0,
 	)
 
 	// les limites permettent que les différentes expressions possibles pour la question
@@ -530,6 +532,7 @@ export default function generateQuestion(
 	correctionFormat = getSelectedElement('correctionFormats') as CorrectionFormat
 	unit = getSelectedElement('units') as string
 	answerField = getSelectedElement('answerFields') as string
+	answerFormat = (getSelectedElement('answerFormats') as string) || '?'
 
 	let correct: string[] = correctionFormat?.correct || []
 	let uncorrect: string[] = correctionFormat?.uncorrect || []
@@ -542,10 +545,11 @@ export default function generateQuestion(
 	uncorrect = replaceVariables(uncorrect) as string[]
 	answer = replaceVariables(answer) as string
 	answerField = replaceVariables(answerField) as string
+	answerFormat = replaceVariables(answerFormat) as string
 
 	rawSolutions = evaluate(rawSolutions) as string[]
 	testAnswers = evaluate(testAnswers) as string[]
-
+	answerFormat = evaluate(answerFormat) as string
 	correctionDetails = toLatex(correctionDetails) as CorrectionDetail[]
 	correctionDetails = evaluateToLatex(correctionDetails) as CorrectionDetail[]
 	correct = toLatex(correct) as string[]
@@ -590,7 +594,7 @@ export default function generateQuestion(
 					const failureExp = math(replaceVariables(found[3]) as string)
 					let success: string | number
 					let failure: string | number
-					if (isQuestionChoice(question)) {
+					if (question.choicess) {
 						success = (successExp as Numbr).value.toNumber()
 						failure = (failureExp as Numbr).value.toNumber()
 					} else {
@@ -694,6 +698,14 @@ export default function generateQuestion(
 		})
 	}
 
+	let answerFormat_latex = ''
+	if (answerFormat) {
+		answerFormat_latex = math(answerFormat).toLatex({
+			addSpaces: !options.includes('exp-no-spaces'),
+			keepUnecessaryZeros: options.includes('exp-allow-unecessary-zeros'),
+		})
+	}
+
 	const generated: GeneratedQuestion = {
 		points: 1,
 		i,
@@ -725,6 +737,8 @@ export default function generateQuestion(
 	if (expression2) generated.expression2 = expression2
 	if (testAnswers) generated.testAnswers = testAnswers
 	if (answerField) generated.answerField = answerField
+	if (answerFormat) generated.answerFormat = answerFormat
+	if (answerFormat_latex) generated.answerFormat_latex = answerFormat_latex
 
 	if (image) {
 		generated.image = image
