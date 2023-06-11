@@ -958,7 +958,7 @@ export function assessItem(item: AnsweredQuestion) {
 
 	createCorrection(correctedItem)
 	createDetailedCorrection(correctedItem)
-	console.log('assessed item', correctedItem)
+	// console.log('assessed item', correctedItem)
 	return correctedItem
 }
 

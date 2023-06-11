@@ -150,6 +150,7 @@ export type QuestionBase = {
 	options?: Option[]
 	order_elements?: string[]
 	solutionss?: (string | number)[][]
+	prefilleds?: string[][]
 	subdescription?: string
 	testAnswerss?: string[][]
 	units?: string[]
@@ -184,6 +185,7 @@ export type GeneratedQuestion = QuestionWithID & {
 	order_elements: string[]
 	points: number
 	solutions?: (string | number)[]
+	prefilled?: string[]
 	testAnswers?: string[]
 	unit?: string
 }
@@ -251,6 +253,7 @@ export type AnsweredQuestionBase = Question & {
 	answers_latex: string[] // pas de réponse en mode projection
 	options: Option[]
 	time?: number
+	prefilled: string[]
 }
 
 export type AnsweredQuestionChoice = AnsweredQuestionBase & {

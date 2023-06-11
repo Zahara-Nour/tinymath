@@ -77,6 +77,7 @@ export default function generateQuestion(
 	let tests: string[]
 	let answerField: string
 	let answerFormat: string
+	let prefilled: string[]
 
 	const options: Option[] = question.options || []
 
@@ -358,6 +359,7 @@ export default function generateQuestion(
 		question.images?.length || 0,
 		question.answerFields?.length || 0,
 		question.answerFormats?.length || 0,
+		question.prefilleds?.length || 0,
 	)
 
 	// les limites permettent que les différentes expressions possibles pour la question
@@ -523,6 +525,7 @@ export default function generateQuestion(
 	}
 
 	rawSolutions = getSelectedElement('solutionss') as string[]
+	prefilled = getSelectedElement('prefilleds') as string[]
 	testAnswers = getSelectedElement('testAnswerss') as string[]
 	letters = getSelectedElement('letterss') as Letters
 	imageCorrection = getSelectedElement('imagesCorrection') as string
@@ -539,6 +542,7 @@ export default function generateQuestion(
 	let answer: string = correctionFormat?.answer || ''
 
 	rawSolutions = replaceVariables(rawSolutions) as string[]
+	prefilled = replaceVariables(prefilled) as string[]
 	testAnswers = replaceVariables(testAnswers) as string[]
 	correctionDetails = replaceVariables(correctionDetails) as CorrectionDetail[]
 	correct = replaceVariables(correct) as string[]
@@ -726,6 +730,7 @@ export default function generateQuestion(
 
 	if (choices) generated.choices = choices
 	if (solutions.length) generated.solutions = solutions
+	if (prefilled) generated.prefilled = prefilled
 	if (unit) generated.unit = unit
 	if (expression) generated.expression = expression
 	if (expression_latex) generated.expression_latex = expression_latex

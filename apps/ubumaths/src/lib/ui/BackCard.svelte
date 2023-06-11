@@ -12,6 +12,7 @@
 		type Line,
 		isQuestionResultOrRewrite,
 		isQuestionFillIn,
+		isQuestionAnswerField,
 	} from '../../types/type'
 	import { magnify_3xl } from '$lib/utils'
 	import IconOrbitVariant from '$lib/icones/IconOrbitVariant.svelte'
@@ -70,15 +71,34 @@
 		} else if (isQuestionChoice(card)) {
 			s = card.choices[card.solutions[0]]
 			if (s.text) {
-				s = s.text
+				s =
+					`<span
+					class="rounded-lg  m-2 p-1"
+					style="border: 4px solid ${correct_color}"
+				>` +
+					s.text +
+					'</span>'
 			} else if (s.image) {
 				s = `<img src=${s.image}>`
 			}
 		} else if (isQuestionResultOrRewrite(card)) {
-			console.log('card', card)
 			s = '$$' + putSolutions(card.answerFormat_latex, card) + '$$'
-		} else if (card.type === 'equation') {
-			s = card.answerField!.replace(/\.\.\./g, replaceSol)
+		} else if (isQuestionAnswerField(card)) {
+			if (card.solutions?.length > 1) {
+				s =
+					'$$' +
+					putSolutions(
+						card.answerField.replace(/\\text\{(.*)\}/g, (_, p1) => p1),
+						card,
+						/\.\.\./g,
+					) +
+					'$$'
+			} else {
+				s =
+					`$$\\textcolor{${correct_color}}{` +
+					math(card.solutions![0]).latex +
+					'}$$'
+			}
 		} else {
 			s = card.solutions![0] as string
 			s = '$$' + math(s).latex + '$$'
@@ -116,7 +136,7 @@
 			</div>
 		{:else}
 			<!-- solution générique -->
-			<div class="text-success-500">Réponse :</div>
+			<div class="">Réponse :</div>
 			<div class="my-5 z-0 relative" style={`font-size:${magnify_3xl};`}>
 				{@html solution}
 			</div>

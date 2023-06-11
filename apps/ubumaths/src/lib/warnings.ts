@@ -9,6 +9,7 @@ export const warningCasesShort = [
 	'Bavarde',
 	'Triche',
 	'Absent',
+	'Projectile',
 ]
 
 export const warningCases: Record<string, Record<string, string>> = {
@@ -23,6 +24,8 @@ export const warningCases: Record<string, Record<string, string>> = {
 		Bavarde: "Bavarde ou s'amuse au lieu d'écouter et de travailler",
 		Triche: "Triche pendant l'évaluation",
 		Absent: 'Absent',
+		Projectile: "Lancer dangereux d'un objet à travers la classe",
+		Exclusion: 'Exclus de cours',
 	},
 	ar: {
 		Retard: 'تأخر عن حصة الرياضيات',
@@ -35,6 +38,8 @@ export const warningCases: Record<string, Record<string, string>> = {
 		Bavarde: 'الدردشة واللعب بدلاً من الاستماع إلى الدرس',
 		Triche: 'الغش أثناء الامتحان',
 		Absent: 'غياب',
+		Projectile: "Lancer dangereux d'un objet à travers la classe",
+		Exclusion: 'Exclus de cours',
 	},
 	en: {
 		Retard: 'Arrive en retard en cours',
@@ -47,5 +52,7 @@ export const warningCases: Record<string, Record<string, string>> = {
 		Bavarde: "Bavarde au lieu d'écouter ou de travailler",
 		Triche: "Triche pendant l'évaluation",
 		Absent: 'Absent',
+		Projectile: "Lancer dangereux d'un objet à travers la classe",
+		Exclusion: 'Exclus de cours',
 	},
 }

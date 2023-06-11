@@ -156,7 +156,7 @@
 
 	function onInput(ev: Event) {
 		recordAnswers()
-		console.log('mf', mathField.getValue())
+		// console.log('mf', mathField.getValue())
 	}
 
 	// keystroke on physical keyboard
@@ -173,19 +173,7 @@
 
 		const keystroke = ev.code
 		const key = ev.key
-		if (
-			keystroke === 'Space'
-			//  &&
-			// !(
-			// 	answers_latex[i] &&
-			// 	answers_latex[i].length >= 2 &&
-			// 	answers_latex[i].slice(answers_latex[i].length - 2) === '\\,'
-			// )
-		) {
-			// console.log('prevent space')
-			// ev.preventDefault()
-			mathField.insert('2\\,3')
-		} else if (key === '%') {
+		if (key === '%') {
 			ev.preventDefault()
 			mathField.insert('\\%')
 		} else if (key === 'r') {
@@ -279,7 +267,7 @@
 			? addPlaceholder()
 			: null
 
-		console.log('field', field)
+		// console.log('field', field)
 
 		// TODO : et avec un champs de plusieurs réponses ?
 		if (!answers.length) {
@@ -296,6 +284,7 @@
 
 	function initMathField() {
 		if (!masked && mathField && !initialized) {
+			mathField.mathModeSpace = '\\,'
 			mathField.addEventListener('keypress', onKeystroke)
 			mathField.addEventListener('input', onInput)
 			mathField.addEventListener('change', onChange)
@@ -308,7 +297,9 @@
 			mathField.getPrompts().forEach((prompt) => {
 				mathField.setPromptContent(
 					prompt,
-					answers_latex2[parseInt(prompt, 10)],
+					question.prefilled
+						? question.prefilled[parseInt(prompt, 10)]
+						: answers_latex2[parseInt(prompt, 10)],
 					{ selectionMode: 'after', focus: true },
 				)
 			})
@@ -478,10 +469,12 @@
 
 <style>
 	math-field {
+		margin-top: 1em;
+		margin-bottom: 1em;
 		min-width: 2em;
 		color: black;
 		background: white;
-		font-size: 32px;
+		font-size: 1.3em;
 		/* margin: 3em; */
 		padding: 4px;
 		border-radius: 4px;
@@ -492,6 +485,8 @@
 		--selection-color: darkblue;
 		/* --contains-highlight-backround-color: green; */
 		--placeholder-color: violet;
+		--contains-highlight-backround-color: white;
+		--text-highlight-background-color: white;
 	}
 	math-field:focus-within {
 		/* outline: 4px solid #d7170b; */

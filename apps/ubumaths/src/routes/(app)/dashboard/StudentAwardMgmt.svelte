@@ -1,20 +1,11 @@
 <script lang="ts">
 	import PageHeader from '$lib/ui/PageHeader.svelte'
 	import { getLogger, objectMap } from '$lib/utils'
-	import {
-		modalStore,
-		toastStore,
-		type ModalSettings,
-	} from '@skeletonlabs/skeleton'
 	import type { Student } from '../../../types/type'
 	import Gidouille from '$lib/icones/Gidouille.svelte'
 	import { user } from '$lib/stores'
 	import type { SupabaseClient } from '@supabase/supabase-js'
 	import type { Database } from '../../../types/supabase'
-	import { DB_updateStudentGidouille, DB_updateStudentVipWallet } from '$lib/db'
-	import IconCards from '$lib/icones/IconCards.svelte'
-	import vipCards from '$lib/vips/cards'
-	import VipCard from '$lib/vips/VipCard.svelte'
 	import VipCards from './VIPCards.svelte'
 
 	export let db: SupabaseClient<Database>

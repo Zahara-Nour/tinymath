@@ -1,0 +1,11 @@
+\enclose{updiagonalstrike roundedbox}[5px solid green, mathbackground="#fbc0bd"]{x=\frac12}
+
+\left( \left( 8 \times \textcolor{#a3d651}{7} \right) + \textcolor{#a3d651}{5} \right)
+
+
+output : parenthèses dans les fraction : entiers - decomposition - niveau 2
+mauvais contraste de couloeur en dark mode avec error color
+ajouter badge pour le niveau dans les exercices
+replacer le stamp "correction"
+mise en valeur d'une expression mal écrite
+bordure mal placée

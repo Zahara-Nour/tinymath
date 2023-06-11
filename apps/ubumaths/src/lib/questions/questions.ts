@@ -184,13 +184,9 @@ const questions: Questions = {
 						},
 					],
 					solutionss: [['&1'], ['&2']],
-					correctionFormats: [
-						{
-							correct: ['Le chiffre des dizaines est &answer.'],
-						},
-						{
-							correct: ['Le chiffre des unités est &answer.'],
-						},
+					answerFields: [
+						'\\text{Le chiffre des dizaines est }$$...$$\\text{.}',
+						'\\text{Le chiffre des unités est }$$...$$\\text{.}',
 					],
 					options: [
 						'require-no-extraneaous-zeros',
@@ -217,16 +213,10 @@ const questions: Questions = {
 						},
 					],
 					solutionss: [['&1'], ['&2'], ['&3']],
-					correctionFormats: [
-						{
-							correct: ['Le chiffre des centaines est &answer.'],
-						},
-						{
-							correct: ['Le chiffre des dizaines est &answer.'],
-						},
-						{
-							correct: ['Le chiffre des unités est &answer.'],
-						},
+					answerFields: [
+						'\\text{Le chiffre des centaines est }$$...$$\\text{.}',
+						'\\text{Le chiffre des dizaines est }$$...$$\\text{.}',
+						'\\text{Le chiffre des unités est }$$...$$\\text{.}',
 					],
 					options: [
 						'require-no-extraneaous-zeros',
@@ -285,19 +275,11 @@ const questions: Questions = {
 						},
 					],
 					solutionss: [['&1'], ['&2'], ['&3'], ['&4']],
-					correctionFormats: [
-						{
-							correct: ['Le chiffre des milliers est &answer.'],
-						},
-						{
-							correct: ['Le chiffre des centaines est &answer.'],
-						},
-						{
-							correct: ['Le chiffre des dizaines est &answer.'],
-						},
-						{
-							correct: ['Le chiffre des unités est &answer.'],
-						},
+					answerFields: [
+						'\\text{Le chiffre des milliers est }$$...$$\\text{.}',
+						'\\text{Le chiffre des centaines est }$$...$$\\text{.}',
+						'\\text{Le chiffre des dizaines est }$$...$$\\text{.}',
+						'\\text{Le chiffre des unités est }$$...$$\\text{.}',
 					],
 					options: [
 						'require-no-extraneaous-zeros',
@@ -310,23 +292,19 @@ const questions: Questions = {
 				{
 					description: 'Ecrire un grand nombre entier avec des espaces',
 					subdescription: 'Nombre à 4 chiffres',
-					enounces: [
-						'Réécris ce nombre entier en ajoutant un espace pour séparer le chiffre des milliers.',
-					],
+					enounces: ['Réécris en espaçant correctement les chiffres.'],
 					expressions: ['&1'],
 					variabless: [{ '&1': '$e{4;4}' }],
 					options: ['exp-no-spaces', 'require-correct-spaces'],
-
 					defaultDelay: 15,
 					grade: CE2,
 				},
 				{
 					description: 'Ecrire un grand nombre entier avec des espaces',
 					subdescription: "Jusqu'à 7 chiffres",
-					enounces: [
-						'Réécris ce nombre entier en rajoutant des espaces pour former des groupes de 3 chiffres.',
-					],
+					enounces: ['Réécris en espaçant correctement les chiffres.'],
 					expressions: ['&2'],
+					prefilleds: [['&2']],
 					variabless: [{ '&1': '$e[4;7]', '&2': '$e{&1;&1}' }],
 					options: ['exp-no-spaces', 'require-correct-spaces'],
 
@@ -346,6 +324,14 @@ const questions: Questions = {
 						'0&1&2&3&40',
 						'0&1&2&3&400',
 					],
+					prefilleds: [
+						['00&1\\,&2&3&4'],
+						['0\\,0&1&2\\,&3&40'],
+						['00\\,&1&2&3\\,&400'],
+						['0&1\\,&2&3&4'],
+						['0&1&2\\,&3&40'],
+						['0\\,&1&2&3\\,&400'],
+					],
 					variabless: [
 						{
 							'&1': '$e[1;9]',
@@ -364,10 +350,9 @@ const questions: Questions = {
 				{
 					description: 'Ecrire un grand nombre entier avec des espaces',
 					subdescription: "Jusqu'à 10 chiffres",
-					enounces: [
-						'Réécris ce nombre entier en rajoutant des espaces pour former des groupes de 3 chiffres.',
-					],
+					enounces: ['Réécris en espaçant correctement les chiffres.'],
 					expressions: ['&2'],
+					prefilleds: [['&2']],
 					variabless: [{ '&1': '$e[4;10]', '&2': '$e{&1;&1}' }],
 					options: ['exp-no-spaces', 'require-correct-spaces'],
 
@@ -377,16 +362,12 @@ const questions: Questions = {
 				{
 					description: 'Enigme pour trouver un nombre',
 					enounces: [
-						'Je suis un nombre à 3 chiffres. Mon <b>chiffre des unités</b> est $$&1$$. Le <b>nombre</b> de mes dizaines est le double du chiffre des unités. Qui suis-je ?',
-						'Je suis un nombre à 3 chiffres. Mon <b>chiffre des unités</b> est $$&1$$. Le <b>nombre</b> de mes dizaines est le triple du chiffre des unités. Qui suis-je ?',
+						'Je suis un nombre à 3 chiffres. Mon <b>chiffre des unités</b> est $$&1$$. Le <b>nombre de mes dizaines</b> est le double du <b>chiffre des unités</b>. Qui suis-je ?',
+						'Je suis un nombre à 3 chiffres. Mon <b>chiffre des unités</b> est $$&1$$. Le <b>nombre de mes dizaines</b> est le triple du <b>chiffre des unités</b>. Qui suis-je ?',
 					],
 					solutionss: [['[_&1*21_]'], ['[_&1*31_]']],
 					variabless: [{ '&1': '$e[5;9]' }],
-					correctionFormats: [
-						{
-							correct: ['Je suis &answer.'],
-						},
-					],
+					answerFields: ['\\text{Je suis le nombre }$$...$$\\text{.}'],
 
 					defaultDelay: 30,
 					grade: CM2,
@@ -419,6 +400,7 @@ const questions: Questions = {
 							'&3': '$e[0;9]',
 						},
 					],
+					conditions: ['&2*&3!=0'],
 					options: ['remove-null-terms'],
 					defaultDelay: 20,
 					grade: CE1,
@@ -426,7 +408,10 @@ const questions: Questions = {
 				{
 					description: "Décomposer l'écriture décimale un nombre",
 					subdescription: 'En centaines, dizaines et unités',
-					enounces: ['Décompose ce nombre en centaines, dizaines et unités.'],
+					enounces: [
+						"Décompose ce nombre en centaines, dizaines et unités comme dans l'exemple :",
+					],
+					enounces2: ['$$235=200+30+5$$'],
 					expressions: ['[_&1*100+&2*10+&3_]'],
 					solutionss: [['[_&1*100_]+[_&2*10_]+&3']],
 					variabless: [{ '&1': '$e[1;9]', '&2': '$e[0;9]', '&3': '$e[0;9]' }],
@@ -437,13 +422,9 @@ const questions: Questions = {
 					description: "Décomposer l'écriture décimale un nombre",
 					subdescription:
 						"En centaines, dizaines et unités, à l'aide de produits",
-					enounces: [
-						'Décompose ce nombre comme dans cet exemple : $$345 = (3 * 100) +(4 * 10) + 5$$.',
-					],
-					expressions: [
-						'[_&1*100 + &2*10 + &3_]',
-						// '[_(&1*1000) +  (&2*100) + (&3*10) + &4_]',
-					],
+					enounces: ['Décompose ce nombre comme dans cet exemple : '],
+					enounces2: ['$$345 = (3 * 100) +(4 * 10) + 5$$'],
+					expressions: ['[_&1*100 + &2*10 + &3_]'],
 					variabless: [
 						{
 							'&1': '$e[1;9]',
@@ -452,7 +433,6 @@ const questions: Questions = {
 						},
 					],
 					solutionss: [['(&1*100) + (&2*10) + &3']],
-					// solutionss:[['&1*1000 +  &2*100 + &3*10 + &4']],
 					options: [
 						'no-penalty-for-extraneous-brackets',
 						'no-penalty-for-factor-one',
@@ -487,9 +467,8 @@ const questions: Questions = {
 				{
 					description: "Décomposer l'écriture décimale un nombre",
 					subdescription: 'En milliers, centaines, dizaines et unités',
-					enounces: [
-						'Décompose ce nombre comme dans cet exemple : $$2345 = 2000+ 300 + 40 + 5$$.',
-					],
+					enounces: ['Décompose ce nombre comme dans cet exemple :'],
+					enounces2: ['$$2345 = 2000+ 300 + 40 + 5$$'],
 					expressions: ['[_&1*1000+&2*100+&3*10+&4_]'],
 					solutionss: [['[_&1*1000_]+[_&2*100_]+[_&3*10_]+&4']],
 					variabless: [
@@ -507,13 +486,9 @@ const questions: Questions = {
 					description: "Décomposer l'écriture décimale un nombre",
 					subdescription:
 						"En milliers, centaines, dizaines et unités, à l'aide de produits",
-					enounces: [
-						'Décompose ce nombre comme dans cet exemple : $$2345 = (2 * 1000) + (3 * 100) +(4 * 10) + 5$$',
-					],
-					expressions: [
-						'[_&1*1000 + &2*100 + &3*10+&4_]',
-						// '[_(&1*1000) +  (&2*100) + (&3*10) + &4_]',
-					],
+					enounces: ['Décompose ce nombre comme dans cet exemple :'],
+					enounces2: ['$$2345 = (2 * 1000) + (3 * 100) +(4 * 10) + 5$$'],
+					expressions: ['[_&1*1000 + &2*100 + &3*10+&4_]'],
 					variabless: [
 						{
 							'&1': '$e[1;9]',
@@ -523,8 +498,6 @@ const questions: Questions = {
 						},
 					],
 					solutionss: [['(&1*1000) + (&2*100) + (&3*10)+&4']],
-
-					// solutionss:[['&1*1000 +  &2*100 + &3*10 + &4']],
 					options: [
 						'no-penalty-for-extraneous-brackets',
 						'no-penalty-for-factor-one',
@@ -576,8 +549,9 @@ const questions: Questions = {
 					subdescription:
 						'En dizaines de milliers, milliers, centaines, dizaines et unités',
 					enounces: [
-						'Décompose ce nombre en dizaines de milliers, milliers, centaines, dizaines et unités, comme dans cet exemple : $$23456 = 20000 + 3000 + 400 + 50 + 6$$.',
+						'Décompose ce nombre en dizaines de milliers, milliers, centaines, dizaines et unités, comme dans cet exemple :',
 					],
+					enounces2: ['$$23456 = 20000 + 3000 + 400 + 50 + 6$$'],
 					expressions: ['[_&1*10000+&2*1000+&3*100+&4*10+&5_]'],
 					solutionss: [['[_&1*10000_]+[_&2*1000_]+[_&3*100_]+[_&4*10_]+&5']],
 					variabless: [
@@ -597,13 +571,11 @@ const questions: Questions = {
 					description: "Décomposer l'écriture décimale un nombre",
 					subdescription:
 						"En dizaines de milliers, milliers, centaines, dizaines et unités, à l'aide de produits",
-					enounces: [
-						'Décompose ce nombre comme dans cet exemple : $$23456 = (2 * 10000) +(3 * 1000) + (4*100) +(5*10) + 6$$.',
+					enounces: ['Décompose ce nombre comme dans cet exemple :'],
+					enounces2: [
+						'$$23456 = (2 * 10000) +(3 * 1000) + (4*100) +(5*10) + 6$$',
 					],
-					expressions: [
-						'[_&1*10000 + &2*1000 + &3*100+&4*10+&5_]',
-						// '[_(&1*1000) +  (&2*100) + (&3*10) + &4_]',
-					],
+					expressions: ['[_&1*10000 + &2*1000 + &3*100+&4*10+&5_]'],
 					variabless: [
 						{
 							'&1': '$e[1;9]',

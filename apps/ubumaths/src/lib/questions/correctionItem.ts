@@ -157,7 +157,7 @@ export function createCorrection(item: CorrectedQuestion) {
 			})
 			if (status !== STATUS_EMPTY) {
 				coms.unshift(
-					'Ta réponse : ' + putAnswers(answerField, item, /\.\.\./g) + '. ',
+					'Ta réponse : ' + putAnswers(answerField, item, /\.\.\./g) + ' ',
 				)
 			}
 		}
@@ -253,8 +253,8 @@ export function createCorrection(item: CorrectedQuestion) {
 		}
 		text += '\\end{align*}$$'
 
-		console.log('expression', expression)
-		console.log('solutions[0]', solutions[0])
+		// console.log('expression', expression)
+		// console.log('solutions[0]', solutions[0])
 		let texmacs = ''
 		if (expression) {
 			texmacs =
