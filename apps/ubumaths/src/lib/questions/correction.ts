@@ -58,8 +58,9 @@ const SPACES_MULTIPLE_ANSWERS = 'Les chiffres sont mal espacés. '
 const SIGNS = 'Tu peux faire des simplifications de signes. '
 const SIGNS_MULTIPLE_ANSWERS =
 	'Tu peux faire des simplifications de signes dans tes réponses. '
-const MATH_INCORRECT = "Ta n'est pas écrite correctement. "
-const MATH_INCORRECT_MULTIPLE_ANSWERS = "Ta n'est pas écrite correctement. "
+const MATH_INCORRECT = "Ta réponse n'est pas écrite correctement. "
+const MATH_INCORRECT_MULTIPLE_ANSWERS =
+	"Ta réponse n'est pas écrite correctement. "
 const MATH_GLOBALLY_INCORRECT =
 	"L'expression obtenue n'est pas mathématiquement correcte. "
 const PRODUCTS = 'Tu peux simplifier certains symboles de multiplication. '

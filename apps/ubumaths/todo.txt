@@ -9,3 +9,9 @@ ajouter badge pour le niveau dans les exercices
 replacer le stamp "correction"
 mise en valeur d'une expression mal écrite
 bordure mal placée
+chiffres mal espacés dans corrextion qcm
+expression globale incorrecte dans trous
+gestion du clavier
+bouton valider à enlever dans exemple
+question avec plusieurs reponses possibles : entiers - multiplier - decomposer
+											           divisier  - divisibilité
