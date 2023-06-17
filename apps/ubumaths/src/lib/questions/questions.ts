@@ -294,6 +294,7 @@ const questions: Questions = {
 					subdescription: 'Nombre à 4 chiffres',
 					enounces: ['Réécris en espaçant correctement les chiffres.'],
 					expressions: ['&1'],
+					prefilleds: [['&1']],
 					variabless: [{ '&1': '$e{4;4}' }],
 					options: ['exp-no-spaces', 'require-correct-spaces'],
 					defaultDelay: 15,
@@ -5354,16 +5355,10 @@ const questions: Questions = {
 						},
 					],
 					solutionss: [['&1'], ['&2'], ['&3']],
-					correctionFormats: [
-						{
-							correct: ['Le chiffre des centièmes est &answer.'],
-						},
-						{
-							correct: ['Le chiffre des dizièmes est &answer.'],
-						},
-						{
-							correct: ['Le chiffre des unités est &answer.'],
-						},
+					answerFields: [
+						'\\text{Le chiffre des centièmes est }$$...$$\\text{.}',
+						'\\text{Le chiffre des dixièmes est }$$...$$\\text{.}',
+						'\\text{Le chiffre des unités est }$$...$$\\text{.}',
 					],
 					options: ['require-no-extraneaous-zeros'],
 					defaultDelay: 10,
@@ -5374,7 +5369,7 @@ const questions: Questions = {
 					subdescription: "Des centaines jusqu'aux centièmes",
 					enounces: [
 						'Quel est le chiffre des <b>centièmes</b> dans le nombre $$&6$$ ?',
-						'Quel est le chiffre des <b>dizièmes</b> dans le nombre $$&6$$ ?',
+						'Quel est le chiffre des <b>dixièmes</b> dans le nombre $$&6$$ ?',
 						'Quel est le chiffre des <b>unités</b> dans le nombre $$&6$$ ?',
 						'Quel est le chiffre des <b>dizaines</b> dans le nombre $$&6$$ ?',
 						'Quel est le chiffre des <b>centaines</b> dans le nombre $$&6$$ ?',
@@ -5390,22 +5385,12 @@ const questions: Questions = {
 						},
 					],
 					solutionss: [['&1'], ['&2'], ['&3'], ['&4'], ['&5']],
-					correctionFormats: [
-						{
-							correct: ['Le chiffre des centièmes est &answer.'],
-						},
-						{
-							correct: ['Le chiffre des dizièmes est &answer.'],
-						},
-						{
-							correct: ['Le chiffre des unités est &answer.'],
-						},
-						{
-							correct: ['Le chiffre des dizaines est &answer.'],
-						},
-						{
-							correct: ['Le chiffre des centaines est &answer.'],
-						},
+					answerFields: [
+						'\\text{Le chiffre des centièmes est }$$...$$\\text{.}',
+						'\\text{Le chiffre des dixièmes est }$$...$$\\text{.}',
+						'\\text{Le chiffre des unités est }$$...$$\\text{.}',
+						'\\text{Le chiffre des dizaines est }$$...$$\\text{.}',
+						'\\text{Le chiffre des centaines est }$$...$$\\text{.}',
 					],
 					options: ['require-no-extraneaous-zeros'],
 					defaultDelay: 10,
@@ -5489,7 +5474,7 @@ const questions: Questions = {
 					enounces: [
 						'Quel est le chiffre des <b>millièmes</b> dans le nombre $$&5$$ ?',
 						'Quel est le chiffre des <b>centièmes</b> dans le nombre $$&5$$ ?',
-						'Quel est le chiffre des <b>dizièmes</b> dans le nombre $$&5$$ ?',
+						'Quel est le chiffre des <b>dixièmes</b> dans le nombre $$&5$$ ?',
 						'Quel est le chiffre des <b>unités</b> dans le nombre $$&5$$ ?',
 					],
 					variabless: [
@@ -5502,19 +5487,11 @@ const questions: Questions = {
 						},
 					],
 					solutionss: [['&1'], ['&2'], ['&3'], ['&4']],
-					correctionFormats: [
-						{
-							correct: ['Le chiffre des millièmes est &answer.'],
-						},
-						{
-							correct: ['Le chiffre des centièmes est &answer.'],
-						},
-						{
-							correct: ['Le chiffre des dizièmes est &answer.'],
-						},
-						{
-							correct: ['Le chiffre des unités est &answer.'],
-						},
+					answerFields: [
+						'\\text{Le chiffre des millièmes est }$$...$$\\text{.}',
+						'\\text{Le chiffre des centièmes est }$$...$$\\text{.}',
+						'\\text{Le chiffre des dixièmes est }$$...$$\\text{.}',
+						'\\text{Le chiffre des unités est }$$...$$\\text{.}',
 					],
 					defaultDelay: 10,
 					grade: CM2,
@@ -5525,7 +5502,7 @@ const questions: Questions = {
 					enounces: [
 						'Quel est le chiffre des <b>millièmes</b> dans le nombre $$&8$$ ?',
 						'Quel est le chiffre des <b>centièmes</b> dans le nombre $$&8$$ ?',
-						'Quel est le chiffre des <b>dizièmes</b> dans le nombre $$&8$$ ?',
+						'Quel est le chiffre des <b>dixièmes</b> dans le nombre $$&8$$ ?',
 						'Quel est le chiffre des <b>unités</b> dans le nombre $$&8$$ ?',
 						'Quel est le chiffre des <b>dizaines</b> dans le nombre $$&8$$ ?',
 						'Quel est le chiffre des <b>centaines</b> dans le nombre $$&8$$ ?',
@@ -5544,28 +5521,14 @@ const questions: Questions = {
 						},
 					],
 					solutionss: [['&1'], ['&2'], ['&3'], ['&4'], ['&5'], ['&6'], ['&7']],
-					correctionFormats: [
-						{
-							correct: ['Le chiffre des millièmes est &answer.'],
-						},
-						{
-							correct: ['Le chiffre des centièmes est &answer.'],
-						},
-						{
-							correct: ['Le chiffre des dizièmes est &answer.'],
-						},
-						{
-							correct: ['Le chiffre des unités est &answer.'],
-						},
-						{
-							correct: ['Le chiffre des dizaines est &answer.'],
-						},
-						{
-							correct: ['Le chiffre des centaines est &answer.'],
-						},
-						{
-							correct: ['Le chiffre des milliers est &answer.'],
-						},
+					answerFields: [
+						'\\text{Le chiffre des millièmes est }$$...$$\\text{.}',
+						'\\text{Le chiffre des centièmes est }$$...$$\\text{.}',
+						'\\text{Le chiffre des dixièmes est }$$...$$\\text{.}',
+						'\\text{Le chiffre des unités est }$$...$$\\text{.}',
+						'\\text{Le chiffre des dizaines est }$$...$$\\text{.}',
+						'\\text{Le chiffre des centaines est }$$...$$\\text{.}',
+						'\\text{Le chiffre des milliers est }$$...$$\\text{.}',
 					],
 					defaultDelay: 10,
 					grade: CM2,
@@ -5669,7 +5632,8 @@ const questions: Questions = {
 				{
 					description: 'Décomposer en unités, dixièmes, centièmes',
 					subdescription: 'avec décimaux',
-					enounces: ['Décompose comme dans cet exemple : $$5,34=5+0,3+0,04$$.'],
+					enounces: ['Décompose comme dans cet exemple :'],
+					enounces2: ['$$5,34=5+0,3+0,04$$'],
 					variabless: [
 						{
 							'&1': '$e{1;1}',
@@ -5686,9 +5650,8 @@ const questions: Questions = {
 				{
 					description: 'Décomposer en unités, dixièmes, centièmes',
 					subdescription: 'avec fractions décimales',
-					enounces: [
-						'Décomposer comme dans cet exemple : $$5,34=5+3/10+4/100$$.',
-					],
+					enounces: ['Décomposer comme dans cet exemple :'],
+					enounces2: ['$$5,34=5+3/10+4/100$$'],
 					variabless: [
 						{
 							'&1': '$e{1;1}',
@@ -5722,9 +5685,8 @@ const questions: Questions = {
 				{
 					description: 'Décomposer en unités, dixièmes, centièmes, millièmes',
 					subdescription: 'avec des décimaux',
-					enounces: [
-						'Décompose comme dans cet exemple : $$5,346=5+0,3+0,04+0,006$$.',
-					],
+					enounces: ['Décompose comme dans cet exemple :'],
+					enounces2: ['$$5,346=5+0,3+0,04+0,006$$'],
 					variabless: [
 						{
 							'&1': '$e{1;1}',
@@ -5741,9 +5703,8 @@ const questions: Questions = {
 				{
 					description: 'Décomposer en unités, dixièmes, centièmes, millièmes',
 					subdescription: 'avec des fractions décimales',
-					enounces: [
-						'Décomposer comme dans cet exemple : $$5,346=5+3/10+4/100+6/1000$$.',
-					],
+					enounces: ['Décomposer comme dans cet exemple :'],
+					enounces2: ['$$5,346=5+3/10+4/100+6/1000$$'],
 					variabless: [
 						{
 							'&1': '$e{1;1}',
@@ -5816,14 +5777,9 @@ const questions: Questions = {
 						},
 					],
 					solutionss: [['[_&1+1_]'], ['&1']],
-
-					correctionFormats: [
-						{
-							correct: ['Le plus petit entier supérieur est &answer'],
-						},
-						{
-							correct: ['Le plus grand entier inférieur est &answer'],
-						},
+					answerFields: [
+						'\\text{Le plus petit entier supérieur est }$$...$$\\text{.}',
+						'\\text{Le plus grand entier inférieur est }$$...$$\\text{.}',
 					],
 					defaultDelay: 20,
 					grade: CM1,
@@ -5874,12 +5830,6 @@ const questions: Questions = {
 					],
 					solutionss: [['&1', '[_&1+1_]']],
 
-					correctionFormats: [
-						{
-							correct: ['$$&ans1<&3<&ans2$$'],
-						},
-					],
-
 					defaultDelay: 20,
 					grade: CM1,
 				},
@@ -5896,13 +5846,6 @@ const questions: Questions = {
 						},
 					],
 					solutionss: [['[._&1+&2*0,1_]', '[._&1+(&2+1)*0,1_]']],
-
-					correctionFormats: [
-						{
-							correct: ['$$&ans1<[°&4°]<&ans2$$'],
-						},
-					],
-
 					options: ['no-penalty-for-extraneous-zeros'],
 					defaultDelay: 20,
 					grade: CM1,
@@ -5923,13 +5866,6 @@ const questions: Questions = {
 					solutionss: [
 						['[._&1+&2*0,1+&3*0,01_]', '[._&1+&2*0,1+(&3+1)*0,01_]'],
 					],
-
-					correctionFormats: [
-						{
-							correct: ['$$&ans1<[°&5°]<&ans2$$'],
-						},
-					],
-
 					options: ['no-penalty-for-extraneous-zeros'],
 					defaultDelay: 20,
 					grade: CM1,
@@ -6235,15 +6171,13 @@ const questions: Questions = {
 							'&2': '[._(&1)/2_]',
 						},
 					],
-					correctionFormats: [
-						{
-							correct: ['La moitié de $$[._&1_]$$ est &answer.'],
-						},
+					answerFields: [
+						'\\text{La moitié de }$$[._&1_]$$\\text{ est }$$...$$\\text{.}',
 					],
 					correctionDetailss: [
 						[
 							{
-								text: 'La moitié de $$[._&1_]$$ est &solution car $$2 \\times &sol = [_&1_]$$',
+								text: 'La moitié de $$[._&1_]$$ est &solution car $$2 \\times &sol1 = [_&1_]$$',
 							},
 						],
 					],
@@ -6391,18 +6325,15 @@ const questions: Questions = {
 							'&2': '$e[2;4]',
 							'&3': '$e{&1;&1}\\{m10}',
 							'&4': '$e{&2;&2}\\{m10}',
-							// '&5': '[._&3:10^(&1-1)_]*[._&4:10^(&2-1)_]'
+							'&5': '[._&3:10^(&1-1)*&4:10^(&2-1)_]',
 						},
 					],
 					enounces2: ['$$[._&3:10^(&1-1)_]*[._&4:10^(&2-1)_]=[_&3*&4_]$$'],
-					expressions: ['[._&3:10^(&1-1)_]*[._&4:10^(&2-1)_]=?'],
+					expressions: ['[._&3:10^(&1-1)_]*[._&4:10^(&2-1)_]'],
+					prefilleds: [['[_&3*&4_]']],
 					conditions: ['mod(&3*&4;10)!=0'],
 					solutionss: [['[._&3*&4:10^(&1+&2-2)_]']],
-					correctionFormats: [
-						{
-							correct: ['$$[._&3:10^(&1-1)_] \\times [._&4:10^(&2-1)_]=&ans$$'],
-						},
-					],
+
 					correctionDetailss: [
 						[
 							{
@@ -6433,7 +6364,13 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$&1\\times &3=[_&1*&3_]$$ donc $$[._&1*10^(-&2)_] \\times [._&3*10^(-&4)_]=&sol$$ ($$\\textcolor{${color1}}{&2+&4=[_&2+&4_]\\text{ décimales}} $$).`,
+								text: `$$&1\\times &3=[_&1*&3_]$$`,
+							},
+							{
+								text: 'donc :',
+							},
+							{
+								text: `$$[._&1*10^(-&2)_] \\times [._&3*10^(-&4)_]=&sol$$ ($$\\textcolor{${color1}}{&2+&4=[_&2+&4_]$$ décimales).`,
 							},
 						],
 					],
@@ -6477,12 +6414,24 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$[._&1*&3_]$$ est $$\\textcolor{${color1}}{[_&3_]\\text{ fois}}$$ plus grand que $$[._&1_]$$, donc le résultat de $$[._&1*&3_] \\times [._&2_]$$ est  $$\\textcolor{${color1}}{[_&3_]\\text{ fois}}$$ plus grand que celui de $$[._&1_]\\times[._&2_]$$, c'est-à-dire $$\\textcolor{${color1}}{[_&3_]\\times} [._&1*&2_] = &sol$$`,
+								text: `$$[._&1*&3_]$$ est $$\\textcolor{${color1}}{[_&3_]\\text{ fois}}$$ plus grand que $$[._&1_]$$,`,
+							},
+							{
+								text: `donc le résultat de $$[._&1*&3_] \\times [._&2_]$$ est  $$\\textcolor{${color1}}{[_&3_]\\text{ fois}}$$ plus grand que celui de $$[._&1_]\\times[._&2_]$$,`,
+							},
+							{
+								text: ` c'est-à-dire $$\\textcolor{${color1}}{[_&3_]\\times} [._&1*&2_] = &sol$$`,
 							},
 						],
 						[
 							{
-								text: `$$[._&1*&3_]$$ est $$\\textcolor{${color1}}{[_&3_]\\text{ fois}}$$ plus grand que $$[._&1_]$$, donc le résultat de $$[._&2_] \\times [._&1*&3_] $$ est  $$\\textcolor{${color1}}{[_&3_]\\text{ fois}}$$ plus grand que celui de $$[._&2_] \\times [._&1_]$$, c'est-à-dire $$\\textcolor{${color1}}{[_&3_]\\times} [._&1*&2_] = &sol$$`,
+								text: `$$[._&1*&3_]$$ est $$\\textcolor{${color1}}{[_&3_]\\text{ fois}}$$ plus grand que $$[._&1_]$$,`,
+							},
+							{
+								text: `donc le résultat de $$[._&2_] \\times [._&1*&3_] $$ est  $$\\textcolor{${color1}}{[_&3_]\\text{ fois}}$$ plus grand que celui de $$[._&2_] \\times [._&1_]$$,`,
+							},
+							{
+								text: `c'est-à-dire $$\\textcolor{${color1}}{[_&3_]\\times} [._&1*&2_] = &sol$$`,
 							},
 						],
 					],
@@ -6577,7 +6526,7 @@ const questions: Questions = {
 					grade: SIXIEME,
 				},
 				{
-					description: 'Multiplier par $$2,5çi',
+					description: 'Multiplier par $$2,5$$',
 					enounces: ['Calcule.'],
 					variabless: [
 						{
@@ -6816,7 +6765,7 @@ const questions: Questions = {
 			'Produits astucieux': [
 				{
 					description: 'Calculer astucieusement un produit',
-					subdescription: 'Utiiser $$2$$ facteurs dont le produit est $$100$$',
+					subdescription: 'Utiliser $$2$$ facteurs dont le produit est $$100$$',
 					enounces: ['Calcule de manière astucieuse.'],
 					expressions: [
 						'&1*[_&2_]*&3',
@@ -6836,32 +6785,55 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{&1}}  \\times  \\bold{\\textcolor{${color1}}{&2}} \\times &3 &= \\bold{\\textcolor{${color1}}{100}} \\times &3 \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \
+								\\bold{\\textcolor{${color1}}{&1}}  \\times  \\textcolor{${color1}}{&2} \\times [._&3_] \
+								&= \\textcolor{${color1}}{100} \\times [._&3_] \\\\ \
+								&= &sol \
+								\\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{&2}}  \\times  \\bold{\\textcolor{${color1}}{&1}} \\times &3 &= \\bold{\\textcolor{${color1}}{100}} \\times &3 \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \
+								\\textcolor{${color1}}{&2}  \\times  \\textcolor{${color1}}{&1} \\times [._&3_] \
+								&= \\textcolor{${color1}}{100} \\times [._&3_] \\\\ \
+								&= &sol \
+								\\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{&2}}  \\times  &3 \\times \\bold{\\textcolor{${color1}}{&1}} &= \\bold{\\textcolor{${color1}}{100}} \\times &3 \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \\textcolor{${color1}}{&2} \\times  [._&3_] \\times \\textcolor{${color1}}{&1} \
+								&= \\textcolor{${color1}}{100} \\times [._&3_] \\\\ \
+								&= &sol \
+								\\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{&1}}  \\times  &3 \\times \\bold{\\textcolor{${color1}}{&2}} &= \\bold{\\textcolor{${color1}}{100}} \\times &3 \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \
+								\\textcolor{${color1}}{&1}  \\times  [._&3_] \\times \\textcolor{${color1}}{&2} \
+								&= \\textcolor{${color1}}{100} \\times [._&3_] \\\\ \
+								&= &sol \
+								\\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} &3 \\times \\bold{\\textcolor{${color1}}{&2}} \\times \\bold{\\textcolor{${color1}}{&1}} &= &3 \\times \\bold{\\textcolor{${color1}}{100}} \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \
+								[._&3_] \\times \\textcolor{${color1}}{&2} \\times \\textcolor{${color1}}{&1} \
+								&= [._&3_] \\times \\textcolor{${color1}}{100} \\\\ \
+								&= &sol \
+								\\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} &3 \\times \\bold{\\textcolor{${color1}}{&1}} \\times \\bold{\\textcolor{${color1}}{&2}} &= &3 \\times \\bold{\\textcolor{${color1}}{100}} \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \
+								[._&3_] \\times \\textcolor{${color1}}{&1} \\times \\textcolor{${color1}}{&2} \
+								&= [._&3_] \\times \\textcolor{${color1}}{100} \\\\ \
+								&= &sol \
+								\\end{align}$$`,
 							},
 						],
 					],
@@ -6885,22 +6857,38 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{20}} \\times [_2*&1_] \\times  \\bold{\\textcolor{${color1}}{0,5}} &= \\bold{\\textcolor{${color1}}{10}} \\times [_2*&1_] \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \
+								\\textcolor{${color1}}{20} \\times [_2*&1_] \\times \\textcolor{${color1}}{0,5} \
+								&= \\textcolor{${color1}}{10} \\times [_2*&1_] \\\\ \
+								&= &sol \
+								\\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{0,5}} \\times [_2*&1_] \\times  \\bold{\\textcolor{${color1}}{20}} &= \\bold{\\textcolor{${color1}}{10}} \\times [_2*&1_] \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \
+								\\textcolor{${color1}}{0,5} \\times [_2*&1_] \\times \\textcolor{${color1}}{20} \
+								&= \\textcolor{${color1}}{10} \\times [_2*&1_] \\\\ \
+								&= &sol \
+								\\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} [_2*&1_] \\times \\bold{\\textcolor{${color1}}{20}} \\times  \\bold{\\textcolor{${color1}}{0,5}} &= [_2*&1_] \\times \\bold{\\textcolor{${color1}}{10}} \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \
+								[_2*&1_] \\times \\textcolor{${color1}}{20} \\times \\textcolor{${color1}}{0,5} \
+								&= [_2*&1_] \\times \\textcolor{${color1}}{10} \\\\ \
+								&= &sol \
+								\\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} [_2*&1_] \\times \\bold{\\textcolor{${color1}}{0,5}} \\times  \\bold{\\textcolor{${color1}}{20}} &=   [_2*&1_] \\times \\bold{\\textcolor{${color1}}{10}} \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \
+								[_2*&1_] \\times \\textcolor{${color1}}{0,5} \\times \\textcolor{${color1}}{20} \
+								&= [_2*&1_] \\times \\textcolor{${color1}}{10} \\\\ \
+								&= &sol \
+								\\end{align}$$`,
 							},
 						],
 					],
@@ -6927,32 +6915,56 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{[._&1_]}}  \\times  \\bold{\\textcolor{${color1}}{&2}} \\times &3 &= \\bold{\\textcolor{${color1}}{10}} \\times &3 \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \
+								\\textcolor{${color1}}{[._&1_]}  \\times  \\textcolor{${color1}}{&2} \\times &3 \
+								&= \\textcolor{${color1}}{10} \\times &3 \\\\ \
+								&= &sol \
+								\\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{&2}}  \\times  \\bold{\\textcolor{${color1}}{[._&1_]}} \\times &3 &= \\bold{\\textcolor{${color1}}{10}} \\times &3 \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \
+								\\textcolor{${color1}}{&2}  \\times \\textcolor{${color1}}{[._&1_]} \\times &3 \
+								&= \\textcolor{${color1}}{10} \\times &3 \\\\ \
+								&= &sol \
+								\\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{&2}}  \\times  &3 \\times \\bold{\\textcolor{${color1}}{[._&1_]}} &= \\bold{\\textcolor{${color1}}{10}} \\times &3 \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \
+								\\textcolor{${color1}}{&2} \\times  &3 \\times \\textcolor{${color1}}{[._&1_]} \
+								&= \\textcolor{${color1}}{10} \\times &3 \\\\ \
+								&= &sol \
+								\\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{[._&1_]}}  \\times  &3 \\times \\bold{\\textcolor{${color1}}{&2}} &= \\bold{\\textcolor{${color1}}{10}} \\times &3 \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \
+								\\textcolor{${color1}}{[._&1_]}  \\times  &3 \\times \\textcolor{${color1}}{&2} \
+								&= \\textcolor{${color1}}{10} \\times &3 \\\\ \
+								&= &sol \
+								\\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} &3 \\times \\bold{\\textcolor{${color1}}{&2}} \\times \\bold{\\textcolor{${color1}}{[._&1_]}} &= &3 \\times \\bold{\\textcolor{${color1}}{10}} \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \
+								&3 \\times \\textcolor{${color1}}{&2} \\times \\textcolor{${color1}}{[._&1_]} \
+								&= &3 \\times \\textcolor{${color1}}{10} \\\\ \
+								&= &sol \
+								\\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} &3 \\times \\bold{\\textcolor{${color1}}{[._&1_]}} \\times \\bold{\\textcolor{${color1}}{&2}} &= &3 \\times \\bold{\\textcolor{${color1}}{10}} \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \
+								&3 \\times \\textcolor{${color1}}{[._&1_]} \\times \\textcolor{${color1}}{&2} \
+								&= &3 \\times \\textcolor{${color1}}{10} \\\\ \
+								&= &sol \
+								\\end{align}$$`,
 							},
 						],
 					],
@@ -6979,9 +6991,9 @@ const questions: Questions = {
 							{
 								text: `$$\
 								\\begin{align} \
-									&2 \\times \\bold{\\textcolor{${color1}}{[._&1_]}} + [_10-&2_] \\times \\bold{\\textcolor{${color1}}{[._&1_]}} \
-									&=  \\left( &2 + [_10-&2_] \\right) \\times \\bold{\\textcolor{${color1}}{[._&1_]}}\\\\  \
-									&=  10 \\times \\bold{\\textcolor{${color1}}{[._&1_]}}\\\\  \
+									&2 \\times \\textcolor{${color1}}{[._&1_]} + [_10-&2_] \\times \\textcolor{${color1}}{[._&1_]} \
+									&=  \\left( &2 + [_10-&2_] \\right) \\times \\textcolor{${color1}}{[._&1_]}\\\\  \
+									&=  10 \\times \\textcolor{${color1}}{[._&1_]}\\\\  \
 									&= &sol \
 								\\end{align}$$`,
 							},
@@ -6990,9 +7002,9 @@ const questions: Questions = {
 							{
 								text: `$$\
 								\\begin{align} \
-									\\bold{\\textcolor{${color1}}{[._&1_]}} \\times &2 + [_10-&2_] \\times \\bold{\\textcolor{${color1}}{[._&1_]}} \
-									&=  \\left( &2 + [_10-&2_] \\right) \\times \\bold{\\textcolor{${color1}}{[._&1_]}}\\\\  \
-									&=  10 \\times \\bold{\\textcolor{${color1}}{[._&1_]}}\\\\  \
+									\\textcolor{${color1}}{[._&1_]} \\times &2 + [_10-&2_] \\times \\textcolor{${color1}}{[._&1_]} \
+									&=  \\left( &2 + [_10-&2_] \\right) \\times \\textcolor{${color1}}{[._&1_]}\\\\  \
+									&=  10 \\times \\textcolor{${color1}}{[._&1_]}\\\\  \
 									&= &sol \
 								\\end{align}$$`,
 							},
@@ -7000,9 +7012,9 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-									&2 \\times \\bold{\\textcolor{${color1}}{[._&1_]}} + \\bold{\\textcolor{${color1}}{[._&1_]}} \\times [_10-&2_] \
-									&=  \\left( &2 + [_10-&2_] \\right) \\times \\bold{\\textcolor{${color1}}{[._&1_]}}\\\\  \
-									&=  10 \\times \\bold{\\textcolor{${color1}}{[._&1_]}}\\\\  \
+									&2 \\times \\textcolor{${color1}}{[._&1_]} + \\textcolor{${color1}}{[._&1_]} \\times [_10-&2_] \
+									&=  \\left( &2 + [_10-&2_] \\right) \\times \\textcolor{${color1}}{[._&1_]}\\\\  \
+									&=  10 \\times \\textcolor{${color1}}{[._&1_]}\\\\  \
 									&= &sol \
 								\\end{align}$$`,
 							},
@@ -7010,9 +7022,9 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align}  \
-									\\bold{\\textcolor{${color1}}{[._&1_]}} \\times &2+ \\bold{\\textcolor{${color1}}{[._&1_]}} \\times [_10-&2_] \
-									&= \\bold{\\textcolor{${color1}}{[._&1_]}} \\times \\left( &2 + [_10-&2_] \\right)\\\\  \
-									&= \\bold{\\textcolor{${color1}}{[._&1_]}} \\times 10 \\\\  \
+									\\textcolor{${color1}}{[._&1_]} \\times &2+ \\textcolor{${color1}}{[._&1_]} \\times [_10-&2_] \
+									&= \\textcolor{${color1}}{[._&1_]} \\times \\left( &2 + [_10-&2_] \\right)\\\\  \
+									&= \\textcolor{${color1}}{[._&1_]} \\times 10 \\\\  \
 									&= &sol \
 								\\end{align}$$`,
 							},
@@ -7038,9 +7050,9 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								  [°&2°] \\times \\bold{\\textcolor{${color1}}{[_&1_]}} + [._10-&2_] \\times \\bold{\\textcolor{${color1}}{[_&1_]}} \
-								  &=  \\left( [°&2°] + [._10-&2_] \\right) \\times \\bold{\\textcolor{${color1}}{[_&1_]}}\\\\  \
-								  &=  10 \\times \\bold{\\textcolor{${color1}}{[_&1_]}}\\\\  \
+								  [°&2°] \\times \\textcolor{${color1}}{[_&1_]} + [._10-&2_] \\times \\textcolor{${color1}}{[_&1_]} \
+								  &=  \\left( [°&2°] + [._10-&2_] \\right) \\times \\textcolor{${color1}}{[_&1_]}\\\\  \
+								  &=  10 \\times \\textcolor{${color1}}{[_&1_]}\\\\  \
 								  &= &sol \
 								\\end{align}$$`,
 							},
@@ -7048,9 +7060,9 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-									\\bold{\\textcolor{${color1}}{[_&1_]}} \\times [°&2°] + [._10-&2_] \\times \\bold{\\textcolor{${color1}}{[_&1_]}} \
-									&=  \\left( [°&2°] + [._10-&2_] \\right) \\times \\bold{\\textcolor{${color1}}{[_&1_]}}\\\\ \
-									&=  10 \\times \\bold{\\textcolor{${color1}}{[_&1_]}}\\\\ \
+									\\textcolor{${color1}}{[_&1_]} \\times [°&2°] + [._10-&2_] \\times \\textcolor{${color1}}{[_&1_]} \
+									&=  \\left( [°&2°] + [._10-&2_] \\right) \\times \\textcolor{${color1}}{[_&1_]}\\\\ \
+									&=  10 \\times \\textcolor{${color1}}{[_&1_]}\\\\ \
 									&= &sol\
 								\\end{align}$$`,
 							},
@@ -7058,9 +7070,9 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-									[°&2°] \\times \\bold{\\textcolor{${color1}}{[_&1_]}} + \\bold{\\textcolor{${color1}}{[_&1_]}} \\times [._10-&2_] \
-									&=  \\left( [°&2°] + [._10-&2_] \\right) \\times \\bold{\\textcolor{${color1}}{[_&1_]}}\\\\ \
-									&=  10 \\times \\bold{\\textcolor{${color1}}{[_&1_]}}\\\\ \
+									[°&2°] \\times \\textcolor{${color1}}{[_&1_]} + \\textcolor{${color1}}{[_&1_]} \\times [._10-&2_] \
+									&=  \\left( [°&2°] + [._10-&2_] \\right) \\times \\textcolor{${color1}}{[_&1_]}\\\\ \
+									&=  10 \\times \\textcolor{${color1}}{[_&1_]}\\\\ \
 									&= &sol \
 								\\end{align}$$`,
 							},
@@ -7068,9 +7080,9 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-									\\bold{\\textcolor{${color1}}{[_&1_]}} \\times [°&2°]+ \\bold{\\textcolor{${color1}}{[_&1_]}} \\times [._10-&2_] \
-									&= \\bold{\\textcolor{${color1}}{[_&1_]}} \\times \\left( [°&2°] + [._10-&2_] \\right) \\\\ \
-									&= \\bold{\\textcolor{${color1}}{[_&1_]}} \\times 10\\\\ \
+									\\textcolor{${color1}}{[_&1_]} \\times [°&2°]+ \\textcolor{${color1}}{[_&1_]} \\times [._10-&2_] \
+									&= \\textcolor{${color1}}{[_&1_]} \\times \\left( [°&2°] + [._10-&2_] \\right) \\\\ \
+									&= \\textcolor{${color1}}{[_&1_]} \\times 10\\\\ \
 									&= &sol \
 								\\end{align}$$`,
 							},
@@ -7097,9 +7109,9 @@ const questions: Questions = {
 							{
 								text: `$$\
 								\\begin{align} \
-									&2 \\times \\bold{\\textcolor{${color1}}{[._&1_]}} + [_100-&2_] \\times \\bold{\\textcolor{${color1}}{[._&1_]}} \
-									&=  \\left( &2 + [_100-&2_] \\right) \\times \\bold{\\textcolor{${color1}}{[._&1_]}}\\\\  \
-									&=  100 \\times \\bold{\\textcolor{${color1}}{[._&1_]}}\\\\  \
+									&2 \\times \\textcolor{${color1}}{[._&1_]} + [_100-&2_] \\times \\textcolor{${color1}}{[._&1_]} \
+									&=  \\left( &2 + [_100-&2_] \\right) \\times \\textcolor{${color1}}{[._&1_]}\\\\  \
+									&=  100 \\times \\textcolor{${color1}}{[._&1_]}\\\\  \
 									&= &sol \
 								\\end{align}$$`,
 							},
@@ -7108,9 +7120,9 @@ const questions: Questions = {
 							{
 								text: `$$\
 								\\begin{align}\
-									\\bold{\\textcolor{${color1}}{[._&1_]}} \\times &2 + [_100-&2_] \\times \\bold{\\textcolor{${color1}}{[._&1_]}} \
-									&=  \\left( &2 + [_100-&2_] \\right) \\times \\bold{\\textcolor{${color1}}{[._&1_]}}\\\\  \
-									&=  100 \\times \\bold{\\textcolor{${color1}}{[._&1_]}}\\\\  \
+									\\textcolor{${color1}}{[._&1_]} \\times &2 + [_100-&2_] \\times \\textcolor{${color1}}{[._&1_]} \
+									&=  \\left( &2 + [_100-&2_] \\right) \\times \\textcolor{${color1}}{[._&1_]}\\\\  \
+									&=  100 \\times \\textcolor{${color1}}{[._&1_]}\\\\  \
 									&= &sol \
 								\\end{align}$$`,
 							},
@@ -7119,9 +7131,9 @@ const questions: Questions = {
 							{
 								text: `$$\
 								\\begin{align} \
-									&2 \\times \\bold{\\textcolor{${color1}}{[._&1_]}} + \\bold{\\textcolor{${color1}}{[._&1_]}} \\times [_100-&2_] \
-									&=  \\left( &2 + [_100-&2_] \\right) \\times \\bold{\\textcolor{${color1}}{[._&1_]}}\\\\  \
-									&=  100 \\times \\bold{\\textcolor{${color1}}{[._&1_]}}\\\\  \
+									&2 \\times \\textcolor{${color1}}{[._&1_]} + \\textcolor{${color1}}{[._&1_]} \\times [_100-&2_] \
+									&=  \\left( &2 + [_100-&2_] \\right) \\times \\textcolor{${color1}}{[._&1_]}\\\\  \
+									&=  100 \\times \\textcolor{${color1}}{[._&1_]}\\\\  \
 									&= &sol \
 								\\end{align}$$`,
 							},
@@ -7129,9 +7141,9 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align}\
-									\\bold{\\textcolor{${color1}}{[._&1_]}} \\times &2+ \\bold{\\textcolor{${color1}}{[._&1_]}} \\times [_100-&2_] \
-										&=  \\bold{\\textcolor{${color1}}{[._&1_]}} \\times \\left( &2 + [_100-&2_] \\right) \\\\ \
-										&=  \\bold{\\textcolor{${color1}}{[._&1_]}} \\times 100 \\\\ \
+									\\textcolor{${color1}}{[._&1_]} \\times &2+ \\textcolor{${color1}}{[._&1_]} \\times [_100-&2_] \
+										&=  \\textcolor{${color1}}{[._&1_]} \\times \\left( &2 + [_100-&2_] \\right) \\\\ \
+										&=  \\textcolor{${color1}}{[._&1_]} \\times 100 \\\\ \
 										&= &sol \
 									\\end{align}$$`,
 							},
@@ -7156,12 +7168,12 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\textcolor{${correct_color}}{&1} \\times 0,5 = [._&1*0,5_]$$ car  $$[._&1*0,5_] \\times 2 = &sol$$`,
+								text: `$$\\textcolor{${correct_color}}{&1} \\times 0,5 = [._&1*0,5_]$$ car  $$[._&1*0,5_] \\times 2 = &sol1$$`,
 							},
 						],
 						[
 							{
-								text: `$$ 0,5 \\times \\textcolor{${correct_color}}{&1} = [._&1*0,5_]$$ car  $$[._&1*0,5_] \\times 2 = &sol$$`,
+								text: `$$0,5 \\times \\textcolor{${correct_color}}{&1} = [._&1*0,5_]$$ car  $$[._&1*0,5_] \\times 2 = &sol1$$`,
 							},
 						],
 					],
@@ -7186,12 +7198,12 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: '$$&sol \\times 0,5 = [._&3*0,5_]$$ car  $$[._&3*0,5_] \\times 2 = &sol$$',
+								text: '$$&sol1 \\times 0,5 = [._&3*0,5_]$$ car  $$[._&3*0,5_] \\times 2 = &sol1$$',
 							},
 						],
 						[
 							{
-								text: '$$0,5 \\times &sol  = [._&3*0,5_]$$ car  $$[._&3*0,5_] \\times 2 = &sol$$',
+								text: '$$0,5 \\times &sol1  = [._&3*0,5_]$$ car  $$[._&3*0,5_] \\times 2 = &sol1$$',
 							},
 						],
 					],
@@ -7214,12 +7226,12 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: '$$&sol \\times 10 = [._&1*10_]$$ car  $$[._&1*10_] \\div 10 = &sol$$',
+								text: '$$&sol1 \\times 10 = [._&1*10_]$$ car  $$[._&1*10_] \\div 10 = &sol1$$',
 							},
 						],
 						[
 							{
-								text: '$$10 \\times &sol = [._&1*10_]$$ car  $$[._&1*10_] \\div 10 = &sol$$',
+								text: '$$10 \\times &sol1 = [._&1*10_]$$ car  $$[._&1*10_] \\div 10 = &sol1$$',
 							},
 						],
 					],
@@ -7241,12 +7253,12 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\textcolor{${correct_color}}{[._&1_]} \\times 100 = [._&1*100_]$$ car  $$[._&1*100_] \\div 100 = &sol$$`,
+								text: `$$\\textcolor{${correct_color}}{[._&1_]} \\times 100 = [._&1*100_]$$ car  $$[._&1*100_] \\div 100 = &sol1$$`,
 							},
 						],
 						[
 							{
-								text: `$$100 \\times \\textcolor{${correct_color}}{[._&1_]} = [._&1*100_]$$ car  $$[._&1*100_] \\div 100 = &sol$$`,
+								text: `$$100 \\times \\textcolor{${correct_color}}{[._&1_]} = [._&1*100_]$$ car  $$[._&1*100_] \\div 100 = &sol1$$`,
 							},
 						],
 					],
@@ -7269,12 +7281,12 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: '$$&sol \\times 1000 = [._&1*1000_]$$ car  $$[._&1*1000_] \\div 1000 = &sol$$',
+								text: '$$&sol1 \\times 1000 = [._&1*1000_]$$ car  $$[._&1*1000_] \\div 1000 = &sol1$$',
 							},
 						],
 						[
 							{
-								text: '$$1000 \\times &sol = [._&1*1000_]$$ car  $$[._&1*1000_] \\div 1000 = &sol$$',
+								text: '$$1000 \\times &sol1 = [._&1*1000_]$$ car  $$[._&1*1000_] \\div 1000 = &sol1$$',
 							},
 						],
 					],
@@ -7300,12 +7312,12 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\textcolor{${correct_color}}{[._&2_]} \\times [_10^&1_] = [._&2*10^&1_]$$ car  $$[._&2*10^&1_] \\div [_10^&1_] = &sol$$`,
+								text: `$$\\textcolor{${correct_color}}{[._&2_]} \\times [_10^&1_] = [._&2*10^&1_]$$ car  $$[._&2*10^&1_] \\div [_10^&1_] = &sol1$$`,
 							},
 						],
 						[
 							{
-								text: `$$[_10^&1_] \\times \\textcolor{${correct_color}}{[._&2_]} = [._&2*10^&1_]$$ car  $$[._&2*10^&1_] \\div [_10^&1_] = &sol$$`,
+								text: `$$[_10^&1_] \\times \\textcolor{${correct_color}}{[._&2_]} = [._&2*10^&1_]$$ car  $$[._&2*10^&1_] \\div [_10^&1_] = &sol1$$`,
 							},
 						],
 					],
@@ -7333,12 +7345,12 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\textcolor{${correct_color}}{[._&3_]} \\times 0,1 = [._&3*0,1_]$$ car  $$[._&3*0,1_] \\times 10 = &sol$$`,
+								text: `$$\\textcolor{${correct_color}}{[._&3_]} \\times 0,1 = [._&3*0,1_]$$ car  $$[._&3*0,1_] \\times 10 = &sol1$$`,
 							},
 						],
 						[
 							{
-								text: `$$0,1 \\times \\textcolor{${correct_color}}{[._&3_]} = [._&3*0,1_]$$ car  $$[._&3*0,1_] \\times 10 = &sol$$`,
+								text: `$$0,1 \\times \\textcolor{${correct_color}}{[._&3_]} = [._&3*0,1_]$$ car  $$[._&3*0,1_] \\times 10 = &sol1$$`,
 							},
 						],
 					],
@@ -7360,12 +7372,12 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\textcolor{${correct_color}}{[._&3_]} \\times 0,01 = [._&3*0,01_]$$ car  $$[._&3*0,01_] \\times 100 = &sol$$`,
+								text: `$$\\textcolor{${correct_color}}{[._&3_]} \\times 0,01 = [._&3*0,01_]$$ car  $$[._&3*0,01_] \\times 100 = &sol1$$`,
 							},
 						],
 						[
 							{
-								text: `$$0,01 \\times \\textcolor{${correct_color}}{[._&3_]} = [._&3*0,01_]$$ car  $$[._&3*0,01_] \\times 100 = &sol$$`,
+								text: `$$0,01 \\times \\textcolor{${correct_color}}{[._&3_]} = [._&3*0,01_]$$ car  $$[._&3*0,01_] \\times 100 = &sol1$$`,
 							},
 						],
 					],
@@ -7391,12 +7403,12 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\textcolor{${correct_color}}{[._&3_]} \\times 0,001 = [._&3*0,001_]$$ car  $$[._&3*0,001_] \\times 1\\,000 = &sol$$`,
+								text: `$$\\textcolor{${correct_color}}{[._&3_]} \\times 0,001 = [._&3*0,001_]$$ car  $$[._&3*0,001_] \\times 1\\,000 = &sol1$$`,
 							},
 						],
 						[
 							{
-								text: `$$0,001 \\times \\textcolor{${correct_color}}{[._&3_]} = [._&3*0,001_]$$ car  $$[._&3*0,001_] \\times 1\\,000 = &sol$$`,
+								text: `$$0,001 \\times \\textcolor{${correct_color}}{[._&3_]} = [._&3*0,001_]$$ car  $$[._&3*0,001_] \\times 1\\,000 = &sol1$$`,
 							},
 						],
 					],
@@ -7423,12 +7435,12 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$[._10^(-&1)_] \\times &sol = [._&2*10^(-&1)_]$$ car  $$[._&2*10^(-&1)_] \\times [_10^&1_] = &sol$$`,
+								text: `$$[._10^(-&1)_] \\times &sol1 = [._&2*10^(-&1)_]$$ car  $$[._&2*10^(-&1)_] \\times [_10^&1_] = &sol1$$`,
 							},
 						],
 						[
 							{
-								text: `$$ &sol \\times [._10^(-&1)_] = [._&2*10^(-&1)_]$$ car  $$[._&2*10^(-&1)_] \\times [_10^&1_] = &sol$$`,
+								text: `$$ &sol1 \\times [._10^(-&1)_] = [._&2*10^(-&1)_]$$ car  $$[._&2*10^(-&1)_] \\times [_10^&1_] = &sol1$$`,
 							},
 						],
 					],
@@ -7544,12 +7556,20 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} [._&3_] \\bold{\\textcolor{${color1}}{\\div [._&2_]}} &= [._&3_] \\bold{\\textcolor{${color1}}{\\times [._1:&2_]}} \\\\ &=  &sol \\end{align}$$`,
+								text: `$$\\begin{align} \
+								[._&3_] \\textcolor{${color1}}{\\div [._&2_]} \
+								&= [._&3_] \\textcolor{${color1}}{\\times [._1:&2_]} \\\\ \
+								&=  &sol \
+								\\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} [._&1_] \\bold{\\textcolor{${color1}}{\\div [._&2_]}} &= [._&1_] \\bold{\\textcolor{${color1}}{\\times [._1:&2_]}} \\\\ &=  &sol \\end{align}$$`,
+								text: `$$\\begin{align} \
+								[._&1_] \\textcolor{${color1}}{\\div [._&2_]} \
+								&= [._&1_] \\textcolor{${color1}}{\\times [._1:&2_]} \\\\ \
+								&=  &sol \
+								\\end{align}$$`,
 							},
 						],
 					],
@@ -7573,7 +7593,11 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: '$$\\begin{align} [._&1*&2*&3_] \\div [._&1*&3_] &= [._&1*&2_] \\div [._&1_] \\\\ &= &sol  \\end{align}$$',
+								text: '$$\\begin{align} \
+								[._&1*&2*&3_] \\div [._&1*&3_] \
+								&= [._&1*&2_] \\div [._&1_] \\\\ \
+								&= &sol  \
+								\\end{align}$$',
 							},
 						],
 					],
@@ -7691,20 +7715,16 @@ const questions: Questions = {
 					options: ['no-penalty-for-null-terms', 'one-single-form-solution'],
 					variabless: [{ '&1': '$e[2;20]' }],
 					solutionss: [['0-&1']],
-					correctionFormats: [
-						{
-							correct: ['$$-&1=&ans$$'],
-						},
-					],
 					defaultDelay: 20,
 					grade: CINQUIEME,
 				},
 				{
 					description: "Trouver l'opposé d'un nombre :",
-					enounces: ['Complète :'],
+					enounces: ["Quel est l'opposé de ce nombre :"],
+					expressions: ['&1', '-&1'],
 					answerFields: [
-						"L'opposé de $$&1$$ est $$...$$",
-						"L'opposé de $$-&1$$ est $$...$$",
+						"\\text{L'opposé de }$$&1$$\\text{ est }$$...$$\\text{.}",
+						"\\text{L'opposé de }$$-&1$$\\text{ est }$$...$$\\text{.}",
 					],
 					variabless: [{ '&1': '$e[1;20]' }],
 					solutionss: [['-&1'], ['&1']],
@@ -8190,11 +8210,6 @@ const questions: Questions = {
 					conditions: ['&1<=0 || &2<=0'],
 					variabless: [{ '&1': '$er[30;99]', '&2': '$er[30;99]' }],
 					choicess: [[{ text: 'positif' }, { text: 'négatif' }]],
-					correctionFormats: [
-						{
-							correct: ['Le produit est &answer'],
-						},
-					],
 					solutionss: [['(&1)*(&2) >0 ?? 0 :: 1']],
 					options: ['no-shuffle-choices', 'exp-remove-unecessary-brackets'],
 					defaultDelay: 20,
@@ -8203,15 +8218,15 @@ const questions: Questions = {
 				{
 					description: "Déterminer le signe d'un facteur",
 					enounces: ['Quel est le signe du facteur manquant ?'],
-					expressions: [
-						'(-&1)*?=&2',
-						'(-&1)*?=-&2',
-						'&1*?=-&2',
-						'&1*?=&2',
-						'?*(-&1)=&2',
-						'?*(-&1)=-&2',
-						'?*&1=-&2',
-						'?*&1=&2',
+					enounces2: [
+						'$$(-&1)*?=&2$$',
+						'$$(-&1)*?=-&2$$',
+						'$$&1*?=-&2$$',
+						'$$&1*?=&2$$',
+						'$$?*(-&1)=&2$$',
+						'$$?*(-&1)=-&2$$',
+						'$$?*&1=-&2$$',
+						'$$?*&1=&2$$',
 					],
 					variabless: [{ '&1': '$e[30;99]', '&2': '$e[30;99]' }],
 					choicess: [[{ text: 'positif' }, { text: 'négatif' }]],
@@ -8229,11 +8244,6 @@ const questions: Questions = {
 						{ '&1': '$er[30;99]', '&2': '$er[30;99]', '&3': '$er[30;99]' },
 					],
 					choicess: [[{ text: 'positif' }, { text: 'négatif' }]],
-					correctionFormats: [
-						{
-							correct: ['Le produit est &answer'],
-						},
-					],
 					solutionss: [['(&1)*(&2)*(&3) >0 ?? 0 :: 1']],
 					options: ['no-shuffle-choices', 'exp-remove-unecessary-brackets'],
 					defaultDelay: 20,
@@ -8253,11 +8263,6 @@ const questions: Questions = {
 						},
 					],
 					choicess: [[{ text: 'positif' }, { text: 'négatif' }]],
-					correctionFormats: [
-						{
-							correct: ['Le produit est &answer'],
-						},
-					],
 					solutionss: [['(&1)*(&2)*(&3)*(&4) >0 ?? 0 :: 1']],
 					options: ['no-shuffle-choices', 'exp-remove-unecessary-brackets'],
 					defaultDelay: 20,
@@ -8326,11 +8331,6 @@ const questions: Questions = {
 					variabless: [{ '&1': '$er[30;99]', '&2': '$er[30;99]' }],
 					conditions: ['&1<=0 || &2<0'],
 					choicess: [[{ text: 'positif' }, { text: 'négatif' }]],
-					correctionFormats: [
-						{
-							correct: ['Le produit est &answer'],
-						},
-					],
 					solutionss: [['(&1):(&2)>0 ?? 0 :: 1']],
 					options: ['no-shuffle-choices', 'exp-remove-unecessary-brackets'],
 					defaultDelay: 20,
@@ -8338,16 +8338,11 @@ const questions: Questions = {
 				},
 				{
 					description: 'Déterminer le signe dans un quotient',
-					enounces: ['Quel est le signe du nombre manquant ?'],
-					expressions: ['(&1):?=(&2)', '?:(&1)=(&2)'],
+					enounces: ['Quel est le signe du nombre manquant :'],
+					enounces2: ['$$(&1):?=(&2)$$', '$$?:(&1)=(&2)$$'],
 					variabless: [{ '&1': '$er[30;99]', '&2': '$er[30;99]' }],
 					conditions: ['&1<=0 || &2<0'],
 					choicess: [[{ text: 'positif' }, { text: 'négatif' }]],
-					correctionFormats: [
-						{
-							correct: ['Le facteur manquant est &answer'],
-						},
-					],
 					solutionss: [['(&1)*(&2)>0 ?? 0 :: 1']],
 					options: ['no-shuffle-choices', 'exp-remove-unecessary-brackets'],
 					defaultDelay: 20,
@@ -8408,12 +8403,12 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: "Dans $$&2 \\times \\cdots = &1$$, le nombre cherché est le résultat de $$&1 \\div &2$$ qui s'écrit $$&sol $$ car on ne peut pas le mettre sous forme décimale.",
+								text: "Dans $$&2 \\times \\cdots = &1$$, le nombre cherché est le résultat de $$&1 \\div &2$$ qui s'écrit $$&sol1$$ car on ne peut pas le mettre sous forme décimale.",
 							},
 						],
 						[
 							{
-								text: "Dans $$ \\cdots \\times &2 = &1$$, le nombre cherché est le résultat de $$&1 \\div &2$$ qui s'écrit $$&sol $$ car on ne peut pas le mettre sous forme décimale.",
+								text: "Dans $$ \\cdots \\times &2 = &1$$, le nombre cherché est le résultat de $$&1 \\div &2$$ qui s'écrit $$&sol1$$ car on ne peut pas le mettre sous forme décimale.",
 							},
 						],
 					],
@@ -8451,8 +8446,9 @@ const questions: Questions = {
 					subdescription:
 						"Une fraction décimale (jusqu'aux centièmes) en une somme d'un entier et d'une fraction décimale inférieure à $$1$$",
 					enounces: [
-						"Décomposer cette fraction en une somme d'un entier et d'une fraction décimale inférieure à $$1$$, comme dans l'exemple : $$345/100 = 3 + 45/100$$. ",
+						"Décompose cette fraction en une somme d'un entier et d'une fraction décimale inférieure à $$1$$, comme dans l'exemple :",
 					],
+					enounces2: ['$$345/100 = 3 + 45/100$$'],
 					expressions: ['[_&1*&2+&3_]/&1'],
 					variabless: [
 						{ '&1': '$l{10;100}', '&2': '$e[2;9]', '&3': '$e[1;&1-1]' },
@@ -8474,8 +8470,9 @@ const questions: Questions = {
 					subdescription:
 						"Une fraction décimale (jusqu'aux millièmes) en une somme d'un entier et d'une fraction décimale inférieure à $$1$$",
 					enounces: [
-						"Décomposer cette fraction en une somme d'un entier et d'une fraction décimale inférieure à $$1$$, comme dans l'exemple : $$3456/1000 = 3 + 456/1000$$.",
+						"Décomposer cette fraction en une somme d'un entier et d'une fraction décimale inférieure à $$1$$, comme dans l'exemple :",
 					],
+					enounces2: ['$$3456/1000 = 3 + 456/1000$$'],
 					expressions: ['[_&1*&2+&3_]/&1'],
 					variabless: [
 						{ '&1': '$l{10;100;1000}', '&2': '$e[2;9]', '&3': '$e[1;&1-1]' },
@@ -8497,8 +8494,9 @@ const questions: Questions = {
 					subdescription:
 						"Une fraction  en une somme d'un entier et d'une fraction inférieure à $$1$$",
 					enounces: [
-						"Décomposer cette fraction en une somme d'un entier et d'une fraction inférieure à $$1$$, comme dans l'exemple : $$14/3 = 4 + 2/3$$",
+						"Décomposer cette fraction en une somme d'un entier et d'une fraction inférieure à $$1$$, comme dans l'exemple :",
 					],
+					enounces2: ['$$14/3 = 4 + 2/3$$'],
 					expressions: ['[_&1*&2+&3_]/&1'],
 					variabless: [
 						{ '&1': '$e[2;9]', '&2': '$e[2;9]', '&3': '$e[1;&1-1]' },
@@ -9108,7 +9106,9 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: '&solution est plus petite que $$[_maxi(&2/&1;&4/&3)_]$$ car $$[_mini(&2/&1;&4/&3)_]<1$$ et $$[_maxi(&2/&1;&4/&3)_]>1$$',
+								text: '\
+								@@ &5 < &6 ?? &solution est plus petite que $$[°&6°]$$ car $$[°&5°]<1$$ et $$[°&6°]>1$$@@ \
+								@@ &5 > &6 ?? &solution est plus petite que $$[°&5°]$$ car $$[°&6°]<1$$ et $$[°&5°]>1$$@@',
 							},
 						],
 					],
@@ -9127,7 +9127,7 @@ const questions: Questions = {
 							'&3': '$e[&2+1;9]\\{d(&2);m(&2)}',
 							'&4': '$e[&2*2;&3*&1-1]\\{&2*&1;d(&3*&1);m(&3*&1)}',
 							'&5': '&2/&3',
-							'&6': '&4/(&3*&1)',
+							'&6': '&4/[_&3*&1_]',
 						},
 						{
 							'&1': '$e[2;9]',
@@ -9135,7 +9135,7 @@ const questions: Questions = {
 							'&3': '$e[&2+1;9]\\{d(&2);m(&2)}',
 							'&4': '$e[&2*&1+1;80]\\{&3*&1;d(&2*&1);m(&2*&1)}',
 							'&5': '&3/&2',
-							'&6': '&4/(&2*&1)',
+							'&6': '&4/[_&2*&1_]',
 						},
 					],
 					choicess: [
@@ -9152,14 +9152,15 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `@@ &5<&6 ?? $$\\frac{&2}{&3} = \\frac{&2 \\textcolor{${color1}}{\\times &1}}{&3 \\textcolor{${color1}}{\\times &1}} = \\frac{[_&2*&1_]}{[_&3*&1_]}$$ et $$\\frac{[_&2*&1_]}{[_&3*&1_]}<\\frac{&4}{[_&3*&1_]}$$, donc $$&sol <\\frac{&4}{[_&3*&1_]$$@@ \
-              @@ &5>&6 ?? $$\\frac{&2}{&3} = \\frac{&2 \\textcolor{${color1}}{\\times &1}}{&3 \\textcolor{${color1}}{\\times &1}} = \\frac{[_&2*&1_]}{[_&3*&1_]}$$ et $$\\frac{[_&2*&1_]}{[_&3*&1_]}>\\frac{&4}{[_&3*&1_]}$$, donc $$\\frac{&2}{&3}>&sol $$@@`,
+								text: `\
+								@@ &5<&6 ?? $$\\frac{&2}{&3} = \\frac{&2 \\textcolor{${color1}}{\\times &1}}{&3 \\textcolor{${color1}}{\\times &1}} = \\frac{[_&2*&1_]}{[_&3*&1_]}$$ et $$\\frac{[_&2*&1_]}{[_&3*&1_]}<\\frac{&4}{[_&3*&1_]}$$, donc $$[°&5°] < [°&6°]$$@@ \
+              @@ &5>&6 ?? $$\\frac{&2}{&3} = \\frac{&2 \\textcolor{${color1}}{\\times &1}}{&3 \\textcolor{${color1}}{\\times &1}} = \\frac{[_&2*&1_]}{[_&3*&1_]}$$ et $$\\frac{[_&2*&1_]}{[_&3*&1_]}>\\frac{&4}{[_&3*&1_]}$$, donc $$[°&5°]>[°&6°] $$@@`,
 							},
 						],
 						[
 							{
-								text: `@@ &5<&6 ?? $$\\frac{&3}{&2} = \\frac{&3 \\textcolor{${color1}}{\\times &1}}{&2 \\textcolor{${color1}}{\\times &1}} = \\frac{[_&3*&1_]}{[_&2*&1_]}$$ et $$\\frac{[_&3*&1_]}{[_&2*&1_]}<\\frac{&4}{[_&2*&1_]}$$, donc $$&sol <\\frac{&4}{[_&2*&1_]$$@@ \
-              @@ &5>&6 ?? $$\\frac{&3}{&2} = \\frac{&3 \\textcolor{${color1}}{\\times &1}}{&2 \\textcolor{${color1}}{\\times &1}} = \\frac{[_&3*&1_]}{[_&2*&1_]}$$ et $$\\frac{[_&3*&1_]}{[_&2*&1_]}>\\frac{&4}{[_&2*&1_]}$$, donc $$\\frac{&3}{&2}>&sol $$@@`,
+								text: `@@ &5<&6 ?? $$\\frac{&3}{&2} = \\frac{&3 \\textcolor{${color1}}{\\times &1}}{&2 \\textcolor{${color1}}{\\times &1}} = \\frac{[_&3*&1_]}{[_&2*&1_]}$$ et $$\\frac{[_&3*&1_]}{[_&2*&1_]}<\\frac{&4}{[_&2*&1_]}$$, donc $$[°&5°]<[°&6°]$$@@ \
+              @@ &5>&6 ?? $$\\frac{&3}{&2} = \\frac{&3 \\textcolor{${color1}}{\\times &1}}{&2 \\textcolor{${color1}}{\\times &1}} = \\frac{[_&3*&1_]}{[_&2*&1_]}$$ et $$\\frac{[_&3*&1_]}{[_&2*&1_]}>\\frac{&4}{[_&2*&1_]}$$, donc $$[°&5°]>[°&6°]$$@@`,
 							},
 						],
 					],
@@ -9665,22 +9666,23 @@ const questions: Questions = {
 			"Fraction d'une quantité": [
 				{
 					description: "Calculer une fraction d'une quantité",
-					enounces: ['Calculer $$&2/&3$$ de $$[_&1*&3_]$$'],
+					enounces: ['Calculer $$&2/&3$$ de $$[_&1*&3_]$$.'],
 					solutionss: [['[_&1*&2_]']],
 					variabless: [
 						{ '&1': '$e[2;9]', '&2': '$e[2;9]', '&3': '$e[2;9]\\{cd(&2)}' },
 					],
-					correctionFormats: [
-						{
-							correct: [
-								'$$\\dfrac{&2}{&3}$$ de $$[_&1*&3_]$$ est égal à &answer',
-							],
-						},
+					answerFields: [
+						'$$\\dfrac{&2}{&3}$$\\text{ de }$$[_&1*&3_]$$\\text{ est égal à }$$...$$\\text{.}',
 					],
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\dfrac{\\textcolor{${color1}}{&2}}{\\textcolor{${color2}}{&3}} \\text{ de } [_&1*&3_] &= [_&1*&3_]\\textcolor{${color2}}{\\div &3} \\textcolor{${color1}}{\\times &2} \\\\ &= &1 \\times &2 \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \
+								\\dfrac{\\textcolor{${color1}}{&2}}{\\textcolor{${color2}}{&3}} \\text{ de } [_&1*&3_] \
+								&= [_&1*&3_]\\textcolor{${color2}}{\\div &3} \\textcolor{${color1}}{\\times &2} \\\\ \
+								&= &1 \\times &2 \\\\ \
+								&= &sol1  \
+								\\end{align}$$`,
 							},
 						],
 					],
@@ -9699,12 +9701,23 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\dfrac{\\textcolor{${color1}}{&2}}{\\textcolor{${color2}}{&3}} \\times [_&1*&3_] &= [_&1*&3_]\\textcolor{${color2}}{\\div &3} \\textcolor{${color1}}{\\times &2} \\\\ &= &1 \\textcolor{${color1}}{\\times &2} \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\
+								\\begin{align} \
+								\\dfrac{\\textcolor{${color1}}{&2}}{\\textcolor{${color2}}{&3}} \\times [_&1*&3_] \
+								&= [_&1*&3_]\\textcolor{${color2}}{\\div &3} \\textcolor{${color1}}{\\times &2} \\\\ \
+								&= &1 \\textcolor{${color1}}{\\times &2} \\\\ \
+								&= &sol  \
+								\\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} [_&1*&3_] \\times \\dfrac{\\textcolor{${color1}}{&2}}{\\textcolor{${color2}}{&3}}  &= [_&1*&3_]\\textcolor{${color2}}{\\div &3} \\textcolor{${color1}}{\\times &2} \\\\ &= &1 \\textcolor{${color1}}{\\times &2} \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\
+								\\begin{align} [_&1*&3_] \\times \\dfrac{\\textcolor{${color1}}{&2}}{\\textcolor{${color2}}{&3}}  \
+								&= [_&1*&3_]\\textcolor{${color2}}{\\div &3} \\textcolor{${color1}}{\\times &2} \\\\ \
+								&= &1 \\textcolor{${color1}}{\\times &2} \\\\ \
+								&= &sol  \
+								\\end{align}$$`,
 							},
 						],
 					],
@@ -9833,12 +9846,21 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: '$$\\begin{align} \\dfrac{&1}{&3} \\times \\dfrac{&2}{&1} &= \\dfrac{&sol  \\end{align}$$',
+								text: '$$\
+								\\begin{align} \
+								\\dfrac{&1}{&3} \\times \\dfrac{&2}{&1} \
+								&= \\dfrac{\\enclose{updiagonalstrike}[2px solid red]{&1}}{&3} \\times \\dfrac{&2}{\\enclose{updiagonalstrike}[2px solid red]{&1}} \\\\ \
+								&= &sol  \
+								\\end{align}$$',
 							},
 						],
 						[
 							{
-								text: '$$\\begin{align} \\dfrac{&3}{&1} \\times \\dfrac{&1}{&2} &= \\dfrac{&3}{&sol  \\end{align}$$',
+								text: '$$\\begin{align} \
+								\\dfrac{&3}{&1} \\times \\dfrac{&1}{&2} \
+								&= \\dfrac{&3}{\\enclose{updiagonalstrike}[2px solid red]{&1}} \\times \\dfrac{\\enclose{updiagonalstrike}[2px solid red]{&1}}{&2} \\\\ \
+								&= &sol  \
+									\\end{align}$$',
 							},
 						],
 					],
@@ -9868,33 +9890,37 @@ const questions: Questions = {
 					enounces: [''],
 					description: 'Calculer un produit',
 					subdescription: 'Nombres, relatifs, pas de simplification',
-					expressions: [
-						'(&1/&3)*(&2/&4)',
-						'((-&1)/&3)*(&2/&4)',
-						'(&1/(-&3))*(&2/&4)',
-						'(&1/&3)*((-&2)/&4)',
-						'(&1/&3)*(&2/(-&4))',
-						'((-&1)/(-&3))*((-&2)/(-&4))',
-
-						'((-&1)/(-&3))*(&2/&4)',
-						'(&1/&3)*((-&2)/(-&4))',
-						'((-&1)/&3)*((-&2)/&4)',
-						'(&1/(-&3))*(&2/(-&4))',
-						'((-&1)/&3)*(&2/(-&4))',
-						'(&1/(-&3))*((-&2)/&4)',
-
-						'(&1/(-&3))*((-&2)/(-&4))',
-						'((-&1)/(-&3))*(&2/(-&4))',
-						'((-&1)/&3)*((-&2)/(-&4))',
-						'((-&1)/(-&3))*((-&2)/&4)',
-					],
+					expressions: ['{&1}/{&3}*{{&2}/{&4}}'],
 					variabless: [
 						{
-							'&1': '$e[2;9]',
-							'&2': '$e[2;9]',
-							'&3': '$e[2;9]\\{cd(&2);cd(&1)}',
-							'&4': '$e[2;9]\\{cd(&2);cd(&1)}',
+							'&1': '$er[2;9]',
+							'&2': '$er[2;9]',
+							'&3': '$er[2;9]\\{cd(&2);cd(&1)}',
+							'&4': '$er[2;9]\\{cd(&2);cd(&1)}',
+							'&5': '[_(&1)*(&2)*(&3)*(&4)_]',
 						},
+					],
+					correctionDetailss: [
+						[
+							{
+								text: `$$ \
+								@@ &5<0 ?? \
+								\\begin{align} \
+								&exp &= - \\frac{[_abs(&1)_]}{[_abs(&3)_]} \\times \\frac{[_abs(&2)_]}{[_abs(&4)_]} \\\\ \
+								&= - \\frac{[_abs(&1)_] \\times [_abs(&2)_]}{[_abs(&3)_] \\times[_abs(&4)_]}  \\\\ \
+								&= \\textcolor{${correct_color}}{- \\frac{[_abs(&1)*abs(&2)_]}{[_abs(&3)*abs(&4)_]}} \\\\ \
+								\\end{align}\
+								@@ \
+								@@ &5>0 ?? \
+								\\begin{align} \
+								&exp &= \\frac{[_abs(&1)_]}{[_abs(&3)_]} \\times \\frac{[_abs(&2)_]}{[_abs(&4)_]} \\\\ \
+								&= \\frac{[_abs(&1)_] \\times [_abs(&2)_]}{[_abs(&3)_] \\times[_abs(&4)_]}  \\\\ \
+								&= \\textcolor{${correct_color}}{\\frac{[_abs(&1)*abs(&2)_]}{[_abs(&3)*abs(&4)_]}}  \\\\ \
+								\\end{align}\
+								@@ \
+								$$`,
+							},
+						],
 					],
 
 					defaultDelay: 20,
@@ -9907,7 +9933,7 @@ const questions: Questions = {
 					enounces: ["Quel est l'inverse de ce nombre :"],
 					expressions: ['&1', '1/&1', '&1/&2'],
 					variabless: [{ '&1': '$e[2;19]', '&2': '$e[2;19]\\{cd(&1)}' }],
-					answerFields: ["L'inverse de ce nombre est $$...$$"],
+					answerFields: ["\\text{L'inverse de ce nombre est }$$...$$\\text{.}"],
 					solutionss: [['1/&1'], ['&1'], ['&2/&1']],
 					defaultDelay: 20,
 					grade: QUATRIEME,
@@ -10030,13 +10056,18 @@ const questions: Questions = {
 						{
 							'&1': '$e[2;9]',
 							'&2': '$e[2;9]',
-							'&3': '$e[2;9]\\{cd(&1)}',
+							'&3': '$e[2;9]\\{cd(&1);cd(&2)}',
 						},
 					],
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\frac{&1}{{\\textcolor{${color1}}{\\dfrac{\\dfrac{&1}{&3}}}}} &= \\dfrac{&1}{&3} \\textcolor{${color1}}{\\div \\dfrac{&2}{1}} \\\\ &= \\dfrac{&1}{&3} \\textcolor{${color1}}{\\times \\dfrac{1}{&2}} \\\\ &= \\dfrac{&1 \\times 1}{&3 \\times &2}  \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \
+								\\dfrac{&1}{\\textcolor{${color1}}{\\dfrac{&3}{&2}}} \
+								&= &1  \\textcolor{${color1}}{\\times \\dfrac{&2}{&3}} \\\\ \
+								&= \\dfrac{&1 \\times &2}{&3} \\\\ \
+								&= &sol  \
+								\\end{align}$$`,
 							},
 						],
 					],
@@ -10076,7 +10107,9 @@ const questions: Questions = {
 				},
 				{
 					description: 'Traduire une puissance en produit',
-					enounces: ["Réécris cette expression à l'aide d'un produit"],
+					enounces: [
+						"Réécris cette expression à l'aide de la définition d'une puissance.",
+					],
 					expressions: ['&1^2', '&1^3', '&1^4', '&1^5', '&1^6', '&1^7'],
 
 					variabless: [{ '&1': '$l{a;b;c;x;y;2;3;4;5;6;7;8;9;10}' }],
@@ -10111,9 +10144,11 @@ const questions: Questions = {
 					defaultDelay: 20,
 					grade: QUATRIEME,
 				},
+			],
+			'Puissances de 10': [
 				{
 					description: 'Puissances de 10',
-					enounces: ['Ecris cette puissance sous forme décimale.'],
+					enounces: ['Calcule en écrivant le résultat sous forme décimale.'],
 					expressions: ['10^{&1}'],
 
 					variabless: [
@@ -10126,8 +10161,6 @@ const questions: Questions = {
 					defaultDelay: 20,
 					grade: QUATRIEME,
 				},
-			],
-			'Puissances de 10': [
 				{
 					description:
 						"Ecrire un nombre entier à l'aide d'une puissance de $$10$$",
@@ -10203,38 +10236,11 @@ const questions: Questions = {
 					],
 					// bug de mathlive sur les puissances
 					// qui rajoute des parenthèses à l'exposant
-					options: ['no-penalty-for-extraneous-brackets'],
+					// options: ['no-penalty-for-extraneous-brackets'],
 					defaultDelay: 20,
 					grade: QUATRIEME,
 				},
-				// {
-				// 	description:
-				// 		"Ecrire un nombre écrit avec une puissance de $$10$$ à l'aide de la notation scientifique",
-				// 	enounces: ['Ecris ce nombre en notation scientifique.'],
-				// 	expressions: ['[._&1,&3*10^{&4}_]*10^{&5}'],
-				// 	solutionss: [['&1,&3*10^{[_&4+(&5)_]}']],
-				// 	variabless: [
-				// 		{
-				// 			'&1': '$e[1;9]',
-				// 			'&2': '$e[1;3]',
-				// 			'&3': '$e{&2;&2}\\{m(10)}',
-				// 			'&4': '$er[2;4]',
-				// 			'&5': '$er[2;4]\\{-(&4)}',
-				// 		},
-				// 	],
-				// 	correctionDetailss: [
-				// 		[
-				// 			{
-				// 				text: '$$[._&1,&3*10^{&4}_] \\times 10^{&5}=&1,&3 \\times 10^{&4} \\times 10^{&5}=$$ &solution',
-				// 			},
-				// 		],
-				// 	],
-				// 	// bug de mathlive sur les puissances
-				// 	// qui rajoute des parenthèses à l'exposant
-				// 	options: ['no-penalty-for-extraneous-brackets'],
-				// 	defaultDelay: 20,
-				// 	grade: QUATRIEME,
-				// },
+
 				{
 					description:
 						"Ecrire un nombre écrit avec une puissance de $$10$$ à l'aide de la notation scientifique",

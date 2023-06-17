@@ -15,3 +15,11 @@ gestion du clavier
 bouton valider à enlever dans exemple
 question avec plusieurs reponses possibles : entiers - multiplier - decomposer
 											           divisier  - divisibilité
+espaces mal pris en compte (alors qu'écriture correcte) : decimaux - multiplier - produit - 2  (fill in ?)
+
+enlever les termes nuls dans les solutions (décimaux - apprivoiser - decomposition - 2)
+espaces dans les fractions : fraction not recognized
+points au lieu de virgules dans les réponses des qcm (decimaux - apprivoiser - coparer - 2)
+
+prefilled réinitialisé après passage par correction (réponse utilisateur écrasée)
+loader image

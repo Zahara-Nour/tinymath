@@ -551,6 +551,7 @@ export default function generateQuestion(
 	answerField = replaceVariables(answerField) as string
 	answerFormat = replaceVariables(answerFormat) as string
 
+	prefilled = evaluate(prefilled) as string[]
 	rawSolutions = evaluate(rawSolutions) as string[]
 	testAnswers = evaluate(testAnswers) as string[]
 	answerFormat = evaluate(answerFormat) as string
