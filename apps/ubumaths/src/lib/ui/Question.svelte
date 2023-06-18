@@ -373,7 +373,7 @@
 					{error}
 				{/await}
 			{/if}
-		{:else if element === 'expression' && shouldDisplayExpression(correction, interactive)}
+		{:else if expression && element === 'expression' && shouldDisplayExpression(correction, interactive)}
 			<div
 				id="expressions"
 				class=" flex flex-col items-center justify-center"
@@ -386,14 +386,14 @@
 				>
 					{@html $toMarkup(expression)}
 				</div>
-				<!-- {#if expression2 && !(!interactive && question.type === 'equation')}
+				{#if expression2}
 					<div
 						id={`expression2-${question.num}${masked ? '-masked' : ''}`}
 						class={correction ? 'my-1' : 'my-3'}
 					>
-						{@html expression2}
+						{@html $toMarkup(expression2)}
 					</div>
-				{/if} -->
+				{/if}
 			</div>
 		{:else if !correction && element === 'choices' && isQuestionChoice(question)}
 			<div
