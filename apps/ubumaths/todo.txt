@@ -10,7 +10,7 @@ replacer le stamp "correction"
 mise en valeur d'une expression mal écrite
 bordure mal placée
 chiffres mal espacés dans corrextion qcm
-expression globale incorrecte dans trous
+expression globale incorrecte dans trous : relatifs - multiplier - produits - 6
 gestion du clavier
 bouton valider à enlever dans exemple
 question avec plusieurs reponses possibles : entiers - multiplier - decomposer
@@ -23,3 +23,11 @@ points au lieu de virgules dans les réponses des qcm (decimaux - apprivoiser - 
 
 prefilled réinitialisé après passage par correction (réponse utilisateur écrasée)
 loader image
+ecarter l'expression ou l'answerField
+
+fractions  - approvoiser - simplifier - 5
+revoir les durées
+r pour racine carré
+
+
+answerField : fraction d'une quantité

@@ -108,6 +108,7 @@
 
 	$: solution = $formatLatexToHtml(getSolution(card))
 	$: details = detailedCorrection || []
+	$: console.log('detailed', detailedCorrection)
 </script>
 
 <div bind:clientHeight={h} bind:clientWidth={w} class={`${$$props.class}`}>

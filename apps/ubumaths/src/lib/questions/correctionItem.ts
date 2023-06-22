@@ -141,10 +141,9 @@ export function createCorrection(item: CorrectedQuestion) {
 			}
 		}
 	} else if (isQuestionAnswerField(item)) {
-		const answerField = item.answerField.replace(
-			/\\text\{(.*?)\}/g,
-			(_, p1) => p1,
-		)
+		const answerField = item.answerField
+			.replace(/\\text\{(.*?)\}/g, (_, p1) => p1)
+			.replace(/\$\$(.*?)\$\$/g, (_, p1) => '$$' + math(p1).latex + '$$')
 		if (status === STATUS_CORRECT) {
 			const text = putAnswers(answerField, item, /\.\.\./g)
 			lines.push({
@@ -310,6 +309,7 @@ export function createDetailedCorrection(item: CorrectedQuestion) {
 				html: `<img src='${img}' style="max-width:400px;max-height:40vh;" alt='toto'>`,
 			}
 		} else {
+			console.log('text', detail.text)
 			line = {
 				text: detail.text
 					.replace(regexExpression2, () => replaceExpression2(item))
@@ -319,6 +319,7 @@ export function createDetailedCorrection(item: CorrectedQuestion) {
 					.replace(regexSolution, (_, p1) => replaceSolution(item, p1))
 					.replace(regexSol, (_, p1) => replaceSol(item, p1)),
 			}
+			console.log('line', line.text)
 		}
 		lines.push(line)
 	})
@@ -486,10 +487,11 @@ function replaceSol(item: CorrectedQuestion, p1?: number) {
 		solution = p1
 			? `\\textcolor{${correct_color}}{` +
 			  (solutions_latex[p1 - 1] as string) +
-			  '}}'
+			  '}'
 			: putSolutions(
 					item.answerField.replace(/\\text\{(.*)\}/g, (_, p1) => p1),
 					item,
+					/\.\.\./,
 			  )
 	} else {
 		solution = solutions_latex[0] as string

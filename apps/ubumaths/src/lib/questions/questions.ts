@@ -13667,7 +13667,7 @@ const questions: Questions = {
 		apprivoiser: {
 			fréquences: [
 				{
-					description: 'fréquence et probabilité',
+					description: 'probabilité simple',
 					enounces: [
 						"Quelle est la probabilité d'obtenir le nombre $$&2$$ quand on lance un dé à $$&1$$ faces ?",
 						"Quelle est la probabilité d'obtenir le nombre $$&2$$ quand on lance un dé à $$&1$$ faces ?",
@@ -13704,25 +13704,23 @@ const questions: Questions = {
 							'&3': '[_(&1-mod(&1;&2))/&2_]',
 						},
 					],
-					correctionFormats: [
-						{
-							correct: ["La fréquence d'apparition est &answer."],
-						},
+					answerFields: [
+						"\\text{La fréquence d'apparition est }$$...$$\\text{.}",
 					],
 					correctionDetailss: [
 						[
 							{
-								text: "Avec un dé à $$&1$$ faces, il y a une seule façon d'obtenir $$&2$$ parmi $$&1$$ possibilités. La probabilité est donc &solution.",
+								text: "Avec un dé à $$&1$$ faces, il y a une seule façon d'obtenir $$&2$$ parmi $$&1$$ possibilités. La probabilité est donc &solution1.",
 							},
 						],
 						[
 							{
-								text: "Avec un dé à $$&1$$ faces, il est impossible d'obtenir $$&2$$. La probabilité est donc &solution.",
+								text: "Avec un dé à $$&1$$ faces, il est impossible d'obtenir $$&2$$. La probabilité est donc &solution1.",
 							},
 						],
 						[
 							{
-								text: 'Avec un dé à $$&1$$ faces, il y a autant de nombres pairs que de nombres impairs. La probabilité est donc &solution.',
+								text: 'Avec un dé à $$&1$$ faces, il y a autant de nombres pairs que de nombres impairs. La probabilité est donc &solution1.',
 							},
 						],
 						[
@@ -13730,8 +13728,8 @@ const questions: Questions = {
 								text: 'Sur un dé à $$&1$$ faces, il y a $$&3$$ multiples de $$&2$$.',
 							},
 							{
-								text: '@@ pgcd(&3;&1)=1 ?? La probabilité est donc &solution.@@ \
-								@@ pgcd(&3;&1)!=1 ?? La probabilité est donc $$\\frac{&3}{&1}=&sol$$.@@',
+								text: '@@ pgcd(&3;&1)=1 ?? La probabilité est donc &solution1.@@ \
+								@@ pgcd(&3;&1)!=1 ?? La probabilité est donc $$\\frac{&3}{&1}=&sol1$$.@@',
 							},
 						],
 					],
@@ -13740,11 +13738,11 @@ const questions: Questions = {
 					grade: SIXIEME,
 				},
 				{
-					description: 'fréquence et probabilité',
+					description: 'fréquence',
 					enounces: [
-						"Je lance &1 fois un dé à &2 faces. J'obtiens &3 fois le nombre &4. Quelle est la fréquence d'apparition du nombre &4 ?",
-						"Je lance &1 fois une pièce de monnaie. J'obtiens &2 fois le côté face. Quelle est la fréquence d'apparition du côté face?",
-						"Je lance &1 fois une pièce de monnaie. J'obtiens &2 fois le côté face. Quelle est la fréquence d'apparition du côté pile?",
+						"Je lance $$&1$$ fois un dé à $$&2$$ faces. J'obtiens $$&3$$ fois le nombre $$&4$$. Quelle est la fréquence d'apparition du nombre $$&4$$ ?",
+						"Je lance $$&1$$ fois une pièce de monnaie. J'obtiens $$&2$$ fois le côté face. Quelle est la fréquence d'apparition du côté face?",
+						"Je lance $$&1$$ fois une pièce de monnaie. J'obtiens $$&2$$ fois le côté face. Quelle est la fréquence d'apparition du côté pile?",
 					],
 					solutionss: [['[_&3/&1_]'], ['[_&2/&1_]'], ['[_{&1-&2}/&1_]']],
 					testAnswerss: [
@@ -13768,28 +13766,26 @@ const questions: Questions = {
 							'&2': '$e[1;&1-1]',
 						},
 					],
-					correctionFormats: [
-						{
-							correct: ["La fréquence d'apparition est &answer."],
-						},
+					answerFields: [
+						"\\text{La fréquence d'apparition est }$$...$$\\text{.}",
 					],
 					correctionDetailss: [
 						[
 							{
-								text: "@@ pgcd(&3;&1)=1 ?? La fréquence d'apparition du nombre $$&4$$ est &solution.@@ \
-								@@ pgcd(&3;&1)!=1 ?? La fréquence d'apparition du nombre &4 est $$\\frac{&3}{&1}=&sol$$.@@",
+								text: "@@ pgcd(&3;&1)=1 ?? La fréquence d'apparition du nombre $$&4$$ est &solution1.@@ \
+								@@ pgcd(&3;&1)!=1 ?? La fréquence d'apparition du nombre &4 est $$\\frac{&3}{&1}=&sol1$$.@@",
 							},
 						],
 						[
 							{
-								text: "@@ pgcd(&2;&1)=1 ?? La fréquence d'apparition du côté face est &solution.@@ \
-									@@ pgcd(&2;&1)!=1 ?? La fréquence d'apparition du côté face est $$\\frac{&2}{&1}=&sol$$.@@",
+								text: "@@ pgcd(&2;&1)=1 ?? La fréquence d'apparition du côté face est &solution1.@@ \
+									@@ pgcd(&2;&1)!=1 ?? La fréquence d'apparition du côté face est $$\\frac{&2}{&1}=&sol1$$.@@",
 							},
 						],
 						[
 							{
-								text: "@@ pgcd(&1-&2;&1)=1 ?? La fréquence d'apparition du côté pile est $$\\frac{&1-&2}{&1}=&sol$$.@@ \
-									@@ pgcd(&1-&2;&1)!=1 ?? La fréquence d'apparition du côté pile est $$\\frac{&1-&2}{&1}=\\frac{[_&1-&2_]}{&1}=&sol$$.@@",
+								text: "@@ pgcd(&1-&2;&1)=1 ?? La fréquence d'apparition du côté pile est $$\\frac{&1-&2}{&1}=&sol1$$.@@ \
+									@@ pgcd(&1-&2;&1)!=1 ?? La fréquence d'apparition du côté pile est $$\\frac{&1-&2}{&1}=\\frac{[_&1-&2_]}{&1}=&sol1$$.@@",
 							},
 						],
 					],
@@ -13931,10 +13927,8 @@ const questions: Questions = {
 						},
 					],
 					solutionss: [['&3']],
-					correctionFormats: [
-						{
-							correct: ['Le coefficient de proportionnalité est &answer.'],
-						},
+					answerFields: [
+						'\\text{Le coefficient de proportionnalité est }$$...$$\\text{.}',
 					],
 					correctionDetailss: [
 						[
@@ -13942,7 +13936,7 @@ const questions: Questions = {
 								text: 'Le coefficient de proportionnalité du tableau  $$\\begin{array}{c|c} \
               &1        &   &2 \\\\ \
               [_&1*&3_]  &  [_&2*&3_] \
-          \\end{array}$$ est &solution car $$[_&1*&3_] \\div &1 = [_&2*&3_] \\div &2 = &sol$$.',
+          \\end{array}$$ est &solution car $$[_&1*&3_] \\div &1 = [_&2*&3_] \\div &2 = &sol1$$.',
 							},
 						],
 					],
@@ -13966,10 +13960,8 @@ const questions: Questions = {
 						{ '&1': '$e[2;9]', '&2': '$e[2;9]\\{m(&1)}', '&3': '$e[2;9]' },
 					],
 					solutionss: [['&2/&1']],
-					correctionFormats: [
-						{
-							correct: ['Le coefficient de proportionnalité est &answer.'],
-						},
+					answerFields: [
+						'\\text{Le coefficient de proportionnalité est }$$...\\text{.}',
 					],
 					correctionDetailss: [
 						[
@@ -13977,7 +13969,7 @@ const questions: Questions = {
 								text: 'Le coefficient de proportionnalité du tableau  $$\\begin{array}{c|c} \
               &1  &   [_&1*&3_] \\\\ \
               &2  &  [_&2*&3_] \
-          \\end{array}$$ est &solution car $$&2 \\div &1 = [_&2*&3_] \\div [_&1*&3_] = &sol$$.',
+          \\end{array}$$ est &solution car $$&2 \\div &1 = [_&2*&3_] \\div [_&1*&3_] = &sol1$$.',
 							},
 						],
 					],
@@ -13991,6 +13983,24 @@ const questions: Questions = {
 					subdescription: 'En travaillant sur les colonnes',
 					enounces: [
 						'Ce tableau est un tableau de proportionnalité. Détermine le nombre manquant.',
+					],
+					enounces2: [
+						'$$\\begin{array}{c|c} \
+                      &1  &  ...  \\\\ \
+                      &2  &   [_&2*&3_] \
+                      \\end{array}$$',
+						'$$\\begin{array}{c|c} \
+                      &1  &   [_&1*&3_] \\\\ \
+                      &2  &  ...  \
+                      \\end{array}$$',
+						'$$\\begin{array}{c|c} \
+                      &1  &   [_&1*&3_] \\\\ \
+                      ...  &   [_&2*&3_] \
+                      \\end{array}$$',
+						'$$\\begin{array}{c|c} \
+                       ...  &   [_&1*&3_] \\\\ \
+                      &2  &   [_&2*&3_] \
+                      \\end{array}$$',
 					],
 					answerFields: [
 						'$$\\begin{array}{c|c} \
@@ -14022,34 +14032,22 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{array}{c|c} \
-                &1  &   &sol \\\\ \
-                &2  &   [_&2*&3_] \
-              \\end{array}$$ car $$&2 \\textcolor{${color1}}{\\times &3} = [_&2*&3_]$$ et $$&1 \\textcolor{${color1}}{\\times &3} = &sol$$`,
+								text: `&sol, car $$&2 \\textcolor{${color1}}{\\times &3} = [_&2*&3_]$$ et $$&1 \\textcolor{${color1}}{\\times &3} = &sol1$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{array}{c|c} \
-                &1  &   [_&1*&3_] \\\\ \
-                &2  &   &sol \
-              \\end{array}$$ car $$&1\\textcolor{${color1}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${color1}}{\\times &3} = &sol$$`,
+								text: `&sol, car $$&1\\textcolor{${color1}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${color1}}{\\times &3} = &sol1$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{array}{c|c} \
-                &1  &  [_&1*&3_]  \\\\ \
-                &sol  &   [_&2*&3_] \
-              \\end{array}$$ car $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &sol$$`,
+								text: `&sol, car $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &sol1$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{array}{c|c} \
-                &sol  &  [_&1*&3_]  \\\\ \
-                 &2 &   [_&2*&3_] \
-              \\end{array}$$ car $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &2$$ et $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &sol$$`,
+								text: `&sol, car $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &2$$ et $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &sol1$$`,
 							},
 						],
 					],
@@ -14061,6 +14059,24 @@ const questions: Questions = {
 					subdescription: 'En utilisant le coefficient de proportionnalité',
 					enounces: [
 						'Ce tableau est un tableau de proportionnalité. Détermine le nombre manquant.',
+					],
+					enounces2: [
+						'$$\\begin{array}{c|c} \
+                      &1  &  &2  \\\\ \
+                       ...  &   [_&2*&3_] \
+                      \\end{array}$$',
+						'$$\\begin{array}{c|c} \
+                      &1  &  &2  \\\\ \
+                      [_&1*&3_]  &  ...  \
+                      \\end{array}$$',
+						'$$\\begin{array}{c|c} \
+                      &1  &   ... \\\\ \
+                      [_&1*&3_]  &   [_&2*&3_] \
+                      \\end{array}$$',
+						'$$\\begin{array}{c|c} \
+                       ...  &   &2 \\\\ \
+                       [_&1*&3_]  &   [_&2*&3_] \
+                      \\end{array}$$',
 					],
 					answerFields: [
 						'$$\\begin{array}{c|c} \
@@ -14092,34 +14108,22 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{array}{c|c} \
-                &1  &  &2  \\\\ \
-                &sol  &   [_&2*&3_] \
-              \\end{array}$$ car $$&2 \\textcolor{${color1}}{\\times &3} = [_&2*&3_]$$ et $$&1 \\textcolor{${color1}}{\\times &3} = &sol$$`,
+								text: `&sol, car $$&2 \\textcolor{${color1}}{\\times &3} = [_&2*&3_]$$ et $$&1 \\textcolor{${color1}}{\\times &3} = &sol1$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{array}{c|c} \
-                &1  &   &2 \\\\ \
-                [_&1*&3_] & &sol \
-              \\end{array}$$ car $$&1\\textcolor{${color1}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${color1}}{\\times &3} = &sol$$`,
+								text: `&sol, car $$&1\\textcolor{${color1}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${color1}}{\\times &3} = &sol1$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{array}{c|c} \
-                &1  &  &sol \\\\ \
-                [_&1*&3_]  &   [_&2*&3_] \
-              \\end{array}$$ car $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &sol$$`,
+								text: `&sol, car $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &sol1$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{array}{c|c} \
-                &sol  &  &2  \\\\ \
-                [_&1*&3_] &   [_&2*&3_] \
-              \\end{array}$$ car $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &2$$ et $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &sol$$`,
+								text: `&sol, car $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &2$$ et $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &sol1$$`,
 							},
 						],
 					],
@@ -14133,6 +14137,24 @@ const questions: Questions = {
 						'En utilisant le coefficient de proportionnalité qui est fractionnaire',
 					enounces: [
 						'Ce tableau est un tableau de proportionnalité. Détermine le nombre manquant.',
+					],
+					enounces2: [
+						'$$\\begin{array}{c|c} \
+                      &1  &  &2  \\\\ \
+                       ...  &  &3 \
+                      \\end{array}$$',
+						'$$\\begin{array}{c|c} \
+                      &2  &  &1  \\\\ \
+                      &3  &  ...  \
+                      \\end{array}$$',
+						'$$\\begin{array}{c|c} \
+                      &2  &   ... \\\\ \
+                      &3  &  [_&1*&3/&2_] \
+                      \\end{array}$$',
+						'$$\\begin{array}{c|c} \
+                       ...  &   &2 \\\\ \
+                       [_&1*&3/&2_]  &   &3 \
+                      \\end{array}$$',
 					],
 					answerFields: [
 						'$$\\begin{array}{c|c} \
@@ -14164,34 +14186,22 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{array}{c|c} \
-                &1  &  &2  \\\\ \
-                &sol  &   &3 \
-              \\end{array}$$ car $$&2 \\textcolor{${color1}}{\\times \\frac{&3}{&2}} = &3$$ et $$&1 \\textcolor{${color1}}{\\times \\frac{&3}{&2}} =$$ &solution.`,
+								text: `&sol, car $$&2 \\textcolor{${color1}}{\\times \\frac{&3}{&2}} = &3$$ et $$&1 \\textcolor{${color1}}{\\times \\frac{&3}{&2}} =$$ &solution.`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{array}{c|c} \
-                &2 & &1  \\\\ \
-                &3 & &sol \
-              \\end{array}$$ car $$&2 \\textcolor{${color1}}{\\times \\frac{&3}{&2}} = &3$$ et $$&1 \\textcolor{${color1}}{\\times \\frac{&3}{&2}}} =$ &solution.`,
+								text: `&sol, car $$&2 \\textcolor{${color1}}{\\times \\frac{&3}{&2}} = &3$$ et $$&1 \\textcolor{${color1}}{\\times \\frac{&3}{&2}}} =$ &solution.`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{array}{c|c} \
-                &2 &  &sol \\\\ \
-                &3 & [_&1*&3/&2_] \
-              \\end{array}$$ car $$&2 \\textcolor{${color1}}{\\times \\frac{&3}{&2}} = &3$$ et $$&sol \\textcolor{${color1}}{\\times \\frac{&3}{&2}} = [_&1*&3/&2_]$$`,
+								text: `&sol car $$&2 \\textcolor{${color1}}{\\times \\frac{&3}{&2}} = &3$$ et $$&sol1 \\textcolor{${color1}}{\\times \\frac{&3}{&2}} = [_&1*&3/&2_]$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{array}{c|c} \
-                 &sol & &2 \\\\ \
-                [_&1*&3/&2_] & &3 \
-				\\end{array}$$ car $$&2 \\textcolor{${color1}}{\\times \\frac{&3}{&2}} = &3$$ et $$&sol \\textcolor{${color1}}{\\times \\frac{&3}{&2}} = [_&1*&3/&2_]$$`,
+								text: `&sol car $$&2 \\textcolor{${color1}}{\\times \\frac{&3}{&2}} = &3$$ et $$&sol1 \\textcolor{${color1}}{\\times \\frac{&3}{&2}} = [_&1*&3/&2_]$$`,
 							},
 						],
 					],
@@ -14223,61 +14233,43 @@ const questions: Questions = {
 						['[_&2*&3_] h'],
 					],
 					units: ['€', '', '€', 'kg', 'L', 'h'],
-					correctionFormats: [
-						{
-							correct: ['$$[_&3*&2_]$$ shawarmas coûtent &answer.'],
-						},
-						{
-							correct: [
-								'Je peux acheter &answer shawarmas pour $$[_&1*&2*&3_]\\,€$$.',
-							],
-							answer: 'Je peux acheter &answer shawarmas.',
-						},
-						{
-							correct: ['$$[_&3*&2_]\\,kg$$ de tomates coûtent &answer.'],
-						},
-						{
-							correct: [
-								'Je peux acheter &answer de tomates pour $$[_&3*&2*&1_]\\,€$$.',
-							],
-						},
-						{
-							correct: ["Il s'échappe &answer d'eau en $$[_&3*&2_]\\,h$$."],
-							answer: "Il s'échappe &answer d'eau.",
-						},
-						{
-							correct: ["Il s'échappe $$[_&3*&2*&1_]\\,L$$ d'eau en &answer."],
-						},
+					answerFields: [
+						'$$[_&3*&2_]$$\\text{ shawarmas coûtent }$$...$$\\texgt{.}',
+						'\\text{Je peux acheter }$$...$$\\text{ shawarmas pour }$$[_&1*&2*&3_]\\,€$$\\text{.}',
+						'$$[_&3*&2_]\\,kg$$\\text{ de tomates coûtent }$$...$$\\text{.}',
+						'\\text{Je peux acheter }$$...$$\\{ de tomates pour }$$[_&3*&2*&1_]\\,€$$\\text{.}',
+						"\\text{Il s'échappe }$$...$$\\text{ d'eau en }$$[_&3*&2_]\\,h$$\\text{.}",
+						"\\text{Il s'échappe }$$[_&3*&2*&1_]\\,L$$\\text{ d'eau en }$$...$$\\text{.}",
 					],
 					correctionDetailss: [
 						[
 							{
-								text: `$$[_&3*&2_]$$ shawarmas, c'est $$\\textcolor{${color1}}{&3\\text{ fois}}$$ plus que $$&2$$ shawarmas à $$[_&1*&2 €_]$$, donc le prix de $$[_&3*&2_]$$ shawarmas est $$[_&1*&2 €_]\\textcolor{${color1}}{\\times &3} = &sol$$.`,
+								text: `$$[_&3*&2_]$$ shawarmas, c'est $$\\textcolor{${color1}}{&3\\text{ fois}}$$ plus que $$&2$$ shawarmas à $$[_&1*&2 €_]$$, donc le prix de $$[_&3*&2_]$$ shawarmas est $$[_&1*&2 €_]\\textcolor{${color1}}{\\times &3} = &sol1$$.`,
 							},
 						],
 						[
 							{
-								text: `$$[_&3*&2*&1 €_]$$, c'est $$\\textcolor{${color1}}{&3\\text{ fois}}$$ plus que $$[_&2*&1 €_]$$ pour $$&2$$ shawarmas, donc je peux acheter $$&2\\textcolor{${color1}}{\\times &3} = &sol$$ shawarmas.`,
+								text: `$$[_&3*&2*&1 €_]$$, c'est $$\\textcolor{${color1}}{&3\\text{ fois}}$$ plus que $$[_&2*&1 €_]$$ pour $$&2$$ shawarmas, donc je peux acheter $$&2\\textcolor{${color1}}{\\times &3} = &sol1$$ shawarmas.`,
 							},
 						],
 						[
 							{
-								text: `$$[_&3*&2_]\\,kg$$ de tomates, c'est $$\\textcolor{${color1}}{&3\\text{ fois}}$$ plus que $$&2\\,kg$$  à $$[_&1*&2€_]$$, donc le prix de $$[_&3*&2_]\\,kg$$ de tomates est $$[_&1*&2 €_]\\textcolor{${color1}}{\\times &3} = &sol$$.`,
+								text: `$$[_&3*&2_]\\,kg$$ de tomates, c'est $$\\textcolor{${color1}}{&3\\text{ fois}}$$ plus que $$&2\\,kg$$  à $$[_&1*&2€_]$$, donc le prix de $$[_&3*&2_]\\,kg$$ de tomates est $$[_&1*&2 €_]\\textcolor{${color1}}{\\times &3} = &sol1$$.`,
 							},
 						],
 						[
 							{
-								text: `$$[_&3*&2*&1 €_]$$, c'est $$\\textcolor{${color1}}{&3\\text{ fois}}$$ plus que $$[_&2*&1€_]$$ pour $$&2\\,kg$$ de tomates, donc je peux acheter $$&2\\,kg\\textcolor{${color1}}{\\times &3} = &sol$$ de tomates.`,
+								text: `$$[_&3*&2*&1 €_]$$, c'est $$\\textcolor{${color1}}{&3\\text{ fois}}$$ plus que $$[_&2*&1€_]$$ pour $$&2\\,kg$$ de tomates, donc je peux acheter $$&2\\,kg\\textcolor{${color1}}{\\times &3} = &sol1$$ de tomates.`,
 							},
 						],
 						[
 							{
-								text: `$$[_&3*&2_]\\,h$$, c'est $$\\textcolor{${color1}}{&3\\text{ fois}}$$ plus que $$&2\\,h$$ pour $$[_&1*&2_]\\,L$$, donc il s'échappe  $$[_&1*&2_]\\,L\\textcolor{${color1}}{\\times &3} = &sol$$ d'eau en $$[_&3*&2_]\\,h$$.`,
+								text: `$$[_&3*&2_]\\,h$$, c'est $$\\textcolor{${color1}}{&3\\text{ fois}}$$ plus que $$&2\\,h$$ pour $$[_&1*&2_]\\,L$$, donc il s'échappe  $$[_&1*&2_]\\,L\\textcolor{${color1}}{\\times &3} = &sol1$$ d'eau en $$[_&3*&2_]\\,h$$.`,
 							},
 						],
 						[
 							{
-								text: `$$[_&3*&2*&1_]\\,L$$, c'est $$\\textcolor{${color1}}{&3\\text{ fois}}$$ plus que $$[_&2*&1_]\\,L$$ en $$&2\\,h$$, donc il faut $$&2\\,h \\textcolor{${color1}}{\\times &3} = &sol$$ pour perdre $$[_&1*&2*&3_]\\,L$$ d'eau.`,
+								text: `$$[_&3*&2*&1_]\\,L$$, c'est $$\\textcolor{${color1}}{&3\\text{ fois}}$$ plus que $$[_&2*&1_]\\,L$$ en $$&2\\,h$$, donc il faut $$&2\\,h \\textcolor{${color1}}{\\times &3} = &sol1$$ pour perdre $$[_&1*&2*&3_]\\,L$$ d'eau.`,
 							},
 						],
 					],
@@ -14351,10 +14343,8 @@ const questions: Questions = {
 					enounces: ['Calcule $$50\\%$$ de $$[_&1*2_]$$.'],
 					solutionss: [['&1']],
 					variabless: [{ '&1': '$e[1;50]' }],
-					correctionFormats: [
-						{
-							correct: ['$$50\\%$$ de $$[_&1*2_]$$ est égal à &answer.'],
-						},
+					answerFields: [
+						'$$50\\%$$\\text{ de }$$[_&1*2_]$$\\text{ est égal à }$$...$$.',
 					],
 					correctionDetailss: [
 						[
@@ -14372,10 +14362,8 @@ const questions: Questions = {
 					enounces: ['Calcule $$10\\%$$ de $$[_&1*10_]$$.'],
 					solutionss: [['&1']],
 					variabless: [{ '&1': '$e[1;50]' }],
-					correctionFormats: [
-						{
-							correct: ['$$10\\%$$ de $$[_&1*10_]$$ est égal à &answer.'],
-						},
+					answerFields: [
+						'$$10\\%$$\\text{ de }$$[_&1*10_]$$\\text{ est égal à }$$...$$.',
 					],
 					correctionDetailss: [
 						[
@@ -14393,10 +14381,8 @@ const questions: Questions = {
 					enounces: ['Calcule $$10\\%$$ de $$[_&1_]$$.'],
 					solutionss: [['[._10%*&1_]']],
 					variabless: [{ '&1': '$e[1;100]\\{m10}' }],
-					correctionFormats: [
-						{
-							correct: ['$$10\\%$$ de $$&1$$ est égal à &answer.'],
-						},
+					answerFields: [
+						'$$10\\%$$\\text{ de }$$&1$$\\text{ est égal à }$$...$$.',
 					],
 					correctionDetailss: [
 						[
@@ -14415,10 +14401,8 @@ const questions: Questions = {
 					enounces: ['Calcule $$&1\\%$$ de $$[_&2*10_]$$.'],
 					solutionss: [['[_&1%*&2*10_]']],
 					variabless: [{ '&1': '$l{20;30;40}', '&2': '$e[1;40]' }],
-					correctionFormats: [
-						{
-							correct: ['$$&1\\%$$ de $$[_&2*10_]$$ est égal à &answer.'],
-						},
+					answerFields: [
+						'$$&1\\%$$\\text{ de }$$[_&2*10_]$$\\text{ est égal à }$$...$$.',
 					],
 					correctionDetailss: [
 						[
@@ -14436,10 +14420,8 @@ const questions: Questions = {
 					enounces: ['Calcule $$25\\%$$ de $$[_&1*4_]$$.'],
 					solutionss: [['&1']],
 					variabless: [{ '&1': '$e[1;15]' }],
-					correctionFormats: [
-						{
-							correct: ['$$25\\%$$ de $$[_&1*4_]$$ est égal à &answer.'],
-						},
+					answerFields: [
+						'$$25\\%$$\\text{ de }$$[_&1*4_]$$\\text{ est égal à }$$...$$.',
 					],
 					correctionDetailss: [
 						[
@@ -14457,15 +14439,13 @@ const questions: Questions = {
 					enounces: ['Calcule $$75\\%$$ de $$[_&1*4_]$$.'],
 					solutionss: [['[_75%*&1*4_]']],
 					variabless: [{ '&1': '$e[1;12]' }],
-					correctionFormats: [
-						{
-							correct: ['$$75\\%$$ de $$[_&1*4_]$$ est égal à &answer.'],
-						},
+					answerFields: [
+						'$$75\\%$$\\text{ de }$$[_&1*4_]$$\\text{ est égal à }$$...$$.',
 					],
 					correctionDetailss: [
 						[
 							{
-								text: '$$25\\%$$ signifie $$\\frac{3}{4}$$ donc $$25\\%$$ de $$[_&1*4_]$$ est égal à $$\\left([_&1*4_] \\div 4 \\right) \\times 3=$$&solution. ',
+								text: '$$75\\%$$ signifie $$\\frac{3}{4}$$ donc $$75\\%$$ de $$[_&1*4_]$$ est égal à $$\\left([_&1*4_] \\div 4 \\right) \\times 3=$$&solution. ',
 							},
 						],
 					],
@@ -14487,11 +14467,7 @@ const questions: Questions = {
 						{ '&1': '$e[2;20]*10', '&2': '100' },
 						{ '&1': '$e[2;20]*10', '&2': '200' },
 					],
-					correctionFormats: [
-						{
-							correct: ['Le nouveau prix est de &answer Qr.'],
-						},
-					],
+					answerFields: ['\\text{Le nouveau prix est de }$$...$$\\text{ Qr.}'],
 					correctionDetailss: [
 						[
 							{
@@ -14515,11 +14491,7 @@ const questions: Questions = {
 						{ '&1': '$e[2;20]*10', '&2': '50' },
 						{ '&1': '$e[2;20]*10', '&2': '100' },
 					],
-					correctionFormats: [
-						{
-							correct: ['Le nouveau prix est de &answer Qr.'],
-						},
-					],
+					answerFields: ['\\text{Le nouveau prix est de }$$...$$\\text{ Qr.}'],
 					correctionDetailss: [
 						[
 							{
@@ -14538,10 +14510,8 @@ const questions: Questions = {
 					],
 					solutionss: [['[._1+&1/100_]']],
 					variabless: [{ '&1': '$l{$e[1;30];100;200;50}' }],
-					correctionFormats: [
-						{
-							correct: ['Le coefficient multiplicateur est &answer.'],
-						},
+					answerFields: [
+						'\\text{Le coefficient multiplicateur est }$$...$$\\text{.}',
 					],
 					correctionDetailss: [
 						[
@@ -14562,10 +14532,8 @@ const questions: Questions = {
 					],
 					solutionss: [['[._1-&1/100_]']],
 					variabless: [{ '&1': '$e[1;100]' }],
-					correctionFormats: [
-						{
-							correct: ['Le coefficient multiplicateur est &answer.'],
-						},
+					answerFields: [
+						'\\text{Le coefficient multiplicateur est }$$...$$\\text{.}',
 					],
 					correctionDetailss: [
 						[
@@ -14587,10 +14555,8 @@ const questions: Questions = {
 					variabless: [
 						{ '&1': '$l{$e[1;30];$e[31;49];$e[51;70];$e[71;90];100;50;200}' },
 					],
-					correctionFormats: [
-						{
-							correct: ["Le pourcentage d'augmentation est &answer."],
-						},
+					answerFields: [
+						"\\text{Le pourcentage d'augmentation est }$$...$$\\text{.}",
 					],
 					correctionDetailss: [
 						[
@@ -14610,10 +14576,8 @@ const questions: Questions = {
 					variabless: [
 						{ '&1': '$l{$e[1;30];$e[31;49];$e[51;70];$e[71;90];100;50}' },
 					],
-					correctionFormats: [
-						{
-							correct: ['Le pourcentage de diminution est &answer.'],
-						},
+					answerFields: [
+						'\\text{Le pourcentage de diminution est }$$...$$\\text{.}',
 					],
 					correctionDetailss: [
 						[
@@ -14641,11 +14605,7 @@ const questions: Questions = {
 					variabless: [
 						{ '&1': '$e[1;9]', '&2': '10^$e[1;6]', '&3': '[_&1*&2_] cm' },
 					],
-					correctionFormats: [
-						{
-							correct: ["L'échelle est &answer."],
-						},
-					],
+					answerFields: ["\\text{L'échelle est }$$...$$\\text{.}"],
 					defaultDelay: 20,
 					grade: SIXIEME,
 				},
@@ -14663,15 +14623,11 @@ const questions: Questions = {
 						{ '&1': '$e[2;9] hm' },
 						{ '&1': '$e[2;9] km' },
 					],
-					correctionFormats: [
-						{
-							correct: ["L'échelle est &answer."],
-						},
-					],
+					answerFields: ["\\text{L'échelle est }$$...$$\\text{.}"],
 					correctionDetailss: [
 						[
 							{
-								text: '$$\\frac{1\\,cm}{[°&1°]}=\\frac{1\\,cm}{[_&1_cm_]}=&sol$$',
+								text: '$$\\frac{1\\,cm}{[°&1°]}=\\frac{1\\,cm}{[_&1_cm_]}=&sol1$$',
 							},
 						],
 					],
@@ -14686,7 +14642,7 @@ const questions: Questions = {
 					enounces: [
 						"Sur une carte à l'échelle $$[_&4_]$$, je veux représenter une longueur de $$&3$$. Quelle est, en <i>cm</i>, la longueur sur la carte ?",
 					],
-					answerFields: ['$$... cm$$'],
+					answerFields: ['\\text{La longueur est }$$... cm$$\\text{.}'],
 					solutionss: [['[_&5/(&1 cm)_]']],
 					variabless: [
 						{ '&1': '10', '&2': '$e[1;9]*10', '&3': '[_&2_] dm', '&4': '1/&1' },
@@ -14730,32 +14686,32 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: '$$[_&4_]=\\frac{1\\,cm}{&1\\,cm}= \\frac{1\\,cm}{[_&1:10_]\\,dm}= \\frac{&sol cm}{[°&3°]}$$',
+								text: '$$[_&4_]=\\frac{1\\,cm}{&1\\,cm}= \\frac{1\\,cm}{[_&1:10_]\\,dm}= \\frac{&sol1 cm}{[°&3°]}$$',
 							},
 						],
 						[
 							{
-								text: '$$[_&4_]=\\frac{1\\,cm}{&1\\,cm}= \\frac{1\\,cm}{[_&1:10_]\\,dm}= \\frac{&sol cm}{[°&3°]}$$',
+								text: '$$[_&4_]=\\frac{1\\,cm}{&1\\,cm}= \\frac{1\\,cm}{[_&1:10_]\\,dm}= \\frac{&sol1 cm}{[°&3°]}$$',
 							},
 						],
 						[
 							{
-								text: '$$[_&4_]=\\frac{1\\,cm}{&1\\,cm}= \\frac{1\\,cm}{[_&1:100_]\\,m}= \\frac{&sol cm}{[°&3°]}$$',
+								text: '$$[_&4_]=\\frac{1\\,cm}{&1\\,cm}= \\frac{1\\,cm}{[_&1:100_]\\,m}= \\frac{&sol1 cm}{[°&3°]}$$',
 							},
 						],
 						[
 							{
-								text: '$$[_&4_]=\\frac{1\\,cm}{&1\\,cm}= \\frac{1\\,cm}{[_&1:100_]\\,m}= \\frac{&sol cm}{[°&3°]}$$',
+								text: '$$[_&4_]=\\frac{1\\,cm}{&1\\,cm}= \\frac{1\\,cm}{[_&1:100_]\\,m}= \\frac{&sol1 cm}{[°&3°]}$$',
 							},
 						],
 						[
 							{
-								text: '$$[_&4_]=\\frac{1\\,cm}{&1\\,cm}= \\frac{1\\,cm}{[_&1:100000_]\\,km}= \\frac{&sol cm}{[°&3°]}$$',
+								text: '$$[_&4_]=\\frac{1\\,cm}{&1\\,cm}= \\frac{1\\,cm}{[_&1:100000_]\\,km}= \\frac{&sol1 cm}{[°&3°]}$$',
 							},
 						],
 						[
 							{
-								text: '$$[_&4_]=\\frac{1\\,cm}{&1\\,cm}= \\frac{1\\,cm}{[_&1:100000_]\\,km}= \\frac{&sol cm}{[°&3°]}$$',
+								text: '$$[_&4_]=\\frac{1\\,cm}{&1\\,cm}= \\frac{1\\,cm}{[_&1:100000_]\\,km}= \\frac{&sol1 cm}{[°&3°]}$$',
 							},
 						],
 					],
@@ -14801,40 +14757,36 @@ const questions: Questions = {
 					units: ['dm', 'dm', 'm', 'm', 'km', 'km'],
 
 					options: ['no-penalty-for-not-respected-unit'],
-					correctionFormats: [
-						{
-							correct: ['La longueur réelle est de &answer.'],
-						},
-					],
+					answerFields: ['\\text{La longueur réelle est de }$$...$$.'],
 					correctionDetailss: [
 						[
 							{
-								text: '$$[_&4_]=\\frac{1\\,cm}{[°&1 cm°]}= \\frac{1\\,cm}{[_(&1:10)_]\\,dm}= \\frac{[°&3°]}{&sol}$$',
+								text: '$$[_&4_]=\\frac{1\\,cm}{[°&1 cm°]}= \\frac{1\\,cm}{[_(&1:10)_]\\,dm}= \\frac{[°&3°]}{&sol1}$$',
 							},
 						],
 						[
 							{
-								text: '$$[_&4_]=\\frac{1\\,cm}{[°&1 cm°]}= \\frac{1\\,cm}{[_(&1:10)_]\\,dm}= \\frac{[°&3°]}{&sol}$$',
+								text: '$$[_&4_]=\\frac{1\\,cm}{[°&1 cm°]}= \\frac{1\\,cm}{[_(&1:10)_]\\,dm}= \\frac{[°&3°]}{&sol1}$$',
 							},
 						],
 						[
 							{
-								text: '$$[_&4_]=\\frac{1\\,cm}{[°&1 cm°]}= \\frac{1\\,cm}{[_(&1:100)_]\\,m}= \\frac{[°&3°]}{&sol}$$',
+								text: '$$[_&4_]=\\frac{1\\,cm}{[°&1 cm°]}= \\frac{1\\,cm}{[_(&1:100)_]\\,m}= \\frac{[°&3°]}{&sol1}$$',
 							},
 						],
 						[
 							{
-								text: '$$[_&4_]=\\frac{1\\,cm}{[°&1 cm°]}= \\frac{1\\,cm}{[_(&1:100)_]\\,m}= \\frac{[°&3°]}{&sol}$$',
+								text: '$$[_&4_]=\\frac{1\\,cm}{[°&1 cm°]}= \\frac{1\\,cm}{[_(&1:100)_]\\,m}= \\frac{[°&3°]}{&sol1}$$',
 							},
 						],
 						[
 							{
-								text: '$$[_&4_]=\\frac{1\\,cm}{[°&1 cm°]}= \\frac{1\\,cm}{[_(&1:100000)_]\\,km}= \\frac{[°&3°]}{&sol}$$',
+								text: '$$[_&4_]=\\frac{1\\,cm}{[°&1 cm°]}= \\frac{1\\,cm}{[_(&1:100000)_]\\,km}= \\frac{[°&3°]}{&sol1}$$',
 							},
 						],
 						[
 							{
-								text: '$$[_&4_]=\\frac{1\\,cm}{[°&1 cm°]}= \\frac{1\\,cm}{[_(&1:100000)_]\\,km}= \\frac{[°&3°]}{&sol}$$',
+								text: '$$[_&4_]=\\frac{1\\,cm}{[°&1 cm°]}= \\frac{1\\,cm}{[_(&1:100000)_]\\,km}= \\frac{[°&3°]}{&sol1}$$',
 							},
 						],
 					],

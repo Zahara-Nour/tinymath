@@ -464,11 +464,11 @@ export default function generateQuestion(
 
 		expression = evaluate(expression) as string
 		expression2 = evaluate(expression2) as string
-		// enounce = evaluateToLatex(enounce)
-		enounce = evaluate(enounce) as string
+		// enounce = evaluate(enounce) as string
+		enounce = evaluateToLatex(enounce) as string
 		enounce = toLatex(enounce) as string
-		// enounce2 = evaluateToLatex(enounce2)
-		enounce2 = evaluate(enounce2) as string
+		// enounce2 = evaluate(enounce2) as string
+		enounce2 = evaluateToLatex(enounce2) as string
 		enounce2 = toLatex(enounce2) as string
 		choices = evaluateToLatex(choices) as Choice[]
 		choices = toLatex(choices) as Choice[]
@@ -535,6 +535,7 @@ export default function generateQuestion(
 	correctionFormat = getSelectedElement('correctionFormats') as CorrectionFormat
 	unit = getSelectedElement('units') as string
 	answerField = getSelectedElement('answerFields') as string
+	if (answerField) answerField = answerField.replace(/\s\s+/g, ' ')
 	answerFormat = (getSelectedElement('answerFormats') as string) || '?'
 
 	let correct: string[] = correctionFormat?.correct || []

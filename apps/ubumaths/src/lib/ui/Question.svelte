@@ -253,7 +253,9 @@
 		nfields = 0
 
 		field = isQuestionAnswerField(question)
-			? question.answerField.replace(/\.\.\./g, addPlaceholder)
+			? question.answerField
+					// .replace(/\$\$(.*?)\$\$/g, (_, p1) => math(p1).latex)
+					.replace(/\.\.\./g, addPlaceholder)
 			: isQuestionFillIn(question)
 			? question.expression_latex.replace(/\\ldots/g, addPlaceholder)
 			: isQuestionResultOrRewrite(question)
