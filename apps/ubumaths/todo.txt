@@ -31,3 +31,5 @@ r pour racine carré
 
 
 answerField : fraction d'une quantité
+
+calcul littéral - transformation - reduction - 1 : si je réécris l'expression de depart, j'obtiens "les facteurs doivent être écrits dans un certain ordre."

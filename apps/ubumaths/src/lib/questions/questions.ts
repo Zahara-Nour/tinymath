@@ -15821,11 +15821,7 @@ const questions: Questions = {
 					// solutionss: [['[_&2+&3_]&1']],
 					solutionss: [['[_-(&1)&2_]']],
 					options: ['penalty-for-factors-permutation'],
-					correctionFormats: [
-						{
-							correct: ["L'opposé de &expression est &answer"],
-						},
-					],
+					answerFields: ["\\text{L'opposé est }$$...$$\\text{.}"],
 					defaultDelay: 30,
 					grade: TROISIEME,
 				},
@@ -15844,11 +15840,7 @@ const questions: Questions = {
 					// solutionss: [['[_&2+&3_]&1']],
 					solutionss: [['[_-(&1)&3_][+_-(&2)_]']],
 					options: ['penalty-for-factors-permutation'],
-					correctionFormats: [
-						{
-							correct: ["L'opposé de &expression est &answer"],
-						},
-					],
+					answerFields: ["\\text{L'opposé est }$$...$$\\text{.}"],
 					defaultDelay: 30,
 					grade: TROISIEME,
 				},
@@ -15875,38 +15867,12 @@ const questions: Questions = {
 					defaultDelay: 30,
 					grade: TROISIEME,
 				},
-				// {
-				//   description: 'Réduire avec parenthèses',
-				//   enounces: ['Réduire:'],
-				//   expressions: [
-				//     '[_&1&2_]+([_&3&2_][+_&4_])',
-				//     '[_&1&2_]+([_&4_][+_&3&2_])',
-				//     '[_&1&2_]-([_&3&2_][+_&4_])',
-				//     '[_&1&2_]-([_&4_][+_&3&2_])',
-				//   ],
-				//   variabless: [
-				//     {
-				//       '&1': '$er[1;9]',
-				//       '&2': '$l{a;b;c;x;y;z}',
-				//       '&3': '$ers[1;9]',
-				//       '&4': '$ers[1;9]',
-				//     },
-				//   ],
-				//   // solutionss: [['[_&2+&3_]&1']],
-				//
-				//   //   solutionss:[
-				//   //     ['[_&1&2_][+_&3&4_]&5'],
-				//   //     ['[_&1&2_][+_-&3&4_][+_-&5_]'],
-				//   // ],
-				//   defaultDelay: 30,
-				//   grade: TROISIEME,
-				// },
 			],
 			Développement: [
 				{
 					description: 'Développer',
 					subdescription: 'Simple - Coefficients positifs',
-					enounces: ['Développer et réduire :'],
+					enounces: ['Développe et réduis :'],
 					expressions: [
 						'&1(&2+&3)',
 						'&1(&3+&2)',
@@ -16548,7 +16514,7 @@ const questions: Questions = {
 				{
 					description: 'Trouver un facteur commun',
 					subdescription: 'Facteur commun numérique apparent ',
-					enounces: ['Trouve un facteur commun.'],
+					enounces: ['Trouve un facteur commun (autre que 1).'],
 					expressions: [
 						'&1*&2+&1*&3',
 						'&2*&1+&1*&3',
@@ -16559,7 +16525,7 @@ const questions: Questions = {
 						'&1*&2-&3*&1',
 						'&2*&1-&3*&1',
 					],
-					answerFields: ['Un facteur commun est $$...$$'],
+					answerFields: ['\\text{Un facteur commun est }$$...$$\\text{.}'],
 					variabless: [
 						{
 							'&1': '$e[2;9]',
@@ -16567,6 +16533,7 @@ const questions: Questions = {
 							'&3': '$e[2;9]\\{&1;cd(&2)}',
 						},
 					],
+					testAnswerss: [['&answer !=1 && mod(&1;&answer)=0']],
 					solutionss: [['&1']],
 
 					defaultDelay: 30,
@@ -16693,7 +16660,7 @@ const questions: Questions = {
 				{
 					description: 'Trouver un facteur commun',
 					subdescription: 'Facteur commun apparent - littéral',
-					enounces: ['Trouve un facteur commun.'],
+					enounces: ['Trouve un facteur commun (autre que $$1$$).'],
 					expressions: [
 						'&1*&2+&1&3',
 						'&1&3+&1*&2',
@@ -16711,13 +16678,13 @@ const questions: Questions = {
 					],
 					variabless: [
 						{
-							'&1': '$e[2;9]',
+							'&1': '$l{2;3;5;7}',
 							'&2': '$e[2;9]\\{cd(&1)}',
 							'&3': '$l{x;y;z}',
 							'&4': '$l{x;y;z}\\{&3}',
 						},
 					],
-					answerFields: ['Un facteur commun est $$...$$'],
+					answerFields: ['\\text{Un facteur commun est }$$...$$\\text{.}'],
 					solutionss: [
 						['&1'],
 						['&1'],
@@ -16925,14 +16892,16 @@ const questions: Questions = {
 							'&4': '$l{x;y;z}\\{&3}',
 						},
 					],
-					answerFields: ['Le plus grand facteur commun est $$...$$'],
+					answerFields: [
+						'\\text{Le plus grand facteur commun est }$$...$$\\text{.}',
+					],
 					correctionDetailss: [
 						[
 							{
-								text: "Dans l'expression &expression le plus grand facteur commun aux 2 produits est &solution,",
+								text: "Dans l'expression &expression le plus grand facteur commun aux 2 produits est &solution1,",
 							},
 							{
-								text: 'car $$&1&3=&sol\\times{&3}$$ et $$[_&1*&2_]&4=&sol\\times{&2&4}$$',
+								text: 'car $$&1&3=&sol1\\times{&3}$$ et $$[_&1*&2_]&4=&sol1\\times{&2&4}$$',
 							},
 						],
 					],
@@ -17030,14 +16999,16 @@ const questions: Questions = {
 							// '&8': '&1*&3:&6',
 						},
 					],
-					answerFields: ['Le plus grand facteur commun est $$...$$'],
+					answerFields: [
+						'\\text{Le plus grand facteur commun est }$$...$$\\text{.}',
+					],
 					correctionDetailss: [
 						[
 							{
-								text: "Dans l'expression &expression le plus grand facteur commun aux 2 produits est &solution,",
+								text: "Dans l'expression &expression le plus grand facteur commun aux 2 produits est &solution1,",
 							},
 							{
-								text: 'car $$[_&1*&2_]&5=&sol\\times{&2&5}$$ et $$[_&1*&3_]&4=&sol\\times{&3&4}$$',
+								text: 'car $$[_&1*&2_]&5=&sol1\\times{&2&5}$$ et $$[_&1*&3_]&4=&sol1\\times{&3&4}$$',
 							},
 						],
 					],
@@ -17123,7 +17094,7 @@ const questions: Questions = {
 				{
 					description: 'Factoriser',
 					subdescription: 'Cas particulier',
-					enounces: ['Factoriser le plus possible:'],
+					enounces: ['Factorise le plus possible:'],
 					expressions: [
 						'&1+[_&1*&2_]&3',
 						'[_&1*&2_]&3+&1',
@@ -17192,7 +17163,7 @@ const questions: Questions = {
 				{
 					description: 'Factoriser',
 					subdescription: 'Cas général - avec des carrés',
-					enounces: ['Factoriser le plus possible.'],
+					enounces: ['Factorise le plus possible.'],
 					expressions: [
 						'[_&1*&2*&4^2_]+[_&1*&3*&4_]',
 						'[_&1*&2*&4_]+[_&1*&3*&4^2_]',
@@ -17316,7 +17287,7 @@ const questions: Questions = {
 				{
 					description: 'Développer $$(a+b)(a-b)$$',
 					subdescription: 'Coefficients positifs',
-					enounces: ['Développer et réduire :'],
+					enounces: ['Développe et réduis :'],
 					expressions: [
 						'(&1+&2)(&1-&2)',
 						'(&1-&2)(&1+&2)',
@@ -17343,7 +17314,7 @@ const questions: Questions = {
 				{
 					description: 'Développer $$(a+b)(a-b)$$',
 					subdescription: 'Coefficients positifs',
-					enounces: ['Développer et réduire :'],
+					enounces: ['Développe et réduis :'],
 					expressions: [
 						'(&1+[_&2&3_])(&1-[_&2&3_])',
 						'(&1-[_&2&3_])(&1+[_&2&3_])',
@@ -17412,7 +17383,7 @@ const questions: Questions = {
 				},
 				{
 					description: 'Factoriser $$a^2-b^2$$',
-					enounces: ['Factoriser :'],
+					enounces: ['Factorise.'],
 					expressions: ['[_&1^2_]-&3^2', '&3^2-[_&1^2_]'],
 					variabless: [
 						{
@@ -17428,7 +17399,7 @@ const questions: Questions = {
 				},
 				{
 					description: 'Factoriser $$a^2-b^2$$',
-					enounces: ['Factoriser :'],
+					enounces: ['Factorise.'],
 					expressions: ['[_&1^2_]-[_(&2&3)^2_]', '[_(&2&3)^2_]-[_&1^2_]'],
 					variabless: [
 						{
@@ -17468,7 +17439,7 @@ const questions: Questions = {
 				{
 					description: 'Développer $$(a+b)^2$$',
 
-					enounces: ['Développer et réduire :'],
+					enounces: ['Développe et réduis.'],
 					expressions: ['(&1+&2)^2', '(&2+&1)^2'],
 					variabless: [
 						{
@@ -17507,7 +17478,7 @@ const questions: Questions = {
 				},
 				{
 					description: 'Développer $$(a-b)^2$$',
-					enounces: ['Développer et réduire :'],
+					enounces: ['Développe et réduis.'],
 					expressions: ['(&1-&2)^2', '(&2-&1)^2'],
 					variabless: [
 						{
@@ -17547,7 +17518,7 @@ const questions: Questions = {
 				{
 					description: 'Développer $$(a+b)^2$$',
 
-					enounces: ['Développer et réduire :'],
+					enounces: ['Développe et réduis.'],
 					expressions: ['(&1+[_&2&3_])^2', '([_&2&3_]+&1)^2'],
 					variabless: [
 						{
@@ -17588,7 +17559,7 @@ const questions: Questions = {
 				{
 					description: 'Développer $$(a-b)^2$$',
 
-					enounces: ['Développer et réduire :'],
+					enounces: ['Développe et réduis :'],
 					expressions: ['(&1-[_&2&3_])^2', '([_&2&3_]-&1)^2'],
 					variabless: [
 						{
@@ -17629,7 +17600,7 @@ const questions: Questions = {
 
 				{
 					description: 'Factoriser une expression du second degré',
-					enounces: ['Factoriser :'],
+					enounces: ['Factorise.'],
 					expressions: ['&3^2-[_2*&1_]&3+[_&1^2_]', '&3^2+[_2*&1_]&3+[_&1^2_]'],
 					variabless: [
 						{
@@ -17684,7 +17655,7 @@ const questions: Questions = {
 								text: '$$\\begin{align} \
                 x+&1=[_&1+&2_]  \
               & \\quad \\lrArr \\quad x=[_&1+&2_]-&1 \\\\ \
-              & \\quad \\lrArr \\quad  x= &sol  \
+              & \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$',
 							},
 						],
@@ -17711,7 +17682,7 @@ const questions: Questions = {
 								text: '$$\\begin{align} \
                 x-&1=&2  \
               & \\quad \\lrArr \\quad x=&1+&2\\\\ \
-              & \\quad \\lrArr \\quad  x= &sol  \
+              & \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$',
 							},
 						],
@@ -17738,7 +17709,7 @@ const questions: Questions = {
 								text: '$$\\begin{align} \
                 [_&1+&2_]-x=&1  \
               & \\quad \\lrArr \\quad x=[_&1+&2_]-&1\\\\ \
-              & \\quad \\lrArr \\quad  x= &sol  \
+              & \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$',
 							},
 						],
@@ -17764,7 +17735,7 @@ const questions: Questions = {
 								text: '$$\\begin{align} \
                 &1x=[_&1*&2_]  \
               & \\quad \\lrArr \\quad x=\\frac{[_&1*&2_]}{&1}\\\\ \
-              & \\quad \\lrArr \\quad  x= &sol  \
+              & \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$',
 							},
 						],
@@ -17773,7 +17744,7 @@ const questions: Questions = {
 								text: '$$\\begin{align} \
                 x \\times &1=[_&1*&2_]  \
               & \\quad \\lrArr \\quad x=\\frac{[_&1*&2_]}{&1}\\\\ \
-              & \\quad \\lrArr \\quad  x= &sol  \
+              & \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$',
 							},
 						],
@@ -17802,7 +17773,7 @@ const questions: Questions = {
 								text: '$$\\begin{align} \
                 \\frac{x}{&1}=&2  \
               & \\quad \\lrArr \\quad x=&2 \\times &1 \\\\ \
-              & \\quad \\lrArr \\quad  x= &sol  \
+              & \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$',
 							},
 						],
@@ -17832,7 +17803,7 @@ const questions: Questions = {
                 \\frac{[_&1*&2_]}{x}=&2  \
               & \\quad \\lrArr \\quad [_&1*&2_] = &2 \\times x \\\\ \
               & \\quad \\lrArr \\quad x= \\frac {[_&1*&2_]}{&2} \\\\ \
-              & \\quad \\lrArr \\quad  x= &sol  \
+              & \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$',
 							},
 						],
@@ -17857,11 +17828,8 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: 'Pour $$x \\neq 0$$, ',
-							},
-							{
 								text: '$$\\begin{align} \
-                -x=&1 \\quad \\lrArr \\quad  x= &sol  \
+                -x=&1 \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$',
 							},
 						],
@@ -17900,7 +17868,7 @@ const questions: Questions = {
 								text: '$$\\begin{align} \
                 x+&1=[_&1+(&2)_]  \
               & \\quad \\lrArr \\quad x=[_&1+(&2)_]-&1 \\\\ \
-              & \\quad \\lrArr \\quad  x= &sol  \
+              & \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$',
 							},
 						],
@@ -17909,7 +17877,7 @@ const questions: Questions = {
 								text: '$$\\begin{align} \
                 &1+x=[_&1+(&2)_]  \
               & \\quad \\lrArr \\quad x=[_&1+(&2)_]-&1 \\\\ \
-              & \\quad \\lrArr \\quad  x= &sol  \
+              & \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$',
 							},
 						],
@@ -17919,7 +17887,7 @@ const questions: Questions = {
                 x+(&1)=[_&1+(&2)_]  \
               & \\quad \\lrArr \\quad x=[_&1+(&2)_]-(&1) \\\\ \
               & \\quad \\lrArr \\quad x=[_&1+(&2)_] + [_-(&1)_] \\\\ \
-              & \\quad \\lrArr \\quad  x= &sol  \
+              & \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$',
 							},
 						],
@@ -17946,7 +17914,7 @@ const questions: Questions = {
 								text: '$$\\begin{align} \
                 x-&1=&2  \
               & \\quad \\lrArr \\quad x=&2+&1 \\\\ \
-              & \\quad \\lrArr \\quad  x= &sol  \
+              & \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$',
 							},
 						],
@@ -17977,7 +17945,7 @@ const questions: Questions = {
 								text: '$$\\begin{align} \
                 [_&1+(&2)_]-x=&1  \
               & \\quad \\lrArr \\quad x=[_&2+(&1)_]-&1 \\\\ \
-              & \\quad \\lrArr \\quad  x= &sol  \
+              & \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$',
 							},
 						],
@@ -17987,7 +17955,7 @@ const questions: Questions = {
                 [_&1+(&2)_]-x=&1  \
               & \\quad \\lrArr \\quad x=[_&2+(&1)_]-(&1) \\\\ \
               & \\quad \\lrArr \\quad x=[_&2+(&1)_]+[_-(&1)_] \\\\ \
-              & \\quad \\lrArr \\quad  x= &sol  \
+              & \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$',
 							},
 						],
@@ -18032,7 +18000,7 @@ const questions: Questions = {
 								text: '$$\\begin{align} \
                 &1x=[_&1*(&2)_]  \
               & \\quad \\lrArr \\quad x=\\frac{[_&2*(&1)_]}{&1} \\\\ \
-              & \\quad \\lrArr \\quad  x= &sol  \
+              & \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$',
 							},
 						],
@@ -18041,7 +18009,7 @@ const questions: Questions = {
 								text: '$$\\begin{align} \
                 &1x=[_&1*(&2)_]  \
               & \\quad \\lrArr \\quad x=\\frac{[_&2*(&1)_]}{&1} \\\\ \
-              & \\quad \\lrArr \\quad  x= &sol  \
+              & \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$',
 							},
 						],
@@ -18050,7 +18018,7 @@ const questions: Questions = {
 								text: '$$\\begin{align} \
                 x \\times &1=[_&1*(&2)_]  \
               & \\quad \\lrArr \\quad x=\\frac{[_&2*(&1)_]}{&1} \\\\ \
-              & \\quad \\lrArr \\quad  x= &sol  \
+              & \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$',
 							},
 						],
@@ -18059,7 +18027,7 @@ const questions: Questions = {
 								text: '$$\\begin{align} \
                 x \\times (&1)=[_&1*(&2)_]  \
               & \\quad \\lrArr \\quad x=\\frac{[_&2*(&1)_]}{&1} \\\\ \
-              & \\quad \\lrArr \\quad  x= &sol  \
+              & \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$',
 							},
 						],
@@ -18090,7 +18058,7 @@ const questions: Questions = {
 								text: '$$\\begin{align} \
                 \\frac{x}{&1}=&2  \
               & \\quad \\lrArr \\quad x=&2 \\times &1 \\\\ \
-              & \\quad \\lrArr \\quad  x= &sol  \
+              & \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$',
 							},
 						],
@@ -18099,7 +18067,7 @@ const questions: Questions = {
 								text: '$$\\begin{align} \
                 \\frac{x}{&1}=&2  \
               & \\quad \\lrArr \\quad x=&2 \\times (&1) \\\\ \
-              & \\quad \\lrArr \\quad  x= &sol  \
+              & \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$',
 							},
 						],
@@ -18130,7 +18098,7 @@ const questions: Questions = {
                 \\frac{[_&1*(&2)_]}{x}=&2  \
               & \\quad \\lrArr \\quad [_&1*(&2)_] = &2 \\times x \\\\ \
               & \\quad \\lrArr \\quad x= \\frac {[_&1*(&2)_]}{&2} \\\\ \
-              & \\quad \\lrArr \\quad  x= &sol  \
+              & \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$',
 							},
 						],
@@ -18160,8 +18128,8 @@ const questions: Questions = {
 								text: '$$\\begin{align} \
                 x+\\frac{&2}{&1}=\\frac{[_&2+&3_]}{&1} \
               & \\quad \\lrArr \\quad x=\\frac{[_&2+&3_]}{&1}-\\frac{&2}{&1} \\\\ \
-              @@ pgcd(&3;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol  @@ \
-              @@ pgcd(&3;&1) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{&3}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol  @@ \
+              @@ pgcd(&3;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
+              @@ pgcd(&3;&1) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{&3}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
               \\end{align}$$',
 							},
 						],
@@ -18170,8 +18138,8 @@ const questions: Questions = {
 								text: '$$\\begin{align} \
                 \\frac{&2}{&1} + x = \\frac{[_&2+&3_]}{&1} \
               & \\quad \\lrArr \\quad x=\\frac{[_&2+&3_]}{&1}-\\frac{&2}{&1} \\\\ \
-              @@ pgcd(&3;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol  @@ \
-              @@ pgcd(&3;&1) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{&3}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol  @@ \
+              @@ pgcd(&3;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
+              @@ pgcd(&3;&1) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{&3}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
               \\end{align}$$',
 							},
 						],
@@ -18199,8 +18167,8 @@ const questions: Questions = {
 								text: '$$\\begin{align} \
                 x - \\frac{&2}{&1}=\\frac{&3}{&1} \
               & \\quad \\lrArr \\quad x=\\frac{&3}{&1}+\\frac{&2}{&1} \\\\ \
-              @@ pgcd(&3+&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol  @@ \
-              @@ pgcd(&3+&2;&1) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{[_&3+&2_]}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol  @@ \
+              @@ pgcd(&3+&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
+              @@ pgcd(&3+&2;&1) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{[_&3+&2_]}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
               \\end{align}$$',
 							},
 						],
@@ -18228,8 +18196,8 @@ const questions: Questions = {
 								text: '$$\\begin{align} \
                 \\frac{[_&2+&3_]}{&1} - x = \\frac{&2}{&1} \
               & \\quad \\lrArr \\quad x = \\frac{[_&2+&3_]}{&1}-\\frac{&2}{&1} \\\\ \
-              @@ pgcd(&3;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol  @@ \
-              @@ pgcd(&3;&1) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{&3}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol  @@ \
+              @@ pgcd(&3;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
+              @@ pgcd(&3;&1) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{&3}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
               \\end{align}$$',
 							},
 						],
@@ -18274,11 +18242,11 @@ const questions: Questions = {
 
 						{
 							'&1': '$e[2;9]',
-							'&2': '$e[2;9]',
+							'&2': '$e[2;9]\\{m&1;d&1}',
 						},
 						{
 							'&1': '$e[2;9]',
-							'&2': '$e[2;9]',
+							'&2': '$e[2;9]\\{m&1;d&1}',
 						},
 					],
 					solutionss: [
@@ -18296,7 +18264,7 @@ const questions: Questions = {
                 \\textcolor{${color1}}{&2}x = \\frac{[_&2*&3_]}{&1} \
               & \\quad \\lrArr \\quad x = \\frac{[_&2*&3_]}{&1} \\textcolor{${color1}}{\\div &2} \\\\ \
               & \\quad \\lrArr \\quad x = \\frac{[_&2*&3_] \\div &2 }{&1} \\\\ \
-              & \\quad \\lrArr \\quad  x= &sol  \
+              & \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$`,
 							},
 						],
@@ -18306,7 +18274,7 @@ const questions: Questions = {
                 x \\textcolor{${color1}}{\\times &2} = \\frac{[_&2*&3_]}{&1} \
               & \\quad \\lrArr \\quad x = \\frac{[_&2*&3_]}{&1} \\textcolor{${color1}}{\\div &2} \\\\ \
               & \\quad \\lrArr \\quad x = \\frac{[_&2*&3_] \\div &2 }{&1} \\\\ \
-              & \\quad \\lrArr \\quad  x= &sol  \
+              & \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$`,
 							},
 						],
@@ -18316,7 +18284,7 @@ const questions: Questions = {
                 \\textcolor{${color1}}{&2}x=\\frac{&1}{&3} \
               & \\quad \\lrArr \\quad x = \\frac{&1}{&3} \\textcolor{${color1}}{\\times \\frac{1}{&2}} \\\\ \
               & \\quad \\lrArr \\quad x = \\frac{&1}{&3 \\times &2} \\\\ \
-              & \\quad \\lrArr \\quad  x= &sol  \
+              & \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$`,
 							},
 						],
@@ -18326,7 +18294,7 @@ const questions: Questions = {
                 x \\textcolor{${color1}}{\\times &2} = \\frac{&1}{&3} \
               & \\quad \\lrArr \\quad x = \\frac{&1}{&3} \\textcolor{${color1}}{\\times \\frac{1}{&2}} \\\\ \
               & \\quad \\lrArr \\quad x = \\frac{&1}{&3 \\times &2} \\\\ \
-              & \\quad \\lrArr \\quad  x= &sol  \
+              & \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$`,
 							},
 						],
@@ -18334,8 +18302,8 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
                 x \\textcolor{${color1}}{\\times &1} = &2\
-                @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol  @@ \
-                @@ pgcd(&2;&1) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{&2}{\\textcolor{${color1}}{&1}} \\\\ & \\quad \\lrArr \\quad  x= &sol  @@ \
+                @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
+                @@ pgcd(&2;&1) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{&2}{\\textcolor{${color1}}{&1}} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
                 \\end{align}$$`,
 							},
 						],
@@ -18343,8 +18311,8 @@ const questions: Questions = {
 							{
 								text: '$$\\begin{align} \
                 \\textcolor{${color1}}{&1}x = &2\
-                @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol  @@ \
-                @@ pgcd(&2;&1) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{&2}{\\textcolor{${color1}}{&1}} \\\\ & \\quad \\lrArr \\quad  x= &sol  @@ \
+                @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
+                @@ pgcd(&2;&1) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{&2}{\\textcolor{${color1}}{&1}} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
                 \\end{align}$$',
 							},
 						],
@@ -18373,8 +18341,8 @@ const questions: Questions = {
                 \\frac{x}{\\textcolor{${color1}}{&2}}=\\frac{&3}{&1} \
               & \\quad \\lrArr \\quad x = \\frac{&3}{&1} \\textcolor{${color1}}{\\times &2} \\\\ \
               & \\quad \\lrArr \\quad x = \\frac{&3 \\times &2}{&1} \\\\ \
-              @@ pgcd(&2*&3;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol  @@ \
-              @@ pgcd(&2*&3;&1) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{[_&2*&3_]}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol  @@ \
+              @@ pgcd(&2*&3;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
+              @@ pgcd(&2*&3;&1) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{[_&2*&3_]}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
               \\end{align}$$`,
 							},
 						],
@@ -18408,8 +18376,8 @@ const questions: Questions = {
               & \\quad \\lrArr \\quad \\frac{x}{\\textcolor{${color1}}{&2}} = \\frac{&1}{&3} \\\\ \
               & \\quad \\lrArr \\quad x = \\frac{&1}{&3} \\times \\textcolor{${color1}}{&2} \\\\ \
               & \\quad \\lrArr \\quad x = \\frac{&1 \\times &2}{&3} \\\\ \
-              @@ pgcd(&2*&1;&3) = 1 ?? & \\quad \\lrArr \\quad  x= &sol  @@ \
-              @@ pgcd(&2*&1;&3) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{[_&2*&1_]}{&3} \\\\ & \\quad \\lrArr \\quad  x= &sol  @@ \
+              @@ pgcd(&2*&1;&3) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
+              @@ pgcd(&2*&1;&3) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{[_&2*&1_]}{&3} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
              \\end{align}$$`,
 							},
 						],
@@ -18420,8 +18388,8 @@ const questions: Questions = {
                 \\frac{&2}{x}=&1 \
               & \\quad \\lrArr \\quad \\frac{x}{\\textcolor{${color1}}{&2}} = \\frac{1}{&1} \\\\ \
               & \\quad \\lrArr \\quad x = \\frac{1}{&1} \\times \\textcolor{${color1}}{&2} \\\\ \
-              @@ pgcd(&1;&2) = 1 ?? & \\quad \\lrArr \\quad  x= &sol  @@ \
-              @@ pgcd(&1;&2) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol  @@ \
+              @@ pgcd(&1;&2) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
+              @@ pgcd(&1;&2) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
              \\end{align}$$`,
 							},
 						],
@@ -18452,8 +18420,8 @@ const questions: Questions = {
                 &1x\\textcolor{${color1}}{+&2}=0 \
               & \\quad \\lrArr \\quad \\textcolor{${color2}}{&1}x = \\textcolor{${color1}}{-&2}\\\\ \
               & \\quad \\lrArr \\quad x = \\frac{-&2}{\\textcolor{${color2}}{&1}}\\\\ \
-              @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol  @@ \
-              @@ pgcd(&2;&1) != 1 ?? & \\quad \\lrArr \\quad  x= -\\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol  @@ \
+              @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
+              @@ pgcd(&2;&1) != 1 ?? & \\quad \\lrArr \\quad  x= -\\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
              \\end{align}$$`,
 							},
 						],
@@ -18463,8 +18431,8 @@ const questions: Questions = {
                 \\textcolor{${color1}}{&2+}&1x=0 \
               & \\quad \\lrArr \\quad \\textcolor{${color2}}{&1}x = \\textcolor{${color1}}{-&2}\\\\ \
               & \\quad \\lrArr \\quad x = \\frac{-&2}{\\textcolor{${color2}}{&1}}\\\\ \
-              @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol  @@ \
-              @@ pgcd(&2;&1) != 1 ?? & \\quad \\lrArr \\quad  x= -\\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol  @@ \
+              @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
+              @@ pgcd(&2;&1) != 1 ?? & \\quad \\lrArr \\quad  x= -\\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
              \\end{align}$$`,
 							},
 						],
@@ -18511,8 +18479,8 @@ const questions: Questions = {
               &1x\\textcolor{${color1}}{+&2}=0 \
               & \\quad \\lrArr \\quad  \\textcolor{${color2}}{&1}x = \\textcolor{${color1}}{-&2} \\\\ \
               & \\quad \\lrArr \\quad  x = \\frac{-&2}{\\textcolor{${color2}}{&1}} \\\\ \
-              @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol  @@ \
-            @@ pgcd(&2;&1) != 1 ?? & \\quad \\lrArr \\quad  x= -\\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol  @@ \
+              @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
+            @@ pgcd(&2;&1) != 1 ?? & \\quad \\lrArr \\quad  x= -\\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
            \\end{align}$$`,
 							},
 						],
@@ -18522,8 +18490,8 @@ const questions: Questions = {
             \\textcolor{${color1}}{&2}+&1x=0 \
             & \\quad \\lrArr \\quad  \\textcolor{${color2}}{&1}x = \\textcolor{${color1}}{-&2} \\\\ \
             & \\quad \\lrArr \\quad  x = \\frac{-&2}{\\textcolor{${color2}}{&1}} \\\\ \
-            @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol  @@ \
-          @@ pgcd(&2;&1) != 1  ?? & \\quad \\lrArr \\quad  x= -\\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol  @@ \
+            @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
+          @@ pgcd(&2;&1) != 1  ?? & \\quad \\lrArr \\quad  x= -\\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
          \\end{align}$$`,
 							},
 						],
@@ -18532,8 +18500,8 @@ const questions: Questions = {
 								text: `$$\\begin{align} \
               &1x\\textcolor{${color1}}{-&2}=0 \
               & \\quad \\lrArr \\quad  \\textcolor{${color2}}{&1}x = \\textcolor{${color1}}{&2} \\\\ \
-              @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol  @@ \
-            @@ pgcd(&2;&1) != 1  ?? & \\quad \\lrArr \\quad  x= \\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol  @@ \
+              @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
+            @@ pgcd(&2;&1) != 1  ?? & \\quad \\lrArr \\quad  x= \\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
            \\end{align}$$`,
 							},
 						],
@@ -18542,8 +18510,8 @@ const questions: Questions = {
 								text: `$$\\begin{align} \
             \\textcolor{${color1}}{-&2}+&1x=0 \
             & \\quad \\lrArr \\quad  \\textcolor{${color2}}{&1}x = \\textcolor{${color1}}{&2} \\\\ \
-            @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol  @@ \
-          @@ pgcd(&2;&1) != 1  ?? & \\quad \\lrArr \\quad  x= \\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol  @@ \
+            @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
+          @@ pgcd(&2;&1) != 1  ?? & \\quad \\lrArr \\quad  x= \\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
          \\end{align}$$`,
 							},
 						],
@@ -18565,8 +18533,8 @@ const questions: Questions = {
             \\textcolor{${color1}}{&2}-&1x=0 \
             & \\quad \\lrArr \\quad  \\textcolor{${color2}}{-&1}x = \\textcolor{${color1}}{-&2} \\\\ \
             & \\quad \\lrArr \\quad  x = \\frac{-&2}{\\textcolor{${color2}}{-&1}} \\\\ \
-            @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol  @@ \
-          @@ pgcd(&2;&1) != 1  ?? & \\quad \\lrArr \\quad  x= \\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol  @@ \
+            @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
+          @@ pgcd(&2;&1) != 1  ?? & \\quad \\lrArr \\quad  x= \\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
          \\end{align}$$`,
 							},
 						],
@@ -18576,8 +18544,8 @@ const questions: Questions = {
               -&1x\\textcolor{${color1}}{-&2}=0 \
               & \\quad \\lrArr \\quad  \\textcolor{${color2}}{-&1}x = \\textcolor{${color1}}{&2} \\\\ \
               & \\quad \\lrArr \\quad  x = \\frac{&2}{\\textcolor{${color2}}{-&1}} \\\\ \
-              @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol  @@ \
-            @@ pgcd(&2;&1) != 1  ?? & \\quad \\lrArr \\quad  x= -\\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol  @@ \
+              @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
+            @@ pgcd(&2;&1) != 1  ?? & \\quad \\lrArr \\quad  x= -\\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
            \\end{align}$$`,
 							},
 						],
@@ -18587,8 +18555,8 @@ const questions: Questions = {
               \\textcolor{${color1}}{-&2}-&1x=0 \
               & \\quad \\lrArr \\quad  \\textcolor{${color2}}{-&1}x = \\textcolor{${color1}}{&2} \\\\ \
               & \\quad \\lrArr \\quad  x = \\frac{&2}{\\textcolor{${color2}}{-&1}} \\\\ \
-              @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol  @@ \
-            @@ pgcd(&2;&1) != 1  ?? & \\quad \\lrArr \\quad  x= -\\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol  @@ \
+              @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
+            @@ pgcd(&2;&1) != 1  ?? & \\quad \\lrArr \\quad  x= -\\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
            \\end{align}$$`,
 							},
 						],
@@ -18618,8 +18586,8 @@ const questions: Questions = {
                 &3x\\textcolor{${color1}}{+&2}=&1 \
               & \\quad \\lrArr \\quad &3x = &1\\textcolor{${color1}}{-&2} \\\\ \
               & \\quad \\lrArr \\quad \\textcolor{${color2}}{&3}x = [_&1-&2_] \\\\ \
-              @@ pgcd(&1-&2;&3) = 1 ?? & \\quad \\lrArr \\quad  x= &sol  @@ \
-              @@ pgcd(&1-&2;&3) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{[_&1-&2_]}{\\textcolor{${color2}}{&3}} \\\\ & \\quad \\lrArr \\quad  x= &sol  @@ \
+              @@ pgcd(&1-&2;&3) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
+              @@ pgcd(&1-&2;&3) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{[_&1-&2_]}{\\textcolor{${color2}}{&3}} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
              \\end{align}$$`,
 							},
 						],
@@ -18651,9 +18619,9 @@ const questions: Questions = {
               & \\quad \\lrArr \\quad  &1x = &3\\textcolor{${color1}}{[+_-(&2)_]} \\\\  \
               & \\quad \\lrArr \\quad  \\textcolor{${color2}}{&1}x = [_&3-(&2)_] \\\\ \
               & \\quad \\lrArr \\quad  x = \\frac{[_&3-(&2)_]}{\\textcolor{${color2}}{&1}} \\\\ \
-              @@ pgcd(abs(&3-(&2));&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol  @@ \
-            @@ pgcd(abs(&3-(&2));&1) != 1 && (&3-(&2))*(&1)>0  ?? & \\quad \\lrArr \\quad  x= \\frac{[_abs(&3-(&2))_]}{[_abs(&1)_]} \\\\ & \\quad \\lrArr \\quad  x= &sol  @@ \
-            @@ pgcd(abs(&3-(&2));&1) != 1 && (&3-(&2))*(&1)<0  ?? & \\quad \\lrArr \\quad  x= -\\frac{[_abs(&3-(&2))_]}{[_abs(&1)_]} \\\\ & \\quad \\lrArr \\quad  x= &sol  @@ \
+              @@ pgcd(abs(&3-(&2));&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
+            @@ pgcd(abs(&3-(&2));&1) != 1 && (&3-(&2))*(&1)>0  ?? & \\quad \\lrArr \\quad  x= \\frac{[_abs(&3-(&2))_]}{[_abs(&1)_]} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
+            @@ pgcd(abs(&3-(&2));&1) != 1 && (&3-(&2))*(&1)<0  ?? & \\quad \\lrArr \\quad  x= -\\frac{[_abs(&3-(&2))_]}{[_abs(&1)_]} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
            \\end{align}$$`,
 							},
 						],
@@ -18664,9 +18632,9 @@ const questions: Questions = {
               & \\quad \\lrArr \\quad  &1x = &3\\textcolor{${color1}}{[+_-(&2)_]} \\\\  \
               & \\quad \\lrArr \\quad  \\textcolor{${color2}}{&1}x = [_&3-(&2)_] \\\\ \
               & \\quad \\lrArr \\quad  x = \\frac{[_&3-(&2)_]}{\\textcolor{${color2}}{&1}} \\\\ \
-              @@ pgcd(abs(&3-(&2));&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol  @@ \
-            @@ pgcd(abs(&3-(&2));&1) != 1 && (&3-(&2))*(&1)>0  ?? & \\quad \\lrArr \\quad  x= \\frac{[_abs(&3-(&2))_]}{[_abs(&1)_]} \\\\ & \\quad \\lrArr \\quad  x= &sol  @@ \
-            @@ pgcd(abs(&3-(&2));&1) != 1 && (&3-(&2))*(&1)<0  ?? & \\quad \\lrArr \\quad  x= -\\frac{[_abs(&3-(&2))_]}{[_abs(&1)_]} \\\\ & \\quad \\lrArr \\quad  x= &sol  @@ \
+              @@ pgcd(abs(&3-(&2));&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
+            @@ pgcd(abs(&3-(&2));&1) != 1 && (&3-(&2))*(&1)>0  ?? & \\quad \\lrArr \\quad  x= \\frac{[_abs(&3-(&2))_]}{[_abs(&1)_]} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
+            @@ pgcd(abs(&3-(&2));&1) != 1 && (&3-(&2))*(&1)<0  ?? & \\quad \\lrArr \\quad  x= -\\frac{[_abs(&3-(&2))_]}{[_abs(&1)_]} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
            \\end{align}$$',
 							},
 						],
@@ -18697,8 +18665,8 @@ const questions: Questions = {
                 &3x\\textcolor{${color1}}{+&2}=\\textcolor{${color2}}{[_&4x_]}+&1 \
               & \\quad \\lrArr \\quad &3x \\textcolor{${color2}}{-[_&4x_]} = &1\\textcolor{${color1}}{-&2} \\\\ \
               & \\quad \\lrArr \\quad \\textcolor{violet}{[_&3-&4_]}x = [_&1-&2_] \\\\ \
-              @@ pgcd(&3-&4;&1-&2) = 1 ?? & \\quad \\lrArr \\quad  x= &sol  @@ \
-              @@ pgcd(&3-&4;&1-&2) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{[_&1-&2_]}{\\textcolor{violet}{[_&3-&4_]}} \\\\ & \\quad \\lrArr \\quad  x= &sol  @@ \
+              @@ pgcd(&3-&4;&1-&2) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
+              @@ pgcd(&3-&4;&1-&2) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{[_&1-&2_]}{\\textcolor{violet}{[_&3-&4_]}} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
              \\end{align}$$`,
 							},
 						],
@@ -18730,9 +18698,9 @@ const questions: Questions = {
               & \\quad \\lrArr \\quad &3x \\textcolor{${color2}}{[+_-(&4)x_]} = &1\\textcolor{${color1}}{[+_-(&2)_]} \\\\ \
               & \\quad \\lrArr \\quad  \\textcolor{${color3}}{[_(&3-(&4))x_]} = [_&1-(&2)_] \\\\  \
               & \\quad \\lrArr \\quad  x = \\frac{[_&1-(&2)_]}{\\textcolor{${color3}}{[_&3-(&4)_]}} \\\\ \
-              @@ pgcd(abs(&1-(&2));abs(&3-(&4))) = 1 ?? & \\quad \\lrArr \\quad  x= &sol  @@ \
-            @@ pgcd(abs(&1-(&2));abs(&3-(&4))) != 1 && (&1-(&2))*(&3-(&4))>0  ?? & \\quad \\lrArr \\quad  x= \\frac{[_abs(&1-(&2))_]}{[_abs(&3-(&4))_]} \\\\ & \\quad \\lrArr \\quad  x= &sol  @@ \
-            @@ pgcd(abs(&1-(&2));abs(&3-(&4))) != 1 && (&1-(&2))*(&3-(&4))<0  ?? & \\quad \\lrArr \\quad  x= -\\frac{[_abs(&1-(&2))_]}{[_abs(&3-(&4))_]} \\\\ & \\quad \\lrArr \\quad  x= &sol  @@ \
+              @@ pgcd(abs(&1-(&2));abs(&3-(&4))) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
+            @@ pgcd(abs(&1-(&2));abs(&3-(&4))) != 1 && (&1-(&2))*(&3-(&4))>0  ?? & \\quad \\lrArr \\quad  x= \\frac{[_abs(&1-(&2))_]}{[_abs(&3-(&4))_]} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
+            @@ pgcd(abs(&1-(&2));abs(&3-(&4))) != 1 && (&1-(&2))*(&3-(&4))<0  ?? & \\quad \\lrArr \\quad  x= -\\frac{[_abs(&1-(&2))_]}{[_abs(&3-(&4))_]} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
            \\end{align}$$`,
 							},
 						],
