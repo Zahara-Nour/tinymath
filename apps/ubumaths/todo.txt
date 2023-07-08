@@ -33,3 +33,5 @@ r pour racine carré
 answerField : fraction d'une quantité
 
 calcul littéral - transformation - reduction - 1 : si je réécris l'expression de depart, j'obtiens "les facteurs doivent être écrits dans un certain ordre."
+
+fonctions - polynomes du second degré - apprivoiser - 6 : x=-4 et x=4 ne sont pas considérées comme equivalente.

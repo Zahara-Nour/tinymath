@@ -19025,11 +19025,7 @@ const questions: Questions = {
 						['0'],
 						['0'],
 					],
-					correctionFormats: [
-						{
-							correct: ["L'ordonnée à l'origine est &answer."],
-						},
-					],
+					answerFields: ["\\text{L'ordonnée à l'origine est }$$...$$\\text{.}"],
 
 					defaultDelay: 10,
 					grade: SECONDE,
@@ -19136,10 +19132,8 @@ const questions: Questions = {
 						['-3/4'],
 						['2/3'],
 					],
-					correctionFormats: [
-						{
-							correct: ['Le coefficent directeur est &answer.'],
-						},
+					answerFields: [
+						'\\text{Le coefficent directeur est }$$...$$\\text{.}',
 					],
 
 					defaultDelay: 20,
@@ -19642,7 +19636,7 @@ const questions: Questions = {
 						"Pour quelle valeur de $$x$$ la fonction $$f$$ s'annulle-t-elle?",
 					],
 					expressions: ['f(x)=&1x[+_&2_]', 'f(x)=&2[+_&1_]x'],
-					answerFields: ['$$f(...)=0$$'],
+					answerFields: ['$$f\\left(...\\right)=0$$'],
 					variabless: [
 						{
 							'&1': '$er[2;9]',
@@ -19657,7 +19651,7 @@ const questions: Questions = {
 					description: "Résoudre l'équation $$f(x)=k$$",
 					subdescription: 'Graphiquement',
 					enounces: ["Résoudre graphiquement l'équation $$f(x)=&1$$"],
-					answerFields: ['$$f(...)=&1$$'],
+					answerFields: ['$$f\\left(...\\right)=&1$$'],
 					variabless: [
 						{
 							'&1': '-3',
@@ -19857,7 +19851,7 @@ const questions: Questions = {
 					description: "Opposé d'une expression",
 					enounces: ["Quel est l'opposé de l'expression :"],
 					expressions: ['[_&1x_]', 'x[+_&2_]', '&2-x'],
-					answerFields: ["L'opposé est $$...$$"],
+					answerFields: ["\\text{L'opposé est }$$...$$\\text{.}"],
 					variabless: [
 						{
 							'&1': '$er[1;2]',
@@ -19883,8 +19877,8 @@ const questions: Questions = {
 					],
 					choicess: [
 						[
-							{ text: 'positive' },
-							{ text: 'négative' },
+							{ text: 'positif' },
+							{ text: 'négatif' },
 							{ text: 'On ne peut pas savoir.' },
 						],
 					],
@@ -19933,8 +19927,8 @@ const questions: Questions = {
 					],
 					choicess: [
 						[
-							{ text: 'positive' },
-							{ text: 'négative' },
+							{ text: 'positif' },
+							{ text: 'négatif' },
 							{ text: 'On ne peut pas savoir.' },
 						],
 					],
@@ -20171,6 +20165,36 @@ const questions: Questions = {
 				{
 					description: 'Résoudre une équation avec une valeur absolue',
 					enounces: ['Résouds cette équation.'],
+					expressions: ['abs(x)=&1'],
+					variabless: [
+						{
+							'&1': '$e[1;9]',
+						},
+					],
+					solutionss: [['&1', '-&1']],
+					answerFields: ['$$x=...$$\\text{ ou }$$x=...$$'],
+					correctionDetailss: [
+						[
+							{
+								text: `$$\
+								\\left\\lvert x \\right\\rvert=&1 \
+								\\quad \\lrArr \\quad \
+								    \\begin{cases} \
+								       x= &sol1 \\\\ \
+									   \\text{ou} \\\\ \
+								       x= &sol2  \
+							        \\end{cases} \
+							 $$`,
+							},
+						],
+					],
+					defaultDelay: 20,
+					options: ['solutions-order-not-important'],
+					grade: SECONDE,
+				},
+				{
+					description: 'Résoudre une équation avec une valeur absolue',
+					enounces: ['Résouds cette équation.'],
 					expressions: ['abs(x[+_-(&1)_])=&2'],
 					variabless: [
 						{
@@ -20180,7 +20204,7 @@ const questions: Questions = {
 					],
 					conditions: ['abs(&1) != abs(&2)'],
 					solutionss: [['[_&1+&2_]', '[_&1-&2_]']],
-					answerFields: ['$$x=\\ldots$$ ou $$x=\\ldots$$'],
+					answerFields: ['$$x=...$$\\text{ ou }$$x=...$$'],
 					correctionDetailss: [
 						[
 							{
@@ -20359,7 +20383,7 @@ const questions: Questions = {
 						'([_&4x_][+_&2_])([_&5x_][+_&3_])',
 						'&1([_&4x_][+_&2_])([_&5x_][+_&3_])',
 					],
-					answerFields: ['Le coefficient est $$...$$'],
+					answerFields: ['\\text{Le coefficient est }$$...$$\\text{.}'],
 					variabless: [
 						{
 							'&1': '$er[2;5]',
@@ -20546,7 +20570,7 @@ const questions: Questions = {
 						"Quelle est l'équation de l'axe de symétrie de la courbe représentative de ce polynôme du second degré ?",
 					],
 					expressions: ['&1(x[+_&2_])^2[+_&3_]'],
-					answerFields: ["L'équation est $$...$$"],
+					answerFields: ["\\text{L'équation est }$$...$$\\text{.}"],
 					variabless: [
 						{
 							'&1': '$er[2;5]',
@@ -20608,7 +20632,9 @@ const questions: Questions = {
 						'polynome-second-degre/trouver-racines/correction_trouver_racines-13-600.png',
 						'polynome-second-degre/trouver-racines/correction_trouver_racines-14-600.png',
 					],
-					answerFields: ['Les racines sont $$...$$ et $$...$$'],
+					answerFields: [
+						'\\text{Les racines sont }$$...$$\\text{ et }$$...$$\\text{.}',
+					],
 					solutionss: [
 						['-3', '1'],
 						['-3', '-1'],
@@ -20804,7 +20830,7 @@ const questions: Questions = {
 					description: "Trouver une racine évidente d'un polynôme",
 					enounces: ['Trouve une racine évidente de ce polynôme :'],
 					expressions: ['x^2[+_-(&1+(&2))x_][+_(&1)*(&2)_]'],
-					answerFields: ['Une racine évidente est $$...$$'],
+					answerFields: ['\\text{Une racine évidente est }$$...$$\\text{.}'],
 					solutionss: [['&1']],
 					variabless: [
 						{
@@ -20842,7 +20868,7 @@ const questions: Questions = {
 					enounces: [
 						'Quelles sont les racines de ce polynôme du second degré ?',
 					],
-					expressions: ['&1(x[+_&2_])(x[+_&3_])'],
+					enounces2: ['$$&1(x[+_&2_])(x[+_&3_])$$'],
 					variabless: [
 						{
 							'&1': '$er[2;5]',
@@ -20851,7 +20877,9 @@ const questions: Questions = {
 						},
 					],
 					conditions: ['abs(&2) != abs(&3)'],
-					answerFields: ['Las racines sont $$...$$ et $$...$$'],
+					answerFields: [
+						'\\text{Les racines sont }$$...$$\\text{ et }$$...$$\\text{.}',
+					],
 					solutionss: [['[_-(&2)_]', '[_-(&3)_]']],
 					options: ['solutions-order-not-important'],
 					defaultDelay: 20,
@@ -20875,7 +20903,9 @@ const questions: Questions = {
 						},
 					],
 					conditions: ['abs(&2) != abs(&3)'],
-					answerFields: ['Las racines sont $$...$$ et $$...$$'],
+					answerFields: [
+						'\\text{Les racines sont }$$...$$\\text{ et }$$...$$\\text{.}',
+					],
 					solutionss: [['[_-(&2)_]', '[_-(&3)_]']],
 					correctionDetailss: [
 						[
@@ -20954,13 +20984,13 @@ const questions: Questions = {
 					description: 'Calculer une dérivée.',
 					subdescription: 'Fonctions usuelles.',
 					enounces: ['Calcule la dérivée de cette fonction.'],
-					expressions: [
-						'f(x)=x',
-						'f(x)=x^2',
-						'f(x)=x^&1',
-						'f(x)=1/x',
-						'f(x)=sqrt(x)',
-						'f(x)=&1',
+					enounces2: [
+						'$$f(x)=x$$',
+						'$$f(x)=x^2$$',
+						'$$f(x)=x^&1$$',
+						'$$f(x)=1/x$$',
+						'$$f(x)=sqrt(x)$$',
+						'$$f(x)=&1$$',
 					],
 					answerFields: ["$$f'(x)=...$$"],
 					variabless: [
@@ -20992,12 +21022,12 @@ const questions: Questions = {
 					description: 'Calculer une dérivée.',
 					subdescription: 'Fonctions usuelles avec coefficient.',
 					enounces: ['Calcule la dérivée de cette fonction.'],
-					expressions: [
-						'f(x)=&2x',
-						'f(x)=&2x^2',
-						'f(x)=&2x^&1',
-						'f(x)=&2/x',
-						'f(x)=&2sqrt(x)',
+					enounces2: [
+						'$$f(x)=&2x$$',
+						'$$f(x)=&2x^2$$',
+						'$$f(x)=&2x^&1$$',
+						'$$f(x)=&2/x$$',
+						'$$f(x)=&2sqrt(x)$$',
 					],
 					answerFields: ["$$f'(x)=...$$"],
 					variabless: [

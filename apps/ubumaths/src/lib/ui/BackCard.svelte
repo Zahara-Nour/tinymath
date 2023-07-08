@@ -85,14 +85,13 @@
 			s = '$$' + putSolutions(card.answerFormat_latex, card) + '$$'
 		} else if (isQuestionAnswerField(card)) {
 			if (card.solutions?.length > 1) {
-				s =
-					'$$' +
-					putSolutions(
-						card.answerField.replace(/\\text\{(.*)\}/g, (_, p1) => p1),
-						card,
-						/\.\.\./g,
-					) +
-					'$$'
+				s = putSolutions(
+					card.answerField.replace(/\\text\{(.*?)\}/g, (_, p1) => p1),
+					card,
+					/\.\.\./g,
+				)
+
+				console.log('s', s)
 			} else {
 				s =
 					`$$\\textcolor{${correct_color}}{` +
