@@ -37,7 +37,7 @@
 		"svelte-loading-spinners": "^0.3.4",
 		"three": "^0.152.0",
 		"tinycas": "workspace:*",
-		"tinymathlive": "^0.94.5",
+		"tinymathlive": "^0.95.0",
 		"ts-node": "^10.9.1",
 		"xstate": "^4.37.1"
 	},
