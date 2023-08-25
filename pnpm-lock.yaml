@@ -101,8 +101,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/tinycas
       tinymathlive:
-        specifier: ^0.95.0
-        version: 0.95.0
+        specifier: ^0.95.1
+        version: 0.95.1
       ts-node:
         specifier: ^10.9.1
         version: 10.9.1(@types/node@20.4.1)(typescript@5.1.6)
@@ -6903,8 +6903,8 @@ packages:
     resolution: {integrity: sha512-iyziEiyFxX4kyxSp+MtY1oCH/lvjH3PxFN8PGCDeqcZWAJ/i+9y+nL85w99PxVzrIvew/GSkSbDYtiGVa85Afg==}
     dev: true
 
-  /tinymathlive@0.95.0:
-    resolution: {integrity: sha512-NwJ6UqbX9nXciFRIYF2lxghYq6PHjEvIpnO0Ama0WFnoMBvqZ8TDSEy7rUOVjdjXsAdbnS6LzO8fPbTXv99tfQ==}
+  /tinymathlive@0.95.1:
+    resolution: {integrity: sha512-atfPiFq5IvLC6VyIA5kkM4yC6Lj2CjE5CuX1XOQk/BkWsc2MGTAunGC2PoBW5sAPlWSmqXYyxx2gLDGU4xwWsw==}
     engines: {node: '>=16.14.2', npm: '>=8.5.0'}
     dependencies:
       '@cortex-js/compute-engine': 0.12.3
