@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { AppBar } from '@skeletonlabs/skeleton'
+	import { AppBar, modeCurrent, modeOsPrefers } from '@skeletonlabs/skeleton'
 	import { LightSwitch } from '@skeletonlabs/skeleton'
 	import { fontSize, fullScreen } from '$lib/stores'
 	import { get } from 'svelte/store'
@@ -38,6 +38,7 @@
 		</div>
 	</svelte:fragment>
 	<svelte:fragment slot="trail">
+		{$modeCurrent}
 		<LightSwitch />
 		<UserAvatar />
 

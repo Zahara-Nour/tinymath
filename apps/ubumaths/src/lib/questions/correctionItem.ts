@@ -6,7 +6,7 @@ import {
 	STATUS_EMPTY,
 	STATUS_BAD_UNIT,
 } from './correction'
-import { correct_color, incorrect_color, unoptimal_color } from '$lib/colors'
+import { correct_color, incorrect_color, unoptimal_color } from '$lib/stores'
 import { formatLatexToHtml } from '$lib/stores'
 import math from 'tinycas'
 import { formatToLatex, formatToTexmacs } from '$lib/utils'
@@ -54,15 +54,15 @@ export function createCorrection(item: CorrectedQuestion) {
 	let lines: Line[] = []
 	let coms = item.coms || []
 
-	let answerColor = correct_color
+	let answerColor = get(correct_color)
 	if (
 		status === STATUS_BAD_FORM ||
 		status === STATUS_INCORRECT ||
 		status === STATUS_BAD_UNIT
 	) {
-		answerColor = incorrect_color
+		answerColor = get(incorrect_color)
 	} else if (status === STATUS_UNOPTIMAL_FORM) {
-		answerColor = unoptimal_color
+		answerColor = get(unoptimal_color)
 	}
 
 	if (correctionFormat) {
@@ -121,7 +121,9 @@ export function createCorrection(item: CorrectedQuestion) {
 					// TODO: A revoir
 					const img = choices[answers[0] as number].imageBase64
 					coms.unshift(
-						`<img src='${img}' style="padding:2px; border: 2px solid ${incorrect_color} ;max-width:400px;max-height:40vh;" alt='toto'>`,
+						`<img src='${img}' style="padding:2px; border: 2px solid ${get(
+							incorrect_color,
+						)} ;max-width:400px;max-height:40vh;" alt='toto'>`,
 					)
 					coms.unshift('Ta réponse:')
 				} else {
@@ -240,15 +242,19 @@ export function createCorrection(item: CorrectedQuestion) {
 				'&' +
 				(status === STATUS_INCORRECT &&
 				item.statuss.some((status) => status === STATUS_INCORRECT)
-					? `\\textcolor{${incorrect_color}}{\\ne}`
+					? `\\textcolor{${get(incorrect_color)}}{\\ne}`
 					: '=')
 			text += answer + '\\\\'
 		}
 
 		if (status === STATUS_CORRECT) {
-			text += `&=\\enclose{roundedbox}[2px solid ${correct_color}]{${answer}}`
+			text += `&=\\enclose{roundedbox}[2px solid ${get(
+				correct_color,
+			)}]{${answer}}`
 		} else {
-			text += `&=\\enclose{roundedbox}[2px solid ${correct_color}]{${solution}}`
+			text += `&=\\enclose{roundedbox}[2px solid ${get(
+				correct_color,
+			)}]{${solution}}`
 		}
 		text += '\\end{align*}$$'
 
@@ -364,7 +370,9 @@ function replaceExp2(item: CorrectedQuestion) {
 
 function replaceAnswerCorrect(p1: number, item: CorrectedQuestion) {
 	return (
-		`<span style="color:${correct_color}; border:2px solid ${correct_color}; border-radius: 5px;  margin:2px; padding:5px;display:inline-block">` +
+		`<span style="color:${get(correct_color)}; border:2px solid ${get(
+			correct_color,
+		)}; border-radius: 5px;  margin:2px; padding:5px;display:inline-block">` +
 		(isQuestionChoice(item)
 			? item.choices[item.answers[p1 ? p1 - 1 : 0] as number].text
 			: '$$' + item.answers_latex[p1 ? p1 - 1 : 0] + '$$') +
@@ -376,7 +384,9 @@ function replaceAnswerCorrect(p1: number, item: CorrectedQuestion) {
 
 function replaceAnsCorrect(p1: number, item: CorrectedQuestion) {
 	return (
-		`\\enclose{roundedbox}[3px solid ${correct_color}]{\\textcolor{${correct_color}}{` +
+		`\\enclose{roundedbox}[3px solid ${get(correct_color)}]{\\textcolor{${get(
+			correct_color,
+		)}}{` +
 		item.answers_latex[p1 ? p1 - 1 : 0] +
 		'}}'
 	)
@@ -385,7 +395,9 @@ function replaceAnsCorrect(p1: number, item: CorrectedQuestion) {
 function replaceSolution(item: CorrectedQuestion, p1?: number) {
 	const solutions_latex = createSolutionsLatex(item)
 	return (
-		`<span style="color:${correct_color}; border:2px solid ${correct_color}; border-radius: 5px; margin:2px;padding:5px;display:inline-block">` +
+		`<span style="color:${get(correct_color)}; border:2px solid ${get(
+			correct_color,
+		)}; border-radius: 5px; margin:2px;padding:5px;display:inline-block">` +
 		(isQuestionChoice(item)
 			? item.choices[item.solutions[p1 ? p1 - 1 : 0] as number].text
 			: '$$' + (solutions_latex[p1 ? p1 - 1 : 0] as string) + '$$') +
@@ -411,10 +423,10 @@ function replaceAnswerUncorrect(p1: number, item: CorrectedQuestion) {
 	return (
 		`<span style="color:${
 			item.statuss[p1 ? p1 - 1 : 0] === STATUS_UNOPTIMAL_FORM
-				? unoptimal_color
+				? get(unoptimal_color)
 				: item.statuss[p1 ? p1 - 1 : 0] === STATUS_CORRECT
-				? correct_color
-				: incorrect_color
+				? get(correct_color)
+				: get(incorrect_color)
 		};display:inline-block">` +
 		(isQuestionChoice(item)
 			? item.choices[item.answers[p1 ? p1 - 1 : 0] as number].text
@@ -427,10 +439,10 @@ function replaceAnsUncorrect(p1: number, item: CorrectedQuestion) {
 	return (
 		`\\textcolor{${
 			item.statuss[p1 ? p1 - 1 : 0] === STATUS_UNOPTIMAL_FORM
-				? unoptimal_color
+				? get(unoptimal_color)
 				: item.statuss[p1 ? p1 - 1 : 0] === STATUS_CORRECT
-				? correct_color
-				: incorrect_color
+				? get(correct_color)
+				: get(incorrect_color)
 		}}{` +
 		item.answers_latex[p1 ? p1 - 1 : 0] +
 		'}'
@@ -442,10 +454,10 @@ function putAnswer(item: CorrectedQuestion) {
 	i_answer++
 	const color =
 		item.statuss[i_answer] === STATUS_UNOPTIMAL_FORM
-			? unoptimal_color
+			? get(unoptimal_color)
 			: item.statuss[i_answer] === STATUS_CORRECT
-			? correct_color
-			: incorrect_color
+			? get(correct_color)
+			: get(incorrect_color)
 	const answer = item.answers_latex[i_answer]
 		? `\\textcolor{${color}}{${item.answers_latex[i_answer]}}`
 		: '\\ldots'
@@ -473,19 +485,21 @@ function replaceSol(item: CorrectedQuestion, p1?: number) {
 			.text as string
 	} else if (isQuestionFillIn(item)) {
 		solution = p1
-			? `\\textcolor{${correct_color}}{` +
+			? `\\textcolor{${get(correct_color)}}{` +
 			  (solutions_latex[p1 - 1] as string) +
 			  '}'
 			: putSolutions(item.expression_latex, item)
 	} else if (isQuestionResultOrRewrite(item)) {
 		solution = p1
-			? `\\enclose{roundedbox}[2px solid ${correct_color}]{\\textcolor{${correct_color}}{` +
+			? `\\enclose{roundedbox}[2px solid ${get(
+					correct_color,
+			  )}]{\\textcolor{${get(correct_color)}}{` +
 			  (solutions_latex[p1 - 1] as string) +
 			  '}}'
 			: putSolutions(item.answerFormat_latex, item)
 	} else if (isQuestionAnswerField(item)) {
 		solution = p1
-			? `\\textcolor{${correct_color}}{` +
+			? `\\textcolor{${get(correct_color)}}{` +
 			  (solutions_latex[p1 - 1] as string) +
 			  '}'
 			: putSolutions(
@@ -504,7 +518,9 @@ let i_solution = -1
 function putSolution(item: Question) {
 	const solutions_latex = createSolutionsLatex(item)
 	i_solution++
-	const solution = `\\textcolor{${correct_color}}{${solutions_latex[i_solution]}}`
+	const solution = `\\textcolor{${get(correct_color)}}{${
+		solutions_latex[i_solution]
+	}}`
 	return solution
 }
 

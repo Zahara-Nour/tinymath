@@ -18,7 +18,7 @@ import {
 	color3,
 	correct_color,
 	incorrect_color,
-} from '$lib/colors'
+} from '$lib/stores'
 import { objectMap } from '../utils'
 import type {
 	Ids,
@@ -26,6 +26,7 @@ import type {
 	Questions,
 	QuestionWithID,
 } from '../../types/type'
+import { get } from 'svelte/store'
 
 // Les questions doivent-être structurées afin de pouvoir générer des fiches d'exercices
 // sans avoir à répéter la même consigne pour un même type de question.
@@ -1890,16 +1891,20 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} &3+\\bold{\\textcolor{${color1}}{9}} \
-								&= &3+\\bold{\\textcolor{${color1}}{10-1}} \\\\ \
+								text: `$$\\begin{align} &3+\\bold{\\textcolor{${get(
+									color1,
+								)}}{9}} \
+								&= &3+\\bold{\\textcolor{${get(color1)}}{10-1}} \\\\ \
 								&= [_&3+10_]-1 \\\\ \
 								&= &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{9}} + &3 \
-								&= \\bold{\\textcolor{${color1}}{10-1}} + &3\\\\ \
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{9}} + &3 \
+								&= \\bold{\\textcolor{${get(color1)}}{10-1}} + &3\\\\ \
 								&= &3 + 10-1 \\\\ \
 								&= [_&3+10_]-1 \\\\ \
 								&= &sol \\end{align}$$`,
@@ -1927,15 +1932,19 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} &2+\\bold{\\textcolor{${color1}}{&1}}+\\bold{\\textcolor{${color1}}{[_10-&1_]}} \
-								&= &2+\\bold{\\textcolor{${color1}}{10}} \\\\ \
+								text: `$$\\begin{align} &2+\\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}+\\bold{\\textcolor{${get(color1)}}{[_10-&1_]}} \
+								&= &2+\\bold{\\textcolor{${get(color1)}}{10}} \\\\ \
 								&=  &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{&1}}+ &2 + \\bold{\\textcolor{${color1}}{[_10-&1_]}} \
-								&= &2+\\bold{\\textcolor{${color1}}{10}} \\\\ \
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}+ &2 + \\bold{\\textcolor{${get(color1)}}{[_10-&1_]}} \
+								&= &2+\\bold{\\textcolor{${get(color1)}}{10}} \\\\ \
 								&=  &sol \\end{align}$$`,
 							},
 						],
@@ -1961,16 +1970,20 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} &4+\\bold{\\textcolor{${color1}}{&5}} \
-								&= &4+\\bold{\\textcolor{${color1}}{[_&5+1_]-1}} \\\\ \
+								text: `$$\\begin{align} &4+\\bold{\\textcolor{${get(
+									color1,
+								)}}{&5}} \
+								&= &4+\\bold{\\textcolor{${get(color1)}}{[_&5+1_]-1}} \\\\ \
 								&= [_&4+&5+1_]-1 \\\\ \
 								&= &sol\\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{&5}} + &4 \
-								&= \\bold{\\textcolor{${color1}}{[_&5+1_]-1}} + &4\\\\ \
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{&5}} + &4 \
+								&= \\bold{\\textcolor{${get(color1)}}{[_&5+1_]-1}} + &4\\\\ \
 								&= &4 + [_&5+1_]-1 \\\\ \
 								&= [_&4+&5+1_]-1 \\\\ \
 								&= &sol\\end{align}$$`,
@@ -1990,15 +2003,19 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} &2+\\bold{\\textcolor{${color1}}{&1}}+\\bold{\\textcolor{${color1}}{[_10-&1_]}} \
-								&= &2+\\bold{\\textcolor{${color1}}{10}} \\\\ \
+								text: `$$\\begin{align} &2+\\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}+\\bold{\\textcolor{${get(color1)}}{[_10-&1_]}} \
+								&= &2+\\bold{\\textcolor{${get(color1)}}{10}} \\\\ \
 								&=  &sol\\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{&1}}+ &2 + \\bold{\\textcolor{${color1}}{[_10-&1_]}} \
-								&= &2+\\bold{\\textcolor{${color1}}{10}} \\\\ \
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}+ &2 + \\bold{\\textcolor{${get(color1)}}{[_10-&1_]}} \
+								&= &2+\\bold{\\textcolor{${get(color1)}}{10}} \\\\ \
 								&=  &sol \\end{align}$$`,
 							},
 						],
@@ -2022,36 +2039,76 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{&1}}+\\bold{\\textcolor{${color1}}{[_10-&1_]}}+\\bold{\\textcolor{${color2}}{&2}}+\\bold{\\textcolor{${color2}}{[_10-&2_]}}+&3 \
-								&= \\bold{\\textcolor{${color1}}{10}}+\\bold{\\textcolor{${color2}}{10}}+&3 \\\\ \
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}+\\bold{\\textcolor{${get(
+									color1,
+								)}}{[_10-&1_]}}+\\bold{\\textcolor{${get(
+									color2,
+								)}}{&2}}+\\bold{\\textcolor{${get(color2)}}{[_10-&2_]}}+&3 \
+								&= \\bold{\\textcolor{${get(color1)}}{10}}+\\bold{\\textcolor{${get(
+									color2,
+								)}}{10}}+&3 \\\\ \
 								&=  &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{&1}}+\\bold{\\textcolor{${color1}}{[_10-&1_]}}+\\bold{\\textcolor{${color2}}{&2}}+ &3 + \\bold{\\textcolor{${color2}}{[_10-&2_]}} \
-								&= \\bold{\\textcolor{${color1}}{10}}+\\bold{\\textcolor{${color2}}{10}}+&3 \\\\ \
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}+\\bold{\\textcolor{${get(
+									color1,
+								)}}{[_10-&1_]}}+\\bold{\\textcolor{${get(
+									color2,
+								)}}{&2}}+ &3 + \\bold{\\textcolor{${get(color2)}}{[_10-&2_]}} \
+								&= \\bold{\\textcolor{${get(color1)}}{10}}+\\bold{\\textcolor{${get(
+									color2,
+								)}}{10}}+&3 \\\\ \
 								&=  &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{&1}}+\\bold{\\textcolor{${color1}}{[_10-&1_]}}+ &3 + \\bold{\\textcolor{${color2}}{&2}}+\\bold{\\textcolor{${color2}}{[_10-&2_]}} \
-								&= \\bold{\\textcolor{${color1}}{10}}+\\bold{\\textcolor{${color2}}{10}}+&3 \\\\ \
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}+\\bold{\\textcolor{${get(
+									color1,
+								)}}{[_10-&1_]}}+ &3 + \\bold{\\textcolor{${get(
+									color2,
+								)}}{&2}}+\\bold{\\textcolor{${get(color2)}}{[_10-&2_]}} \
+								&= \\bold{\\textcolor{${get(color1)}}{10}}+\\bold{\\textcolor{${get(
+									color2,
+								)}}{10}}+&3 \\\\ \
 								&=  &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{&1}}+ &3 + \\bold{\\textcolor{${color1}}{[_10-&1_]}}+\\bold{\\textcolor{${color2}}{&2}}+\\bold{\\textcolor{${color2}}{[_10-&2_]}} \
-								&= \\bold{\\textcolor{${color1}}{10}}+\\bold{\\textcolor{${color2}}{10}}+&3 \\\\ \
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}+ &3 + \\bold{\\textcolor{${get(
+									color1,
+								)}}{[_10-&1_]}}+\\bold{\\textcolor{${get(
+									color2,
+								)}}{&2}}+\\bold{\\textcolor{${get(color2)}}{[_10-&2_]}} \
+								&= \\bold{\\textcolor{${get(color1)}}{10}}+\\bold{\\textcolor{${get(
+									color2,
+								)}}{10}}+&3 \\\\ \
 								&=  &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} &3 + \\bold{\\textcolor{${color1}}{&1}}+\\bold{\\textcolor{${color1}}{[_10-&1_]}}+\\bold{\\textcolor{${color2}}{&2}}+\\bold{\\textcolor{${color2}}{[_10-&2_]}} \
-								&= \\bold{\\textcolor{${color1}}{10}}+\\bold{\\textcolor{${color2}}{10}}+&3 \\\\ \
+								text: `$$\\begin{align} &3 + \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}+\\bold{\\textcolor{${get(
+									color1,
+								)}}{[_10-&1_]}}+\\bold{\\textcolor{${get(
+									color2,
+								)}}{&2}}+\\bold{\\textcolor{${get(color2)}}{[_10-&2_]}} \
+								&= \\bold{\\textcolor{${get(color1)}}{10}}+\\bold{\\textcolor{${get(
+									color2,
+								)}}{10}}+&3 \\\\ \
 								&=  &sol \\end{align}$$`,
 							},
 						],
@@ -2077,15 +2134,19 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} &2+\\bold{\\textcolor{${color1}}{&1}}+\\bold{\\textcolor{${color1}}{[_100-&1_]}} \
-								&= &2+\\bold{\\textcolor{${color1}}{100}} \\\\ \
+								text: `$$\\begin{align} &2+\\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}+\\bold{\\textcolor{${get(color1)}}{[_100-&1_]}} \
+								&= &2+\\bold{\\textcolor{${get(color1)}}{100}} \\\\ \
 								&=  &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{&1}}+ &2 + \\bold{\\textcolor{${color1}}{[_100-&1_]}} \
-								&= &2+\\bold{\\textcolor{${color1}}{100}} \\\\ \
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}+ &2 + \\bold{\\textcolor{${get(color1)}}{[_100-&1_]}} \
+								&= &2+\\bold{\\textcolor{${get(color1)}}{100}} \\\\ \
 								&=  &sol \\end{align}$$`,
 							},
 						],
@@ -2108,22 +2169,32 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{&6}}+\\bold{\\textcolor{${color1}}{[_&1*10-&6_]}} + &7 \
-								&= \\bold{\\textcolor{${color1}}{[_&1*10_]}} + &7\\\\ \
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{&6}}+\\bold{\\textcolor{${get(
+									color1,
+								)}}{[_&1*10-&6_]}} + &7 \
+								&= \\bold{\\textcolor{${get(color1)}}{[_&1*10_]}} + &7\\\\ \
 								&=  &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{&6}}+ &7 + \\bold{\\textcolor{${color1}}{[_&1*10-&6_]}} \
-								&= &7+\\bold{\\textcolor{${color1}}{[_&1*10_]}} \\\\ \
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{&6}}+ &7 + \\bold{\\textcolor{${get(
+									color1,
+								)}}{[_&1*10-&6_]}} \
+								&= &7+\\bold{\\textcolor{${get(color1)}}{[_&1*10_]}} \\\\ \
 								&=  &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} &7+\\bold{\\textcolor{${color1}}{&6}}+\\bold{\\textcolor{${color1}}{[_&1*10-&6_]}} \
-								&= &7+\\bold{\\textcolor{${color1}}{[_&1*10_]}} \\\\ \
+								text: `$$\\begin{align} &7+\\bold{\\textcolor{${get(
+									color1,
+								)}}{&6}}+\\bold{\\textcolor{${get(color1)}}{[_&1*10-&6_]}} \
+								&= &7+\\bold{\\textcolor{${get(color1)}}{[_&1*10_]}} \\\\ \
 								&=  &sol \\end{align}$$`,
 							},
 						],
@@ -2152,8 +2223,14 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								\\bold{\\textcolor{${color1}}{&4}}+\\bold{\\textcolor{${color1}}{[_&1*10-&4_]}} + \\bold{\\textcolor{${color2}}{&8}}+\\bold{\\textcolor{${color2}}{[_&5*10-&8_]}} \
-								 &= \\bold{\\textcolor{${color1}}{[_&1*10_]}} + \\bold{\\textcolor{${color2}}{[_&5*10_]}} \\\\  \
+								\\bold{\\textcolor{${get(color1)}}{&4}}+\\bold{\\textcolor{${get(
+									color1,
+								)}}{[_&1*10-&4_]}} + \\bold{\\textcolor{${get(
+									color2,
+								)}}{&8}}+\\bold{\\textcolor{${get(color2)}}{[_&5*10-&8_]}} \
+								 &= \\bold{\\textcolor{${get(color1)}}{[_&1*10_]}} + \\bold{\\textcolor{${get(
+									color2,
+								)}}{[_&5*10_]}} \\\\  \
 								 &=  &sol \
 								 \\end{align}$$`,
 							},
@@ -2193,16 +2270,20 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} &5+\\bold{\\textcolor{${color1}}{9}} \
-								&= &5+\\bold{\\textcolor{${color1}}{10-1}} \\\\ \
+								text: `$$\\begin{align} &5+\\bold{\\textcolor{${get(
+									color1,
+								)}}{9}} \
+								&= &5+\\bold{\\textcolor{${get(color1)}}{10-1}} \\\\ \
 								&= [_&5+10_]-1 \\\\ \
 								&= &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} &5+\\bold{\\textcolor{${color1}}{19}} \
-								&= &5+\\bold{\\textcolor{${color1}}{20-1}} \\\\ \
+								text: `$$\\begin{align} &5+\\bold{\\textcolor{${get(
+									color1,
+								)}}{19}} \
+								&= &5+\\bold{\\textcolor{${get(color1)}}{20-1}} \\\\ \
 								&= [_&5+20_]-1 \\\\ \
 								&= &sol \\end{align}$$`,
 							},
@@ -2221,15 +2302,21 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} &2+\\bold{\\textcolor{${color1}}{&1}}+\\bold{\\textcolor{${color1}}{[_1000-&1_]}} \
-								&= &2+\\bold{\\textcolor{${color1}}{1000}} \\\\ \
+								text: `$$\\begin{align} &2+\\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}+\\bold{\\textcolor{${get(color1)}}{[_1000-&1_]}} \
+								&= &2+\\bold{\\textcolor{${get(color1)}}{1000}} \\\\ \
 								&=  &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{&1}}+ &2 + \\bold{\\textcolor{${color1}}{[_1000-&1_]}} \
-								&= &2+\\bold{\\textcolor{${color1}}{1000}} \\\\ \
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}+ &2 + \\bold{\\textcolor{${get(
+									color1,
+								)}}{[_1000-&1_]}} \
+								&= &2+\\bold{\\textcolor{${get(color1)}}{1000}} \\\\ \
 								&=  &sol \\end{align}$$`,
 							},
 						],
@@ -2835,8 +2922,10 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} &3\\bold{\\textcolor{${color1}}{-9}} \
-								&= &3\\bold{\\textcolor{${color1}}{-10+1}} \\\\ \
+								text: `$$\\begin{align} &3\\bold{\\textcolor{${get(
+									color1,
+								)}}{-9}} \
+								&= &3\\bold{\\textcolor{${get(color1)}}{-10+1}} \\\\ \
 								&= [_&3-10_]+1 \\\\ \
 								&= &sol \\end{align}$$`,
 							},
@@ -2870,8 +2959,10 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} &4\\bold{\\textcolor{${color1}}{-&5}} \
-								&= &4\\bold{\\textcolor{${color1}}{-[_&5+1_]+1}} \\\\ \
+								text: `$$\\begin{align} &4\\bold{\\textcolor{${get(
+									color1,
+								)}}{-&5}} \
+								&= &4\\bold{\\textcolor{${get(color1)}}{-[_&5+1_]+1}} \\\\ \
 								&= [_&4-&5-1_]+1 \\\\ \
 								&= &sol \\end{align}$$`,
 							},
@@ -3007,12 +3098,20 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} &1 \\times \\bold{\\textcolor{${color1}}{20}} &= &1 \\times \\bold{\\textcolor{${color1}}{2 \\times 10}}  \\\\ &= [_&1*2_] \\times 10 \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} &1 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{20}} &= &1 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{2 \\times 10}}  \\\\ &= [_&1*2_] \\times 10 \\\\ &= &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{20}} \\times &1 &=  \\bold{\\textcolor{${color1}}{10 \\times 2}} \\times &1 \\\\ &= 10 \\times [_&1*2_]  \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{20}} \\times &1 &=  \\bold{\\textcolor{${get(
+									color1,
+								)}}{10 \\times 2}} \\times &1 \\\\ &= 10 \\times [_&1*2_]  \\\\ &= &sol \\end{align}$$`,
 							},
 						],
 					],
@@ -3045,7 +3144,11 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{&3}} \\times \\bold{\\textcolor{yellow}{&4}} &= \\bold{\\textcolor{${color1}}{&1 \\times 10}} \\times \\bold{\\textcolor{yellow}{&2 \\times 10}} \\\\ &= &1 \\times &2 \\times 10 \\times 10 \\\\ &= [_&1*&2_] \\times 100 \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{&3}} \\times \\bold{\\textcolor{yellow}{&4}} &= \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1 \\times 10}} \\times \\bold{\\textcolor{yellow}{&2 \\times 10}} \\\\ &= &1 \\times &2 \\times 10 \\times 10 \\\\ &= [_&1*&2_] \\times 100 \\\\ &= &sol \\end{align}$$`,
 							},
 						],
 					],
@@ -3073,7 +3176,11 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{&5}} \\times \\bold{\\textcolor{yellow}{&6}} &= \\bold{\\textcolor{${color1}}{&1 \\times [_10^&2_]}} \\times \\bold{\\textcolor{yellow}{&3 \\times [_10^&4_]}} \\\\ &= &1 \\times &3 \\times [_10^&2_] \\times [_10^&4_] \\\\ &= [_&1*&3_] \\times [_10^(&2+&4)_] \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{&5}} \\times \\bold{\\textcolor{yellow}{&6}} &= \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1 \\times [_10^&2_]}} \\times \\bold{\\textcolor{yellow}{&3 \\times [_10^&4_]}} \\\\ &= &1 \\times &3 \\times [_10^&2_] \\times [_10^&4_] \\\\ &= [_&1*&3_] \\times [_10^(&2+&4)_] \\\\ &= &sol \\end{align}$$`,
 							},
 						],
 					],
@@ -3118,8 +3225,10 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `@@&5>=10 ?? $$&1\\times &3 = [_(&5-&6):10_]\\textcolor{${correct_color}}{&6}$$@@ 
-								@@&5<10 ?? $$&1\\times &3 = \\textcolor{${correct_color}}{&6}$$@@ `,
+								text: `@@&5>=10 ?? $$&1\\times &3 = [_(&5-&6):10_]\\textcolor{${get(
+									correct_color,
+								)}}{&6}$$@@ 
+								@@&5<10 ?? $$&1\\times &3 = \\textcolor{${get(correct_color)}}{&6}$$@@ `,
 							},
 						],
 					],
@@ -3169,7 +3278,9 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `La moitié de $$[_2*&1_]$$ est &solution car $$2 \\times \\textcolor{${correct_color}}{&1}=[_2*&1_]$$`,
+								text: `La moitié de $$[_2*&1_]$$ est &solution car $$2 \\times \\textcolor{${get(
+									correct_color,
+								)}}{&1}=[_2*&1_]$$`,
 							},
 						],
 					],
@@ -3215,7 +3326,9 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `La moitié de $$&2$$ est &solution car $$2 \\times \\textcolor{${correct_color}}{&1}=&2$$`,
+								text: `La moitié de $$&2$$ est &solution car $$2 \\times \\textcolor{${get(
+									correct_color,
+								)}}{&1}=&2$$`,
 							},
 						],
 					],
@@ -3258,7 +3371,9 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `La moitié de $$&2$$ est &solution car $$2 \\times \\textcolor{${correct_color}}{&1}=&2$$`,
+								text: `La moitié de $$&2$$ est &solution car $$2 \\times \\textcolor{${get(
+									correct_color,
+								)}}{&1}=&2$$`,
 							},
 						],
 					],
@@ -3308,7 +3423,9 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `Le tiers de $$[_3*&1_]$$ est &solution car $$3 \\times \\textcolor{${correct_color}}{&1}=[_3*&1_]$$`,
+								text: `Le tiers de $$[_3*&1_]$$ est &solution car $$3 \\times \\textcolor{${get(
+									correct_color,
+								)}}{&1}=[_3*&1_]$$`,
 							},
 						],
 					],
@@ -3393,7 +3510,9 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `Le quart de $$[_4*&1_]$$ est &solution car $$4 \\times \\textcolor{${correct_color}}{&1}=[_4*&1_]$$`,
+								text: `Le quart de $$[_4*&1_]$$ est &solution car $$4 \\times \\textcolor{${get(
+									correct_color,
+								)}}{&1}=[_4*&1_]$$`,
 							},
 						],
 					],
@@ -3477,12 +3596,20 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{[_&1*2+1_]}} \\times 50 &= \\bold{\\textcolor{${color1}}{(&1 \\times 2 + 1)}} \\times 50 \\\\ &= &1 \\times 2 \\times 50  + 50 \\\\ &= &1 \\times 100  + 50 \\\\ &=  [_&1*100_]  + 50 \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{[_&1*2+1_]}} \\times 50 &= \\bold{\\textcolor{${get(
+									color1,
+								)}}{(&1 \\times 2 + 1)}} \\times 50 \\\\ &= &1 \\times 2 \\times 50  + 50 \\\\ &= &1 \\times 100  + 50 \\\\ &=  [_&1*100_]  + 50 \\\\ &= &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{[_&1*2_]}} \\times 50 &= \\bold{\\textcolor{${color1}}{(&1 \\times 2)}} \\times 50 \\\\ &= &1 \\times 2 \\times 50 \\\\ &= &1 \\times 100 \\\\ &=  [_&1*100_] \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{[_&1*2_]}} \\times 50 &= \\bold{\\textcolor{${get(
+									color1,
+								)}}{(&1 \\times 2)}} \\times 50 \\\\ &= &1 \\times 2 \\times 50 \\\\ &= &1 \\times 100 \\\\ &=  [_&1*100_] \\\\ &= &sol \\end{align}$$`,
 							},
 						],
 					],
@@ -3504,12 +3631,20 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{[_&1*4+&2_]}} \\times 25 &= \\bold{\\textcolor{${color1}}{(&1 \\times 4 + &2)}} \\times 25 \\\\ &= &1 \\times \\bold{\\textcolor{yellow}{4 \\times 25}}  + &2 \\times 25 \\\\ &= &1 \\times \\bold{\\textcolor{yellow}{100}} + [_&2*25_] \\\\ &=  [_&1*100_]  + [_&2*25_] \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{[_&1*4+&2_]}} \\times 25 &= \\bold{\\textcolor{${get(
+									color1,
+								)}}{(&1 \\times 4 + &2)}} \\times 25 \\\\ &= &1 \\times \\bold{\\textcolor{yellow}{4 \\times 25}}  + &2 \\times 25 \\\\ &= &1 \\times \\bold{\\textcolor{yellow}{100}} + [_&2*25_] \\\\ &=  [_&1*100_]  + [_&2*25_] \\\\ &= &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{[_&1*4_]}} \\times 25 &= \\bold{\\textcolor{${color1}}{(&1 \\times 4)}} \\times 25 \\\\ &= &1 \\times \\bold{\\textcolor{yellow}{4 \\times 25}} \\\\ &= &1 \\times \\bold{\\textcolor{yellow}{100}} \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{[_&1*4_]}} \\times 25 &= \\bold{\\textcolor{${get(
+									color1,
+								)}}{(&1 \\times 4)}} \\times 25 \\\\ &= &1 \\times \\bold{\\textcolor{yellow}{4 \\times 25}} \\\\ &= &1 \\times \\bold{\\textcolor{yellow}{100}} \\\\ &= &sol \\end{align}$$`,
 							},
 						],
 					],
@@ -3852,22 +3987,46 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{2}} \\times &1 \\times  \\bold{\\textcolor{${color1}}{5}} &= \\bold{\\textcolor{${color1}}{10}} \\times &1 \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{2}} \\times &1 \\times  \\bold{\\textcolor{${get(
+									color1,
+								)}}{5}} &= \\bold{\\textcolor{${get(
+									color1,
+								)}}{10}} \\times &1 \\\\ &= &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{5}} \\times &1 \\times  \\bold{\\textcolor{${color1}}{2}} &= \\bold{\\textcolor{${color1}}{10}} \\times &1 \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{5}} \\times &1 \\times  \\bold{\\textcolor{${get(
+									color1,
+								)}}{2}} &= \\bold{\\textcolor{${get(
+									color1,
+								)}}{10}} \\times &1 \\\\ &= &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} &1 \\times \\bold{\\textcolor{${color1}}{2}} \\times  \\bold{\\textcolor{${color1}}{5}} &= &1 \\times \\bold{\\textcolor{${color1}}{10}} \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} &1 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{2}} \\times  \\bold{\\textcolor{${get(
+									color1,
+								)}}{5}} &= &1 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{10}} \\\\ &= &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} &1 \\times \\bold{\\textcolor{${color1}}{5}} \\times  \\bold{\\textcolor{${color1}}{2}} &=   &1 \\times \\bold{\\textcolor{${color1}}{10}} \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} &1 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{5}} \\times  \\bold{\\textcolor{${get(
+									color1,
+								)}}{2}} &=   &1 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{10}} \\\\ &= &sol \\end{align}$$`,
 							},
 						],
 					],
@@ -3893,32 +4052,68 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{&1}}  \\times  \\bold{\\textcolor{${color1}}{&2}} \\times &3 &= \\bold{\\textcolor{${color1}}{100}} \\times &3 \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}  \\times  \\bold{\\textcolor{${get(
+									color1,
+								)}}{&2}} \\times &3 &= \\bold{\\textcolor{${get(
+									color1,
+								)}}{100}} \\times &3 \\\\ &= &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{&2}}  \\times  \\bold{\\textcolor{${color1}}{&1}} \\times &3 &= \\bold{\\textcolor{${color1}}{100}} \\times &3 \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{&2}}  \\times  \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\times &3 &= \\bold{\\textcolor{${get(
+									color1,
+								)}}{100}} \\times &3 \\\\ &= &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{&2}}  \\times  &3 \\times \\bold{\\textcolor{${color1}}{&1}} &= \\bold{\\textcolor{${color1}}{100}} \\times &3 \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{&2}}  \\times  &3 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} &= \\bold{\\textcolor{${get(
+									color1,
+								)}}{100}} \\times &3 \\\\ &= &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{&1}}  \\times  &3 \\times \\bold{\\textcolor{${color1}}{&2}} &= \\bold{\\textcolor{${color1}}{100}} \\times &3 \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}  \\times  &3 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&2}} &= \\bold{\\textcolor{${get(
+									color1,
+								)}}{100}} \\times &3 \\\\ &= &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} &3 \\times \\bold{\\textcolor{${color1}}{&2}} \\times \\bold{\\textcolor{${color1}}{&1}} &= &3 \\times \\bold{\\textcolor{${color1}}{100}} \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} &3 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&2}} \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} &= &3 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{100}} \\\\ &= &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} &3 \\times \\bold{\\textcolor{${color1}}{&1}} \\times \\bold{\\textcolor{${color1}}{&2}} &= &3 \\times \\bold{\\textcolor{${color1}}{100}} \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} &3 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&2}} &= &3 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{100}} \\\\ &= &sol \\end{align}$$`,
 							},
 						],
 					],
@@ -3939,8 +4134,14 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} 12 \\times \\bold{\\textcolor{${color1}}{&1}}  \
-								&= 10 \\times \\bold{\\textcolor{${color1}}{&1}} + 2 \\times \\bold{\\textcolor{${color1}}{&1}} \\\\ \
+								text: `$$\\begin{align} 12 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}  \
+								&= 10 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} + 2 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\\\ \
 								&= [_10*&1_] + [_2*&1_] \\\\ \
 								&= &sol \\end{align}$$`,
 							},
@@ -3959,8 +4160,14 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} 13 \\times \\bold{\\textcolor{${color1}}{&1}}  \
-								&= 10 \\times \\bold{\\textcolor{${color1}}{&1}} + 3 \\times \\bold{\\textcolor{${color1}}{&1}} \\\\ \
+								text: `$$\\begin{align} 13 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}  \
+								&= 10 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} + 3 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\\\ \
 								&= [_10*&1_] + [_3*&1_] \\\\ \
 								&= &sol \\end{align}$$`,
 							},
@@ -3980,8 +4187,12 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} 21 \\times \\bold{\\textcolor{${color1}}{&1}}  \
-								&= 20 \\times \\bold{\\textcolor{${color1}}{&1}} +  \\bold{\\textcolor{${color1}}{&1}} \\\\ \
+								text: `$$\\begin{align} 21 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}  \
+								&= 20 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} +  \\bold{\\textcolor{${get(color1)}}{&1}} \\\\ \
 								&= [_20*&1_] + &1 \\\\ \
 								&= &sol \\end{align}$$`,
 							},
@@ -4002,8 +4213,14 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} 22 \\times \\bold{\\textcolor{${color1}}{&1}}  \
-								&= 20 \\times \\bold{\\textcolor{${color1}}{&1}} + 2 \\times \\bold{\\textcolor{${color1}}{&1}} \\\\ \
+								text: `$$\\begin{align} 22 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}  \
+								&= 20 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} + 2 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\\\ \
 								&= [_20*&1_] + [_2*&1_] \\\\ \
 								&= &sol \\end{align}$$`,
 							},
@@ -4023,8 +4240,12 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} 19 \\times \\bold{\\textcolor{${color1}}{&1}}  \
-								&= 20 \\times \\bold{\\textcolor{${color1}}{&1}} - \\bold{\\textcolor{${color1}}{&1}} \\\\ \
+								text: `$$\\begin{align} 19 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}  \
+								&= 20 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} - \\bold{\\textcolor{${get(color1)}}{&1}} \\\\ \
 								&= [_20*&1_] - &1 \\\\ \
 								&= &sol \\end{align}$$`,
 							},
@@ -4044,8 +4265,14 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} 18 \\times \\bold{\\textcolor{${color1}}{&1}}  \
-								&= 20 \\times \\bold{\\textcolor{${color1}}{&1}} - 2 \\times \\bold{\\textcolor{${color1}}{&1}} \\\\ \
+								text: `$$\\begin{align} 18 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}  \
+								&= 20 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} - 2 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\\\ \
 								&= [_20*&1_] - [_2*&1_] \\\\ \
 								&= &sol \\end{align}$$`,
 							},
@@ -4065,8 +4292,12 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} 11 \\times \\bold{\\textcolor{${color1}}{&1}}  \
-								&= 10 \\times \\bold{\\textcolor{${color1}}{&1}} + \\bold{\\textcolor{${color1}}{&1}} \\\\ \
+								text: `$$\\begin{align} 11 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}  \
+								&= 10 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} + \\bold{\\textcolor{${get(color1)}}{&1}} \\\\ \
 								&= [_10*&1_] + &1 \\\\ \
 								&= &sol \\end{align}$$`,
 							},
@@ -4086,8 +4317,14 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} 12 \\times \\bold{\\textcolor{${color1}}{&1}}  \
-								&= 10 \\times \\bold{\\textcolor{${color1}}{&1}} + 2 \\times \\bold{\\textcolor{${color1}}{&1}} \\\\ \
+								text: `$$\\begin{align} 12 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}  \
+								&= 10 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} + 2 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\\\ \
 								&= [_10*&1_] + [_2*&1_] \\\\ \
 								&= &sol \\end{align}$$`,
 							},
@@ -4107,8 +4344,12 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} 21 \\times \\bold{\\textcolor{${color1}}{&1}}  \
-								&= 20 \\times \\bold{\\textcolor{${color1}}{&1}} +  \\bold{\\textcolor{${color1}}{&1}} \\\\ \
+								text: `$$\\begin{align} 21 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}  \
+								&= 20 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} +  \\bold{\\textcolor{${get(color1)}}{&1}} \\\\ \
 								&= [_20*&1_] + &1 \\\\ \
 								&= &sol \\end{align}$$`,
 							},
@@ -4128,8 +4369,14 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} 22 \\times \\bold{\\textcolor{${color1}}{&1}}  \
-								&= 20 \\times \\bold{\\textcolor{${color1}}{&1}} + 2 \\times \\bold{\\textcolor{${color1}}{&1}} \\\\ \
+								text: `$$\\begin{align} 22 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}  \
+								&= 20 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} + 2 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\\\ \
 								&= [_20*&1_] + [_2*&1_] \\\\ \
 								&= &sol \\end{align}$$`,
 							},
@@ -4149,8 +4396,12 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} 9 \\times \\bold{\\textcolor{${color1}}{&1}}  \
-								&= 10 \\times \\bold{\\textcolor{${color1}}{&1}} - \\bold{\\textcolor{${color1}}{&1}} \\\\ \
+								text: `$$\\begin{align} 9 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}  \
+								&= 10 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} - \\bold{\\textcolor{${get(color1)}}{&1}} \\\\ \
 								&= [_10*&1_] - &1 \\\\ \
 								&= &sol \\end{align}$$`,
 							},
@@ -4170,8 +4421,12 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} 19 \\times \\bold{\\textcolor{${color1}}{&1}}  \
-								&= 20 \\times \\bold{\\textcolor{${color1}}{&1}} - \\bold{\\textcolor{${color1}}{&1}} \\\\ \
+								text: `$$\\begin{align} 19 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}  \
+								&= 20 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} - \\bold{\\textcolor{${get(color1)}}{&1}} \\\\ \
 								&= [_20*&1_] - &1 \\\\ \
 								&= &sol \\end{align}$$`,
 							},
@@ -4191,8 +4446,14 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} 18 \\times \\bold{\\textcolor{${color1}}{&1}}  \
-								&= 20 \\times \\bold{\\textcolor{${color1}}{&1}} - 2 \\times \\bold{\\textcolor{${color1}}{&1}} \\\\ \
+								text: `$$\\begin{align} 18 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}  \
+								&= 20 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} - 2 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\\\ \
 								&= [_20*&1_] - [_2*&1_] \\\\ \
 								&= &sol \\end{align}$$`,
 							},
@@ -4211,8 +4472,12 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} 101 \\times \\bold{\\textcolor{${color1}}{&1}}  \
-								&= 100 \\times \\bold{\\textcolor{${color1}}{&1}} + \\bold{\\textcolor{${color1}}{&1}} \\\\ \
+								text: `$$\\begin{align} 101 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}  \
+								&= 100 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} + \\bold{\\textcolor{${get(color1)}}{&1}} \\\\ \
 								&= [_100*&1_] + &1 \\\\ \
 								&= &sol \\end{align}$$`,
 							},
@@ -4231,8 +4496,14 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} 102 \\times \\bold{\\textcolor{${color1}}{&1}}  \
-								&= 100 \\times \\bold{\\textcolor{${color1}}{&1}} + 2 \\times \\bold{\\textcolor{${color1}}{&1}} \\\\ \
+								text: `$$\\begin{align} 102 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}  \
+								&= 100 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} + 2 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\\\ \
 								&= [_100*&1_] + [_2*&1_] \\\\ \
 								&= &sol \\end{align}$$`,
 							},
@@ -4251,8 +4522,12 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} 99 \\times \\bold{\\textcolor{${color1}}{&1}} \
-								&= 100 \\times \\bold{\\textcolor{${color1}}{&1}} - \\bold{\\textcolor{${color1}}{&1}} \\\\ \
+								text: `$$\\begin{align} 99 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \
+								&= 100 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} - \\bold{\\textcolor{${get(color1)}}{&1}} \\\\ \
 								&= [_100*&1_] - &1 \\\\ \
 								&= &sol \\end{align}$$`,
 							},
@@ -4272,8 +4547,14 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} 98 \\times \\bold{\\textcolor{${color1}}{&1}}  \
-								&= 100 \\times \\bold{\\textcolor{${color1}}{&1}} - 2 \\times \\bold{\\textcolor{${color1}}{&1}} \\\\ \
+								text: `$$\\begin{align} 98 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}  \
+								&= 100 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} - 2 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\\\ \
 								&= [_100*&1_] - [_2*&1_] \\\\ \
 								&= &sol \\end{align}$$`,
 							},
@@ -4293,8 +4574,8 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								99 \\times \\textcolor{${color1}}{&1} + \\textcolor{${color1}}{&1} \
-								&= 100 \\times \\textcolor{${color1}}{&1}  \\\\ \
+								99 \\times \\textcolor{${get(color1)}}{&1} + \\textcolor{${get(color1)}}{&1} \
+								&= 100 \\times \\textcolor{${get(color1)}}{&1}  \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -4302,8 +4583,8 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								\\textcolor{${color1}}{&1} + 99 \\times \\textcolor{${color1}}{&1}  \
-								&= 100 \\times \\textcolor{${color1}}{&1}  \\\\ \
+								\\textcolor{${get(color1)}}{&1} + 99 \\times \\textcolor{${get(color1)}}{&1}  \
+								&= 100 \\times \\textcolor{${get(color1)}}{&1}  \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -4311,8 +4592,8 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								\\textcolor{${color1}}{&1} \\times 99 + \\textcolor{${color1}}{&1} \
-								&= 100 \\times \\textcolor{${color1}}{&1}  \\\\ \
+								\\textcolor{${get(color1)}}{&1} \\times 99 + \\textcolor{${get(color1)}}{&1} \
+								&= 100 \\times \\textcolor{${get(color1)}}{&1}  \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -4320,8 +4601,8 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								\\textcolor{${color1}}{&1} + \\textcolor{${color1}}{&1} \\times 99 \
-								&= 100 \\times \\textcolor{${color1}}{&1}  \\\\ \
+								\\textcolor{${get(color1)}}{&1} + \\textcolor{${get(color1)}}{&1} \\times 99 \
+								&= 100 \\times \\textcolor{${get(color1)}}{&1}  \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -4345,29 +4626,45 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} &2 \\times \\bold{\\textcolor{${color1}}{&1}} + [_10-&2_] \\times \\bold{\\textcolor{${color1}}{&1}} \
-								&=  10 \\times \\bold{\\textcolor{${color1}}{&1}}\\\\  \
+								text: `$$\\begin{align} &2 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} + [_10-&2_] \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \
+								&=  10 \\times \\bold{\\textcolor{${get(color1)}}{&1}}\\\\  \
 								&= &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{&1}} \\times &2 + [_10-&2_] \\times \\bold{\\textcolor{${color1}}{&1}} \
-								&=  10 \\times \\bold{\\textcolor{${color1}}{&1}}\\\\  \
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\times &2 + [_10-&2_] \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \
+								&=  10 \\times \\bold{\\textcolor{${get(color1)}}{&1}}\\\\  \
 								&= &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} &2 \\times \\bold{\\textcolor{${color1}}{&1}} + \\bold{\\textcolor{${color1}}{&1}} \\times [_10-&2_] \
-								&=  10 \\times \\bold{\\textcolor{${color1}}{&1}}\\\\  \
+								text: `$$\\begin{align} &2 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} + \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\times [_10-&2_] \
+								&=  10 \\times \\bold{\\textcolor{${get(color1)}}{&1}}\\\\  \
 								&= &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align}  \\bold{\\textcolor{${color1}}{&1}} \\times &2+ \\bold{\\textcolor{${color1}}{&1}} \\times [_10-&2_] \
-								&=  10 \\times \\bold{\\textcolor{${color1}}{&1}}\\\\  \
+								text: `$$\\begin{align}  \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\times &2+ \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\times [_10-&2_] \
+								&=  10 \\times \\bold{\\textcolor{${get(color1)}}{&1}}\\\\  \
 								&= &sol \\end{align}$$`,
 							},
 						],
@@ -4390,29 +4687,45 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} &2 \\times \\bold{\\textcolor{${color1}}{&1}} + [_100-&2_] \\times \\bold{\\textcolor{${color1}}{&1}} \
-								&=  100 \\times \\bold{\\textcolor{${color1}}{&1}}\\\\  \
+								text: `$$\\begin{align} &2 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} + [_100-&2_] \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \
+								&=  100 \\times \\bold{\\textcolor{${get(color1)}}{&1}}\\\\  \
 								&= &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{&1}} \\times &2 + [_100-&2_] \\times \\bold{\\textcolor{${color1}}{&1}} \
-								&=  100 \\times \\bold{\\textcolor{${color1}}{&1}}\\\\  \
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\times &2 + [_100-&2_] \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \
+								&=  100 \\times \\bold{\\textcolor{${get(color1)}}{&1}}\\\\  \
 								&= &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} &2 \\times \\bold{\\textcolor{${color1}}{&1}} + \\bold{\\textcolor{${color1}}{&1}} \\times [_100-&2_] \
-								&=  100 \\times \\bold{\\textcolor{${color1}}{&1}}\\\\  \
+								text: `$$\\begin{align} &2 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} + \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\times [_100-&2_] \
+								&=  100 \\times \\bold{\\textcolor{${get(color1)}}{&1}}\\\\  \
 								&= &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align}  \\bold{\\textcolor{${color1}}{&1}} \\times &2+ \\bold{\\textcolor{${color1}}{&1}} \\times [_100-&2_] \
-								&=  100 \\times \\bold{\\textcolor{${color1}}{&1}}\\\\  \
+								text: `$$\\begin{align}  \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\times &2+ \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\times [_100-&2_] \
+								&=  100 \\times \\bold{\\textcolor{${get(color1)}}{&1}}\\\\  \
 								&= &sol \\end{align}$$`,
 							},
 						],
@@ -4570,7 +4883,9 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `&solution est un diviseur de $$[_&1*&2_]$$ car $$[_&1*&2_]=\\textcolor{${correct_color}}{&1} \\times &2$$`,
+								text: `&solution est un diviseur de $$[_&1*&2_]$$ car $$[_&1*&2_]=\\textcolor{${get(
+									correct_color,
+								)}}{&1} \\times &2$$`,
 							},
 						],
 					],
@@ -4826,7 +5141,9 @@ const questions: Questions = {
 						],
 						[
 							{
-								text: `Le reste est &solution car $$[_&1*&2+&3_]=(&1 \\times &2) + &sol1$$ et $$\\textcolor{${correct_color}}{&3} \\lt &1$$`,
+								text: `Le reste est &solution car $$[_&1*&2+&3_]=(&1 \\times &2) + &sol1$$ et $$\\textcolor{${get(
+									correct_color,
+								)}}{&3} \\lt &1$$`,
 							},
 						],
 					],
@@ -4929,8 +5246,8 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								\\textcolor{${color1}}{\\left( &1 + &2 \\right)} \\times &3 \
-								&=  \\textcolor{${color1}}{[_&1+&2_]} \\times &3 \\\\ \
+								\\textcolor{${get(color1)}}{\\left( &1 + &2 \\right)} \\times &3 \
+								&=  \\textcolor{${get(color1)}}{[_&1+&2_]} \\times &3 \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -4938,8 +5255,8 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								&3 \\times \\textcolor{${color1}}{\\left( &1 + &2 \\right)} \
-								&=  &3 \\times \\textcolor{${color1}}{[_&1+&2_]} \\\\ \
+								&3 \\times \\textcolor{${get(color1)}}{\\left( &1 + &2 \\right)} \
+								&=  &3 \\times \\textcolor{${get(color1)}}{[_&1+&2_]} \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -4947,8 +5264,8 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								\\textcolor{${color1}}{\\left( &1 - &2 \\right)} \\times &3  \
-								&=  \\textcolor{${color1}}{[_&1-&2_]} \\times &3 \\\\ \
+								\\textcolor{${get(color1)}}{\\left( &1 - &2 \\right)} \\times &3  \
+								&=  \\textcolor{${get(color1)}}{[_&1-&2_]} \\times &3 \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -4956,8 +5273,8 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								&3 \\times \\textcolor{${color1}}{\\left( &1 - &2 \\right)} \
-								&=  &3 \\times \\textcolor{${color1}}{[_&1-&2_]} \\\\ \
+								&3 \\times \\textcolor{${get(color1)}}{\\left( &1 - &2 \\right)} \
+								&=  &3 \\times \\textcolor{${get(color1)}}{[_&1-&2_]} \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -4965,8 +5282,8 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								\\textcolor{${color1}}{\\left( [_&1*&3_] + [_&2*&3_] \\right)} \\div &3  \
-								&=  \\textcolor{${color1}}{[_(&1+&2)*&3_]} \\div &3 \\\\ \
+								\\textcolor{${get(color1)}}{\\left( [_&1*&3_] + [_&2*&3_] \\right)} \\div &3  \
+								&=  \\textcolor{${get(color1)}}{[_(&1+&2)*&3_]} \\div &3 \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -4974,8 +5291,8 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								\\textcolor{${color1}}{\\left( [_&1*&3_] - [_&2*&3_] \\right)} \\div &3  \
-								&=  \\textcolor{${color1}}{[_(&1-&2)*&3_]} \\div &3 \\\\ \
+								\\textcolor{${get(color1)}}{\\left( [_&1*&3_] - [_&2*&3_] \\right)} \\div &3  \
+								&=  \\textcolor{${get(color1)}}{[_(&1-&2)*&3_]} \\div &3 \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -4983,8 +5300,8 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align}  \
-								[_(&1+&2)*&3_] \\div \\textcolor{${color1}}{\\left( &1 + &2 \\right)} \
-								&= [_(&1+&2)*&3_] \\div \\textcolor{${color1}}{[_&1+&2_]}   \\\\ \
+								[_(&1+&2)*&3_] \\div \\textcolor{${get(color1)}}{\\left( &1 + &2 \\right)} \
+								&= [_(&1+&2)*&3_] \\div \\textcolor{${get(color1)}}{[_&1+&2_]}   \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -4992,8 +5309,8 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								[_&1+&2+&3_] - \\textcolor{${color1}}{\\left( &1 + &2 \\right)}  \
-								&= [_&1+&2+&3_] - \\textcolor{${color1}}{[_&1+&2_]} \\\\ \
+								[_&1+&2+&3_] - \\textcolor{${get(color1)}}{\\left( &1 + &2 \\right)}  \
+								&= [_&1+&2+&3_] - \\textcolor{${get(color1)}}{[_&1+&2_]} \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -5036,8 +5353,12 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								\\textcolor{${color1}}{\\left( &1 + &2 \\right)} \\times \\textcolor{${color2}}{\\left( &3 + &4 \\right)} \
-								&=  \\textcolor{${color1}}{[_&1+&2_]} \\times \\textcolor{${color2}}{[_&3+&4_]} \\\\ \
+								\\textcolor{${get(color1)}}{\\left( &1 + &2 \\right)} \\times \\textcolor{${get(
+									color2,
+								)}}{\\left( &3 + &4 \\right)} \
+								&=  \\textcolor{${get(color1)}}{[_&1+&2_]} \\times \\textcolor{${get(
+									color2,
+								)}}{[_&3+&4_]} \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -5045,8 +5366,12 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								\\textcolor{${color1}}{\\left( &1- &2 \\right)} \\times \\textcolor{${color2}}{\\left( &3 + &4 \\right)} \
-								&=  \\textcolor{${color1}}{[_&1-&2_]} \\times \\textcolor{${color2}}{[_&3+&4_]} \\\\ \
+								\\textcolor{${get(color1)}}{\\left( &1- &2 \\right)} \\times \\textcolor{${get(
+									color2,
+								)}}{\\left( &3 + &4 \\right)} \
+								&=  \\textcolor{${get(color1)}}{[_&1-&2_]} \\times \\textcolor{${get(
+									color2,
+								)}}{[_&3+&4_]} \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -5054,8 +5379,12 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align}  \
-								&4 \\times \\left( \\textcolor{${color1}}{\\left([_&1*&3_] + [_&2*&3_] \\right)} \\div &3 \\right)  \
-								&= &4 \\times \\left( \\textcolor{${color1}}{[_&1*&3+&2*&3_]} \\div &3 \\right) \\\\ \
+								&4 \\times \\left( \\textcolor{${get(
+									color1,
+								)}}{\\left([_&1*&3_] + [_&2*&3_] \\right)} \\div &3 \\right)  \
+								&= &4 \\times \\left( \\textcolor{${get(
+									color1,
+								)}}{[_&1*&3+&2*&3_]} \\div &3 \\right) \\\\ \
 								&= &4 \\times [_&1+&2_]  \\\\ \
 								&= &sol \
 								\\end{align}$$`,
@@ -5098,8 +5427,8 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align}\
-								  &1 +  \\textcolor{${color1}}{&2 \\times &3} \
-								  &=  &1 +  \\textcolor{${color1}}{[_&2*&3_]} \\\\ \
+								  &1 +  \\textcolor{${get(color1)}}{&2 \\times &3} \
+								  &=  &1 +  \\textcolor{${get(color1)}}{[_&2*&3_]} \\\\ \
 								  &= &sol \
 								  \\end{align}$$`,
 							},
@@ -5107,8 +5436,8 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align}  \
-								\\textcolor{${color1}}{&2 \\times &3} + &1 \
-								&=   \\textcolor{${color1}}{[_&2*&3_]} + &1 \\\\ \
+								\\textcolor{${get(color1)}}{&2 \\times &3} + &1 \
+								&=   \\textcolor{${get(color1)}}{[_&2*&3_]} + &1 \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -5116,8 +5445,8 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align}  \
-								[_&1*&2+&3_] - \\textcolor{${color1}}{&1 \\times &2} \
-								&=  [_&1*&2+&3_] - \\textcolor{${color1}}{[_&1*&2_]} \\\\ \
+								[_&1*&2+&3_] - \\textcolor{${get(color1)}}{&1 \\times &2} \
+								&=  [_&1*&2+&3_] - \\textcolor{${get(color1)}}{[_&1*&2_]} \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -5125,8 +5454,8 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								[_&2+&4_] - \\textcolor{${color1}}{[_&2*&3_] \\div &3} \
-								&=  [_&2+&4_] - \\textcolor{${color1}}{&2} \\\\ \
+								[_&2+&4_] - \\textcolor{${get(color1)}}{[_&2*&3_] \\div &3} \
+								&=  [_&2+&4_] - \\textcolor{${get(color1)}}{&2} \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -5134,8 +5463,8 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								&1+ \\textcolor{${color1}}{[_&2*&3_] \\div &3} \
-								&=  &1 + \\textcolor{${color1}}{&2} \\\\ \
+								&1+ \\textcolor{${get(color1)}}{[_&2*&3_] \\div &3} \
+								&=  &1 + \\textcolor{${get(color1)}}{&2} \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -5143,8 +5472,8 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align}   \
-								\\textcolor{${color1}}{[_&2*&3_] \\div &3} + &1 \
-								&=  \\textcolor{${color1}}{&2} + &1 \\\\ \
+								\\textcolor{${get(color1)}}{[_&2*&3_] \\div &3} + &1 \
+								&=  \\textcolor{${get(color1)}}{&2} + &1 \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -5167,8 +5496,8 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								\\textcolor{${color1}}{[_&1*&2_]\\div &1} \\times &3 \
-								&=  \\textcolor{${color1}}{&2} \\times &3\\\\ \
+								\\textcolor{${get(color1)}}{[_&1*&2_]\\div &1} \\times &3 \
+								&=  \\textcolor{${get(color1)}}{&2} \\times &3\\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -5176,8 +5505,8 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								\\textcolor{${color1}}{&3 - &1} + &2  \
-								&=  \\textcolor{${color1}}{[_&3-&1_]} + &2 \\\\ \
+								\\textcolor{${get(color1)}}{&3 - &1} + &2  \
+								&=  \\textcolor{${get(color1)}}{[_&3-&1_]} + &2 \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -5235,8 +5564,12 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align}  \
-								\\textcolor{${color1}}{&1 \\times &2} + \\textcolor{${color2}}{&3 \\times &4} \
-								&=  \\textcolor{${color1}}{[_&1*&2_]} + \\textcolor{${color2}}{[_&3*&4_]} \\\\ \
+								\\textcolor{${get(color1)}}{&1 \\times &2} + \\textcolor{${get(
+									color2,
+								)}}{&3 \\times &4} \
+								&=  \\textcolor{${get(color1)}}{[_&1*&2_]} + \\textcolor{${get(
+									color2,
+								)}}{[_&3*&4_]} \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -5244,8 +5577,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								 \\textcolor{${color1}}{&1 \\times &2} + \\textcolor{${color2}}{[_&3*&4_] \\div &4} \
-								 &= \\textcolor{${color1}}{[_&1*&2_]}+\\textcolor{${color2}}{&3}\\\\ \
+								 \\textcolor{${get(color1)}}{&1 \\times &2} + \\textcolor{${get(
+									color2,
+								)}}{[_&3*&4_] \\div &4} \
+								 &= \\textcolor{${get(color1)}}{[_&1*&2_]}+\\textcolor{${get(color2)}}{&3}\\\\ \
 								 &= &sol \
 								 \\end{align}$$`,
 							},
@@ -5253,8 +5588,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align}  \
-								\\textcolor{${color1}}{[_&3*&4_] \\div &4} + \\textcolor{${color2}}{&1 \\times &2} \
-								&= \\textcolor{${color1}}{&3}+\\textcolor{${color2}}{[_&1*&2_]} \\\\ \
+								\\textcolor{${get(color1)}}{[_&3*&4_] \\div &4} + \\textcolor{${get(
+									color2,
+								)}}{&1 \\times &2} \
+								&= \\textcolor{${get(color1)}}{&3}+\\textcolor{${get(color2)}}{[_&1*&2_]} \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -5262,8 +5599,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align}  \
-								\\textcolor{${color1}}{[_&3*&4_] \\div &4} + \\textcolor{${color2}}{[_&1*&2_]\\div &2} \
-								&= \\textcolor{${color1}}{&3}+\\textcolor{${color2}}{&1} \\\\ \
+								\\textcolor{${get(color1)}}{[_&3*&4_] \\div &4} + \\textcolor{${get(
+									color2,
+								)}}{[_&1*&2_]\\div &2} \
+								&= \\textcolor{${get(color1)}}{&3}+\\textcolor{${get(color2)}}{&1} \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -5271,8 +5610,12 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align}  \
-								\\textcolor{${color1}}{[_&1+1_] \\times [_&2+1_]} - \\textcolor{${color2}}{&1 \\times &2} \
-								&= \\textcolor{${color1}}{[_(&1+1)*(&2+1)_]}-\\textcolor{${color2}}{[_&1*&2_]} \\\\ \
+								\\textcolor{${get(color1)}}{[_&1+1_] \\times [_&2+1_]} - \\textcolor{${get(
+									color2,
+								)}}{&1 \\times &2} \
+								&= \\textcolor{${get(color1)}}{[_(&1+1)*(&2+1)_]}-\\textcolor{${get(
+									color2,
+								)}}{[_&1*&2_]} \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -6089,12 +6432,24 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} [._&8_] +\\bold{\\textcolor{${color1}}{[._&5_]}} + \\bold{\\textcolor{${color1}}{[._&6_]}} &= [._&8_] + \\bold{\\textcolor{${color1}}{[._&5+&6_]}} \\\\ &=  &sol \\end{align}$$`,
+								text: `$$\\begin{align} [._&8_] +\\bold{\\textcolor{${get(
+									color1,
+								)}}{[._&5_]}} + \\bold{\\textcolor{${get(
+									color1,
+								)}}{[._&6_]}} &= [._&8_] + \\bold{\\textcolor{${get(
+									color1,
+								)}}{[._&5+&6_]}} \\\\ &=  &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{[._&5_]}}+ [._&8_] + \\bold{\\textcolor{${color1}}{[._&6_]}} &= [._&8_] + \\bold{\\textcolor{${color1}}{[._&5+&6_]}} \\\\ &=  &sol \\end{align}$$`,
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{[._&5_]}}+ [._&8_] + \\bold{\\textcolor{${get(
+									color1,
+								)}}{[._&6_]}} &= [._&8_] + \\bold{\\textcolor{${get(
+									color1,
+								)}}{[._&5+&6_]}} \\\\ &=  &sol \\end{align}$$`,
 							},
 						],
 					],
@@ -6127,8 +6482,18 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\bold{\\textcolor{${color1}}{[._&3_]}} + \\bold{\\textcolor{${color1}}{[._&4_]}} + \\bold{\\textcolor{${color2}}{[._&5_]}} + \\bold{\\textcolor{${color2}}{[._&6_]}} \
-              &=  \\bold{\\textcolor{${color1}}{[._&3+&4_]}} + \\bold{\\textcolor{${color2}}{[._&5+&6_]}} \\\\ \
+              \\bold{\\textcolor{${get(
+								color1,
+							)}}{[._&3_]}} + \\bold{\\textcolor{${get(
+									color1,
+								)}}{[._&4_]}} + \\bold{\\textcolor{${get(
+									color2,
+								)}}{[._&5_]}} + \\bold{\\textcolor{${get(color2)}}{[._&6_]}} \
+              &=  \\bold{\\textcolor{${get(
+								color1,
+							)}}{[._&3+&4_]}} + \\bold{\\textcolor{${get(
+									color2,
+								)}}{[._&5+&6_]}} \\\\ \
               &=  &sol  \
               \\end{align}$$`,
 							},
@@ -6136,8 +6501,18 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\bold{\\textcolor{${color1}}{[._&3_]}} + \\bold{\\textcolor{${color2}}{[._&5_]}} + \\bold{\\textcolor{${color1}}{[._&4_]}} + \\bold{\\textcolor{${color2}}{[._&6_]}} \
-              &=  \\bold{\\textcolor{${color1}}{[._&3+&4_]}} + \\bold{\\textcolor{${color2}}{[._&5+&6_]}} \\\\ \
+              \\bold{\\textcolor{${get(
+								color1,
+							)}}{[._&3_]}} + \\bold{\\textcolor{${get(
+									color2,
+								)}}{[._&5_]}} + \\bold{\\textcolor{${get(
+									color1,
+								)}}{[._&4_]}} + \\bold{\\textcolor{${get(color2)}}{[._&6_]}} \
+              &=  \\bold{\\textcolor{${get(
+								color1,
+							)}}{[._&3+&4_]}} + \\bold{\\textcolor{${get(
+									color2,
+								)}}{[._&5+&6_]}} \\\\ \
               &=  &sol  \
               \\end{align}$$`,
 							},
@@ -6145,8 +6520,18 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\bold{\\textcolor{${color1}}{[._&3_]}} + \\bold{\\textcolor{${color2}}{[._&5_]}} + \\bold{\\textcolor{${color2}}{[._&6_]}} + \\bold{\\textcolor{${color1}}{[._&4_]}} \
-              &=  \\bold{\\textcolor{${color1}}{[._&3+&4_]}} + \\bold{\\textcolor{${color2}}{[._&5+&6_]}} \\\\ \
+              \\bold{\\textcolor{${get(
+								color1,
+							)}}{[._&3_]}} + \\bold{\\textcolor{${get(
+									color2,
+								)}}{[._&5_]}} + \\bold{\\textcolor{${get(
+									color2,
+								)}}{[._&6_]}} + \\bold{\\textcolor{${get(color1)}}{[._&4_]}} \
+              &=  \\bold{\\textcolor{${get(
+								color1,
+							)}}{[._&3+&4_]}} + \\bold{\\textcolor{${get(
+									color2,
+								)}}{[._&5+&6_]}} \\\\ \
               &=  &sol  \
               \\end{align}$$`,
 							},
@@ -6299,12 +6684,20 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$&1\\times &2=[_&1*&2_]$$ donc $$&1\\times 0,\\textcolor{${color1}}{&2}=&sol$$ ($$\\textcolor{${color1}}{1\\text{ décimale}} $$).`,
+								text: `$$&1\\times &2=[_&1*&2_]$$ donc $$&1\\times 0,\\textcolor{${get(
+									color1,
+								)}}{&2}=&sol$$ ($$\\textcolor{${get(
+									color1,
+								)}}{1\\text{ décimale}} $$).`,
 							},
 						],
 						[
 							{
-								text: `$$&1\\times &2=[_&1*&2_]$$ donc $$&1\\times 0,\\textcolor{${color1}}{0&2}=&sol$$ ($$\\textcolor{${color1}}{2\\text{ décimales}} $$).`,
+								text: `$$&1\\times &2=[_&1*&2_]$$ donc $$&1\\times 0,\\textcolor{${get(
+									color1,
+								)}}{0&2}=&sol$$ ($$\\textcolor{${get(
+									color1,
+								)}}{2\\text{ décimales}} $$).`,
 							},
 						],
 					],
@@ -6337,7 +6730,13 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `Il y a $$\\textcolor{${color1}}{[_&1-1_]\\text{ décimale(s)}}$$ dans $$[._&3:10^(&1-1)_]$$  et $$\\textcolor{${color1}}{[_&2-1_]\\text{  décimale(s)}}$$ dans $$[._&4:10^(&2-1)_]$$, donc il y a en tout $$\\textcolor{${color1}}{[_&1+&2-2_] \\text{ décimales}}$$  dans &solution.`,
+								text: `Il y a $$\\textcolor{${get(
+									color1,
+								)}}{[_&1-1_]\\text{ décimale(s)}}$$ dans $$[._&3:10^(&1-1)_]$$  et $$\\textcolor{${get(
+									color1,
+								)}}{[_&2-1_]\\text{  décimale(s)}}$$ dans $$[._&4:10^(&2-1)_]$$, donc il y a en tout $$\\textcolor{${get(
+									color1,
+								)}}{[_&1+&2-2_] \\text{ décimales}}$$  dans &solution.`,
 							},
 						],
 					],
@@ -6370,7 +6769,9 @@ const questions: Questions = {
 								text: 'donc :',
 							},
 							{
-								text: `$$[._&1*10^(-&2)_] \\times [._&3*10^(-&4)_]=&sol$$ ($$\\textcolor{${color1}}{&2+&4=[_&2+&4_]$$ décimales).`,
+								text: `$$[._&1*10^(-&2)_] \\times [._&3*10^(-&4)_]=&sol$$ ($$\\textcolor{${get(
+									color1,
+								)}}{&2+&4=[_&2+&4_]$$ décimales).`,
 							},
 						],
 					],
@@ -6414,24 +6815,36 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$[._&1*&3_]$$ est $$\\textcolor{${color1}}{[_&3_]\\text{ fois}}$$ plus grand que $$[._&1_]$$,`,
+								text: `$$[._&1*&3_]$$ est $$\\textcolor{${get(
+									color1,
+								)}}{[_&3_]\\text{ fois}}$$ plus grand que $$[._&1_]$$,`,
 							},
 							{
-								text: `donc le résultat de $$[._&1*&3_] \\times [._&2_]$$ est  $$\\textcolor{${color1}}{[_&3_]\\text{ fois}}$$ plus grand que celui de $$[._&1_]\\times[._&2_]$$,`,
+								text: `donc le résultat de $$[._&1*&3_] \\times [._&2_]$$ est  $$\\textcolor{${get(
+									color1,
+								)}}{[_&3_]\\text{ fois}}$$ plus grand que celui de $$[._&1_]\\times[._&2_]$$,`,
 							},
 							{
-								text: ` c'est-à-dire $$\\textcolor{${color1}}{[_&3_]\\times} [._&1*&2_] = &sol$$`,
+								text: ` c'est-à-dire $$\\textcolor{${get(
+									color1,
+								)}}{[_&3_]\\times} [._&1*&2_] = &sol$$`,
 							},
 						],
 						[
 							{
-								text: `$$[._&1*&3_]$$ est $$\\textcolor{${color1}}{[_&3_]\\text{ fois}}$$ plus grand que $$[._&1_]$$,`,
+								text: `$$[._&1*&3_]$$ est $$\\textcolor{${get(
+									color1,
+								)}}{[_&3_]\\text{ fois}}$$ plus grand que $$[._&1_]$$,`,
 							},
 							{
-								text: `donc le résultat de $$[._&2_] \\times [._&1*&3_] $$ est  $$\\textcolor{${color1}}{[_&3_]\\text{ fois}}$$ plus grand que celui de $$[._&2_] \\times [._&1_]$$,`,
+								text: `donc le résultat de $$[._&2_] \\times [._&1*&3_] $$ est  $$\\textcolor{${get(
+									color1,
+								)}}{[_&3_]\\text{ fois}}$$ plus grand que celui de $$[._&2_] \\times [._&1_]$$,`,
 							},
 							{
-								text: `c'est-à-dire $$\\textcolor{${color1}}{[_&3_]\\times} [._&1*&2_] = &sol$$`,
+								text: `c'est-à-dire $$\\textcolor{${get(
+									color1,
+								)}}{[_&3_]\\times} [._&1*&2_] = &sol$$`,
 							},
 						],
 					],
@@ -6512,12 +6925,24 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{&1}} \\times 1,5 &= \\bold{\\textcolor{${color1}}{&1}} + \\bold{\\textcolor{${color1}}{&1}} \\times 0,5 \\\\ &= &1 + [._0,5*&1_] \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\times 1,5 &= \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} + \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\times 0,5 \\\\ &= &1 + [._0,5*&1_] \\\\ &= &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} 1,5 \\times \\bold{\\textcolor{${color1}}{&1}} &= \\bold{\\textcolor{${color1}}{&1}} + 0,5 \\times \\bold{\\textcolor{${color1}}{&1}} \\\\ &= &1 + [._0,5*&1_] \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} 1,5 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} &= \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} + 0,5 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\\\ &= &1 + [._0,5*&1_] \\\\ &= &sol \\end{align}$$`,
 							},
 						],
 					],
@@ -6537,12 +6962,24 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{&1}} \\times 2,5 &= \\bold{\\textcolor{${color1}}{&1}} \\times 2 + \\bold{\\textcolor{${color1}}{&1}} \\times 0,5 \\\\ &= [_&1*2_] + [._0,5*&1_] \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\times 2,5 &= \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\times 2 + \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\times 0,5 \\\\ &= [_&1*2_] + [._0,5*&1_] \\\\ &= &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} 2,5 \\times \\bold{\\textcolor{${color1}}{&1}} &= 2 \\times \\bold{\\textcolor{${color1}}{&1}} + 0,5 \\times \\bold{\\textcolor{${color1}}{&1}} \\\\ &= [_&1*2_] + [._0,5*&1_] \\\\ &= &sol \\end{align}$$`,
+								text: `$$\\begin{align} 2,5 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} &= 2 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} + 0,5 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\\\ &= [_&1*2_] + [._0,5*&1_] \\\\ &= &sol \\end{align}$$`,
 							},
 						],
 					],
@@ -6626,12 +7063,20 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} &1 \\bold{\\textcolor{${color1}}{\\times 0,1}} &= &1 \\bold{\\textcolor{${color1}}{\\div 10}} \\\\ &=  &sol \\end{align}$$`,
+								text: `$$\\begin{align} &1 \\bold{\\textcolor{${get(
+									color1,
+								)}}{\\times 0,1}} &= &1 \\bold{\\textcolor{${get(
+									color1,
+								)}}{\\div 10}} \\\\ &=  &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{0,1 \\times}} &1 &= &1 \\bold{\\textcolor{${color1}}{\\div 10}} \\\\ &=  &sol \\end{align}$$`,
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{0,1 \\times}} &1 &= &1 \\bold{\\textcolor{${get(
+									color1,
+								)}}{\\div 10}} \\\\ &=  &sol \\end{align}$$`,
 							},
 						],
 					],
@@ -6655,12 +7100,20 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} [._&3_] \\bold{\\textcolor{${color1}}{\\times 0,1}} &= [._&3_] \\bold{\\textcolor{${color1}}{\\div 10}} \\\\ &=  &sol \\end{align}$$`,
+								text: `$$\\begin{align} [._&3_] \\bold{\\textcolor{${get(
+									color1,
+								)}}{\\times 0,1}} &= [._&3_] \\bold{\\textcolor{${get(
+									color1,
+								)}}{\\div 10}} \\\\ &=  &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{0,1 \\times}} [._&3_] &= [._&3_] \\bold{\\textcolor{${color1}}{\\div 10}} \\\\ &=  &sol \\end{align}$$`,
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{0,1 \\times}} [._&3_] &= [._&3_] \\bold{\\textcolor{${get(
+									color1,
+								)}}{\\div 10}} \\\\ &=  &sol \\end{align}$$`,
 							},
 						],
 					],
@@ -6688,12 +7141,20 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} [._&3_] \\bold{\\textcolor{${color1}}{\\times 0,01}} &= [._&3_] \\bold{\\textcolor{${color1}}{\\div 100}} \\\\ &=  &sol \\end{align}$$`,
+								text: `$$\\begin{align} [._&3_] \\bold{\\textcolor{${get(
+									color1,
+								)}}{\\times 0,01}} &= [._&3_] \\bold{\\textcolor{${get(
+									color1,
+								)}}{\\div 100}} \\\\ &=  &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{0,01 \\times}} [._&3_] &= [._&3_] \\bold{\\textcolor{${color1}}{\\div 100}} \\\\ &=  &sol \\end{align}$$`,
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{0,01 \\times}} [._&3_] &= [._&3_] \\bold{\\textcolor{${get(
+									color1,
+								)}}{\\div 100}} \\\\ &=  &sol \\end{align}$$`,
 							},
 						],
 					],
@@ -6719,12 +7180,20 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} [._&3_] \\bold{\\textcolor{${color1}}{\\times 0,001}} &= [._&3_] \\bold{\\textcolor{${color1}}{\\div 1000}} \\\\ &=  &sol \\end{align}$$`,
+								text: `$$\\begin{align} [._&3_] \\bold{\\textcolor{${get(
+									color1,
+								)}}{\\times 0,001}} &= [._&3_] \\bold{\\textcolor{${get(
+									color1,
+								)}}{\\div 1000}} \\\\ &=  &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} 0,001 \\bold{\\textcolor{${color1}}{\\times [._&3_]}} &= [._&3_] \\bold{\\textcolor{${color1}}{\\div 1000}} \\\\ &=  &sol \\end{align}$$`,
+								text: `$$\\begin{align} 0,001 \\bold{\\textcolor{${get(
+									color1,
+								)}}{\\times [._&3_]}} &= [._&3_] \\bold{\\textcolor{${get(
+									color1,
+								)}}{\\div 1000}} \\\\ &=  &sol \\end{align}$$`,
 							},
 						],
 					],
@@ -6748,12 +7217,20 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\bold{\\textcolor{${color1}}{[._10^(-&1)_]}} \\times [._&2_] &= [._&2_] \\bold{\\textcolor{${color1}}{\\div [._10^&1_]}} \\\\ &=  &sol \\end{align}$$`,
+								text: `$$\\begin{align} \\bold{\\textcolor{${get(
+									color1,
+								)}}{[._10^(-&1)_]}} \\times [._&2_] &= [._&2_] \\bold{\\textcolor{${get(
+									color1,
+								)}}{\\div [._10^&1_]}} \\\\ &=  &sol \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} [._&2_] \\bold{\\textcolor{${color1}}{\\times [._10^(-&1)_]}} &= [._&2_] \\bold{\\textcolor{${color1}}{\\div [._10^&1_]}} \\\\ &=  &sol \\end{align}$$`,
+								text: `$$\\begin{align} [._&2_] \\bold{\\textcolor{${get(
+									color1,
+								)}}{\\times [._10^(-&1)_]}} &= [._&2_] \\bold{\\textcolor{${get(
+									color1,
+								)}}{\\div [._10^&1_]}} \\\\ &=  &sol \\end{align}$$`,
 							},
 						],
 					],
@@ -6786,8 +7263,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								\\bold{\\textcolor{${color1}}{&1}}  \\times  \\textcolor{${color1}}{&2} \\times [._&3_] \
-								&= \\textcolor{${color1}}{100} \\times [._&3_] \\\\ \
+								\\bold{\\textcolor{${get(color1)}}{&1}}  \\times  \\textcolor{${get(
+									color1,
+								)}}{&2} \\times [._&3_] \
+								&= \\textcolor{${get(color1)}}{100} \\times [._&3_] \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -6795,34 +7274,22 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								\\textcolor{${color1}}{&2}  \\times  \\textcolor{${color1}}{&1} \\times [._&3_] \
-								&= \\textcolor{${color1}}{100} \\times [._&3_] \\\\ \
+								\\textcolor{${get(color1)}}{&2}  \\times  \\textcolor{${get(
+									color1,
+								)}}{&1} \\times [._&3_] \
+								&= \\textcolor{${get(color1)}}{100} \\times [._&3_] \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\textcolor{${color1}}{&2} \\times  [._&3_] \\times \\textcolor{${color1}}{&1} \
-								&= \\textcolor{${color1}}{100} \\times [._&3_] \\\\ \
-								&= &sol \
-								\\end{align}$$`,
-							},
-						],
-						[
-							{
-								text: `$$\\begin{align} \
-								\\textcolor{${color1}}{&1}  \\times  [._&3_] \\times \\textcolor{${color1}}{&2} \
-								&= \\textcolor{${color1}}{100} \\times [._&3_] \\\\ \
-								&= &sol \
-								\\end{align}$$`,
-							},
-						],
-						[
-							{
-								text: `$$\\begin{align} \
-								[._&3_] \\times \\textcolor{${color1}}{&2} \\times \\textcolor{${color1}}{&1} \
-								&= [._&3_] \\times \\textcolor{${color1}}{100} \\\\ \
+								text: `$$\\begin{align} \\textcolor{${get(
+									color1,
+								)}}{&2} \\times  [._&3_] \\times \\textcolor{${get(
+									color1,
+								)}}{&1} \
+								&= \\textcolor{${get(color1)}}{100} \\times [._&3_] \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -6830,8 +7297,32 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								[._&3_] \\times \\textcolor{${color1}}{&1} \\times \\textcolor{${color1}}{&2} \
-								&= [._&3_] \\times \\textcolor{${color1}}{100} \\\\ \
+								\\textcolor{${get(color1)}}{&1}  \\times  [._&3_] \\times \\textcolor{${get(
+									color1,
+								)}}{&2} \
+								&= \\textcolor{${get(color1)}}{100} \\times [._&3_] \\\\ \
+								&= &sol \
+								\\end{align}$$`,
+							},
+						],
+						[
+							{
+								text: `$$\\begin{align} \
+								[._&3_] \\times \\textcolor{${get(color1)}}{&2} \\times \\textcolor{${get(
+									color1,
+								)}}{&1} \
+								&= [._&3_] \\times \\textcolor{${get(color1)}}{100} \\\\ \
+								&= &sol \
+								\\end{align}$$`,
+							},
+						],
+						[
+							{
+								text: `$$\\begin{align} \
+								[._&3_] \\times \\textcolor{${get(color1)}}{&1} \\times \\textcolor{${get(
+									color1,
+								)}}{&2} \
+								&= [._&3_] \\times \\textcolor{${get(color1)}}{100} \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -6858,8 +7349,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								\\textcolor{${color1}}{20} \\times [_2*&1_] \\times \\textcolor{${color1}}{0,5} \
-								&= \\textcolor{${color1}}{10} \\times [_2*&1_] \\\\ \
+								\\textcolor{${get(color1)}}{20} \\times [_2*&1_] \\times \\textcolor{${get(
+									color1,
+								)}}{0,5} \
+								&= \\textcolor{${get(color1)}}{10} \\times [_2*&1_] \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -6867,8 +7360,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								\\textcolor{${color1}}{0,5} \\times [_2*&1_] \\times \\textcolor{${color1}}{20} \
-								&= \\textcolor{${color1}}{10} \\times [_2*&1_] \\\\ \
+								\\textcolor{${get(color1)}}{0,5} \\times [_2*&1_] \\times \\textcolor{${get(
+									color1,
+								)}}{20} \
+								&= \\textcolor{${get(color1)}}{10} \\times [_2*&1_] \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -6876,8 +7371,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								[_2*&1_] \\times \\textcolor{${color1}}{20} \\times \\textcolor{${color1}}{0,5} \
-								&= [_2*&1_] \\times \\textcolor{${color1}}{10} \\\\ \
+								[_2*&1_] \\times \\textcolor{${get(color1)}}{20} \\times \\textcolor{${get(
+									color1,
+								)}}{0,5} \
+								&= [_2*&1_] \\times \\textcolor{${get(color1)}}{10} \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -6885,8 +7382,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								[_2*&1_] \\times \\textcolor{${color1}}{0,5} \\times \\textcolor{${color1}}{20} \
-								&= [_2*&1_] \\times \\textcolor{${color1}}{10} \\\\ \
+								[_2*&1_] \\times \\textcolor{${get(color1)}}{0,5} \\times \\textcolor{${get(
+									color1,
+								)}}{20} \
+								&= [_2*&1_] \\times \\textcolor{${get(color1)}}{10} \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -6916,8 +7415,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								\\textcolor{${color1}}{[._&1_]}  \\times  \\textcolor{${color1}}{&2} \\times &3 \
-								&= \\textcolor{${color1}}{10} \\times &3 \\\\ \
+								\\textcolor{${get(color1)}}{[._&1_]}  \\times  \\textcolor{${get(
+									color1,
+								)}}{&2} \\times &3 \
+								&= \\textcolor{${get(color1)}}{10} \\times &3 \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -6925,8 +7426,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								\\textcolor{${color1}}{&2}  \\times \\textcolor{${color1}}{[._&1_]} \\times &3 \
-								&= \\textcolor{${color1}}{10} \\times &3 \\\\ \
+								\\textcolor{${get(color1)}}{&2}  \\times \\textcolor{${get(
+									color1,
+								)}}{[._&1_]} \\times &3 \
+								&= \\textcolor{${get(color1)}}{10} \\times &3 \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -6934,8 +7437,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								\\textcolor{${color1}}{&2} \\times  &3 \\times \\textcolor{${color1}}{[._&1_]} \
-								&= \\textcolor{${color1}}{10} \\times &3 \\\\ \
+								\\textcolor{${get(color1)}}{&2} \\times  &3 \\times \\textcolor{${get(
+									color1,
+								)}}{[._&1_]} \
+								&= \\textcolor{${get(color1)}}{10} \\times &3 \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -6943,8 +7448,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								\\textcolor{${color1}}{[._&1_]}  \\times  &3 \\times \\textcolor{${color1}}{&2} \
-								&= \\textcolor{${color1}}{10} \\times &3 \\\\ \
+								\\textcolor{${get(color1)}}{[._&1_]}  \\times  &3 \\times \\textcolor{${get(
+									color1,
+								)}}{&2} \
+								&= \\textcolor{${get(color1)}}{10} \\times &3 \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -6952,8 +7459,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								&3 \\times \\textcolor{${color1}}{&2} \\times \\textcolor{${color1}}{[._&1_]} \
-								&= &3 \\times \\textcolor{${color1}}{10} \\\\ \
+								&3 \\times \\textcolor{${get(color1)}}{&2} \\times \\textcolor{${get(
+									color1,
+								)}}{[._&1_]} \
+								&= &3 \\times \\textcolor{${get(color1)}}{10} \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -6961,8 +7470,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								&3 \\times \\textcolor{${color1}}{[._&1_]} \\times \\textcolor{${color1}}{&2} \
-								&= &3 \\times \\textcolor{${color1}}{10} \\\\ \
+								&3 \\times \\textcolor{${get(color1)}}{[._&1_]} \\times \\textcolor{${get(
+									color1,
+								)}}{&2} \
+								&= &3 \\times \\textcolor{${get(color1)}}{10} \\\\ \
 								&= &sol \
 								\\end{align}$$`,
 							},
@@ -6991,9 +7502,15 @@ const questions: Questions = {
 							{
 								text: `$$\
 								\\begin{align} \
-									&2 \\times \\textcolor{${color1}}{[._&1_]} + [_10-&2_] \\times \\textcolor{${color1}}{[._&1_]} \
-									&=  \\left( &2 + [_10-&2_] \\right) \\times \\textcolor{${color1}}{[._&1_]}\\\\  \
-									&=  10 \\times \\textcolor{${color1}}{[._&1_]}\\\\  \
+									&2 \\times \\textcolor{${get(
+										color1,
+									)}}{[._&1_]} + [_10-&2_] \\times \\textcolor{${get(
+									color1,
+								)}}{[._&1_]} \
+									&=  \\left( &2 + [_10-&2_] \\right) \\times \\textcolor{${get(
+										color1,
+									)}}{[._&1_]}\\\\  \
+									&=  10 \\times \\textcolor{${get(color1)}}{[._&1_]}\\\\  \
 									&= &sol \
 								\\end{align}$$`,
 							},
@@ -7002,9 +7519,15 @@ const questions: Questions = {
 							{
 								text: `$$\
 								\\begin{align} \
-									\\textcolor{${color1}}{[._&1_]} \\times &2 + [_10-&2_] \\times \\textcolor{${color1}}{[._&1_]} \
-									&=  \\left( &2 + [_10-&2_] \\right) \\times \\textcolor{${color1}}{[._&1_]}\\\\  \
-									&=  10 \\times \\textcolor{${color1}}{[._&1_]}\\\\  \
+									\\textcolor{${get(
+										color1,
+									)}}{[._&1_]} \\times &2 + [_10-&2_] \\times \\textcolor{${get(
+									color1,
+								)}}{[._&1_]} \
+									&=  \\left( &2 + [_10-&2_] \\right) \\times \\textcolor{${get(
+										color1,
+									)}}{[._&1_]}\\\\  \
+									&=  10 \\times \\textcolor{${get(color1)}}{[._&1_]}\\\\  \
 									&= &sol \
 								\\end{align}$$`,
 							},
@@ -7012,9 +7535,13 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-									&2 \\times \\textcolor{${color1}}{[._&1_]} + \\textcolor{${color1}}{[._&1_]} \\times [_10-&2_] \
-									&=  \\left( &2 + [_10-&2_] \\right) \\times \\textcolor{${color1}}{[._&1_]}\\\\  \
-									&=  10 \\times \\textcolor{${color1}}{[._&1_]}\\\\  \
+									&2 \\times \\textcolor{${get(color1)}}{[._&1_]} + \\textcolor{${get(
+									color1,
+								)}}{[._&1_]} \\times [_10-&2_] \
+									&=  \\left( &2 + [_10-&2_] \\right) \\times \\textcolor{${get(
+										color1,
+									)}}{[._&1_]}\\\\  \
+									&=  10 \\times \\textcolor{${get(color1)}}{[._&1_]}\\\\  \
 									&= &sol \
 								\\end{align}$$`,
 							},
@@ -7022,9 +7549,13 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align}  \
-									\\textcolor{${color1}}{[._&1_]} \\times &2+ \\textcolor{${color1}}{[._&1_]} \\times [_10-&2_] \
-									&= \\textcolor{${color1}}{[._&1_]} \\times \\left( &2 + [_10-&2_] \\right)\\\\  \
-									&= \\textcolor{${color1}}{[._&1_]} \\times 10 \\\\  \
+									\\textcolor{${get(color1)}}{[._&1_]} \\times &2+ \\textcolor{${get(
+									color1,
+								)}}{[._&1_]} \\times [_10-&2_] \
+									&= \\textcolor{${get(
+										color1,
+									)}}{[._&1_]} \\times \\left( &2 + [_10-&2_] \\right)\\\\  \
+									&= \\textcolor{${get(color1)}}{[._&1_]} \\times 10 \\\\  \
 									&= &sol \
 								\\end{align}$$`,
 							},
@@ -7050,9 +7581,15 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								  [°&2°] \\times \\textcolor{${color1}}{[_&1_]} + [._10-&2_] \\times \\textcolor{${color1}}{[_&1_]} \
-								  &=  \\left( [°&2°] + [._10-&2_] \\right) \\times \\textcolor{${color1}}{[_&1_]}\\\\  \
-								  &=  10 \\times \\textcolor{${color1}}{[_&1_]}\\\\  \
+								  [°&2°] \\times \\textcolor{${get(
+										color1,
+									)}}{[_&1_]} + [._10-&2_] \\times \\textcolor{${get(
+									color1,
+								)}}{[_&1_]} \
+								  &=  \\left( [°&2°] + [._10-&2_] \\right) \\times \\textcolor{${get(
+										color1,
+									)}}{[_&1_]}\\\\  \
+								  &=  10 \\times \\textcolor{${get(color1)}}{[_&1_]}\\\\  \
 								  &= &sol \
 								\\end{align}$$`,
 							},
@@ -7060,9 +7597,15 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-									\\textcolor{${color1}}{[_&1_]} \\times [°&2°] + [._10-&2_] \\times \\textcolor{${color1}}{[_&1_]} \
-									&=  \\left( [°&2°] + [._10-&2_] \\right) \\times \\textcolor{${color1}}{[_&1_]}\\\\ \
-									&=  10 \\times \\textcolor{${color1}}{[_&1_]}\\\\ \
+									\\textcolor{${get(
+										color1,
+									)}}{[_&1_]} \\times [°&2°] + [._10-&2_] \\times \\textcolor{${get(
+									color1,
+								)}}{[_&1_]} \
+									&=  \\left( [°&2°] + [._10-&2_] \\right) \\times \\textcolor{${get(
+										color1,
+									)}}{[_&1_]}\\\\ \
+									&=  10 \\times \\textcolor{${get(color1)}}{[_&1_]}\\\\ \
 									&= &sol\
 								\\end{align}$$`,
 							},
@@ -7070,9 +7613,13 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-									[°&2°] \\times \\textcolor{${color1}}{[_&1_]} + \\textcolor{${color1}}{[_&1_]} \\times [._10-&2_] \
-									&=  \\left( [°&2°] + [._10-&2_] \\right) \\times \\textcolor{${color1}}{[_&1_]}\\\\ \
-									&=  10 \\times \\textcolor{${color1}}{[_&1_]}\\\\ \
+									[°&2°] \\times \\textcolor{${get(color1)}}{[_&1_]} + \\textcolor{${get(
+									color1,
+								)}}{[_&1_]} \\times [._10-&2_] \
+									&=  \\left( [°&2°] + [._10-&2_] \\right) \\times \\textcolor{${get(
+										color1,
+									)}}{[_&1_]}\\\\ \
+									&=  10 \\times \\textcolor{${get(color1)}}{[_&1_]}\\\\ \
 									&= &sol \
 								\\end{align}$$`,
 							},
@@ -7080,9 +7627,13 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-									\\textcolor{${color1}}{[_&1_]} \\times [°&2°]+ \\textcolor{${color1}}{[_&1_]} \\times [._10-&2_] \
-									&= \\textcolor{${color1}}{[_&1_]} \\times \\left( [°&2°] + [._10-&2_] \\right) \\\\ \
-									&= \\textcolor{${color1}}{[_&1_]} \\times 10\\\\ \
+									\\textcolor{${get(color1)}}{[_&1_]} \\times [°&2°]+ \\textcolor{${get(
+									color1,
+								)}}{[_&1_]} \\times [._10-&2_] \
+									&= \\textcolor{${get(
+										color1,
+									)}}{[_&1_]} \\times \\left( [°&2°] + [._10-&2_] \\right) \\\\ \
+									&= \\textcolor{${get(color1)}}{[_&1_]} \\times 10\\\\ \
 									&= &sol \
 								\\end{align}$$`,
 							},
@@ -7109,9 +7660,15 @@ const questions: Questions = {
 							{
 								text: `$$\
 								\\begin{align} \
-									&2 \\times \\textcolor{${color1}}{[._&1_]} + [_100-&2_] \\times \\textcolor{${color1}}{[._&1_]} \
-									&=  \\left( &2 + [_100-&2_] \\right) \\times \\textcolor{${color1}}{[._&1_]}\\\\  \
-									&=  100 \\times \\textcolor{${color1}}{[._&1_]}\\\\  \
+									&2 \\times \\textcolor{${get(
+										color1,
+									)}}{[._&1_]} + [_100-&2_] \\times \\textcolor{${get(
+									color1,
+								)}}{[._&1_]} \
+									&=  \\left( &2 + [_100-&2_] \\right) \\times \\textcolor{${get(
+										color1,
+									)}}{[._&1_]}\\\\  \
+									&=  100 \\times \\textcolor{${get(color1)}}{[._&1_]}\\\\  \
 									&= &sol \
 								\\end{align}$$`,
 							},
@@ -7120,9 +7677,15 @@ const questions: Questions = {
 							{
 								text: `$$\
 								\\begin{align}\
-									\\textcolor{${color1}}{[._&1_]} \\times &2 + [_100-&2_] \\times \\textcolor{${color1}}{[._&1_]} \
-									&=  \\left( &2 + [_100-&2_] \\right) \\times \\textcolor{${color1}}{[._&1_]}\\\\  \
-									&=  100 \\times \\textcolor{${color1}}{[._&1_]}\\\\  \
+									\\textcolor{${get(
+										color1,
+									)}}{[._&1_]} \\times &2 + [_100-&2_] \\times \\textcolor{${get(
+									color1,
+								)}}{[._&1_]} \
+									&=  \\left( &2 + [_100-&2_] \\right) \\times \\textcolor{${get(
+										color1,
+									)}}{[._&1_]}\\\\  \
+									&=  100 \\times \\textcolor{${get(color1)}}{[._&1_]}\\\\  \
 									&= &sol \
 								\\end{align}$$`,
 							},
@@ -7131,9 +7694,13 @@ const questions: Questions = {
 							{
 								text: `$$\
 								\\begin{align} \
-									&2 \\times \\textcolor{${color1}}{[._&1_]} + \\textcolor{${color1}}{[._&1_]} \\times [_100-&2_] \
-									&=  \\left( &2 + [_100-&2_] \\right) \\times \\textcolor{${color1}}{[._&1_]}\\\\  \
-									&=  100 \\times \\textcolor{${color1}}{[._&1_]}\\\\  \
+									&2 \\times \\textcolor{${get(color1)}}{[._&1_]} + \\textcolor{${get(
+									color1,
+								)}}{[._&1_]} \\times [_100-&2_] \
+									&=  \\left( &2 + [_100-&2_] \\right) \\times \\textcolor{${get(
+										color1,
+									)}}{[._&1_]}\\\\  \
+									&=  100 \\times \\textcolor{${get(color1)}}{[._&1_]}\\\\  \
 									&= &sol \
 								\\end{align}$$`,
 							},
@@ -7141,9 +7708,13 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align}\
-									\\textcolor{${color1}}{[._&1_]} \\times &2+ \\textcolor{${color1}}{[._&1_]} \\times [_100-&2_] \
-										&=  \\textcolor{${color1}}{[._&1_]} \\times \\left( &2 + [_100-&2_] \\right) \\\\ \
-										&=  \\textcolor{${color1}}{[._&1_]} \\times 100 \\\\ \
+									\\textcolor{${get(color1)}}{[._&1_]} \\times &2+ \\textcolor{${get(
+									color1,
+								)}}{[._&1_]} \\times [_100-&2_] \
+										&=  \\textcolor{${get(
+											color1,
+										)}}{[._&1_]} \\times \\left( &2 + [_100-&2_] \\right) \\\\ \
+										&=  \\textcolor{${get(color1)}}{[._&1_]} \\times 100 \\\\ \
 										&= &sol \
 									\\end{align}$$`,
 							},
@@ -7168,12 +7739,16 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\textcolor{${correct_color}}{&1} \\times 0,5 = [._&1*0,5_]$$ car  $$[._&1*0,5_] \\times 2 = &sol1$$`,
+								text: `$$\\textcolor{${get(
+									correct_color,
+								)}}{&1} \\times 0,5 = [._&1*0,5_]$$ car  $$[._&1*0,5_] \\times 2 = &sol1$$`,
 							},
 						],
 						[
 							{
-								text: `$$0,5 \\times \\textcolor{${correct_color}}{&1} = [._&1*0,5_]$$ car  $$[._&1*0,5_] \\times 2 = &sol1$$`,
+								text: `$$0,5 \\times \\textcolor{${get(
+									correct_color,
+								)}}{&1} = [._&1*0,5_]$$ car  $$[._&1*0,5_] \\times 2 = &sol1$$`,
 							},
 						],
 					],
@@ -7253,12 +7828,16 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\textcolor{${correct_color}}{[._&1_]} \\times 100 = [._&1*100_]$$ car  $$[._&1*100_] \\div 100 = &sol1$$`,
+								text: `$$\\textcolor{${get(
+									correct_color,
+								)}}{[._&1_]} \\times 100 = [._&1*100_]$$ car  $$[._&1*100_] \\div 100 = &sol1$$`,
 							},
 						],
 						[
 							{
-								text: `$$100 \\times \\textcolor{${correct_color}}{[._&1_]} = [._&1*100_]$$ car  $$[._&1*100_] \\div 100 = &sol1$$`,
+								text: `$$100 \\times \\textcolor{${get(
+									correct_color,
+								)}}{[._&1_]} = [._&1*100_]$$ car  $$[._&1*100_] \\div 100 = &sol1$$`,
 							},
 						],
 					],
@@ -7312,12 +7891,16 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\textcolor{${correct_color}}{[._&2_]} \\times [_10^&1_] = [._&2*10^&1_]$$ car  $$[._&2*10^&1_] \\div [_10^&1_] = &sol1$$`,
+								text: `$$\\textcolor{${get(
+									correct_color,
+								)}}{[._&2_]} \\times [_10^&1_] = [._&2*10^&1_]$$ car  $$[._&2*10^&1_] \\div [_10^&1_] = &sol1$$`,
 							},
 						],
 						[
 							{
-								text: `$$[_10^&1_] \\times \\textcolor{${correct_color}}{[._&2_]} = [._&2*10^&1_]$$ car  $$[._&2*10^&1_] \\div [_10^&1_] = &sol1$$`,
+								text: `$$[_10^&1_] \\times \\textcolor{${get(
+									correct_color,
+								)}}{[._&2_]} = [._&2*10^&1_]$$ car  $$[._&2*10^&1_] \\div [_10^&1_] = &sol1$$`,
 							},
 						],
 					],
@@ -7345,12 +7928,16 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\textcolor{${correct_color}}{[._&3_]} \\times 0,1 = [._&3*0,1_]$$ car  $$[._&3*0,1_] \\times 10 = &sol1$$`,
+								text: `$$\\textcolor{${get(
+									correct_color,
+								)}}{[._&3_]} \\times 0,1 = [._&3*0,1_]$$ car  $$[._&3*0,1_] \\times 10 = &sol1$$`,
 							},
 						],
 						[
 							{
-								text: `$$0,1 \\times \\textcolor{${correct_color}}{[._&3_]} = [._&3*0,1_]$$ car  $$[._&3*0,1_] \\times 10 = &sol1$$`,
+								text: `$$0,1 \\times \\textcolor{${get(
+									correct_color,
+								)}}{[._&3_]} = [._&3*0,1_]$$ car  $$[._&3*0,1_] \\times 10 = &sol1$$`,
 							},
 						],
 					],
@@ -7372,12 +7959,16 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\textcolor{${correct_color}}{[._&3_]} \\times 0,01 = [._&3*0,01_]$$ car  $$[._&3*0,01_] \\times 100 = &sol1$$`,
+								text: `$$\\textcolor{${get(
+									correct_color,
+								)}}{[._&3_]} \\times 0,01 = [._&3*0,01_]$$ car  $$[._&3*0,01_] \\times 100 = &sol1$$`,
 							},
 						],
 						[
 							{
-								text: `$$0,01 \\times \\textcolor{${correct_color}}{[._&3_]} = [._&3*0,01_]$$ car  $$[._&3*0,01_] \\times 100 = &sol1$$`,
+								text: `$$0,01 \\times \\textcolor{${get(
+									correct_color,
+								)}}{[._&3_]} = [._&3*0,01_]$$ car  $$[._&3*0,01_] \\times 100 = &sol1$$`,
 							},
 						],
 					],
@@ -7403,12 +7994,16 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\textcolor{${correct_color}}{[._&3_]} \\times 0,001 = [._&3*0,001_]$$ car  $$[._&3*0,001_] \\times 1\\,000 = &sol1$$`,
+								text: `$$\\textcolor{${get(
+									correct_color,
+								)}}{[._&3_]} \\times 0,001 = [._&3*0,001_]$$ car  $$[._&3*0,001_] \\times 1\\,000 = &sol1$$`,
 							},
 						],
 						[
 							{
-								text: `$$0,001 \\times \\textcolor{${correct_color}}{[._&3_]} = [._&3*0,001_]$$ car  $$[._&3*0,001_] \\times 1\\,000 = &sol1$$`,
+								text: `$$0,001 \\times \\textcolor{${get(
+									correct_color,
+								)}}{[._&3_]} = [._&3*0,001_]$$ car  $$[._&3*0,001_] \\times 1\\,000 = &sol1$$`,
 							},
 						],
 					],
@@ -7557,8 +8152,8 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								[._&3_] \\textcolor{${color1}}{\\div [._&2_]} \
-								&= [._&3_] \\textcolor{${color1}}{\\times [._1:&2_]} \\\\ \
+								[._&3_] \\textcolor{${get(color1)}}{\\div [._&2_]} \
+								&= [._&3_] \\textcolor{${get(color1)}}{\\times [._1:&2_]} \\\\ \
 								&=  &sol \
 								\\end{align}$$`,
 							},
@@ -7566,8 +8161,8 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								[._&1_] \\textcolor{${color1}}{\\div [._&2_]} \
-								&= [._&1_] \\textcolor{${color1}}{\\times [._1:&2_]} \\\\ \
+								[._&1_] \\textcolor{${get(color1)}}{\\div [._&2_]} \
+								&= [._&1_] \\textcolor{${get(color1)}}{\\times [._1:&2_]} \\\\ \
 								&=  &sol \
 								\\end{align}$$`,
 							},
@@ -7985,7 +8580,11 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$(-&1)+\\bold{\\textcolor{${color1}}{[_&1+&2_]}}=(-&1)+\\textcolor{${color1}}{&1+&2}=0+&2=&2$$`,
+								text: `$$(-&1)+\\bold{\\textcolor{${get(
+									color1,
+								)}}{[_&1+&2_]}}=(-&1)+\\textcolor{${get(
+									color1,
+								)}}{&1+&2}=0+&2=&2$$`,
 							},
 						],
 					],
@@ -8110,7 +8709,11 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$&1\\bold{\\textcolor{${color1}}{-[_&1+&2_]}}=&1\\textcolor{${color1}}{-&1-&2}=0-&2=-&2$$`,
+								text: `$$&1\\bold{\\textcolor{${get(
+									color1,
+								)}}{-[_&1+&2_]}}=&1\\textcolor{${get(
+									color1,
+								)}}{-&1-&2}=0-&2=-&2$$`,
 							},
 						],
 					],
@@ -8426,12 +9029,24 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\textcolor{${color1}}{\\dfrac{&2}{&1}} \\times &1=&sol $$ désigne le résultat de la division $$\\textcolor{${color1}}{&2 \\div &1}$$ et $$\\textcolor{${color1}}{&2 \\div &1} \\times &1 = &2$$.`,
+								text: `$$\\textcolor{${get(
+									color1,
+								)}}{\\dfrac{&2}{&1}} \\times &1=&sol $$ désigne le résultat de la division $$\\textcolor{${get(
+									color1,
+								)}}{&2 \\div &1}$$ et $$\\textcolor{${get(
+									color1,
+								)}}{&2 \\div &1} \\times &1 = &2$$.`,
 							},
 						],
 						[
 							{
-								text: `$$&1 \\times \\textcolor{${color1}}{\\dfrac{&2}{&1}} =&sol $$ désigne le résultat de la division $$\\textcolor{${color1}}{&2 \\div &1}$$ et $$&1 \\times \\textcolor{${color1}}{&2 \\div &1} = &2$$.`,
+								text: `$$&1 \\times \\textcolor{${get(
+									color1,
+								)}}{\\dfrac{&2}{&1}} =&sol $$ désigne le résultat de la division $$\\textcolor{${get(
+									color1,
+								)}}{&2 \\div &1}$$ et $$&1 \\times \\textcolor{${get(
+									color1,
+								)}}{&2 \\div &1} = &2$$.`,
 							},
 						],
 					],
@@ -8709,22 +9324,38 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\dfrac{&2}{&1} = \\dfrac{&sol1}{[_&1*&3_]}$$ car $$&1 \\textcolor{${color1}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${color1}}{\\times &3} = &sol1 $$`,
+								text: `$$\\dfrac{&2}{&1} = \\dfrac{&sol1}{[_&1*&3_]}$$ car $$&1 \\textcolor{${get(
+									color1,
+								)}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${get(
+									color1,
+								)}}{\\times &3} = &sol1 $$`,
 							},
 						],
 						[
 							{
-								text: `$$\\dfrac{&2}{&1} = \\dfrac{[_&2*&3_]}{&sol1}$$ car $$&2 \\textcolor{${color1}}{\\times &3} = [_&2*&3_]$$ et $$&1 \\textcolor{${color1}}{\\times &3} = &sol1 $$`,
+								text: `$$\\dfrac{&2}{&1} = \\dfrac{[_&2*&3_]}{&sol1}$$ car $$&2 \\textcolor{${get(
+									color1,
+								)}}{\\times &3} = [_&2*&3_]$$ et $$&1 \\textcolor{${get(
+									color1,
+								)}}{\\times &3} = &sol1 $$`,
 							},
 						],
 						[
 							{
-								text: `$$\\dfrac{&sol1}{[_&1*&3_]} = \\dfrac{&2}{&1}$$ car $$&1 \\textcolor{${color1}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${color1}}{\\times &3} = &sol1 $$`,
+								text: `$$\\dfrac{&sol1}{[_&1*&3_]} = \\dfrac{&2}{&1}$$ car $$&1 \\textcolor{${get(
+									color1,
+								)}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${get(
+									color1,
+								)}}{\\times &3} = &sol1 $$`,
 							},
 						],
 						[
 							{
-								text: `$$\\dfrac{[_&2*&3_]}{&sol1}  = \\dfrac{&2}{&1}$$ car $$&2 \\textcolor{${color1}}{\\times &3} = [_&2*&3_]$$ et $$&1 \\textcolor{${color1}}{\\times &3} = &sol1 $$`,
+								text: `$$\\dfrac{[_&2*&3_]}{&sol1}  = \\dfrac{&2}{&1}$$ car $$&2 \\textcolor{${get(
+									color1,
+								)}}{\\times &3} = [_&2*&3_]$$ et $$&1 \\textcolor{${get(
+									color1,
+								)}}{\\times &3} = &sol1 $$`,
 							},
 						],
 					],
@@ -8732,14 +9363,18 @@ const questions: Questions = {
 					defaultDelay: 12000,
 					grade: SIXIEME,
 					help: `<section>
-          <h3 class="${color2}-text">Compléter une égalité de fractions</h3>
+          <h3 class="${get(
+						color2,
+					)}-text">Compléter une égalité de fractions</h3>
           <div class="r-stretch d-flex flex-column justify-center">
             $$\\dfrac{5}{4}=\\dfrac{\\ldots}{12}$$
           </div>
           <p>Pour passer de 4 à 12, je multiplie par 3</p>
         </section>
         <section>
-          <h3 class="${color2}-text">Compléter une égalité de fractions</h3>
+          <h3 class="${get(
+						color2,
+					)}-text">Compléter une égalité de fractions</h3>
           <div class="r-stretch d-flex flex-column justify-center">
             $$\\dfrac{5}{4}=\\dfrac{\\textcolor{green}{15}}{12}$$
           </div>
@@ -8768,22 +9403,38 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\dfrac{[_&2*&3_]}{[_&1*&3_]} = \\dfrac{&sol1}{&1}$$ car $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &sol1 $$`,
+								text: `$$\\dfrac{[_&2*&3_]}{[_&1*&3_]} = \\dfrac{&sol1}{&1}$$ car $$[_&1*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div &3} = &sol1 $$`,
 							},
 						],
 						[
 							{
-								text: `$$\\dfrac{[_&2*&3_]}{[_&1*&3_]} = \\dfrac{&2}{&sol1}$$ car $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &2$$ et $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &sol1 $$`,
+								text: `$$\\dfrac{[_&2*&3_]}{[_&1*&3_]} = \\dfrac{&2}{&sol1}$$ car $$[_&2*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div &3} = &2$$ et $$[_&1*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div &3} = &sol1 $$`,
 							},
 						],
 						[
 							{
-								text: `$$\\dfrac{&sol1}{&1}  = \\dfrac{[_&2*&3_]}{[_&1*&3_]}$$ car $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &sol1 $$`,
+								text: `$$\\dfrac{&sol1}{&1}  = \\dfrac{[_&2*&3_]}{[_&1*&3_]}$$ car $$[_&1*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div &3} = &sol1 $$`,
 							},
 						],
 						[
 							{
-								text: `$$\\dfrac{&2}{&sol1}  = \\dfrac{[_&2*&3_]}{[_&1*&3_]}$$ car $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &2$$ et $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &sol1 $$`,
+								text: `$$\\dfrac{&2}{&sol1}  = \\dfrac{[_&2*&3_]}{[_&1*&3_]}$$ car $$[_&2*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div &3} = &2$$ et $$[_&1*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div &3} = &sol1 $$`,
 							},
 						],
 					],
@@ -8812,22 +9463,38 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\dfrac{&1}{[_&1*&3_]} = \\dfrac{&2}{&sol1}$$ car $$&1 \\textcolor{${color1}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${color1}}{\\times &3} = &sol1 $$`,
+								text: `$$\\dfrac{&1}{[_&1*&3_]} = \\dfrac{&2}{&sol1}$$ car $$&1 \\textcolor{${get(
+									color1,
+								)}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${get(
+									color1,
+								)}}{\\times &3} = &sol1 $$`,
 							},
 						],
 						[
 							{
-								text: `$$ \\dfrac{[_&1*&3_]}{&1}  = \\dfrac{&sol1}{&2}$$ car $$&1 \\textcolor{${color1}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${color1}}{\\times &3} = &sol1 $$`,
+								text: `$$ \\dfrac{[_&1*&3_]}{&1}  = \\dfrac{&sol1}{&2}$$ car $$&1 \\textcolor{${get(
+									color1,
+								)}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${get(
+									color1,
+								)}}{\\times &3} = &sol1 $$`,
 							},
 						],
 						[
 							{
-								text: `$$\\dfrac{&2}{&sol1}  = \\dfrac{&1}{[_&1*&3_]}$$ car $$&1 \\textcolor{${color1}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${color1}}{\\times &3} = &sol1 $$`,
+								text: `$$\\dfrac{&2}{&sol1}  = \\dfrac{&1}{[_&1*&3_]}$$ car $$&1 \\textcolor{${get(
+									color1,
+								)}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${get(
+									color1,
+								)}}{\\times &3} = &sol1 $$`,
 							},
 						],
 						[
 							{
-								text: `$$ \\dfrac{&sol1}{&2} = \\dfrac{[_&1*&3_]}{&1}$$ car $$&1 \\textcolor{${color1}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${color1}}{\\times &3} = &sol1 $$`,
+								text: `$$ \\dfrac{&sol1}{&2} = \\dfrac{[_&1*&3_]}{&1}$$ car $$&1 \\textcolor{${get(
+									color1,
+								)}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${get(
+									color1,
+								)}}{\\times &3} = &sol1 $$`,
 							},
 						],
 					],
@@ -8856,22 +9523,38 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\dfrac{&1}{[_&1*&3_]} = \\dfrac{&sol1}{[_&2*&3_]}$$ car $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &sol1 $$`,
+								text: `$$\\dfrac{&1}{[_&1*&3_]} = \\dfrac{&sol1}{[_&2*&3_]}$$ car $$[_&1*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div &3} = &sol1 $$`,
 							},
 						],
 						[
 							{
-								text: `$$ \\dfrac{[_&1*&3_]}{&1}  = \\dfrac{[_&2*&3_]}{&sol1}$$ car $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &sol1 $$`,
+								text: `$$ \\dfrac{[_&1*&3_]}{&1}  = \\dfrac{[_&2*&3_]}{&sol1}$$ car $$[_&1*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div &3} = &sol1 $$`,
 							},
 						],
 						[
 							{
-								text: `$$\\dfrac{&sol1}{[_&2*&3_]}  = \\dfrac{&1}{[_&1*&3_]}$$ car $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &sol1 $$`,
+								text: `$$\\dfrac{&sol1}{[_&2*&3_]}  = \\dfrac{&1}{[_&1*&3_]}$$ car $$[_&1*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div &3} = &sol1 $$`,
 							},
 						],
 						[
 							{
-								text: `$$ \\dfrac{[_&2*&3_]}{&sol1}  = \\dfrac{[_&1*&3_]}{&1}$$ car $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &sol1 $$`,
+								text: `$$ \\dfrac{[_&2*&3_]}{&sol1}  = \\dfrac{[_&1*&3_]}{&1}$$ car $$[_&1*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div &3} = &sol1 $$`,
 							},
 						],
 					],
@@ -8897,7 +9580,11 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\dfrac{[_&1*&3_]}{[_&2*&4_]} &= \\dfrac{[_&1*&3_] \\textcolor{${color1}}{\\div [_mini(&1;&2)_]}}{[_&2*&4_] \\textcolor{${color1}}{\\div [_mini(&1;&2)_]}} \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \\dfrac{[_&1*&3_]}{[_&2*&4_]} &= \\dfrac{[_&1*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div [_mini(&1;&2)_]}}{[_&2*&4_] \\textcolor{${get(
+									color1,
+								)}}{\\div [_mini(&1;&2)_]}} \\\\ &= &sol  \\end{align}$$`,
 							},
 						],
 					],
@@ -8920,7 +9607,11 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\dfrac{[_&1*&2_]}{[_&1*&3_]} &= \\dfrac{[_&1*&2_] \\textcolor{${color1}}{\\div &1}}{[_&1*&3_] \\textcolor{${color1}}{\\div &1}} \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \\dfrac{[_&1*&2_]}{[_&1*&3_]} &= \\dfrac{[_&1*&2_] \\textcolor{${get(
+									color1,
+								)}}{\\div &1}}{[_&1*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div &1}} \\\\ &= &sol  \\end{align}$$`,
 							},
 						],
 					],
@@ -8944,7 +9635,11 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\dfrac{[_&1*&2_]}{[_&1*&3_]} &= \\dfrac{[_&1*&2_] \\textcolor{${color1}}{\\div &1}}{[_&1*&3_] \\textcolor{${color1}}{\\div &1}} \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \\dfrac{[_&1*&2_]}{[_&1*&3_]} &= \\dfrac{[_&1*&2_] \\textcolor{${get(
+									color1,
+								)}}{\\div &1}}{[_&1*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div &1}} \\\\ &= &sol  \\end{align}$$`,
 							},
 						],
 					],
@@ -8963,7 +9658,11 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\dfrac{[_&2*&3_]}{[_&1*&3_]} &= \\dfrac{[_&2*&3_] \\textcolor{${color1}}{\\div [_&3*pgcd(&1;&2)_]}}{[_&1*&3_] \\textcolor{${color1}}{\\div  [_&3*pgcd(&1;&2)_]}} \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \\dfrac{[_&2*&3_]}{[_&1*&3_]} &= \\dfrac{[_&2*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div [_&3*pgcd(&1;&2)_]}}{[_&1*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div  [_&3*pgcd(&1;&2)_]}} \\\\ &= &sol  \\end{align}$$`,
 							},
 						],
 					],
@@ -8995,17 +9694,29 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\dfrac{-[_&2*&3_]}{[_&1*&3_]} &= -\\dfrac{[_&2*&3_] \\textcolor{${color1}}{\\div [_&3*pgcd(&1;&2)_]}}{[_&1*&3_] \\textcolor{${color1}}{\\div  [_&3*pgcd(&1;&2)_]}} \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \\dfrac{-[_&2*&3_]}{[_&1*&3_]} &= -\\dfrac{[_&2*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div [_&3*pgcd(&1;&2)_]}}{[_&1*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div  [_&3*pgcd(&1;&2)_]}} \\\\ &= &sol  \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\dfrac{[_&2*&3_]}{-[_&1*&3_]} &= -\\dfrac{[_&2*&3_] \\textcolor{${color1}}{\\div [_&3*pgcd(&1;&2)_]}}{[_&1*&3_] \\textcolor{${color1}}{\\div  [_&3*pgcd(&1;&2)_]}} \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \\dfrac{[_&2*&3_]}{-[_&1*&3_]} &= -\\dfrac{[_&2*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div [_&3*pgcd(&1;&2)_]}}{[_&1*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div  [_&3*pgcd(&1;&2)_]}} \\\\ &= &sol  \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\dfrac{-[_&2*&3_]}{-[_&1*&3_]} &= \\dfrac{[_&2*&3_] \\textcolor{${color1}}{\\div [_&3*pgcd(&1;&2)_]}}{[_&1*&3_] \\textcolor{${color1}}{\\div  [_&3*pgcd(&1;&2)_]}} \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \\dfrac{-[_&2*&3_]}{-[_&1*&3_]} &= \\dfrac{[_&2*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div [_&3*pgcd(&1;&2)_]}}{[_&1*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div  [_&3*pgcd(&1;&2)_]}} \\\\ &= &sol  \\end{align}$$`,
 							},
 						],
 					],
@@ -9153,14 +9864,30 @@ const questions: Questions = {
 						[
 							{
 								text: `\
-								@@ &5<&6 ?? $$\\frac{&2}{&3} = \\frac{&2 \\textcolor{${color1}}{\\times &1}}{&3 \\textcolor{${color1}}{\\times &1}} = \\frac{[_&2*&1_]}{[_&3*&1_]}$$ et $$\\frac{[_&2*&1_]}{[_&3*&1_]}<\\frac{&4}{[_&3*&1_]}$$, donc $$[°&5°] < [°&6°]$$@@ \
-              @@ &5>&6 ?? $$\\frac{&2}{&3} = \\frac{&2 \\textcolor{${color1}}{\\times &1}}{&3 \\textcolor{${color1}}{\\times &1}} = \\frac{[_&2*&1_]}{[_&3*&1_]}$$ et $$\\frac{[_&2*&1_]}{[_&3*&1_]}>\\frac{&4}{[_&3*&1_]}$$, donc $$[°&5°]>[°&6°] $$@@`,
+								@@ &5<&6 ?? $$\\frac{&2}{&3} = \\frac{&2 \\textcolor{${get(
+									color1,
+								)}}{\\times &1}}{&3 \\textcolor{${get(
+									color1,
+								)}}{\\times &1}} = \\frac{[_&2*&1_]}{[_&3*&1_]}$$ et $$\\frac{[_&2*&1_]}{[_&3*&1_]}<\\frac{&4}{[_&3*&1_]}$$, donc $$[°&5°] < [°&6°]$$@@ \
+              @@ &5>&6 ?? $$\\frac{&2}{&3} = \\frac{&2 \\textcolor{${get(
+								color1,
+							)}}{\\times &1}}{&3 \\textcolor{${get(
+									color1,
+								)}}{\\times &1}} = \\frac{[_&2*&1_]}{[_&3*&1_]}$$ et $$\\frac{[_&2*&1_]}{[_&3*&1_]}>\\frac{&4}{[_&3*&1_]}$$, donc $$[°&5°]>[°&6°] $$@@`,
 							},
 						],
 						[
 							{
-								text: `@@ &5<&6 ?? $$\\frac{&3}{&2} = \\frac{&3 \\textcolor{${color1}}{\\times &1}}{&2 \\textcolor{${color1}}{\\times &1}} = \\frac{[_&3*&1_]}{[_&2*&1_]}$$ et $$\\frac{[_&3*&1_]}{[_&2*&1_]}<\\frac{&4}{[_&2*&1_]}$$, donc $$[°&5°]<[°&6°]$$@@ \
-              @@ &5>&6 ?? $$\\frac{&3}{&2} = \\frac{&3 \\textcolor{${color1}}{\\times &1}}{&2 \\textcolor{${color1}}{\\times &1}} = \\frac{[_&3*&1_]}{[_&2*&1_]}$$ et $$\\frac{[_&3*&1_]}{[_&2*&1_]}>\\frac{&4}{[_&2*&1_]}$$, donc $$[°&5°]>[°&6°]$$@@`,
+								text: `@@ &5<&6 ?? $$\\frac{&3}{&2} = \\frac{&3 \\textcolor{${get(
+									color1,
+								)}}{\\times &1}}{&2 \\textcolor{${get(
+									color1,
+								)}}{\\times &1}} = \\frac{[_&3*&1_]}{[_&2*&1_]}$$ et $$\\frac{[_&3*&1_]}{[_&2*&1_]}<\\frac{&4}{[_&2*&1_]}$$, donc $$[°&5°]<[°&6°]$$@@ \
+              @@ &5>&6 ?? $$\\frac{&3}{&2} = \\frac{&3 \\textcolor{${get(
+								color1,
+							)}}{\\times &1}}{&2 \\textcolor{${get(
+									color1,
+								)}}{\\times &1}} = \\frac{[_&3*&1_]}{[_&2*&1_]}$$ et $$\\frac{[_&3*&1_]}{[_&2*&1_]}>\\frac{&4}{[_&2*&1_]}$$, donc $$[°&5°]>[°&6°]$$@@`,
 							},
 						],
 					],
@@ -9327,17 +10054,37 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\dfrac{&1}{\\textcolor{${color1}}{10}}+\\dfrac{&2}{\\textcolor{${color1}}{10}} &= \\dfrac{&1+&2}{\\textcolor{${color1}}{10}} \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \\dfrac{&1}{\\textcolor{${get(
+									color1,
+								)}}{10}}+\\dfrac{&2}{\\textcolor{${get(
+									color1,
+								)}}{10}} &= \\dfrac{&1+&2}{\\textcolor{${get(
+									color1,
+								)}}{10}} \\\\ &= &sol  \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\dfrac{&1}{\\textcolor{${color1}}{10}}+\\dfrac{&2}{\\textcolor{${color1}}{10}}+\\dfrac{&3}{\\textcolor{${color1}}{10}} &= \\dfrac{&1+&2+&3}{\\textcolor{${color1}}{10}} \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \\dfrac{&1}{\\textcolor{${get(
+									color1,
+								)}}{10}}+\\dfrac{&2}{\\textcolor{${get(
+									color1,
+								)}}{10}}+\\dfrac{&3}{\\textcolor{${get(
+									color1,
+								)}}{10}} &= \\dfrac{&1+&2+&3}{\\textcolor{${get(
+									color1,
+								)}}{10}} \\\\ &= &sol  \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\dfrac{&1}{\\textcolor{${color1}}{100}}+\\dfrac{&2}{\\textcolor{${color1}}{100}} &= \\dfrac{&1+&2}{\\textcolor{${color1}}{100}} \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \\dfrac{&1}{\\textcolor{${get(
+									color1,
+								)}}{100}}+\\dfrac{&2}{\\textcolor{${get(
+									color1,
+								)}}{100}} &= \\dfrac{&1+&2}{\\textcolor{${get(
+									color1,
+								)}}{100}} \\\\ &= &sol  \\end{align}$$`,
 							},
 						],
 					],
@@ -9362,7 +10109,13 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\dfrac{&1}{\\textcolor{${color1}}{&3}}+\\dfrac{&2}{\\textcolor{${color1}}{&3}} &= \\dfrac{&1+&2}{\\textcolor{${color1}}{&3}} \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \\dfrac{&1}{\\textcolor{${get(
+									color1,
+								)}}{&3}}+\\dfrac{&2}{\\textcolor{${get(
+									color1,
+								)}}{&3}} &= \\dfrac{&1+&2}{\\textcolor{${get(
+									color1,
+								)}}{&3}} \\\\ &= &sol  \\end{align}$$`,
 							},
 						],
 					],
@@ -9392,12 +10145,24 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\dfrac{&1}{\\textcolor{${color1}}{&3}}+\\dfrac{&2}{\\textcolor{${color1}}{&3}} &= \\dfrac{&1+&2}{\\textcolor{${color1}}{&3}} \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \\dfrac{&1}{\\textcolor{${get(
+									color1,
+								)}}{&3}}+\\dfrac{&2}{\\textcolor{${get(
+									color1,
+								)}}{&3}} &= \\dfrac{&1+&2}{\\textcolor{${get(
+									color1,
+								)}}{&3}} \\\\ &= &sol  \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\dfrac{&1}{\\textcolor{${color1}}{&3}}-\\dfrac{&2}{\\textcolor{${color1}}{&3}} &= \\dfrac{&1-&2}{\\textcolor{${color1}}{&3}} \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \\dfrac{&1}{\\textcolor{${get(
+									color1,
+								)}}{&3}}-\\dfrac{&2}{\\textcolor{${get(
+									color1,
+								)}}{&3}} &= \\dfrac{&1-&2}{\\textcolor{${get(
+									color1,
+								)}}{&3}} \\\\ &= &sol  \\end{align}$$`,
 							},
 						],
 					],
@@ -9431,17 +10196,47 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\dfrac{&1}{&3} + \\dfrac{&2}{[_&3*&4_]} &= \\dfrac{&1\\textcolor{${color2}}{\\times &4}}{&3\\textcolor{${color2}}{\\times &4}} + \\dfrac{&2}{[_&3*&4_]} \\\\ &= \\dfrac{[_&1*&4_]}{\\textcolor{${color1}}{[_&3*&4_]}} + \\dfrac{&2}{\\textcolor{${color1}}{[_&3*&4_]}} \\\\ &= \\dfrac{[_&1*&4_]+&2}{\\textcolor{${color1}}{[_&3*&4_]}} \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \\dfrac{&1}{&3} + \\dfrac{&2}{[_&3*&4_]} &= \\dfrac{&1\\textcolor{${get(
+									color2,
+								)}}{\\times &4}}{&3\\textcolor{${get(
+									color2,
+								)}}{\\times &4}} + \\dfrac{&2}{[_&3*&4_]} \\\\ &= \\dfrac{[_&1*&4_]}{\\textcolor{${get(
+									color1,
+								)}}{[_&3*&4_]}} + \\dfrac{&2}{\\textcolor{${get(
+									color1,
+								)}}{[_&3*&4_]}} \\\\ &= \\dfrac{[_&1*&4_]+&2}{\\textcolor{${get(
+									color1,
+								)}}{[_&3*&4_]}} \\\\ &= &sol  \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\dfrac{&2}{[_&3*&4_]} + \\dfrac{&1}{&3} &= \\dfrac{&2}{[_&3*&4_]} + \\dfrac{&1\\textcolor{${color2}}{\\times &4}}{&3\\textcolor{${color2}}{\\times &4}} \\\\ &= \\dfrac{&2}{\\textcolor{${color1}}{[_&3*&4_]}} + \\dfrac{[_&1*&4_]}{\\textcolor{${color1}}{[_&3*&4_]}} \\\\ &= \\dfrac{&2+[_&1*&4_]}{\\textcolor{${color1}}{[_&3*&4_]}} \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \\dfrac{&2}{[_&3*&4_]} + \\dfrac{&1}{&3} &= \\dfrac{&2}{[_&3*&4_]} + \\dfrac{&1\\textcolor{${get(
+									color2,
+								)}}{\\times &4}}{&3\\textcolor{${get(
+									color2,
+								)}}{\\times &4}} \\\\ &= \\dfrac{&2}{\\textcolor{${get(
+									color1,
+								)}}{[_&3*&4_]}} + \\dfrac{[_&1*&4_]}{\\textcolor{${get(
+									color1,
+								)}}{[_&3*&4_]}} \\\\ &= \\dfrac{&2+[_&1*&4_]}{\\textcolor{${get(
+									color1,
+								)}}{[_&3*&4_]}} \\\\ &= &sol  \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\dfrac{&1}{&3} - \\dfrac{&2}{[_&3*&4_]} &= \\dfrac{&1\\textcolor{${color2}}{\\times &4}}{&3\\textcolor{${color2}}{\\times &4}} - \\dfrac{&2}{[_&3*&4_]} \\\\ &= \\dfrac{[_&1*&4_]}{\\textcolor{${color1}}{[_&3*&4_]}} - \\dfrac{&2}{\\textcolor{${color1}}{[_&3*&4_]}} \\\\ &= \\dfrac{[_&1*&4_]-&2}{\\textcolor{${color1}}{[_&3*&4_]}} \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \\dfrac{&1}{&3} - \\dfrac{&2}{[_&3*&4_]} &= \\dfrac{&1\\textcolor{${get(
+									color2,
+								)}}{\\times &4}}{&3\\textcolor{${get(
+									color2,
+								)}}{\\times &4}} - \\dfrac{&2}{[_&3*&4_]} \\\\ &= \\dfrac{[_&1*&4_]}{\\textcolor{${get(
+									color1,
+								)}}{[_&3*&4_]}} - \\dfrac{&2}{\\textcolor{${get(
+									color1,
+								)}}{[_&3*&4_]}} \\\\ &= \\dfrac{[_&1*&4_]-&2}{\\textcolor{${get(
+									color1,
+								)}}{[_&3*&4_]}} \\\\ &= &sol  \\end{align}$$`,
 							},
 						],
 					],
@@ -9470,12 +10265,32 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\dfrac{&1}{&3} + \\dfrac{[_&2*&4_]}{[_&3*&4_]} &= \\dfrac{&1}{&3} + \\dfrac{[_&2*&4_]\\textcolor{${color2}}{\\div &4}}{[_&3*&4_]\\textcolor{${color2}}{\\div &4}} \\\\ &= \\dfrac{&1}{\\textcolor{${color1}}{&3}} + \\dfrac{&2}{\\textcolor{${color1}}{&3}} \\\\ &= \\dfrac{&1+&2}{\\textcolor{${color1}}{&3}} \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \\dfrac{&1}{&3} + \\dfrac{[_&2*&4_]}{[_&3*&4_]} &= \\dfrac{&1}{&3} + \\dfrac{[_&2*&4_]\\textcolor{${get(
+									color2,
+								)}}{\\div &4}}{[_&3*&4_]\\textcolor{${get(
+									color2,
+								)}}{\\div &4}} \\\\ &= \\dfrac{&1}{\\textcolor{${get(
+									color1,
+								)}}{&3}} + \\dfrac{&2}{\\textcolor{${get(
+									color1,
+								)}}{&3}} \\\\ &= \\dfrac{&1+&2}{\\textcolor{${get(
+									color1,
+								)}}{&3}} \\\\ &= &sol  \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\dfrac{[_&2*&4_]}{[_&3*&4_]} + \\dfrac{&1}{&3} &= \\dfrac{[_&2*&4_]\\textcolor{${color2}}{\\div &4}}{[_&3*&4_]\\textcolor{${color2}}{\\div &4}} + \\dfrac{&1}{&3} \\\\ &= \\dfrac{&2}{\\textcolor{${color1}}{&3}} + \\dfrac{&1}{\\textcolor{${color1}}{&3}} \\\\ &= \\dfrac{&2+&1}{\\textcolor{${color1}}{&3}} \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \\dfrac{[_&2*&4_]}{[_&3*&4_]} + \\dfrac{&1}{&3} &= \\dfrac{[_&2*&4_]\\textcolor{${get(
+									color2,
+								)}}{\\div &4}}{[_&3*&4_]\\textcolor{${get(
+									color2,
+								)}}{\\div &4}} + \\dfrac{&1}{&3} \\\\ &= \\dfrac{&2}{\\textcolor{${get(
+									color1,
+								)}}{&3}} + \\dfrac{&1}{\\textcolor{${get(
+									color1,
+								)}}{&3}} \\\\ &= \\dfrac{&2+&1}{\\textcolor{${get(
+									color1,
+								)}}{&3}} \\\\ &= &sol  \\end{align}$$`,
 							},
 						],
 					],
@@ -9498,12 +10313,32 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\dfrac{&2}{&1} + &3 &= \\dfrac{&2}{&1} + \\dfrac{&3\\textcolor{${color2}}{\\times &1}}{\\textcolor{${color2}}{&1}} \\\\ &= \\dfrac{&2}{\\textcolor{${color1}}{&1}} + \\dfrac{[_&3*&1_]}{\\textcolor{${color1}}{&1}} \\\\ &= \\dfrac{&2+[_&3*&1_]}{\\textcolor{${color1}}{[_&1_]}} \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \\dfrac{&2}{&1} + &3 &= \\dfrac{&2}{&1} + \\dfrac{&3\\textcolor{${get(
+									color2,
+								)}}{\\times &1}}{\\textcolor{${get(
+									color2,
+								)}}{&1}} \\\\ &= \\dfrac{&2}{\\textcolor{${get(
+									color1,
+								)}}{&1}} + \\dfrac{[_&3*&1_]}{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\\\ &= \\dfrac{&2+[_&3*&1_]}{\\textcolor{${get(
+									color1,
+								)}}{[_&1_]}} \\\\ &= &sol  \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} &3 + \\dfrac{&2}{&1} &= \\dfrac{&3\\textcolor{${color2}}{\\times &1}}{\\textcolor{${color2}}{&1}} + \\dfrac{&2}{&1} \\\\ &= \\dfrac{[_&3*&1_]}{\\textcolor{${color1}}{&1}} + \\dfrac{&2}{\\textcolor{${color1}}{&1}} \\\\ &= \\dfrac{[_&3*&1_]+&2}{\\textcolor{${color1}}{[_&1_]}} \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\\begin{align} &3 + \\dfrac{&2}{&1} &= \\dfrac{&3\\textcolor{${get(
+									color2,
+								)}}{\\times &1}}{\\textcolor{${get(
+									color2,
+								)}}{&1}} + \\dfrac{&2}{&1} \\\\ &= \\dfrac{[_&3*&1_]}{\\textcolor{${get(
+									color1,
+								)}}{&1}} + \\dfrac{&2}{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\\\ &= \\dfrac{[_&3*&1_]+&2}{\\textcolor{${get(
+									color1,
+								)}}{[_&1_]}} \\\\ &= &sol  \\end{align}$$`,
 							},
 						],
 					],
@@ -9524,12 +10359,32 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\dfrac{[_&2*&4_]}{\\textcolor{${color1}}{[_&1*&3_]}} + \\dfrac{[_(&1-&2)*&4_]}{\\textcolor{${color1}}{[_&1*&3_]}} &= \\dfrac{[_&2*&4_]+[_(&1-&2)*&4_]}{\\textcolor{${color1}}{[_&1*&3_]}} \\\\ &= \\dfrac{[_&1*&4_]}{[_&1*&3_]} \\\\ &=  \\dfrac{[_&1*&4_]\\textcolor{${color2}}{\\div [_pgcd(&1*&3;&1*&4)_]}}{[_&1*&3_]\\textcolor{${color2}}{\\div [_pgcd(&1*&3;&1*&4)_]}} \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \\dfrac{[_&2*&4_]}{\\textcolor{${get(
+									color1,
+								)}}{[_&1*&3_]}} + \\dfrac{[_(&1-&2)*&4_]}{\\textcolor{${get(
+									color1,
+								)}}{[_&1*&3_]}} &= \\dfrac{[_&2*&4_]+[_(&1-&2)*&4_]}{\\textcolor{${get(
+									color1,
+								)}}{[_&1*&3_]}} \\\\ &= \\dfrac{[_&1*&4_]}{[_&1*&3_]} \\\\ &=  \\dfrac{[_&1*&4_]\\textcolor{${get(
+									color2,
+								)}}{\\div [_pgcd(&1*&3;&1*&4)_]}}{[_&1*&3_]\\textcolor{${get(
+									color2,
+								)}}{\\div [_pgcd(&1*&3;&1*&4)_]}} \\\\ &= &sol  \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\dfrac{[_&1*&4_]}{\\textcolor{${color1}}{[_&2*&3_]}} - \\dfrac{[_(&1-&2)*&4_]}{\\textcolor{${color1}}{[_&2*&3_]}} &= \\dfrac{[_&1*&4_]-[_(&1-&2)*&4_]}{\\textcolor{${color1}}{[_&2*&3_]}} \\\\ &= \\dfrac{[_&2*&4_]}{[_&2*&3_]} \\\\ &=  \\dfrac{[_&2*&4_]\\textcolor{${color2}}{\\div [_pgcd(&2*&3;&2*&4)_]}}{[_&2*&3_]\\textcolor{${color2}}{\\div [_pgcd(&2*&3;&2*&4)_]}} \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \\dfrac{[_&1*&4_]}{\\textcolor{${get(
+									color1,
+								)}}{[_&2*&3_]}} - \\dfrac{[_(&1-&2)*&4_]}{\\textcolor{${get(
+									color1,
+								)}}{[_&2*&3_]}} &= \\dfrac{[_&1*&4_]-[_(&1-&2)*&4_]}{\\textcolor{${get(
+									color1,
+								)}}{[_&2*&3_]}} \\\\ &= \\dfrac{[_&2*&4_]}{[_&2*&3_]} \\\\ &=  \\dfrac{[_&2*&4_]\\textcolor{${get(
+									color2,
+								)}}{\\div [_pgcd(&2*&3;&2*&4)_]}}{[_&2*&3_]\\textcolor{${get(
+									color2,
+								)}}{\\div [_pgcd(&2*&3;&2*&4)_]}} \\\\ &= &sol  \\end{align}$$`,
 							},
 						],
 					],
@@ -9678,8 +10533,12 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								\\dfrac{\\textcolor{${color1}}{&2}}{\\textcolor{${color2}}{&3}} \\text{ de } [_&1*&3_] \
-								&= [_&1*&3_]\\textcolor{${color2}}{\\div &3} \\textcolor{${color1}}{\\times &2} \\\\ \
+								\\dfrac{\\textcolor{${get(color1)}}{&2}}{\\textcolor{${get(
+									color2,
+								)}}{&3}} \\text{ de } [_&1*&3_] \
+								&= [_&1*&3_]\\textcolor{${get(color2)}}{\\div &3} \\textcolor{${get(
+									color1,
+								)}}{\\times &2} \\\\ \
 								&= &1 \\times &2 \\\\ \
 								&= &sol1  \
 								\\end{align}$$`,
@@ -9703,9 +10562,13 @@ const questions: Questions = {
 							{
 								text: `$$\
 								\\begin{align} \
-								\\dfrac{\\textcolor{${color1}}{&2}}{\\textcolor{${color2}}{&3}} \\times [_&1*&3_] \
-								&= [_&1*&3_]\\textcolor{${color2}}{\\div &3} \\textcolor{${color1}}{\\times &2} \\\\ \
-								&= &1 \\textcolor{${color1}}{\\times &2} \\\\ \
+								\\dfrac{\\textcolor{${get(color1)}}{&2}}{\\textcolor{${get(
+									color2,
+								)}}{&3}} \\times [_&1*&3_] \
+								&= [_&1*&3_]\\textcolor{${get(color2)}}{\\div &3} \\textcolor{${get(
+									color1,
+								)}}{\\times &2} \\\\ \
+								&= &1 \\textcolor{${get(color1)}}{\\times &2} \\\\ \
 								&= &sol  \
 								\\end{align}$$`,
 							},
@@ -9713,9 +10576,13 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\
-								\\begin{align} [_&1*&3_] \\times \\dfrac{\\textcolor{${color1}}{&2}}{\\textcolor{${color2}}{&3}}  \
-								&= [_&1*&3_]\\textcolor{${color2}}{\\div &3} \\textcolor{${color1}}{\\times &2} \\\\ \
-								&= &1 \\textcolor{${color1}}{\\times &2} \\\\ \
+								\\begin{align} [_&1*&3_] \\times \\dfrac{\\textcolor{${get(
+									color1,
+								)}}{&2}}{\\textcolor{${get(color2)}}{&3}}  \
+								&= [_&1*&3_]\\textcolor{${get(color2)}}{\\div &3} \\textcolor{${get(
+									color1,
+								)}}{\\times &2} \\\\ \
+								&= &1 \\textcolor{${get(color1)}}{\\times &2} \\\\ \
 								&= &sol  \
 								\\end{align}$$`,
 							},
@@ -9908,14 +10775,18 @@ const questions: Questions = {
 								\\begin{align} \
 								&exp &= - \\frac{[_abs(&1)_]}{[_abs(&3)_]} \\times \\frac{[_abs(&2)_]}{[_abs(&4)_]} \\\\ \
 								&= - \\frac{[_abs(&1)_] \\times [_abs(&2)_]}{[_abs(&3)_] \\times[_abs(&4)_]}  \\\\ \
-								&= \\textcolor{${correct_color}}{- \\frac{[_abs(&1)*abs(&2)_]}{[_abs(&3)*abs(&4)_]}} \\\\ \
+								&= \\textcolor{${get(
+									correct_color,
+								)}}{- \\frac{[_abs(&1)*abs(&2)_]}{[_abs(&3)*abs(&4)_]}} \\\\ \
 								\\end{align}\
 								@@ \
 								@@ &5>0 ?? \
 								\\begin{align} \
 								&exp &= \\frac{[_abs(&1)_]}{[_abs(&3)_]} \\times \\frac{[_abs(&2)_]}{[_abs(&4)_]} \\\\ \
 								&= \\frac{[_abs(&1)_] \\times [_abs(&2)_]}{[_abs(&3)_] \\times[_abs(&4)_]}  \\\\ \
-								&= \\textcolor{${correct_color}}{\\frac{[_abs(&1)*abs(&2)_]}{[_abs(&3)*abs(&4)_]}}  \\\\ \
+								&= \\textcolor{${get(
+									correct_color,
+								)}}{\\frac{[_abs(&1)*abs(&2)_]}{[_abs(&3)*abs(&4)_]}}  \\\\ \
 								\\end{align}\
 								@@ \
 								$$`,
@@ -9968,7 +10839,11 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\dfrac{&1}{&3} \\textcolor{${color1}}{\\div \\dfrac{&4}{&2}} &= \\dfrac{&1}{&3} \\textcolor{${color1}}{\\times \\dfrac{&2}{&4}} \\\\ &= \\dfrac{&1 \\times &2}{&3 \\times &4}  \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \\dfrac{&1}{&3} \\textcolor{${get(
+									color1,
+								)}}{\\div \\dfrac{&4}{&2}} &= \\dfrac{&1}{&3} \\textcolor{${get(
+									color1,
+								)}}{\\times \\dfrac{&2}{&4}} \\\\ &= \\dfrac{&1 \\times &2}{&3 \\times &4}  \\\\ &= &sol  \\end{align}$$`,
 							},
 						],
 					],
@@ -9992,7 +10867,13 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\dfrac{&1}{&3} \\textcolor{${color1}}{\\div &2} &= \\dfrac{&1}{&3} \\textcolor{${color1}}{\\div \\dfrac{&2}{1}} \\\\ &= \\dfrac{&1}{&3} \\textcolor{${color1}}{\\times \\dfrac{1}{&2}} \\\\&= \\dfrac{&1 \\times 1}{&3 \\times &2}  \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \\dfrac{&1}{&3} \\textcolor{${get(
+									color1,
+								)}}{\\div &2} &= \\dfrac{&1}{&3} \\textcolor{${get(
+									color1,
+								)}}{\\div \\dfrac{&2}{1}} \\\\ &= \\dfrac{&1}{&3} \\textcolor{${get(
+									color1,
+								)}}{\\times \\dfrac{1}{&2}} \\\\&= \\dfrac{&1 \\times 1}{&3 \\times &2}  \\\\ &= &sol  \\end{align}$$`,
 							},
 						],
 					],
@@ -10016,7 +10897,11 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\dfrac{\\dfrac{&1}{&3}}{\\textcolor{${color1}}{\\dfrac{&4}{&2}}} &= \\dfrac{&1}{&3} \\textcolor{${color1}}{\\times \\dfrac{&2}{&4}} \\\\ &= \\dfrac{&1 \\times &2}{&3 \\times &4}  \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \\dfrac{\\dfrac{&1}{&3}}{\\textcolor{${get(
+									color1,
+								)}}{\\dfrac{&4}{&2}}} &= \\dfrac{&1}{&3} \\textcolor{${get(
+									color1,
+								)}}{\\times \\dfrac{&2}{&4}} \\\\ &= \\dfrac{&1 \\times &2}{&3 \\times &4}  \\\\ &= &sol  \\end{align}$$`,
 							},
 						],
 					],
@@ -10039,7 +10924,13 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} \\dfrac{\\dfrac{&1}{&3}}{\\textcolor{${color1}}{&2}} &= \\dfrac{&1}{&3} \\textcolor{${color1}}{\\div \\dfrac{&2}{1}} \\\\ &= \\dfrac{&1}{&3} \\textcolor{${color1}}{\\times \\dfrac{1}{&2}} \\\\ &= \\dfrac{&1 \\times 1}{&3 \\times &2}  \\\\ &= &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \\dfrac{\\dfrac{&1}{&3}}{\\textcolor{${get(
+									color1,
+								)}}{&2}} &= \\dfrac{&1}{&3} \\textcolor{${get(
+									color1,
+								)}}{\\div \\dfrac{&2}{1}} \\\\ &= \\dfrac{&1}{&3} \\textcolor{${get(
+									color1,
+								)}}{\\times \\dfrac{1}{&2}} \\\\ &= \\dfrac{&1 \\times 1}{&3 \\times &2}  \\\\ &= &sol  \\end{align}$$`,
 							},
 						],
 					],
@@ -10063,8 +10954,8 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-								\\dfrac{&1}{\\textcolor{${color1}}{\\dfrac{&3}{&2}}} \
-								&= &1  \\textcolor{${color1}}{\\times \\dfrac{&2}{&3}} \\\\ \
+								\\dfrac{&1}{\\textcolor{${get(color1)}}{\\dfrac{&3}{&2}}} \
+								&= &1  \\textcolor{${get(color1)}}{\\times \\dfrac{&2}{&3}} \\\\ \
 								&= \\dfrac{&1 \\times &2}{&3} \\\\ \
 								&= &sol  \
 								\\end{align}$$`,
@@ -11977,37 +12868,51 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `La longueur du 2ème côté de l'angle droit d'un triangle rectangle dont le premier côté de l'angle droit mesure $$[°&3°]$$ et d'aire $$[._&3*&4:2_mm^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${correct_color}}{[°&4°]} }{2} = [._&3*&4:2_mm^2_]$$.`,
+								text: `La longueur du 2ème côté de l'angle droit d'un triangle rectangle dont le premier côté de l'angle droit mesure $$[°&3°]$$ et d'aire $$[._&3*&4:2_mm^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${get(
+									correct_color,
+								)}}{[°&4°]} }{2} = [._&3*&4:2_mm^2_]$$.`,
 							},
 						],
 						[
 							{
-								text: `La longueur du 2ème côté de l'angle droit d'un triangle rectangle dont le premier côté de l'angle droit mesure $$[°&3°]$$ et d'aire $$[._&3*&4:2_cm^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${correct_color}}[°&4°]} }{2} = [._&3*&4:2_cm^2_]$$.`,
+								text: `La longueur du 2ème côté de l'angle droit d'un triangle rectangle dont le premier côté de l'angle droit mesure $$[°&3°]$$ et d'aire $$[._&3*&4:2_cm^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${get(
+									correct_color,
+								)}}[°&4°]} }{2} = [._&3*&4:2_cm^2_]$$.`,
 							},
 						],
 						[
 							{
-								text: `La longueur du 2ème côté de l'angle droit d'un triangle rectangle dont le premier côté de l'angle droit mesure $$[°&3°]$$ et d'aire $$[._&3*&4:2_dm^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${correct_color}}[°&4°]} }{2} = [._&3*&4:2_dm^2_]$$.`,
+								text: `La longueur du 2ème côté de l'angle droit d'un triangle rectangle dont le premier côté de l'angle droit mesure $$[°&3°]$$ et d'aire $$[._&3*&4:2_dm^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${get(
+									correct_color,
+								)}}[°&4°]} }{2} = [._&3*&4:2_dm^2_]$$.`,
 							},
 						],
 						[
 							{
-								text: `La longueur du 2ème côté de l'angle droit d'un triangle rectangle dont le premier côté de l'angle droit mesure $$[°&3°]$$ et d'aire $$[._&3*&4:2_m^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${correct_color}}[°&4°]} }{2} = [._&3*&4:2_m^2_]$$.`,
+								text: `La longueur du 2ème côté de l'angle droit d'un triangle rectangle dont le premier côté de l'angle droit mesure $$[°&3°]$$ et d'aire $$[._&3*&4:2_m^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${get(
+									correct_color,
+								)}}[°&4°]} }{2} = [._&3*&4:2_m^2_]$$.`,
 							},
 						],
 						[
 							{
-								text: `La longueur du 2ème côté de l'angle droit d'un triangle rectangle dont le premier côté de l'angle droit mesure $$[°&3°]$$ et d'aire $$[._&3*&4:2_dam^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${correct_color}}[°&4°]} }{2} = [._&3*&4:2_dam^2_]$$.`,
+								text: `La longueur du 2ème côté de l'angle droit d'un triangle rectangle dont le premier côté de l'angle droit mesure $$[°&3°]$$ et d'aire $$[._&3*&4:2_dam^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${get(
+									correct_color,
+								)}}[°&4°]} }{2} = [._&3*&4:2_dam^2_]$$.`,
 							},
 						],
 						[
 							{
-								text: `La longueur du 2ème côté de l'angle droit d'un triangle rectangle dont le premier côté de l'angle droit mesure $$[°&3°]$$ et d'aire $$[._&3*&4:2_hm^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${correct_color}}[°&4°]} }{2} = [._&3*&4:2_hm^2_]$$.`,
+								text: `La longueur du 2ème côté de l'angle droit d'un triangle rectangle dont le premier côté de l'angle droit mesure $$[°&3°]$$ et d'aire $$[._&3*&4:2_hm^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${get(
+									correct_color,
+								)}}[°&4°]} }{2} = [._&3*&4:2_hm^2_]$$.`,
 							},
 						],
 						[
 							{
-								text: `La longueur du 2ème côté de l'angle droit d'un triangle rectangle dont le premier côté de l'angle droit mesure $$[°&3°]$$ et d'aire $$[._&3*&4:2_km^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${correct_color}}[°&4°]} }{2} = [._&3*&4:2_km^2_]$$.`,
+								text: `La longueur du 2ème côté de l'angle droit d'un triangle rectangle dont le premier côté de l'angle droit mesure $$[°&3°]$$ et d'aire $$[._&3*&4:2_km^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${get(
+									correct_color,
+								)}}[°&4°]} }{2} = [._&3*&4:2_km^2_]$$.`,
 							},
 						],
 					],
@@ -12149,37 +13054,51 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `La base d'un triangle de hauteur asociée $$[°&3°]$$ et d'aire $$[._&3*&4:2_mm^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${correct_color}}{[°&4°]}}{2} = [._&3*&4:2_mm^2_]$$.`,
+								text: `La base d'un triangle de hauteur asociée $$[°&3°]$$ et d'aire $$[._&3*&4:2_mm^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${get(
+									correct_color,
+								)}}{[°&4°]}}{2} = [._&3*&4:2_mm^2_]$$.`,
 							},
 						],
 						[
 							{
-								text: `La base d'un triangle de hauteur asociée $$[°&3°]$$ et d'aire $$[._&3*&4:2_cm^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${correct_color}}{[°&4°]}}{2} = [._&3*&4:2_cm^2_]$$.`,
+								text: `La base d'un triangle de hauteur asociée $$[°&3°]$$ et d'aire $$[._&3*&4:2_cm^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${get(
+									correct_color,
+								)}}{[°&4°]}}{2} = [._&3*&4:2_cm^2_]$$.`,
 							},
 						],
 						[
 							{
-								text: `La base d'un triangle de hauteur asociée $$[°&3°]$$ et d'aire $$[._&3*&4:2_dm^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${correct_color}}{[°&4°]}}{2} = [._&3*&4:2_dm^2_]$$.`,
+								text: `La base d'un triangle de hauteur asociée $$[°&3°]$$ et d'aire $$[._&3*&4:2_dm^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${get(
+									correct_color,
+								)}}{[°&4°]}}{2} = [._&3*&4:2_dm^2_]$$.`,
 							},
 						],
 						[
 							{
-								text: `La base d'un triangle de hauteur asociée $$[°&3°]$$ et d'aire $$[._&3*&4:2_m^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${correct_color}}{[°&4°]}}{2} = [._&3*&4:2_m^2_]$$.`,
+								text: `La base d'un triangle de hauteur asociée $$[°&3°]$$ et d'aire $$[._&3*&4:2_m^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${get(
+									correct_color,
+								)}}{[°&4°]}}{2} = [._&3*&4:2_m^2_]$$.`,
 							},
 						],
 						[
 							{
-								text: `La base d'un triangle de hauteur asociée $$[°&3°]$$ et d'aire $$[._&3*&4:2_dam^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${correct_color}}{[°&4°]}}{2} = [._&3*&4:2_dam^2_]$$.`,
+								text: `La base d'un triangle de hauteur asociée $$[°&3°]$$ et d'aire $$[._&3*&4:2_dam^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${get(
+									correct_color,
+								)}}{[°&4°]}}{2} = [._&3*&4:2_dam^2_]$$.`,
 							},
 						],
 						[
 							{
-								text: `La base d'un triangle de hauteur asociée $$[°&3°]$$ et d'aire $$[._&3*&4:2_hm^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${correct_color}}{[°&4°]}}{2} = [._&3*&4:2_hm^2_]$$.`,
+								text: `La base d'un triangle de hauteur asociée $$[°&3°]$$ et d'aire $$[._&3*&4:2_hm^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${get(
+									correct_color,
+								)}}{[°&4°]}}{2} = [._&3*&4:2_hm^2_]$$.`,
 							},
 						],
 						[
 							{
-								text: `La base d'un triangle de hauteur asociée $$[°&3°]$$ et d'aire $$[._&3*&4:2_km^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${correct_color}}{[°&4°]}}{2} = [._&3*&4:2_km^2_]$$.`,
+								text: `La base d'un triangle de hauteur asociée $$[°&3°]$$ et d'aire $$[._&3*&4:2_km^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${get(
+									correct_color,
+								)}}{[°&4°]}}{2} = [._&3*&4:2_km^2_]$$.`,
 							},
 						],
 					],
@@ -12252,37 +13171,51 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `La hauteur d'un triangle de base asociée $$[°&3°]$$ et d'aire $$[._&3*&4:2_mm^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${correct_color}}{[°&4°]}}{2} = [._&3*&4:2_mm^2_]$$.`,
+								text: `La hauteur d'un triangle de base asociée $$[°&3°]$$ et d'aire $$[._&3*&4:2_mm^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${get(
+									correct_color,
+								)}}{[°&4°]}}{2} = [._&3*&4:2_mm^2_]$$.`,
 							},
 						],
 						[
 							{
-								text: `La hauteur d'un triangle de base asociée $$[°&3°]$$ et d'aire $$[._&3*&4:2_cm^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${correct_color}}{[°&4°]}}{2} = [._&3*&4:2_cm^2_]$$.`,
+								text: `La hauteur d'un triangle de base asociée $$[°&3°]$$ et d'aire $$[._&3*&4:2_cm^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${get(
+									correct_color,
+								)}}{[°&4°]}}{2} = [._&3*&4:2_cm^2_]$$.`,
 							},
 						],
 						[
 							{
-								text: `La hauteur d'un triangle de base asociée $$[°&3°]$$ et d'aire $$[._&3*&4:2_dm^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${correct_color}}{[°&4°]}}{2} = [._&3*&4:2_dm^2_]$$.`,
+								text: `La hauteur d'un triangle de base asociée $$[°&3°]$$ et d'aire $$[._&3*&4:2_dm^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${get(
+									correct_color,
+								)}}{[°&4°]}}{2} = [._&3*&4:2_dm^2_]$$.`,
 							},
 						],
 						[
 							{
-								text: `La hauteur d'un triangle de base asociée $$[°&3°]$$ et d'aire $$[._&3*&4:2_m^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${correct_color}}{[°&4°]}}{2} = [._&3*&4:2_m^2_]$$.`,
+								text: `La hauteur d'un triangle de base asociée $$[°&3°]$$ et d'aire $$[._&3*&4:2_m^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${get(
+									correct_color,
+								)}}{[°&4°]}}{2} = [._&3*&4:2_m^2_]$$.`,
 							},
 						],
 						[
 							{
-								text: `La hauteur d'un triangle de base asociée $$[°&3°]$$ et d'aire $$[._&3*&4:2_dam^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${correct_color}}{[°&4°]}}{2} = [._&3*&4:2_dam^2_]$$.`,
+								text: `La hauteur d'un triangle de base asociée $$[°&3°]$$ et d'aire $$[._&3*&4:2_dam^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${get(
+									correct_color,
+								)}}{[°&4°]}}{2} = [._&3*&4:2_dam^2_]$$.`,
 							},
 						],
 						[
 							{
-								text: `La hauteur d'un triangle de base asociée $$[°&3°]$$ et d'aire $$[._&3*&4:2_hm^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${correct_color}}{[°&4°]}}{2} = [._&3*&4:2_hm^2_]$$.`,
+								text: `La hauteur d'un triangle de base asociée $$[°&3°]$$ et d'aire $$[._&3*&4:2_hm^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${get(
+									correct_color,
+								)}}{[°&4°]}}{2} = [._&3*&4:2_hm^2_]$$.`,
 							},
 						],
 						[
 							{
-								text: `La hauteur d'un triangle de base asociée $$[°&3°]$$ et d'aire $$[._&3*&4:2_km^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${correct_color}}{[°&4°]}}{2} = [._&3*&4:2_km^2_]$$.`,
+								text: `La hauteur d'un triangle de base asociée $$[°&3°]$$ et d'aire $$[._&3*&4:2_km^2_]$$  est &solution car   $$\\frac{[°&3°] \\times \\textcolor{${get(
+									correct_color,
+								)}}{[°&4°]}}{2} = [._&3*&4:2_km^2_]$$.`,
 							},
 						],
 					],
@@ -13494,7 +14427,9 @@ const questions: Questions = {
 								text: "En effet, on peut comparer les carrés des 2 membres de l'inégalité :",
 							},
 							{
-								text: `$$\\begin{align} \\left(\\sqrt{&1} + \\sqrt{&2}\\right)^2 &= \\left(\\sqrt{&1}\\right)^2 +\\left(\\sqrt{&2}\\right)^2 + 2\\sqrt{&1}\\sqrt{&2} \\\\ &= &1 +&2\\textcolor{${color2}}{+2\\sqrt{[_&1*&2_]}} \\\\ \\left(\\sqrt{&1+&2}\\right)^2 &= &1+&2\\end{align}$$`,
+								text: `$$\\begin{align} \\left(\\sqrt{&1} + \\sqrt{&2}\\right)^2 &= \\left(\\sqrt{&1}\\right)^2 +\\left(\\sqrt{&2}\\right)^2 + 2\\sqrt{&1}\\sqrt{&2} \\\\ &= &1 +&2\\textcolor{${get(
+									color2,
+								)}}{+2\\sqrt{[_&1*&2_]}} \\\\ \\left(\\sqrt{&1+&2}\\right)^2 &= &1+&2\\end{align}$$`,
 							},
 						],
 						[
@@ -13556,8 +14491,16 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
               \\sqrt{[_&1*&1*&3_]} + \\sqrt{[_&2*&2*&3_]} &= \\sqrt{[_&1*&1_]} \\times \\sqrt{&3} + \\sqrt{[_&2*&2_]} \\times \\sqrt{&3} \\\\ \
-              &= &1 \\times \\textcolor{${color1}}{\\sqrt{&3}} + &2 \\times \\textcolor{${color1}}{\\sqrt{&3}} \\\\ \
-              &= &1 \\textcolor{${color1}}{\\sqrt{&3}} + &2 \\textcolor{${color1}}{\\sqrt{&3}} \\\\ \
+              &= &1 \\times \\textcolor{${get(
+								color1,
+							)}}{\\sqrt{&3}} + &2 \\times \\textcolor{${get(
+									color1,
+								)}}{\\sqrt{&3}} \\\\ \
+              &= &1 \\textcolor{${get(
+								color1,
+							)}}{\\sqrt{&3}} + &2 \\textcolor{${get(
+									color1,
+								)}}{\\sqrt{&3}} \\\\ \
               &= &sol  \\\\ \
               \\end{align}$$`,
 							},
@@ -13831,7 +14774,11 @@ const questions: Questions = {
 								text: `&solution, $$\\begin{array}{c|c} \
               &1  &   [_&1*&3_] \\\\ \
               &2  &   [_&2*&3_] \
-            \\end{array}$$ est un tableau de proportionnalité, car $$ &1 \\textcolor{${color1}}{\\times &3}=[_&1*&3_]$$ et $$ &2 \\textcolor{${color1}}{\\times &3}=[_&2*&3_] $$`,
+            \\end{array}$$ est un tableau de proportionnalité, car $$ &1 \\textcolor{${get(
+							color1,
+						)}}{\\times &3}=[_&1*&3_]$$ et $$ &2 \\textcolor{${get(
+									color1,
+								)}}{\\times &3}=[_&2*&3_] $$`,
 							},
 							{
 								text: 'On a multiplité par le même nombre entre les 2 colonnes.',
@@ -13842,7 +14789,11 @@ const questions: Questions = {
 								text: `&solution, $$\\begin{array}{c|c} \
               &1  &   [_&1*&3_] \\\\ \
               &2  &   [_&2*(&3+1)_] \
-            \\end{array}$$ n'est pas un tableau de proportionnalité, car $$ &1 \\textcolor{${color1}}{\\times &3}=[_&1*&3_]$$ et $$ &2 \\textcolor{${color2}}{\\times [_&3+1_]}=[_&2*(&3+1)_]$$.`,
+            \\end{array}$$ n'est pas un tableau de proportionnalité, car $$ &1 \\textcolor{${get(
+							color1,
+						)}}{\\times &3}=[_&1*&3_]$$ et $$ &2 \\textcolor{${get(
+									color2,
+								)}}{\\times [_&3+1_]}=[_&2*(&3+1)_]$$.`,
 							},
 							{
 								text: "On n'a <b>pas</b> multiplié par le même nombre entre les 2 colonnes.",
@@ -13884,7 +14835,11 @@ const questions: Questions = {
 								text: `&solution, $$\\begin{array}{c|c} \
               &1        &   &2 \\\\ \
               [_&1*&3_]  &  [_&2*&3_] \
-            \\end{array}$$ est un tableau de proportionnalité, car $$ &1 \\textcolor{${color1}}{\\times &3}=[_&1*&3_]$$ et $$ &2 \\textcolor{${color1}}{\\times &3}=[_&2*&3_] $$`,
+            \\end{array}$$ est un tableau de proportionnalité, car $$ &1 \\textcolor{${get(
+							color1,
+						)}}{\\times &3}=[_&1*&3_]$$ et $$ &2 \\textcolor{${get(
+									color1,
+								)}}{\\times &3}=[_&2*&3_] $$`,
 							},
 							{
 								text: 'On a multiplié par le même nombre entre les 2 colonnes.',
@@ -13895,7 +14850,11 @@ const questions: Questions = {
 								text: `&solution, $$\\begin{array}{c|c} \
               &1  &  &2  \\\\ \
         [_&1*&3_]  &   [_&2*(&3+1)_] \
-            \\end{array}$$ n'est pas un tableau de proportionnalité, car $$ &1 \\textcolor{${color1}}{\\times &3}=[_&1*&3_]$$ et $$ &2 \\textcolor{${color2}}{\\times [_&3+1_]}=[_&2*(&3+1)_]$$.`,
+            \\end{array}$$ n'est pas un tableau de proportionnalité, car $$ &1 \\textcolor{${get(
+							color1,
+						)}}{\\times &3}=[_&1*&3_]$$ et $$ &2 \\textcolor{${get(
+									color2,
+								)}}{\\times [_&3+1_]}=[_&2*(&3+1)_]$$.`,
 							},
 							{
 								text: "On n'a <b>pas</b> multiplié par le même nombre entre les 2 lignes.",
@@ -14032,22 +14991,38 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `&sol, car $$&2 \\textcolor{${color1}}{\\times &3} = [_&2*&3_]$$ et $$&1 \\textcolor{${color1}}{\\times &3} = &sol1$$`,
+								text: `&sol, car $$&2 \\textcolor{${get(
+									color1,
+								)}}{\\times &3} = [_&2*&3_]$$ et $$&1 \\textcolor{${get(
+									color1,
+								)}}{\\times &3} = &sol1$$`,
 							},
 						],
 						[
 							{
-								text: `&sol, car $$&1\\textcolor{${color1}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${color1}}{\\times &3} = &sol1$$`,
+								text: `&sol, car $$&1\\textcolor{${get(
+									color1,
+								)}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${get(
+									color1,
+								)}}{\\times &3} = &sol1$$`,
 							},
 						],
 						[
 							{
-								text: `&sol, car $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &sol1$$`,
+								text: `&sol, car $$[_&1*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div &3} = &sol1$$`,
 							},
 						],
 						[
 							{
-								text: `&sol, car $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &2$$ et $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &sol1$$`,
+								text: `&sol, car $$[_&2*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div &3} = &2$$ et $$[_&1*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div &3} = &sol1$$`,
 							},
 						],
 					],
@@ -14108,22 +15083,38 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `&sol, car $$&2 \\textcolor{${color1}}{\\times &3} = [_&2*&3_]$$ et $$&1 \\textcolor{${color1}}{\\times &3} = &sol1$$`,
+								text: `&sol, car $$&2 \\textcolor{${get(
+									color1,
+								)}}{\\times &3} = [_&2*&3_]$$ et $$&1 \\textcolor{${get(
+									color1,
+								)}}{\\times &3} = &sol1$$`,
 							},
 						],
 						[
 							{
-								text: `&sol, car $$&1\\textcolor{${color1}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${color1}}{\\times &3} = &sol1$$`,
+								text: `&sol, car $$&1\\textcolor{${get(
+									color1,
+								)}}{\\times &3} = [_&1*&3_]$$ et $$&2 \\textcolor{${get(
+									color1,
+								)}}{\\times &3} = &sol1$$`,
 							},
 						],
 						[
 							{
-								text: `&sol, car $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &sol1$$`,
+								text: `&sol, car $$[_&1*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div &3} = &1$$ et $$[_&2*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div &3} = &sol1$$`,
 							},
 						],
 						[
 							{
-								text: `&sol, car $$[_&2*&3_] \\textcolor{${color1}}{\\div &3} = &2$$ et $$[_&1*&3_] \\textcolor{${color1}}{\\div &3} = &sol1$$`,
+								text: `&sol, car $$[_&2*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div &3} = &2$$ et $$[_&1*&3_] \\textcolor{${get(
+									color1,
+								)}}{\\div &3} = &sol1$$`,
 							},
 						],
 					],
@@ -14186,22 +15177,38 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `&sol, car $$&2 \\textcolor{${color1}}{\\times \\frac{&3}{&2}} = &3$$ et $$&1 \\textcolor{${color1}}{\\times \\frac{&3}{&2}} =$$ &solution.`,
+								text: `&sol, car $$&2 \\textcolor{${get(
+									color1,
+								)}}{\\times \\frac{&3}{&2}} = &3$$ et $$&1 \\textcolor{${get(
+									color1,
+								)}}{\\times \\frac{&3}{&2}} =$$ &solution.`,
 							},
 						],
 						[
 							{
-								text: `&sol, car $$&2 \\textcolor{${color1}}{\\times \\frac{&3}{&2}} = &3$$ et $$&1 \\textcolor{${color1}}{\\times \\frac{&3}{&2}}} =$ &solution.`,
+								text: `&sol, car $$&2 \\textcolor{${get(
+									color1,
+								)}}{\\times \\frac{&3}{&2}} = &3$$ et $$&1 \\textcolor{${get(
+									color1,
+								)}}{\\times \\frac{&3}{&2}}} =$ &solution.`,
 							},
 						],
 						[
 							{
-								text: `&sol car $$&2 \\textcolor{${color1}}{\\times \\frac{&3}{&2}} = &3$$ et $$&sol1 \\textcolor{${color1}}{\\times \\frac{&3}{&2}} = [_&1*&3/&2_]$$`,
+								text: `&sol car $$&2 \\textcolor{${get(
+									color1,
+								)}}{\\times \\frac{&3}{&2}} = &3$$ et $$&sol1 \\textcolor{${get(
+									color1,
+								)}}{\\times \\frac{&3}{&2}} = [_&1*&3/&2_]$$`,
 							},
 						],
 						[
 							{
-								text: `&sol car $$&2 \\textcolor{${color1}}{\\times \\frac{&3}{&2}} = &3$$ et $$&sol1 \\textcolor{${color1}}{\\times \\frac{&3}{&2}} = [_&1*&3/&2_]$$`,
+								text: `&sol car $$&2 \\textcolor{${get(
+									color1,
+								)}}{\\times \\frac{&3}{&2}} = &3$$ et $$&sol1 \\textcolor{${get(
+									color1,
+								)}}{\\times \\frac{&3}{&2}} = [_&1*&3/&2_]$$`,
 							},
 						],
 					],
@@ -14244,32 +15251,56 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$[_&3*&2_]$$ shawarmas, c'est $$\\textcolor{${color1}}{&3\\text{ fois}}$$ plus que $$&2$$ shawarmas à $$[_&1*&2 €_]$$, donc le prix de $$[_&3*&2_]$$ shawarmas est $$[_&1*&2 €_]\\textcolor{${color1}}{\\times &3} = &sol1$$.`,
+								text: `$$[_&3*&2_]$$ shawarmas, c'est $$\\textcolor{${get(
+									color1,
+								)}}{&3\\text{ fois}}$$ plus que $$&2$$ shawarmas à $$[_&1*&2 €_]$$, donc le prix de $$[_&3*&2_]$$ shawarmas est $$[_&1*&2 €_]\\textcolor{${get(
+									color1,
+								)}}{\\times &3} = &sol1$$.`,
 							},
 						],
 						[
 							{
-								text: `$$[_&3*&2*&1 €_]$$, c'est $$\\textcolor{${color1}}{&3\\text{ fois}}$$ plus que $$[_&2*&1 €_]$$ pour $$&2$$ shawarmas, donc je peux acheter $$&2\\textcolor{${color1}}{\\times &3} = &sol1$$ shawarmas.`,
+								text: `$$[_&3*&2*&1 €_]$$, c'est $$\\textcolor{${get(
+									color1,
+								)}}{&3\\text{ fois}}$$ plus que $$[_&2*&1 €_]$$ pour $$&2$$ shawarmas, donc je peux acheter $$&2\\textcolor{${get(
+									color1,
+								)}}{\\times &3} = &sol1$$ shawarmas.`,
 							},
 						],
 						[
 							{
-								text: `$$[_&3*&2_]\\,kg$$ de tomates, c'est $$\\textcolor{${color1}}{&3\\text{ fois}}$$ plus que $$&2\\,kg$$  à $$[_&1*&2€_]$$, donc le prix de $$[_&3*&2_]\\,kg$$ de tomates est $$[_&1*&2 €_]\\textcolor{${color1}}{\\times &3} = &sol1$$.`,
+								text: `$$[_&3*&2_]\\,kg$$ de tomates, c'est $$\\textcolor{${get(
+									color1,
+								)}}{&3\\text{ fois}}$$ plus que $$&2\\,kg$$  à $$[_&1*&2€_]$$, donc le prix de $$[_&3*&2_]\\,kg$$ de tomates est $$[_&1*&2 €_]\\textcolor{${get(
+									color1,
+								)}}{\\times &3} = &sol1$$.`,
 							},
 						],
 						[
 							{
-								text: `$$[_&3*&2*&1 €_]$$, c'est $$\\textcolor{${color1}}{&3\\text{ fois}}$$ plus que $$[_&2*&1€_]$$ pour $$&2\\,kg$$ de tomates, donc je peux acheter $$&2\\,kg\\textcolor{${color1}}{\\times &3} = &sol1$$ de tomates.`,
+								text: `$$[_&3*&2*&1 €_]$$, c'est $$\\textcolor{${get(
+									color1,
+								)}}{&3\\text{ fois}}$$ plus que $$[_&2*&1€_]$$ pour $$&2\\,kg$$ de tomates, donc je peux acheter $$&2\\,kg\\textcolor{${get(
+									color1,
+								)}}{\\times &3} = &sol1$$ de tomates.`,
 							},
 						],
 						[
 							{
-								text: `$$[_&3*&2_]\\,h$$, c'est $$\\textcolor{${color1}}{&3\\text{ fois}}$$ plus que $$&2\\,h$$ pour $$[_&1*&2_]\\,L$$, donc il s'échappe  $$[_&1*&2_]\\,L\\textcolor{${color1}}{\\times &3} = &sol1$$ d'eau en $$[_&3*&2_]\\,h$$.`,
+								text: `$$[_&3*&2_]\\,h$$, c'est $$\\textcolor{${get(
+									color1,
+								)}}{&3\\text{ fois}}$$ plus que $$&2\\,h$$ pour $$[_&1*&2_]\\,L$$, donc il s'échappe  $$[_&1*&2_]\\,L\\textcolor{${get(
+									color1,
+								)}}{\\times &3} = &sol1$$ d'eau en $$[_&3*&2_]\\,h$$.`,
 							},
 						],
 						[
 							{
-								text: `$$[_&3*&2*&1_]\\,L$$, c'est $$\\textcolor{${color1}}{&3\\text{ fois}}$$ plus que $$[_&2*&1_]\\,L$$ en $$&2\\,h$$, donc il faut $$&2\\,h \\textcolor{${color1}}{\\times &3} = &sol1$$ pour perdre $$[_&1*&2*&3_]\\,L$$ d'eau.`,
+								text: `$$[_&3*&2*&1_]\\,L$$, c'est $$\\textcolor{${get(
+									color1,
+								)}}{&3\\text{ fois}}$$ plus que $$[_&2*&1_]\\,L$$ en $$&2\\,h$$, donc il faut $$&2\\,h \\textcolor{${get(
+									color1,
+								)}}{\\times &3} = &sol1$$ pour perdre $$[_&1*&2*&3_]\\,L$$ d'eau.`,
 							},
 						],
 					],
@@ -14324,7 +15355,11 @@ const questions: Questions = {
 								text: `@@ &2 = 1 ?? $$ &1\\%=&sol $$ @@ \
                 @@ &2 != 1 ?? $$\\begin{align} @@ \
                 @@ &2 != 1 ?? &1\\% &= \\frac{&1}{100}  \\\\ @@ \
-                @@ &2 != 1 ?? &= \\frac{&1 \\textcolor{${color1}}{\\div [_&2_]}}{100 \\textcolor{${color1}}{\\div [_&2_]}} \\\\ @@\
+                @@ &2 != 1 ?? &= \\frac{&1 \\textcolor{${get(
+									color1,
+								)}}{\\div [_&2_]}}{100 \\textcolor{${get(
+									color1,
+								)}}{\\div [_&2_]}} \\\\ @@\
                 @@ &2 != 1 && 100/&2 = 1 ?? &= \\frac{[_&1/&2_]}{1} \\\\  @@ \
                 @@ &2 != 1 ?? &= &sol \\\\ @@ \
                 @@ &2 != 1 ?? \\end{align}$$ @@`,
@@ -14838,22 +15873,38 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} &3 \\times \\textcolor{${color1}}{&1} &= &3 \\times \\textcolor{${color1}}{&2} \\\\ &=  &sol  \\end{align}$$`,
+								text: `$$\\begin{align} &3 \\times \\textcolor{${get(
+									color1,
+								)}}{&1} &= &3 \\times \\textcolor{${get(
+									color1,
+								)}}{&2} \\\\ &=  &sol  \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\textcolor{${color1}}{&1} \\times &3 &= \\textcolor{${color1}}{&2} \\times &3 \\\\ &=  &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &3 &= \\textcolor{${get(
+									color1,
+								)}}{&2} \\times &3 \\\\ &=  &sol  \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} &3 + \\textcolor{${color1}}{&1} &= &3 + \\textcolor{${color1}}{&2} \\\\ &=  &sol   \\end{align}$$`,
+								text: `$$\\begin{align} &3 + \\textcolor{${get(
+									color1,
+								)}}{&1} &= &3 + \\textcolor{${get(
+									color1,
+								)}}{&2} \\\\ &=  &sol   \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} \\textcolor{${color1}}{&1} + &3 &= \\textcolor{${color1}}{&2} + &3 \\\\ &=  &sol  \\end{align}$$`,
+								text: `$$\\begin{align} \\textcolor{${get(
+									color1,
+								)}}{&1} + &3 &= \\textcolor{${get(
+									color1,
+								)}}{&2} + &3 \\\\ &=  &sol  \\end{align}$$`,
 							},
 						],
 					],
@@ -14882,13 +15933,21 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} &3 \\textcolor{${color1}}{&1} &= &3 \\times \\textcolor{${color1}}{&2} \\\\ &=  &sol  \\\\ \\end{align}$$`,
+								text: `$$\\begin{align} &3 \\textcolor{${get(
+									color1,
+								)}}{&1} &= &3 \\times \\textcolor{${get(
+									color1,
+								)}}{&2} \\\\ &=  &sol  \\\\ \\end{align}$$`,
 							},
 						],
 
 						[
 							{
-								text: `$$\\begin{align} &3 + \\textcolor{${color1}}{&1} &= &3 + \\textcolor{${color1}}{&2} \\\\ &=  &sol  \\\\ \\end{align}$$`,
+								text: `$$\\begin{align} &3 + \\textcolor{${get(
+									color1,
+								)}}{&1} &= &3 + \\textcolor{${get(
+									color1,
+								)}}{&2} \\\\ &=  &sol  \\\\ \\end{align}$$`,
 							},
 						],
 					],
@@ -14924,17 +15983,33 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$\\begin{align} &3 \\textcolor{${color1}}{&1} + &4 &= &3 \\times \\textcolor{${color1}}{&2} + &4 \\\\ &= [_&3*&2_] + &4  \\\\ &=  &sol  \\\\ \\end{align}$$`,
+								text: `$$\\begin{align} &3 \\textcolor{${get(
+									color1,
+								)}}{&1} + &4 &= &3 \\times \\textcolor{${get(
+									color1,
+								)}}{&2} + &4 \\\\ &= [_&3*&2_] + &4  \\\\ &=  &sol  \\\\ \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} &4 + &3 \\textcolor{${color1}}{&1} &= &4 + &3 \\times \\textcolor{${color1}}{&2} \\\\ &= &4 + [_&3*&2_]  \\\\ &=  &sol  \\\\ \\end{align}$$`,
+								text: `$$\\begin{align} &4 + &3 \\textcolor{${get(
+									color1,
+								)}}{&1} &= &4 + &3 \\times \\textcolor{${get(
+									color1,
+								)}}{&2} \\\\ &= &4 + [_&3*&2_]  \\\\ &=  &sol  \\\\ \\end{align}$$`,
 							},
 						],
 						[
 							{
-								text: `$$\\begin{align} &4 \\textcolor{${color2}}{&5} + &3 \\textcolor{${color1}}{&1} &= &4 \\times \\textcolor{${color2}}{&6} + &3 \\times \\textcolor{${color1}}{&2} \\\\ &= [_&4*&6_] + [_&3*&2_]  \\\\ &=  &sol  \\\\ \\end{align}$$`,
+								text: `$$\\begin{align} &4 \\textcolor{${get(
+									color2,
+								)}}{&5} + &3 \\textcolor{${get(
+									color1,
+								)}}{&1} &= &4 \\times \\textcolor{${get(
+									color2,
+								)}}{&6} + &3 \\times \\textcolor{${get(
+									color1,
+								)}}{&2} \\\\ &= [_&4*&6_] + [_&3*&2_]  \\\\ &=  &sol  \\\\ \\end{align}$$`,
 							},
 						],
 					],
@@ -15011,8 +16086,8 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              &3 \\textcolor{${color1}}{&1} [+_&4_] \
-              &= &3 \\times \\textcolor{${color1}}{&2} [+_&4_] \\\\ \
+              &3 \\textcolor{${get(color1)}}{&1} [+_&4_] \
+              &= &3 \\times \\textcolor{${get(color1)}}{&2} [+_&4_] \\\\ \
               &= [_&3*(&2)_] [+_&4_]  \\\\ \
               &=  &sol  \\\\ \
               \\end{align}$$`,
@@ -15021,8 +16096,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              &3 \\textcolor{${color1}}{&1} [+_&4_] \
-              &= &3 \\times  \\textcolor{${color1}}{\\left( &2 \\right) } [+_&4_] \\\\ \
+              &3 \\textcolor{${get(color1)}}{&1} [+_&4_] \
+              &= &3 \\times  \\textcolor{${get(
+								color1,
+							)}}{\\left( &2 \\right) } [+_&4_] \\\\ \
               &= [_&3*(&2)_] [+_&4_]  \\\\ \
               &=  &sol  \\\\ \
               \\end{align}$$`,
@@ -15031,8 +16108,8 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              &4 [+_&3_] \\textcolor{${color1}}{&1} \
-              &= &4 [+_&3_] \\times \\textcolor{${color1}}{&2} \\\\ \
+              &4 [+_&3_] \\textcolor{${get(color1)}}{&1} \
+              &= &4 [+_&3_] \\times \\textcolor{${get(color1)}}{&2} \\\\ \
               &= &4  [+_&3*&2_]  \\\\ \
               &=  &sol  \\\\ \\end{align}$$`,
 							},
@@ -15040,8 +16117,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              &4 [+_&3_] \\textcolor{${color1}}{&1} \
-              &= &4 [+_&3_] \\times  \\textcolor{${color1}}{\\left( &2 \\right)}  \\\\ \
+              &4 [+_&3_] \\textcolor{${get(color1)}}{&1} \
+              &= &4 [+_&3_] \\times  \\textcolor{${get(
+								color1,
+							)}}{\\left( &2 \\right)}  \\\\ \
               &= &4 [+_&3*(&2)_]  \\\\ \
               &=  &sol  \\\\ \\end{align}$$`,
 							},
@@ -15049,8 +16128,12 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              &4 \\textcolor{${color2}}{&5}  [+_&3_] \\textcolor{${color1}}{&1} \
-              &= &4 \\times \\textcolor{${color2}}{&6} [+_&3_] \\times \\textcolor{${color1}}{&2} \\\\ \
+              &4 \\textcolor{${get(color2)}}{&5}  [+_&3_] \\textcolor{${get(
+									color1,
+								)}}{&1} \
+              &= &4 \\times \\textcolor{${get(
+								color2,
+							)}}{&6} [+_&3_] \\times \\textcolor{${get(color1)}}{&2} \\\\ \
               &= [_&4*&6_] [+_&3*&2_]  \\\\ \
               &=  &sol  \\\\ \
               \\end{align}$$`,
@@ -15338,9 +16421,17 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              &2\\textcolor{${color1}}{&1}+&3\\textcolor{${color1}}{&1}+&5\\textcolor{${color2}}{&4}+&6\\textcolor{${color2}}{&4} \
-              &= (&2+&3) \\times \\textcolor{${color1}}{&1} + (&5+&6) \\times \\textcolor{${color2}}{&4} \\\\ \
-              &= [_&2+&3_] \\times \\textcolor{${color1}}{&1} + [_&5+&6_] \\times \\textcolor{${color2}}{&4} \\\\ \
+              &2\\textcolor{${get(color1)}}{&1}+&3\\textcolor{${get(
+									color1,
+								)}}{&1}+&5\\textcolor{${get(color2)}}{&4}+&6\\textcolor{${get(
+									color2,
+								)}}{&4} \
+              &= (&2+&3) \\times \\textcolor{${get(
+								color1,
+							)}}{&1} + (&5+&6) \\times \\textcolor{${get(color2)}}{&4} \\\\ \
+              &= [_&2+&3_] \\times \\textcolor{${get(
+								color1,
+							)}}{&1} + [_&5+&6_] \\times \\textcolor{${get(color2)}}{&4} \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -15348,9 +16439,17 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              &2\\textcolor{${color1}}{&1} + &5\\textcolor{${color2}}{&4} + &3\\textcolor{${color1}}{&1}+&6\\textcolor{${color2}}{&4} \
-              &= (&2+&3) \\times \\textcolor{${color1}}{&1} + (&5+&6) \\times \\textcolor{${color2}}{&4} \\\\ \
-              &= [_&2+&3_] \\times \\textcolor{${color1}}{&1} + [_&5+&6_] \\times \\textcolor{${color2}}{&4} \\\\ \
+              &2\\textcolor{${get(color1)}}{&1} + &5\\textcolor{${get(
+									color2,
+								)}}{&4} + &3\\textcolor{${get(color1)}}{&1}+&6\\textcolor{${get(
+									color2,
+								)}}{&4} \
+              &= (&2+&3) \\times \\textcolor{${get(
+								color1,
+							)}}{&1} + (&5+&6) \\times \\textcolor{${get(color2)}}{&4} \\\\ \
+              &= [_&2+&3_] \\times \\textcolor{${get(
+								color1,
+							)}}{&1} + [_&5+&6_] \\times \\textcolor{${get(color2)}}{&4} \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -15358,9 +16457,17 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              &2\\textcolor{${color1}}{&1} + &5\\textcolor{${color2}}{&4} + &6\\textcolor{${color2}}{&4} + &3\\textcolor{${color1}}{&1} \
-              &= (&2+&3) \\times \\textcolor{${color1}}{&1} + (&5+&6) \\times \\textcolor{${color2}}{&4} \\\\ \
-              &= [_&2+&3_] \\times \\textcolor{${color1}}{&1} + [_&5+&6_] \\times \\textcolor{${color2}}{&4} \\\\ \
+              &2\\textcolor{${get(color1)}}{&1} + &5\\textcolor{${get(
+									color2,
+								)}}{&4} + &6\\textcolor{${get(
+									color2,
+								)}}{&4} + &3\\textcolor{${get(color1)}}{&1} \
+              &= (&2+&3) \\times \\textcolor{${get(
+								color1,
+							)}}{&1} + (&5+&6) \\times \\textcolor{${get(color2)}}{&4} \\\\ \
+              &= [_&2+&3_] \\times \\textcolor{${get(
+								color1,
+							)}}{&1} + [_&5+&6_] \\times \\textcolor{${get(color2)}}{&4} \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -15577,8 +16684,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              &1 \\times \\bold{\\textcolor{${color1}}{(-&2) \\times &3}} \
-              &= &1 \\times \\bold{\\textcolor{${color1}}{(-[_&2*&3_])}} \\\\ \
+              &1 \\times \\bold{\\textcolor{${get(color1)}}{(-&2) \\times &3}} \
+              &= &1 \\times \\bold{\\textcolor{${get(
+								color1,
+							)}}{(-[_&2*&3_])}} \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -15587,8 +16696,12 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
               (-&2) \\times &1 \\times &3 \
-              &= \\bold{\\textcolor{${color1}}{(-&2) \\times &3}} \\times &1 \\\\ \
-              &=  \\bold{\\textcolor{${color1}}{(-[_&2*&3_])}} \\times &1 \\\\ \
+              &= \\bold{\\textcolor{${get(
+								color1,
+							)}}{(-&2) \\times &3}} \\times &1 \\\\ \
+              &=  \\bold{\\textcolor{${get(
+								color1,
+							)}}{(-[_&2*&3_])}} \\times &1 \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -15596,8 +16709,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\bold{\\textcolor{${color1}}{&3 \\times (-&2)}} \\times &1 \
-              &=  \\bold{\\textcolor{${color1}}{(-[_&2*&3_])}} \\times &1 \\\\ \
+              \\bold{\\textcolor{${get(color1)}}{&3 \\times (-&2)}} \\times &1 \
+              &=  \\bold{\\textcolor{${get(
+								color1,
+							)}}{(-[_&2*&3_])}} \\times &1 \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -15605,8 +16720,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              &1 \\times \\bold{\\textcolor{${color1}}{&2 \\times (-&3)}} \
-              &= &1 \\times \\bold{\\textcolor{${color1}}{(-[_&2*&3_])}} \\\\ \
+              &1 \\times \\bold{\\textcolor{${get(color1)}}{&2 \\times (-&3)}} \
+              &= &1 \\times \\bold{\\textcolor{${get(
+								color1,
+							)}}{(-[_&2*&3_])}} \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -15615,8 +16732,12 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
               &2 \\times &1 \\times (-&3) \
-              &= \\bold{\\textcolor{${color1}}{&2 \\times (-&3)}} \\times &1 \\\\ \
-              &=  \\bold{\\textcolor{${color1}}{(-[_&2*&3_])}} \\times &1 \\\\ \
+              &= \\bold{\\textcolor{${get(
+								color1,
+							)}}{&2 \\times (-&3)}} \\times &1 \\\\ \
+              &=  \\bold{\\textcolor{${get(
+								color1,
+							)}}{(-[_&2*&3_])}} \\times &1 \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -15624,8 +16745,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\bold{\\textcolor{${color1}}{(-&3) \\times &2}} \\times &1 \
-              &=  \\bold{\\textcolor{${color1}}{(-[_&2*&3_])}} \\times &1 \\\\ \
+              \\bold{\\textcolor{${get(color1)}}{(-&3) \\times &2}} \\times &1 \
+              &=  \\bold{\\textcolor{${get(
+								color1,
+							)}}{(-[_&2*&3_])}} \\times &1 \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -15633,8 +16756,12 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              &1 \\times \\bold{\\textcolor{${color1}}{(-&2) \\times (-&3)}} \
-              &= &1 \\times \\bold{\\textcolor{${color1}}{[_&2*&3_]}} \\\\ \
+              &1 \\times \\bold{\\textcolor{${get(
+								color1,
+							)}}{(-&2) \\times (-&3)}} \
+              &= &1 \\times \\bold{\\textcolor{${get(
+								color1,
+							)}}{[_&2*&3_]}} \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -15643,8 +16770,12 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
               (-&2) \\times &1 \\times (-&3) \
-              &=  \\bold{\\textcolor{${color1}}{(-&2) \\times (-&3)}} \\times &1 \\\\ \
-              &=  \\bold{\\textcolor{${color1}}{[_&2*&3_]}} \\times &1 \\\\ \
+              &=  \\bold{\\textcolor{${get(
+								color1,
+							)}}{(-&2) \\times (-&3)}} \\times &1 \\\\ \
+              &=  \\bold{\\textcolor{${get(
+								color1,
+							)}}{[_&2*&3_]}} \\times &1 \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -15652,8 +16783,12 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\bold{\\textcolor{${color1}}{(-&3) \\times (-&2)}} \\times &1 \
-              &=  \\bold{\\textcolor{${color1}}{[_&2*&3_]}} \\times &1 \\\\ \
+              \\bold{\\textcolor{${get(
+								color1,
+							)}}{(-&3) \\times (-&2)}} \\times &1 \
+              &=  \\bold{\\textcolor{${get(
+								color1,
+							)}}{[_&2*&3_]}} \\times &1 \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -15661,8 +16796,12 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              (-&1) \\times \\bold{\\textcolor{${color1}}{(-&2) \\times &3}} \
-              &=  (-&1) \\times \\bold{\\textcolor{${color1}}{([_-&2*&3_])}} \\\\ \
+              (-&1) \\times \\bold{\\textcolor{${get(
+								color1,
+							)}}{(-&2) \\times &3}} \
+              &=  (-&1) \\times \\bold{\\textcolor{${get(
+								color1,
+							)}}{([_-&2*&3_])}} \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -15671,8 +16810,12 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
               (-&2) \\times (-&1) \\times &3 \
-              &=  \\bold{\\textcolor{${color1}}{(-&2) \\times &3}} \\times (-&1) \\\\ \
-              &=  \\bold{\\textcolor{${color1}}{([_-&2*&3_])}} \\times (-&1) \\\\ \
+              &=  \\bold{\\textcolor{${get(
+								color1,
+							)}}{(-&2) \\times &3}} \\times (-&1) \\\\ \
+              &=  \\bold{\\textcolor{${get(
+								color1,
+							)}}{([_-&2*&3_])}} \\times (-&1) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -15680,8 +16823,12 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\bold{\\textcolor{${color1}}{&3 \\times (-&2)}} \\times (-&1) \
-              &=  \\bold{\\textcolor{${color1}}{([_-&2*&3_])}} \\times (-&1) \\\\ \
+              \\bold{\\textcolor{${get(
+								color1,
+							)}}{&3 \\times (-&2)}} \\times (-&1) \
+              &=  \\bold{\\textcolor{${get(
+								color1,
+							)}}{([_-&2*&3_])}} \\times (-&1) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -15689,8 +16836,12 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              (-&1) \\times \\bold{\\textcolor{${color1}}{&2 \\times (-&3)}} \
-              &=  (-&1) \\times \\bold{\\textcolor{${color1}}{([_-&2*&3_])}} \\\\ \
+              (-&1) \\times \\bold{\\textcolor{${get(
+								color1,
+							)}}{&2 \\times (-&3)}} \
+              &=  (-&1) \\times \\bold{\\textcolor{${get(
+								color1,
+							)}}{([_-&2*&3_])}} \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -15699,8 +16850,12 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
               &2 \\times (-&1) \\times (-&3) \
-              &=  \\bold{\\textcolor{${color1}}{&2 \\times (-&3)}} \\times (-&1) \\\\ \
-              &=  \\bold{\\textcolor{${color1}}{([_-&2*&3_])}} \\times (-&1) \\\\ \
+              &=  \\bold{\\textcolor{${get(
+								color1,
+							)}}{&2 \\times (-&3)}} \\times (-&1) \\\\ \
+              &=  \\bold{\\textcolor{${get(
+								color1,
+							)}}{([_-&2*&3_])}} \\times (-&1) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -15708,8 +16863,12 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\bold{\\textcolor{${color1}}{(-&3) \\times &2}} \\times (-&1) \
-              &=  \\bold{\\textcolor{${color1}}{([_-&2*&3_])}} \\times (-&1) \\\\ \
+              \\bold{\\textcolor{${get(
+								color1,
+							)}}{(-&3) \\times &2}} \\times (-&1) \
+              &=  \\bold{\\textcolor{${get(
+								color1,
+							)}}{([_-&2*&3_])}} \\times (-&1) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -15717,8 +16876,12 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              (-&1) \\times \\bold{\\textcolor{${color1}}{(-&2) \\times (-&3)}} \
-              &=  (-&1) \\times  \\bold{\\textcolor{${color1}}{[_&2*&3_]}} \\\\ \
+              (-&1) \\times \\bold{\\textcolor{${get(
+								color1,
+							)}}{(-&2) \\times (-&3)}} \
+              &=  (-&1) \\times  \\bold{\\textcolor{${get(
+								color1,
+							)}}{[_&2*&3_]}} \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -15727,8 +16890,12 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
               (-&2) \\times (-&1) \\times (-&3) \
-              &=  \\bold{\\textcolor{${color1}}{(-&2) \\times (-&3)}} \\times (-&1) \\\\ \
-              &=  \\bold{\\textcolor{${color1}}{[_&2*&3_]}} \\times (-&1) \\\\ \
+              &=  \\bold{\\textcolor{${get(
+								color1,
+							)}}{(-&2) \\times (-&3)}} \\times (-&1) \\\\ \
+              &=  \\bold{\\textcolor{${get(
+								color1,
+							)}}{[_&2*&3_]}} \\times (-&1) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -15736,8 +16903,12 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\bold{\\textcolor{${color1}}{(-&3) \\times (-&2)}} \\times (-&1) \
-              &=  \\bold{\\textcolor{${color1}}{[_&2*&3_]}} \\times (-&1) \\\\ \
+              \\bold{\\textcolor{${get(
+								color1,
+							)}}{(-&3) \\times (-&2)}} \\times (-&1) \
+              &=  \\bold{\\textcolor{${get(
+								color1,
+							)}}{[_&2*&3_]}} \\times (-&1) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -15904,8 +17075,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{&1}(&2+&3) \
-              &= \\textcolor{${color1}}{&1} \\times &2 + \\textcolor{${color1}}{&1} \\times &3 \\\\ \
+              \\textcolor{${get(color1)}}{&1}(&2+&3) \
+              &= \\textcolor{${get(color1)}}{&1} \\times &2 + \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &3 \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -15913,8 +17086,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{&1}(&3+&2) \
-              &= \\textcolor{${color1}}{&1} \\times &3 + \\textcolor{${color1}}{&1} \\times &2 \\\\ \
+              \\textcolor{${get(color1)}}{&1}(&3+&2) \
+              &= \\textcolor{${get(color1)}}{&1} \\times &3 + \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &2 \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -15922,8 +17097,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              (&2+&3) \\times \\textcolor{${color1}}{&1} \
-              &= &2 \\times \\textcolor{${color1}}{&1} + &3 \\times \\textcolor{${color1}}{&1} \\\\ \
+              (&2+&3) \\times \\textcolor{${get(color1)}}{&1} \
+              &= &2 \\times \\textcolor{${get(
+								color1,
+							)}}{&1} + &3 \\times \\textcolor{${get(color1)}}{&1} \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -15931,8 +17108,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              (&3+&2) \\times \\textcolor{${color1}}{&1} \
-              &= &3 \\times \\textcolor{${color1}}{&1} + &2 \\times \\textcolor{${color1}}{&1} \\\\ \
+              (&3+&2) \\times \\textcolor{${get(color1)}}{&1} \
+              &= &3 \\times \\textcolor{${get(
+								color1,
+							)}}{&1} + &2 \\times \\textcolor{${get(color1)}}{&1} \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -15940,8 +17119,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{&1}(&2-&3) \
-              &= \\textcolor{${color1}}{&1} \\times &2 - \\textcolor{${color1}}{&1} \\times &3 \\\\ \
+              \\textcolor{${get(color1)}}{&1}(&2-&3) \
+              &= \\textcolor{${get(color1)}}{&1} \\times &2 - \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &3 \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -15949,8 +17130,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{&1}(&3-&2) \
-              &= \\textcolor{${color1}}{&1} \\times &3 - \\textcolor{${color1}}{&1} \\times &2 \\\\ \
+              \\textcolor{${get(color1)}}{&1}(&3-&2) \
+              &= \\textcolor{${get(color1)}}{&1} \\times &3 - \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &2 \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -15958,8 +17141,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              (&2-&3) \\times \\textcolor{${color1}}{&1} \
-              &= &2 \\times \\textcolor{${color1}}{&1} - &3 \\times \\textcolor{${color1}}{&1} \\\\ \
+              (&2-&3) \\times \\textcolor{${get(color1)}}{&1} \
+              &= &2 \\times \\textcolor{${get(
+								color1,
+							)}}{&1} - &3 \\times \\textcolor{${get(color1)}}{&1} \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -15967,8 +17152,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              (&3-&2) \\times \\textcolor{${color1}}{&1} \
-              &= &3 \\times \\textcolor{${color1}}{&1} - &2 \\times \\textcolor{${color1}}{&1} \\\\ \
+              (&3-&2) \\times \\textcolor{${get(color1)}}{&1} \
+              &= &3 \\times \\textcolor{${get(
+								color1,
+							)}}{&1} - &2 \\times \\textcolor{${get(color1)}}{&1} \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16033,8 +17220,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{&1}(&2+[_&3&4_]) \
-              &= \\textcolor{${color1}}{&1} \\times &2 + \\textcolor{${color1}}{&1} \\times [_&3&4_] \\\\ \
+              \\textcolor{${get(color1)}}{&1}(&2+[_&3&4_]) \
+              &= \\textcolor{${get(color1)}}{&1} \\times &2 + \\textcolor{${get(
+									color1,
+								)}}{&1} \\times [_&3&4_] \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16042,8 +17231,12 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{&1}([_&3&4_]+&2) \
-              &= \\textcolor{${color1}}{&1} \\times [_&3&4_] + \\textcolor{${color1}}{&1} \\times &2 \\\\ \
+              \\textcolor{${get(color1)}}{&1}([_&3&4_]+&2) \
+              &= \\textcolor{${get(
+								color1,
+							)}}{&1} \\times [_&3&4_] + \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &2 \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16051,8 +17244,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              (&2+[_&3&4_]) \\times \\textcolor{${color1}}{&1} \
-              &=   &2 \\times \\textcolor{${color1}}{&1} +[_&3&4_] \\times \\textcolor{${color1}}{&1} \\\\ \
+              (&2+[_&3&4_]) \\times \\textcolor{${get(color1)}}{&1} \
+              &=   &2 \\times \\textcolor{${get(
+								color1,
+							)}}{&1} +[_&3&4_] \\times \\textcolor{${get(color1)}}{&1} \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16060,8 +17255,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              ([_&3&4_]+&2) \\times \\textcolor{${color1}}{&1} \
-              &=  [_&3&4_] \\times \\textcolor{${color1}}{&1} + &2 \\times \\textcolor{${color1}}{&1}  \\\\ \
+              ([_&3&4_]+&2) \\times \\textcolor{${get(color1)}}{&1} \
+              &=  [_&3&4_] \\times \\textcolor{${get(
+								color1,
+							)}}{&1} + &2 \\times \\textcolor{${get(color1)}}{&1}  \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16069,8 +17266,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{&4}(&2+[_&3&4_]) \
-              &= \\textcolor{${color1}}{&4} \\times &2 + \\textcolor{${color1}}{&4} \\times [_&3&4_] \\\\ \
+              \\textcolor{${get(color1)}}{&4}(&2+[_&3&4_]) \
+              &= \\textcolor{${get(color1)}}{&4} \\times &2 + \\textcolor{${get(
+									color1,
+								)}}{&4} \\times [_&3&4_] \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16078,8 +17277,12 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{&4}([_&3&4_]+&2) \
-              &= \\textcolor{${color1}}{&4} \\times [_&3&4_] + \\textcolor{${color1}}{&4} \\times &2 \\\\ \
+              \\textcolor{${get(color1)}}{&4}([_&3&4_]+&2) \
+              &= \\textcolor{${get(
+								color1,
+							)}}{&4} \\times [_&3&4_] + \\textcolor{${get(
+									color1,
+								)}}{&4} \\times &2 \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16087,8 +17290,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              (&2+[_&3&4_]) \\times \\textcolor{${color1}}{&4} \
-              &=   &2 \\times \\textcolor{${color1}}{&4} +[_&3&4_] \\times \\textcolor{${color1}}{&4} \\\\ \
+              (&2+[_&3&4_]) \\times \\textcolor{${get(color1)}}{&4} \
+              &=   &2 \\times \\textcolor{${get(
+								color1,
+							)}}{&4} +[_&3&4_] \\times \\textcolor{${get(color1)}}{&4} \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16096,8 +17301,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              ([_&3&4_]+&2) \\times \\textcolor{${color1}}{&4} \
-              &=  [_&3&4_] \\times \\textcolor{${color1}}{&4} + &2 \\times \\textcolor{${color1}}{&4}  \\\\ \
+              ([_&3&4_]+&2) \\times \\textcolor{${get(color1)}}{&4} \
+              &=  [_&3&4_] \\times \\textcolor{${get(
+								color1,
+							)}}{&4} + &2 \\times \\textcolor{${get(color1)}}{&4}  \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16105,8 +17312,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{&1}(&2 - [_&3&4_]) \
-              &= \\textcolor{${color1}}{&1} \\times &2 - \\textcolor{${color1}}{&1} \\times [_&3&4_] \\\\ \
+              \\textcolor{${get(color1)}}{&1}(&2 - [_&3&4_]) \
+              &= \\textcolor{${get(color1)}}{&1} \\times &2 - \\textcolor{${get(
+									color1,
+								)}}{&1} \\times [_&3&4_] \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16114,8 +17323,12 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{&1}([_&3&4_]-&2) \
-              &= \\textcolor{${color1}}{&1} \\times [_&3&4_] - \\textcolor{${color1}}{&1} \\times &2 \\\\ \
+              \\textcolor{${get(color1)}}{&1}([_&3&4_]-&2) \
+              &= \\textcolor{${get(
+								color1,
+							)}}{&1} \\times [_&3&4_] - \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &2 \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16123,8 +17336,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              (&2-[_&3&4_]) \\times \\textcolor{${color1}}{&1} \
-              &=   &2 \\times \\textcolor{${color1}}{&1} - [_&3&4_] \\times \\textcolor{${color1}}{&1} \\\\ \
+              (&2-[_&3&4_]) \\times \\textcolor{${get(color1)}}{&1} \
+              &=   &2 \\times \\textcolor{${get(
+								color1,
+							)}}{&1} - [_&3&4_] \\times \\textcolor{${get(color1)}}{&1} \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16132,8 +17347,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              ([_&3&4_] - &2) \\times \\textcolor{${color1}}{&1} \
-              &=  [_&3&4_] \\times \\textcolor{${color1}}{&1} - &2 \\times \\textcolor{${color1}}{&1}  \\\\ \
+              ([_&3&4_] - &2) \\times \\textcolor{${get(color1)}}{&1} \
+              &=  [_&3&4_] \\times \\textcolor{${get(
+								color1,
+							)}}{&1} - &2 \\times \\textcolor{${get(color1)}}{&1}  \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16141,8 +17358,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{&4}(&2 - [_&3&4_]) \
-              &= \\textcolor{${color1}}{&4} \\times &2 - \\textcolor{${color1}}{&4} \\times [_&3&4_] \\\\ \
+              \\textcolor{${get(color1)}}{&4}(&2 - [_&3&4_]) \
+              &= \\textcolor{${get(color1)}}{&4} \\times &2 - \\textcolor{${get(
+									color1,
+								)}}{&4} \\times [_&3&4_] \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16150,8 +17369,12 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{&4}([_&3&4_] - &2) \
-              &= \\textcolor{${color1}}{&4} \\times [_&3&4_] - \\textcolor{${color1}}{&4} \\times &2 \\\\ \
+              \\textcolor{${get(color1)}}{&4}([_&3&4_] - &2) \
+              &= \\textcolor{${get(
+								color1,
+							)}}{&4} \\times [_&3&4_] - \\textcolor{${get(
+									color1,
+								)}}{&4} \\times &2 \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16159,8 +17382,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              (&2-[_&3&4_]) \\times \\textcolor{${color1}}{&4} \
-              &=   &2 \\times \\textcolor{${color1}}{&4} - [_&3&4_] \\times \\textcolor{${color1}}{&4} \\\\ \
+              (&2-[_&3&4_]) \\times \\textcolor{${get(color1)}}{&4} \
+              &=   &2 \\times \\textcolor{${get(
+								color1,
+							)}}{&4} - [_&3&4_] \\times \\textcolor{${get(color1)}}{&4} \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16168,8 +17393,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              ([_&3&4_]+&2) \\times \\textcolor{${color1}}{&4} \
-              &=  [_&3&4_] \\times \\textcolor{${color1}}{&4} - &2 \\times \\textcolor{${color1}}{&4}  \\\\ \
+              ([_&3&4_]+&2) \\times \\textcolor{${get(color1)}}{&4} \
+              &=  [_&3&4_] \\times \\textcolor{${get(
+								color1,
+							)}}{&4} - &2 \\times \\textcolor{${get(color1)}}{&4}  \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16213,8 +17440,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{&1}(&2[+_&3&4_]) \
-              &=   &2 \\times \\textcolor{${color1}}{&1} [+_&3&4_] \\times \\textcolor{${color1}}{&1} \\\\ \
+              \\textcolor{${get(color1)}}{&1}(&2[+_&3&4_]) \
+              &=   &2 \\times \\textcolor{${get(
+								color1,
+							)}}{&1} [+_&3&4_] \\times \\textcolor{${get(color1)}}{&1} \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16222,8 +17451,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{&1}([_&3&4_][+_&2_]) \
-              &=    [_&3&4_] \\times \\textcolor{${color1}}{&1}  [+_&2_] \\times \\textcolor{${color1}}{&1}\\\\ \
+              \\textcolor{${get(color1)}}{&1}([_&3&4_][+_&2_]) \
+              &=    [_&3&4_] \\times \\textcolor{${get(
+								color1,
+							)}}{&1}  [+_&2_] \\times \\textcolor{${get(color1)}}{&1}\\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16231,8 +17462,12 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{-&1}(&2[+_&3&4_]) \
-              &=   &2 \\times \\textcolor{${color1}}{(-&1)} [+_&3&4_] \\times \\textcolor{${color1}}{(-&1)} \\\\ \
+              \\textcolor{${get(color1)}}{-&1}(&2[+_&3&4_]) \
+              &=   &2 \\times \\textcolor{${get(
+								color1,
+							)}}{(-&1)} [+_&3&4_] \\times \\textcolor{${get(
+									color1,
+								)}}{(-&1)} \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16240,8 +17475,12 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{-&1}([_&3&4_][+_&2_]) \
-              &=    [_&3&4_] \\times \\textcolor{${color1}}{(-&1)}  [+_&2_] \\times \\textcolor{${color1}}{(-&1)}\\\\ \
+              \\textcolor{${get(color1)}}{-&1}([_&3&4_][+_&2_]) \
+              &=    [_&3&4_] \\times \\textcolor{${get(
+								color1,
+							)}}{(-&1)}  [+_&2_] \\times \\textcolor{${get(
+									color1,
+								)}}{(-&1)}\\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16249,8 +17488,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              (&2[+_&3&4_]) \\times \\textcolor{${color1}}{&1} \
-              &=   &2 \\times \\textcolor{${color1}}{&1} [+_&3&4_] \\times \\textcolor{${color1}}{&1} \\\\ \
+              (&2[+_&3&4_]) \\times \\textcolor{${get(color1)}}{&1} \
+              &=   &2 \\times \\textcolor{${get(
+								color1,
+							)}}{&1} [+_&3&4_] \\times \\textcolor{${get(color1)}}{&1} \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16258,8 +17499,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              ([_&3&4_][+_&2_]) \\times \\textcolor{${color1}}{&1} \
-              &=    [_&3&4_] \\times \\textcolor{${color1}}{&1}  [+_&2_] \\times \\textcolor{${color1}}{&1}\\\\ \
+              ([_&3&4_][+_&2_]) \\times \\textcolor{${get(color1)}}{&1} \
+              &=    [_&3&4_] \\times \\textcolor{${get(
+								color1,
+							)}}{&1}  [+_&2_] \\times \\textcolor{${get(color1)}}{&1}\\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16267,8 +17510,12 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              (&2[+_&3&4_]) \\times \\textcolor{${color1}}{(-&1)} \
-              &=   &2 \\times \\textcolor{${color1}}{(-&1)} [+_&3&4_] \\times \\textcolor{${color1}}{(-&1)} \\\\ \
+              (&2[+_&3&4_]) \\times \\textcolor{${get(color1)}}{(-&1)} \
+              &=   &2 \\times \\textcolor{${get(
+								color1,
+							)}}{(-&1)} [+_&3&4_] \\times \\textcolor{${get(
+									color1,
+								)}}{(-&1)} \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16276,63 +17523,12 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              ([_&3&4_][+_&2_]) \\times \\textcolor{${color1}}{(-&1)} \
-              &=    [_&3&4_] \\times \\textcolor{${color1}}{(-&1)}  [+_&2_] \\times \\textcolor{${color1}}{(-&1)}\\\\ \
-              &= &sol  \
-              \\end{align}$$`,
-							},
-						],
-
-						[
-							{
-								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{&4}(&2[+_&3&4_]) \
-              &=   &2 \\times \\textcolor{${color1}}{&4} [+_&3&4_] \\times \\textcolor{${color1}}{&4} \\\\ \
-              &= &sol  \
-              \\end{align}$$`,
-							},
-						],
-						[
-							{
-								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{&4}([_&3&4_][+_&2_]) \
-              &=    [_&3&4_] \\times \\textcolor{${color1}}{&4}  [+_&2_] \\times \\textcolor{${color1}}{&4}\\\\ \
-              &= &sol  \
-              \\end{align}$$`,
-							},
-						],
-						[
-							{
-								text: `$$\\begin{align} \
-              (&2[+_&3&4_]) \\times \\textcolor{${color1}}{&4} \
-              &=   &2 \\times \\textcolor{${color1}}{&4} [+_&3&4_] \\times \\textcolor{${color1}}{&4} \\\\ \
-              &= &sol  \
-              \\end{align}$$`,
-							},
-						],
-						[
-							{
-								text: `$$\\begin{align} \
-              ([_&3&4_][+_&2_]) \\times \\textcolor{${color1}}{&4} \
-              &=    [_&3&4_] \\times \\textcolor{${color1}}{&4}  [+_&2_] \\times \\textcolor{${color1}}{&4}\\\\ \
-              &= &sol  \
-              \\end{align}$$`,
-							},
-						],
-						[
-							{
-								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{-&4}(&2[+_&3&4_]) \
-              &=   &2 \\times \\textcolor{${color1}}{(-&4)} [+_&3&4_] \\times \\textcolor{${color1}}{(-&4)} \\\\ \
-              &= &sol  \
-              \\end{align}$$`,
-							},
-						],
-						[
-							{
-								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{-&4}([_&3&4_][+_&2_]) \
-              &=    [_&3&4_] \\times \\textcolor{${color1}}{(-&4)}  [+_&2_] \\times \\textcolor{${color1}}{(-&4)}\\\\ \
+              ([_&3&4_][+_&2_]) \\times \\textcolor{${get(color1)}}{(-&1)} \
+              &=    [_&3&4_] \\times \\textcolor{${get(
+								color1,
+							)}}{(-&1)}  [+_&2_] \\times \\textcolor{${get(
+									color1,
+								)}}{(-&1)}\\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16341,8 +17537,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              (&2[+_&3&4_]) \\times \\textcolor{${color1}}{(-&4)} \
-              &=   &2 \\times \\textcolor{${color1}}{(-&4)} [+_&3&4_] \\times \\textcolor{${color1}}{(-&4)} \\\\ \
+              \\textcolor{${get(color1)}}{&4}(&2[+_&3&4_]) \
+              &=   &2 \\times \\textcolor{${get(
+								color1,
+							)}}{&4} [+_&3&4_] \\times \\textcolor{${get(color1)}}{&4} \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16350,8 +17548,85 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              ([_&3&4_][+_&2_]) \\times \\textcolor{${color1}}{(-&4)} \
-              &=    [_&3&4_] \\times \\textcolor{${color1}}{(-&4)}  [+_&2_] \\times \\textcolor{${color1}}{(-&4)}\\\\ \
+              \\textcolor{${get(color1)}}{&4}([_&3&4_][+_&2_]) \
+              &=    [_&3&4_] \\times \\textcolor{${get(
+								color1,
+							)}}{&4}  [+_&2_] \\times \\textcolor{${get(color1)}}{&4}\\\\ \
+              &= &sol  \
+              \\end{align}$$`,
+							},
+						],
+						[
+							{
+								text: `$$\\begin{align} \
+              (&2[+_&3&4_]) \\times \\textcolor{${get(color1)}}{&4} \
+              &=   &2 \\times \\textcolor{${get(
+								color1,
+							)}}{&4} [+_&3&4_] \\times \\textcolor{${get(color1)}}{&4} \\\\ \
+              &= &sol  \
+              \\end{align}$$`,
+							},
+						],
+						[
+							{
+								text: `$$\\begin{align} \
+              ([_&3&4_][+_&2_]) \\times \\textcolor{${get(color1)}}{&4} \
+              &=    [_&3&4_] \\times \\textcolor{${get(
+								color1,
+							)}}{&4}  [+_&2_] \\times \\textcolor{${get(color1)}}{&4}\\\\ \
+              &= &sol  \
+              \\end{align}$$`,
+							},
+						],
+						[
+							{
+								text: `$$\\begin{align} \
+              \\textcolor{${get(color1)}}{-&4}(&2[+_&3&4_]) \
+              &=   &2 \\times \\textcolor{${get(
+								color1,
+							)}}{(-&4)} [+_&3&4_] \\times \\textcolor{${get(
+									color1,
+								)}}{(-&4)} \\\\ \
+              &= &sol  \
+              \\end{align}$$`,
+							},
+						],
+						[
+							{
+								text: `$$\\begin{align} \
+              \\textcolor{${get(color1)}}{-&4}([_&3&4_][+_&2_]) \
+              &=    [_&3&4_] \\times \\textcolor{${get(
+								color1,
+							)}}{(-&4)}  [+_&2_] \\times \\textcolor{${get(
+									color1,
+								)}}{(-&4)}\\\\ \
+              &= &sol  \
+              \\end{align}$$`,
+							},
+						],
+
+						[
+							{
+								text: `$$\\begin{align} \
+              (&2[+_&3&4_]) \\times \\textcolor{${get(color1)}}{(-&4)} \
+              &=   &2 \\times \\textcolor{${get(
+								color1,
+							)}}{(-&4)} [+_&3&4_] \\times \\textcolor{${get(
+									color1,
+								)}}{(-&4)} \\\\ \
+              &= &sol  \
+              \\end{align}$$`,
+							},
+						],
+						[
+							{
+								text: `$$\\begin{align} \
+              ([_&3&4_][+_&2_]) \\times \\textcolor{${get(color1)}}{(-&4)} \
+              &=    [_&3&4_] \\times \\textcolor{${get(
+								color1,
+							)}}{(-&4)}  [+_&2_] \\times \\textcolor{${get(
+									color1,
+								)}}{(-&4)}\\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16404,8 +17679,16 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              (\\textcolor{${color1}}{&1}+\\textcolor{${color2}}{[_&2&3_]})(&4+[_&5&3_]) \
-              &= \\textcolor{${color1}}{&1} \\times &4 + \\textcolor{${color1}}{&1} \\times [_&5&3_] + \\textcolor{${color2}}{[_&2&3_]} \\times &4 + \\textcolor{${color2}}{[_&2&3_]} \\times [_&5&3_] \\\\ \
+              (\\textcolor{${get(color1)}}{&1}+\\textcolor{${get(
+									color2,
+								)}}{[_&2&3_]})(&4+[_&5&3_]) \
+              &= \\textcolor{${get(color1)}}{&1} \\times &4 + \\textcolor{${get(
+									color1,
+								)}}{&1} \\times [_&5&3_] + \\textcolor{${get(
+									color2,
+								)}}{[_&2&3_]} \\times &4 + \\textcolor{${get(
+									color2,
+								)}}{[_&2&3_]} \\times [_&5&3_] \\\\ \
               &= [_&1*&4_] +   [_&5*&1&3_] + [_&2*&4&3_] + [_&2&3*&5&3_] \\\\ \
               &= &sol  \
               \\end{align}$$`,
@@ -16414,8 +17697,18 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              (\\textcolor{${color2}}{[_&2&3_]} + \\textcolor{${color1}}{&1})(&4+[_&5&3_]) \
-              &= \\textcolor{${color2}}{[_&2&3_]} \\times &4 + \\textcolor{${color2}}{[_&2&3_]} \\times [_&5&3_] + \\textcolor{${color1}}{&1} \\times &4 + \\textcolor{${color1}}{&1} \\times [_&5&3_]  \\\\ \
+              (\\textcolor{${get(color2)}}{[_&2&3_]} + \\textcolor{${get(
+									color1,
+								)}}{&1})(&4+[_&5&3_]) \
+              &= \\textcolor{${get(
+								color2,
+							)}}{[_&2&3_]} \\times &4 + \\textcolor{${get(
+									color2,
+								)}}{[_&2&3_]} \\times [_&5&3_] + \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &4 + \\textcolor{${get(
+									color1,
+								)}}{&1} \\times [_&5&3_]  \\\\ \
               &= [_&2*&4&3_] + [_&2&3*&5&3_] + [_&1*&4_] +   [_&5*&1&3_] \\\\ \
               &= &sol  \
               \\end{align}$$`,
@@ -16424,8 +17717,18 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              (\\textcolor{${color1}}{&1}+\\textcolor{${color2}}{[_&2&3_]})([_&5&3_]+&4) \
-              &= \\textcolor{${color1}}{&1} \\times [_&5&3_] + \\textcolor{${color1}}{&1} \\times &4 + \\textcolor{${color2}}{[_&2&3_]} \\times [_&5&3_] + \\textcolor{${color2}}{[_&2&3_]} \\times &4 \\\\ \
+              (\\textcolor{${get(color1)}}{&1}+\\textcolor{${get(
+									color2,
+								)}}{[_&2&3_]})([_&5&3_]+&4) \
+              &= \\textcolor{${get(
+								color1,
+							)}}{&1} \\times [_&5&3_] + \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &4 + \\textcolor{${get(
+									color2,
+								)}}{[_&2&3_]} \\times [_&5&3_] + \\textcolor{${get(
+									color2,
+								)}}{[_&2&3_]} \\times &4 \\\\ \
               &= [_&5*&1&3_] + [_&1*&4_] + [_&2&3*&5&3_]  + [_&2*&4&3_] \\\\ \
               &= &sol  \
               \\end{align}$$`,
@@ -16434,8 +17737,18 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              (\\textcolor{${color2}}{[_&2&3_]} + \\textcolor{${color1}}{&1})([_&5&3_]+&4) \
-              &= \\textcolor{${color2}}{[_&2&3_]} \\times [_&5&3_] + \\textcolor{${color2}}{[_&2&3_]} \\times &4 + \\textcolor{${color1}}{&1} \\times [_&5&3_] + \\textcolor{${color1}}{&1} \\times &4  \\\\ \
+              (\\textcolor{${get(color2)}}{[_&2&3_]} + \\textcolor{${get(
+									color1,
+								)}}{&1})([_&5&3_]+&4) \
+              &= \\textcolor{${get(
+								color2,
+							)}}{[_&2&3_]} \\times [_&5&3_] + \\textcolor{${get(
+									color2,
+								)}}{[_&2&3_]} \\times &4 + \\textcolor{${get(
+									color1,
+								)}}{&1} \\times [_&5&3_] + \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &4  \\\\ \
               &= [_&2&3*&5&3_] + [_&2*&4&3_] +  [_&5*&1&3_] + [_&1*&4_]  \\\\ \
               &= &sol  \
               \\end{align}$$`,
@@ -16575,8 +17888,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{&1} \\times &2+\\textcolor{${color1}}{&1} \\times &3 \
-              &= \\textcolor{${color1}}{&1} \\times (&2+&3) \\\\ \
+              \\textcolor{${get(color1)}}{&1} \\times &2+\\textcolor{${get(
+									color1,
+								)}}{&1} \\times &3 \
+              &= \\textcolor{${get(color1)}}{&1} \\times (&2+&3) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16584,9 +17899,13 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              &2 \\times \\textcolor{${color1}}{&1}+\\textcolor{${color1}}{&1} \\times &3 \
-              &= \\textcolor{${color1}}{&1} \\times &2 + \\textcolor{${color1}}{&1} \\times &3 \\\\ \
-              &= \\textcolor{${color1}}{&1} \\times (&2+&3) \\\\ \
+              &2 \\times \\textcolor{${get(color1)}}{&1}+\\textcolor{${get(
+									color1,
+								)}}{&1} \\times &3 \
+              &= \\textcolor{${get(color1)}}{&1} \\times &2 + \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &3 \\\\ \
+              &= \\textcolor{${get(color1)}}{&1} \\times (&2+&3) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16594,9 +17913,15 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{&1} \\times &2 +  &3 \\times \\textcolor{${color1}}{&1} \
-              &= \\textcolor{${color1}}{&1} \\times &2 +  \\textcolor{${color1}}{&1} \\times &3 \\\\ \
-              &= \\textcolor{${color1}}{&1} \\times (&2+&3) \\\\ \
+              \\textcolor{${get(
+								color1,
+							)}}{&1} \\times &2 +  &3 \\times \\textcolor{${get(color1)}}{&1} \
+              &= \\textcolor{${get(
+								color1,
+							)}}{&1} \\times &2 +  \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &3 \\\\ \
+              &= \\textcolor{${get(color1)}}{&1} \\times (&2+&3) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16604,9 +17929,13 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              &2 \\times \\textcolor{${color1}}{&1} + &3 \\times \\textcolor{${color1}}{&1} \
-              &= \\textcolor{${color1}}{&1} \\times &2 + \\textcolor{${color1}}{&1} \\times &3 \\\\ \
-              &= \\textcolor{${color1}}{&1} \\times (&2+&3) \\\\ \
+              &2 \\times \\textcolor{${get(
+								color1,
+							)}}{&1} + &3 \\times \\textcolor{${get(color1)}}{&1} \
+              &= \\textcolor{${get(color1)}}{&1} \\times &2 + \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &3 \\\\ \
+              &= \\textcolor{${get(color1)}}{&1} \\times (&2+&3) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16614,8 +17943,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{&1} \\times &2 - \\textcolor{${color1}}{&1} \\times &3 \
-              &= \\textcolor{${color1}}{&1} \\times (&2 - &3) \\\\ \
+              \\textcolor{${get(color1)}}{&1} \\times &2 - \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &3 \
+              &= \\textcolor{${get(color1)}}{&1} \\times (&2 - &3) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16623,9 +17954,13 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              &2 \\times \\textcolor{${color1}}{&1} - \\textcolor{${color1}}{&1} \\times &3 \
-              &= \\textcolor{${color1}}{&1} \\times &2 - \\textcolor{${color1}}{&1} \\times &3 \\\\ \
-              &= \\textcolor{${color1}}{&1} \\times (&2 - &3) \\\\ \
+              &2 \\times \\textcolor{${get(color1)}}{&1} - \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &3 \
+              &= \\textcolor{${get(color1)}}{&1} \\times &2 - \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &3 \\\\ \
+              &= \\textcolor{${get(color1)}}{&1} \\times (&2 - &3) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16633,9 +17968,15 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{&1} \\times &2 -  &3 \\times \\textcolor{${color1}}{&1} \
-              &= \\textcolor{${color1}}{&1} \\times &2 -  \\textcolor{${color1}}{&1} \\times &3 \\\\ \
-              &= \\textcolor{${color1}}{&1} \\times (&2 - &3) \\\\ \
+              \\textcolor{${get(
+								color1,
+							)}}{&1} \\times &2 -  &3 \\times \\textcolor{${get(color1)}}{&1} \
+              &= \\textcolor{${get(
+								color1,
+							)}}{&1} \\times &2 -  \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &3 \\\\ \
+              &= \\textcolor{${get(color1)}}{&1} \\times (&2 - &3) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16643,9 +17984,13 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              &2 \\times \\textcolor{${color1}}{&1} + &3 \\times \\textcolor{${color1}}{&1} \
-              &= \\textcolor{${color1}}{&1} \\times &2 + \\textcolor{${color1}}{&1}  \\times &3 \\\\ \
-              &= \\textcolor{${color1}}{&1} \\times (&2 - &3) \\\\ \
+              &2 \\times \\textcolor{${get(
+								color1,
+							)}}{&1} + &3 \\times \\textcolor{${get(color1)}}{&1} \
+              &= \\textcolor{${get(color1)}}{&1} \\times &2 + \\textcolor{${get(
+									color1,
+								)}}{&1}  \\times &3 \\\\ \
+              &= \\textcolor{${get(color1)}}{&1} \\times (&2 - &3) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16750,9 +18095,13 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{&1} \\times &2 + \\textcolor{${color1}}{&1} &3 \
-              &= \\textcolor{${color1}}{&1} \\times &2 + \\textcolor{${color1}}{&1}  \\times &3 \\\\ \
-              &= \\textcolor{${color1}}{&1} \\times (&2+&3) \\\\ \
+              \\textcolor{${get(color1)}}{&1} \\times &2 + \\textcolor{${get(
+									color1,
+								)}}{&1} &3 \
+              &= \\textcolor{${get(color1)}}{&1} \\times &2 + \\textcolor{${get(
+									color1,
+								)}}{&1}  \\times &3 \\\\ \
+              &= \\textcolor{${get(color1)}}{&1} \\times (&2+&3) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16760,9 +18109,15 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-                \\textcolor{${color1}}{&1} &3 + \\textcolor{${color1}}{&1} \\times &2 \
-               &= \\textcolor{${color1}}{&1}  \\times &3 + \\textcolor{${color1}}{&1} \\times &2 \\\\ \
-              &= \\textcolor{${color1}}{&1} \\times (&3+&2) \\\\ \
+                \\textcolor{${get(color1)}}{&1} &3 + \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &2 \
+               &= \\textcolor{${get(
+									color1,
+								)}}{&1}  \\times &3 + \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &2 \\\\ \
+              &= \\textcolor{${get(color1)}}{&1} \\times (&3+&2) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16770,9 +18125,15 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-                \\textcolor{${color1}}{&1} &3 + \\textcolor{${color1}}{&1}&4 \
-               &= \\textcolor{${color1}}{&1} \\times &3 + \\textcolor{${color1}}{&1} \\times &4 \\\\ \
-              &= \\textcolor{${color1}}{&1} \\times (&3+&4) \\\\ \
+                \\textcolor{${get(color1)}}{&1} &3 + \\textcolor{${get(
+									color1,
+								)}}{&1}&4 \
+               &= \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &3 + \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &4 \\\\ \
+              &= \\textcolor{${get(color1)}}{&1} \\times (&3+&4) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16780,9 +18141,15 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-                \\textcolor{${color1}}{&1} &3 - \\textcolor{${color1}}{&1}&4 \
-              &=  \\textcolor{${color1}}{&1} \\times &3 - \\textcolor{${color1}}{&1} \\times &4 \\\\ \
-              &= \\textcolor{${color1}}{&1} \\times (&3-&4) \\\\ \
+                \\textcolor{${get(color1)}}{&1} &3 - \\textcolor{${get(
+									color1,
+								)}}{&1}&4 \
+              &=  \\textcolor{${get(
+								color1,
+							)}}{&1} \\times &3 - \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &4 \\\\ \
+              &= \\textcolor{${get(color1)}}{&1} \\times (&3-&4) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16790,9 +18157,13 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{&1} \\times &2 - \\textcolor{${color1}}{&1} &3 \
-              &= \\textcolor{${color1}}{&1} \\times &2 - \\textcolor{${color1}}{&1} \\times &3 \\\\ \
-              &= \\textcolor{${color1}}{&1} \\times (&2-&3) \\\\ \
+              \\textcolor{${get(color1)}}{&1} \\times &2 - \\textcolor{${get(
+									color1,
+								)}}{&1} &3 \
+              &= \\textcolor{${get(color1)}}{&1} \\times &2 - \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &3 \\\\ \
+              &= \\textcolor{${get(color1)}}{&1} \\times (&2-&3) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16800,9 +18171,13 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-                \\textcolor{${color1}}{&1} &3 - \\textcolor{${color1}}{&1} \\times &2 \
-              &= \\textcolor{${color1}}{&1} \\times &3 - \\textcolor{${color1}}{&1} \\times &2 \\\\ \
-              &= \\textcolor{${color1}}{&1} \\times (&3-&2) \\\\ \
+                \\textcolor{${get(color1)}}{&1} &3 - \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &2 \
+              &= \\textcolor{${get(color1)}}{&1} \\times &3 - \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &2 \\\\ \
+              &= \\textcolor{${get(color1)}}{&1} \\times (&3-&2) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16811,9 +18186,13 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              &1\\textcolor{${color1}}{&3} + &2\\textcolor{${color1}}{&3} \
-              &= &1 \\times \\textcolor{${color1}}{&3} + &2 \\times \\textcolor{${color1}}{&3} \\\\ \
-              &= (&1+&2)\\times \\textcolor{${color1}}{&3}  \\\\ \
+              &1\\textcolor{${get(color1)}}{&3} + &2\\textcolor{${get(
+									color1,
+								)}}{&3} \
+              &= &1 \\times \\textcolor{${get(
+								color1,
+							)}}{&3} + &2 \\times \\textcolor{${get(color1)}}{&3} \\\\ \
+              &= (&1+&2)\\times \\textcolor{${get(color1)}}{&3}  \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16821,9 +18200,13 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              &1\\textcolor{${color1}}{&3} - &2\\textcolor{${color1}}{&3} \
-              &= &1  \\times \\textcolor{${color1}}{&3} - &2 \\times \\textcolor{${color1}}{&3} \\\\ \
-              &= (&1-&2)\\times \\textcolor{${color1}}{&3}  \\\\ \
+              &1\\textcolor{${get(color1)}}{&3} - &2\\textcolor{${get(
+									color1,
+								)}}{&3} \
+              &= &1  \\times \\textcolor{${get(
+								color1,
+							)}}{&3} - &2 \\times \\textcolor{${get(color1)}}{&3} \\\\ \
+              &= (&1-&2)\\times \\textcolor{${get(color1)}}{&3}  \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16831,9 +18214,15 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              &4\\textcolor{${color1}}{&3} + &1\\textcolor{${color1}}{&3} \
-              &= \\textcolor{${color1}}{&3}  \\times &4 + \\textcolor{${color1}}{&3}  \\times &1 \\\\ \
-              &= \\textcolor{${color1}}{&3} \\times (&4+&1)  \\\\ \
+              &4\\textcolor{${get(color1)}}{&3} + &1\\textcolor{${get(
+									color1,
+								)}}{&3} \
+              &= \\textcolor{${get(
+								color1,
+							)}}{&3}  \\times &4 + \\textcolor{${get(
+									color1,
+								)}}{&3}  \\times &1 \\\\ \
+              &= \\textcolor{${get(color1)}}{&3} \\times (&4+&1)  \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16841,9 +18230,13 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{&3}&4 + &1\\textcolor{${color1}}{&3} \
-              &= \\textcolor{${color1}}{&3} \\times &4 + \\textcolor{${color1}}{&3} \\times &1 \\\\ \
-              &= \\textcolor{${color1}}{&3}  \\times (&4+&1) \\\\ \
+              \\textcolor{${get(color1)}}{&3}&4 + &1\\textcolor{${get(
+									color1,
+								)}}{&3} \
+              &= \\textcolor{${get(color1)}}{&3} \\times &4 + \\textcolor{${get(
+									color1,
+								)}}{&3} \\times &1 \\\\ \
+              &= \\textcolor{${get(color1)}}{&3}  \\times (&4+&1) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16851,9 +18244,15 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              &4\\textcolor{${color1}}{&3} - &1\\textcolor{${color1}}{&3} \
-              &= \\textcolor{${color1}}{&3}  \\times &4 - \\textcolor{${color1}}{&3} \\times &1 \\\\ \
-              &= \\textcolor{${color1}}{&3} \\times (&4-&1)  \\\\ \
+              &4\\textcolor{${get(color1)}}{&3} - &1\\textcolor{${get(
+									color1,
+								)}}{&3} \
+              &= \\textcolor{${get(
+								color1,
+							)}}{&3}  \\times &4 - \\textcolor{${get(
+									color1,
+								)}}{&3} \\times &1 \\\\ \
+              &= \\textcolor{${get(color1)}}{&3} \\times (&4-&1)  \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16861,9 +18260,13 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{&3}&4 - &1\\textcolor{${color1}}{&3} \
-              &= \\textcolor{${color1}}{&3} \\times &4 - \\textcolor{${color1}}{&3} \\times &1 \\\\ \
-              &= \\textcolor{${color1}}{&3}  \\times (&4-&1) \\\\ \
+              \\textcolor{${get(color1)}}{&3}&4 - &1\\textcolor{${get(
+									color1,
+								)}}{&3} \
+              &= \\textcolor{${get(color1)}}{&3} \\times &4 - \\textcolor{${get(
+									color1,
+								)}}{&3} \\times &1 \\\\ \
+              &= \\textcolor{${get(color1)}}{&3}  \\times (&4-&1) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16939,8 +18342,10 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
                 &1&3+[_&1*&2_]&4 \
-              &= \\textcolor{${color1}}{&1} \\times &3+\\textcolor{${color1}}{&1} \\times &2&4 \\\\ \
-              &= \\textcolor{${color1}}{&1} \\times (&3 + &2&4) \\\\ \
+              &= \\textcolor{${get(color1)}}{&1} \\times &3+\\textcolor{${get(
+									color1,
+								)}}{&1} \\times &2&4 \\\\ \
+              &= \\textcolor{${get(color1)}}{&1} \\times (&3 + &2&4) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16949,8 +18354,12 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
                 [_&1*&2_]&4 + &1&3\
-              &= \\textcolor{${color1}}{&1} \\times &2&4 + \\textcolor{${color1}}{&1} \\times &3 \\\\ \
-              &= \\textcolor{${color1}}{&1} \\times (&2&4 + &3) \\\\ \
+              &= \\textcolor{${get(
+								color1,
+							)}}{&1} \\times &2&4 + \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &3 \\\\ \
+              &= \\textcolor{${get(color1)}}{&1} \\times (&2&4 + &3) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16959,8 +18368,10 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
                 &1&3 - [_&1*&2_]&4 \
-              &= \\textcolor{${color1}}{&1} \\times &3 - \\textcolor{${color1}}{&1} \\times &2&4 \\\\ \
-              &= \\textcolor{${color1}}{&1} \\times (&3 - &2&4) \\\\ \
+              &= \\textcolor{${get(color1)}}{&1} \\times &3 - \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &2&4 \\\\ \
+              &= \\textcolor{${get(color1)}}{&1} \\times (&3 - &2&4) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -16969,8 +18380,12 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
                 [_&1*&2_]&4 - &1&3\
-              &= \\textcolor{${color1}}{&1} \\times &2&4 - \\textcolor{${color1}}{&1} \\times &3 \\\\ \
-              &= \\textcolor{${color1}}{&1} \\times (&2&4 - &3) \\\\ \
+              &= \\textcolor{${get(
+								color1,
+							)}}{&1} \\times &2&4 - \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &3 \\\\ \
+              &= \\textcolor{${get(color1)}}{&1} \\times (&2&4 - &3) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -17050,8 +18465,12 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
                 [_&1*&2_]&5+[_&1*&3_]&4 \
-              &= \\textcolor{${color1}}{&1} \\times &2&5 + \\textcolor{${color1}}{&1} \\times &3&4 \\\\ \
-              &= \\textcolor{${color1}}{&1} \\times (&2&5 + &3&4) \\\\ \
+              &= \\textcolor{${get(
+								color1,
+							)}}{&1} \\times &2&5 + \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &3&4 \\\\ \
+              &= \\textcolor{${get(color1)}}{&1} \\times (&2&5 + &3&4) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -17060,8 +18479,12 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
                 [_&1*&2_]&5 - [_&1*&3_]&4 \
-              &= \\textcolor{${color1}}{&1} \\times &2&5 - \\textcolor{${color1}}{&1} \\times &3&4 \\\\ \
-              &= \\textcolor{${color1}}{&1} \\times (&2&5 - &3&4) \\\\ \
+              &= \\textcolor{${get(
+								color1,
+							)}}{&1} \\times &2&5 - \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &3&4 \\\\ \
+              &= \\textcolor{${get(color1)}}{&1} \\times (&2&5 - &3&4) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -17070,8 +18493,12 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
                 [_&1*&2_]&5+[_&1*&3_] \
-              &= \\textcolor{${color1}}{&1} \\times &2&5 + \\textcolor{${color1}}{&1} \\times &3 \\\\ \
-              &= \\textcolor{${color1}}{&1} \\times (&2&5 + &3) \\\\ \
+              &= \\textcolor{${get(
+								color1,
+							)}}{&1} \\times &2&5 + \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &3 \\\\ \
+              &= \\textcolor{${get(color1)}}{&1} \\times (&2&5 + &3) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -17080,8 +18507,12 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
                 [_&1*&2_]&5-[_&1*&3_] \
-              &= \\textcolor{${color1}}{&1} \\times &2&5 - \\textcolor{${color1}}{&1} \\times &3 \\\\ \
-              &= \\textcolor{${color1}}{&1} \\times (&2&5 - &3) \\\\ \
+              &= \\textcolor{${get(
+								color1,
+							)}}{&1} \\times &2&5 - \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &3 \\\\ \
+              &= \\textcolor{${get(color1)}}{&1} \\times (&2&5 - &3) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -17119,8 +18550,10 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
                 &1+[_&1*&2_]&3 \
-              &= \\textcolor{${color1}}{&1} \\times 1 + \\textcolor{${color1}}{&1} \\times &2&3 \\\\ \
-              &= \\textcolor{${color1}}{&1} \\times (1 + &2&3) \\\\ \
+              &= \\textcolor{${get(color1)}}{&1} \\times 1 + \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &2&3 \\\\ \
+              &= \\textcolor{${get(color1)}}{&1} \\times (1 + &2&3) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -17129,8 +18562,12 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
                 [_&1*&2_]&3 + &1 \
-              &= \\textcolor{${color1}}{&1} \\times &2&3 + \\textcolor{${color1}}{&1} \\times 1 \\\\ \
-              &= \\textcolor{${color1}}{&1} \\times (&2&3 + 1) \\\\ \
+              &= \\textcolor{${get(
+								color1,
+							)}}{&1} \\times &2&3 + \\textcolor{${get(
+									color1,
+								)}}{&1} \\times 1 \\\\ \
+              &= \\textcolor{${get(color1)}}{&1} \\times (&2&3 + 1) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -17139,8 +18576,10 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
                 &1 - [_&1*&2_]&3 \
-              &= \\textcolor{${color1}}{&1} \\times 1 - \\textcolor{${color1}}{&1} \\times &2&3 \\\\ \
-              &= \\textcolor{${color1}}{&1} \\times (1 - &2&3) \\\\ \
+              &= \\textcolor{${get(color1)}}{&1} \\times 1 - \\textcolor{${get(
+									color1,
+								)}}{&1} \\times &2&3 \\\\ \
+              &= \\textcolor{${get(color1)}}{&1} \\times (1 - &2&3) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -17149,8 +18588,12 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
                 [_&1*&2_]&3 - &1 \
-              &= \\textcolor{${color1}}{&1} \\times &2&3 - \\textcolor{${color1}}{&1} \\times 1 \\\\ \
-              &= \\textcolor{${color1}}{&1} \\times (&2&3 - 1) \\\\ \
+              &= \\textcolor{${get(
+								color1,
+							)}}{&1} \\times &2&3 - \\textcolor{${get(
+									color1,
+								)}}{&1} \\times 1 \\\\ \
+              &= \\textcolor{${get(color1)}}{&1} \\times (&2&3 - 1) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -17201,8 +18644,14 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
                 [_&1*&2*&4^2_]+[_&1*&3*&4_] \
-              &= \\textcolor{${color1}}{[_&5_]&4} \\times [_&6*&4_] + \\textcolor{${color1}}{[_&5_]&4} \\times [_&7_] \\\\ \
-              &= \\textcolor{${color1}}{[_&5_]&4} \\times ([_&6*&4_] + [_&7_]) \\\\ \
+              &= \\textcolor{${get(
+								color1,
+							)}}{[_&5_]&4} \\times [_&6*&4_] + \\textcolor{${get(
+									color1,
+								)}}{[_&5_]&4} \\times [_&7_] \\\\ \
+              &= \\textcolor{${get(
+								color1,
+							)}}{[_&5_]&4} \\times ([_&6*&4_] + [_&7_]) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -17211,8 +18660,14 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
                 [_&1*&2*&4_]+[_&1*&3*&4^2_] \
-              &= \\textcolor{${color1}}{[_&5_]&4} \\times [_&6_] + \\textcolor{${color1}}{[_&5_]&4} \\times [_&7*&4_] \\\\ \
-              &= \\textcolor{${color1}}{[_&5_]&4} \\times ([_&6_] + [_&7*&4_]) \\\\ \
+              &= \\textcolor{${get(
+								color1,
+							)}}{[_&5_]&4} \\times [_&6_] + \\textcolor{${get(
+									color1,
+								)}}{[_&5_]&4} \\times [_&7*&4_] \\\\ \
+              &= \\textcolor{${get(
+								color1,
+							)}}{[_&5_]&4} \\times ([_&6_] + [_&7*&4_]) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -17221,8 +18676,14 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
                 [_&1*&2*&4^2_] - [_&1*&3*&4_] \
-              &= \\textcolor{${color1}}{[_&5_]&4} \\times [_&6*&4_] - \\textcolor{${color1}}{[_&5_]&4} \\times [_&7_] \\\\ \
-              &= \\textcolor{${color1}}{[_&5_]&4} \\times ([_&6*&4_] - [_&7_]) \\\\ \
+              &= \\textcolor{${get(
+								color1,
+							)}}{[_&5_]&4} \\times [_&6*&4_] - \\textcolor{${get(
+									color1,
+								)}}{[_&5_]&4} \\times [_&7_] \\\\ \
+              &= \\textcolor{${get(
+								color1,
+							)}}{[_&5_]&4} \\times ([_&6*&4_] - [_&7_]) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -17231,8 +18692,14 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
                 [_&1*&2*&4_] - [_&1*&3*&4^2_] \
-              &= \\textcolor{${color1}}{[_&5_]&4} \\times [_&6_] - \\textcolor{${color1}}{[_&5_]&4} \\times [_&7*&4_] \\\\ \
-              &= \\textcolor{${color1}}{[_&5_]&4} \\times ([_&6_] - [_&7*&4_]) \\\\ \
+              &= \\textcolor{${get(
+								color1,
+							)}}{[_&5_]&4} \\times [_&6_] - \\textcolor{${get(
+									color1,
+								)}}{[_&5_]&4} \\times [_&7*&4_] \\\\ \
+              &= \\textcolor{${get(
+								color1,
+							)}}{[_&5_]&4} \\times ([_&6_] - [_&7*&4_]) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -17241,8 +18708,14 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
                 [_&1*&2*&4^2_]+[_&1*&3_] \
-              &= \\textcolor{${color1}}{[_&5_]} \\times [_&6*&4^2_] + \\textcolor{${color1}}{[_&5_]} \\times [_&7_] \\\\ \
-              &= \\textcolor{${color1}}{[_&5_]} \\times ([_&6*&4^2_] + [_&7_]) \\\\ \
+              &= \\textcolor{${get(
+								color1,
+							)}}{[_&5_]} \\times [_&6*&4^2_] + \\textcolor{${get(
+									color1,
+								)}}{[_&5_]} \\times [_&7_] \\\\ \
+              &= \\textcolor{${get(
+								color1,
+							)}}{[_&5_]} \\times ([_&6*&4^2_] + [_&7_]) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -17251,8 +18724,14 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
                 [_&1*&2_]+[_&1*&3*&4^2_] \
-              &= \\textcolor{${color1}}{[_&5_]} \\times [_&6_] + \\textcolor{${color1}}{[_&5_]} \\times [_&7*&4^2_] \\\\ \
-              &= \\textcolor{${color1}}{[_&5_]} \\times ([_&6_] + [_&7*&4^2_]) \\\\ \
+              &= \\textcolor{${get(
+								color1,
+							)}}{[_&5_]} \\times [_&6_] + \\textcolor{${get(
+									color1,
+								)}}{[_&5_]} \\times [_&7*&4^2_] \\\\ \
+              &= \\textcolor{${get(
+								color1,
+							)}}{[_&5_]} \\times ([_&6_] + [_&7*&4^2_]) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -17261,8 +18740,14 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
                 [_&1*&2*&4^2_] - [_&1*&3_] \
-              &= \\textcolor{${color1}}{[_&5_]} \\times [_&6*&4^2_] - \\textcolor{${color1}}{[_&5_]} \\times [_&7_] \\\\ \
-              &= \\textcolor{${color1}}{[_&5_]} \\times ([_&6*&4^2_] - [_&7_]) \\\\ \
+              &= \\textcolor{${get(
+								color1,
+							)}}{[_&5_]} \\times [_&6*&4^2_] - \\textcolor{${get(
+									color1,
+								)}}{[_&5_]} \\times [_&7_] \\\\ \
+              &= \\textcolor{${get(
+								color1,
+							)}}{[_&5_]} \\times ([_&6*&4^2_] - [_&7_]) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -17271,8 +18756,14 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
                 [_&1*&2_] - [_&1*&3*&4^2_] \
-              &= \\textcolor{${color1}}{[_&5_]} \\times [_&6_] - \\textcolor{${color1}}{[_&5_]} \\times [_&7*&4^2_] \\\\ \
-              &= \\textcolor{${color1}}{[_&5_]} \\times ([_&6_] - [_&7*&4^2_]) \\\\ \
+              &= \\textcolor{${get(
+								color1,
+							)}}{[_&5_]} \\times [_&6_] - \\textcolor{${get(
+									color1,
+								)}}{[_&5_]} \\times [_&7*&4^2_] \\\\ \
+              &= \\textcolor{${get(
+								color1,
+							)}}{[_&5_]} \\times ([_&6_] - [_&7*&4^2_]) \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -17339,8 +18830,14 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-                (\\textcolor{${color1}}{&1}+\\textcolor{${color2}}{[_&2&3_]})(\\textcolor{${color1}}{&1}-\\textcolor{${color2}}{[_&2&3_]}) \
-              &= \\textcolor{${color1}}{&1}^2 -(\\textcolor{${color2}}{[_&2&3_]})^2 \\\\ \
+                (\\textcolor{${get(color1)}}{&1}+\\textcolor{${get(
+									color2,
+								)}}{[_&2&3_]})(\\textcolor{${get(
+									color1,
+								)}}{&1}-\\textcolor{${get(color2)}}{[_&2&3_]}) \
+              &= \\textcolor{${get(color1)}}{&1}^2 -(\\textcolor{${get(
+									color2,
+								)}}{[_&2&3_]})^2 \\\\ \
               &= [_&1^2_] -&2^2 \\times &3^2 \\\\ \
               &= &sol  \
               \\end{align}$$`,
@@ -17349,8 +18846,14 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-                (\\textcolor{${color1}}{&1}-\\textcolor{${color2}}{[_&2&3_]})(\\textcolor{${color1}}{&1}+\\textcolor{${color2}}{[_&2&3_]}) \
-              &= \\textcolor{${color1}}{&1}^2 -(\\textcolor{${color2}}{[_&2&3_]})^2 \\\\ \
+                (\\textcolor{${get(color1)}}{&1}-\\textcolor{${get(
+									color2,
+								)}}{[_&2&3_]})(\\textcolor{${get(
+									color1,
+								)}}{&1}+\\textcolor{${get(color2)}}{[_&2&3_]}) \
+              &= \\textcolor{${get(color1)}}{&1}^2 -(\\textcolor{${get(
+									color2,
+								)}}{[_&2&3_]})^2 \\\\ \
               &= [_&1^2_] -&2^2 \\times &3^2 \\\\ \
               &= &sol  \
               \\end{align}$$`,
@@ -17359,8 +18862,14 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-                (\\textcolor{${color1}}{[_&2&3_]} + \\textcolor{${color2}}{&1})(\\textcolor{${color1}}{[_&2&3_]} - \\textcolor{${color2}}{&1}) \
-              &=  (\\textcolor{${color1}}{[_&2&3_]})^2 - \\textcolor{${color2}}{&1}^2 \\\\ \
+                (\\textcolor{${get(color1)}}{[_&2&3_]} + \\textcolor{${get(
+									color2,
+								)}}{&1})(\\textcolor{${get(
+									color1,
+								)}}{[_&2&3_]} - \\textcolor{${get(color2)}}{&1}) \
+              &=  (\\textcolor{${get(color1)}}{[_&2&3_]})^2 - \\textcolor{${get(
+									color2,
+								)}}{&1}^2 \\\\ \
               &= &2^2 \\times &3^2 - [_&1^2_] \\\\ \
               &= &sol  \
               \\end{align}$$`,
@@ -17369,8 +18878,14 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-                (\\textcolor{${color1}}{[_&2&3_]} - \\textcolor{${color2}}{&1})(\\textcolor{${color1}}{[_&2&3_]} - \\textcolor{${color2}}{&1}) \
-              &= (\\textcolor{${color1}}{[_&2&3_]})^2 - \\textcolor{${color2}}{&1}^2 \\\\ \
+                (\\textcolor{${get(color1)}}{[_&2&3_]} - \\textcolor{${get(
+									color2,
+								)}}{&1})(\\textcolor{${get(
+									color1,
+								)}}{[_&2&3_]} - \\textcolor{${get(color2)}}{&1}) \
+              &= (\\textcolor{${get(color1)}}{[_&2&3_]})^2 - \\textcolor{${get(
+									color2,
+								)}}{&1}^2 \\\\ \
               &=  &2^2 \\times &3^2 - [_&1^2_] \\\\ \
               &= &sol  \
               \\end{align}$$`,
@@ -17451,8 +18966,16 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-                (\\textcolor{${color1}}{&1}+\\textcolor{${color2}}{&2})^2 \
-              &=  \\textcolor{${color1}}{&1}^2 + 2 \\times \\textcolor{${color1}}{&1} \\times \\textcolor{${color2}}{&2} + \\textcolor{${color2}}{&2}^2 \\\\ \
+                (\\textcolor{${get(color1)}}{&1}+\\textcolor{${get(
+									color2,
+								)}}{&2})^2 \
+              &=  \\textcolor{${get(
+								color1,
+							)}}{&1}^2 + 2 \\times \\textcolor{${get(
+									color1,
+								)}}{&1} \\times \\textcolor{${get(
+									color2,
+								)}}{&2} + \\textcolor{${get(color2)}}{&2}^2 \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -17460,8 +18983,16 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-                (\\textcolor{${color1}}{&2}+\\textcolor{${color2}}{&1})^2 \
-              &=  \\textcolor{${color1}}{&2}^2 + 2 \\times \\textcolor{${color1}}{&2} \\times \\textcolor{${color2}}{&1} + \\textcolor{${color2}}{&1}^2 \\\\ \
+                (\\textcolor{${get(color1)}}{&2}+\\textcolor{${get(
+									color2,
+								)}}{&1})^2 \
+              &=  \\textcolor{${get(
+								color1,
+							)}}{&2}^2 + 2 \\times \\textcolor{${get(
+									color1,
+								)}}{&2} \\times \\textcolor{${get(
+									color2,
+								)}}{&1} + \\textcolor{${get(color2)}}{&1}^2 \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -17494,8 +19025,16 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-                (\\textcolor{${color1}}{&1}-\\textcolor{${color2}}{&2})^2 \
-              &=  \\textcolor{${color1}}{&1}^2 - 2 \\times \\textcolor{${color1}}{&1} \\times \\textcolor{${color2}}{&2} + \\textcolor{${color2}}{&2}^2 \\\\ \
+                (\\textcolor{${get(color1)}}{&1}-\\textcolor{${get(
+									color2,
+								)}}{&2})^2 \
+              &=  \\textcolor{${get(
+								color1,
+							)}}{&1}^2 - 2 \\times \\textcolor{${get(
+									color1,
+								)}}{&1} \\times \\textcolor{${get(
+									color2,
+								)}}{&2} + \\textcolor{${get(color2)}}{&2}^2 \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -17503,8 +19042,16 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-                (\\textcolor{${color1}}{&2} - \\textcolor{${color2}}{&1})^2 \
-              &=  \\textcolor{${color1}}{&2}^2 - 2 \\times \\textcolor{${color1}}{&2} \\times \\textcolor{${color2}}{&1} + \\textcolor{${color2}}{&1}^2 \\\\ \
+                (\\textcolor{${get(color1)}}{&2} - \\textcolor{${get(
+									color2,
+								)}}{&1})^2 \
+              &=  \\textcolor{${get(
+								color1,
+							)}}{&2}^2 - 2 \\times \\textcolor{${get(
+									color1,
+								)}}{&2} \\times \\textcolor{${get(
+									color2,
+								)}}{&1} + \\textcolor{${get(color2)}}{&1}^2 \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -17535,8 +19082,16 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-                (\\textcolor{${color1}}{&1} + \\textcolor{${color2}}{[_&2&3_]})^2 \
-              &=  \\textcolor{${color1}}{&1}^2 + 2 \\times \\textcolor{${color1}}{&1} \\times \\textcolor{${color2}}{[_&2&3_]} + (\\textcolor{${color2}}{[_&2&3_]})^2 \\\\ \
+                (\\textcolor{${get(color1)}}{&1} + \\textcolor{${get(
+									color2,
+								)}}{[_&2&3_]})^2 \
+              &=  \\textcolor{${get(
+								color1,
+							)}}{&1}^2 + 2 \\times \\textcolor{${get(
+									color1,
+								)}}{&1} \\times \\textcolor{${get(
+									color2,
+								)}}{[_&2&3_]} + (\\textcolor{${get(color2)}}{[_&2&3_]})^2 \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -17544,8 +19099,16 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-                (\\textcolor{${color1}}{[_&2&3_]}+\\textcolor{${color2}}{&1})^2 \
-              &=  (\\textcolor{${color1}}{[_&2&3_]})^2 + 2 \\times \\textcolor{${color1}}{[_&2&3_]} \\times \\textcolor{${color2}}{&1} + \\textcolor{${color2}}{&1}^2 \\\\ \
+                (\\textcolor{${get(color1)}}{[_&2&3_]}+\\textcolor{${get(
+									color2,
+								)}}{&1})^2 \
+              &=  (\\textcolor{${get(
+								color1,
+							)}}{[_&2&3_]})^2 + 2 \\times \\textcolor{${get(
+									color1,
+								)}}{[_&2&3_]} \\times \\textcolor{${get(
+									color2,
+								)}}{&1} + \\textcolor{${get(color2)}}{&1}^2 \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -17576,8 +19139,16 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-                (\\textcolor{${color1}}{&1} - \\textcolor{${color2}}{[_&2&3_]})^2 \
-              &=  \\textcolor{${color1}}{&1}^2 - 2 \\times \\textcolor{${color1}}{&1} \\times \\textcolor{${color2}}{[_&2&3_]} + (\\textcolor{${color2}}{[_&2&3_]})^2 \\\\ \
+                (\\textcolor{${get(color1)}}{&1} - \\textcolor{${get(
+									color2,
+								)}}{[_&2&3_]})^2 \
+              &=  \\textcolor{${get(
+								color1,
+							)}}{&1}^2 - 2 \\times \\textcolor{${get(
+									color1,
+								)}}{&1} \\times \\textcolor{${get(
+									color2,
+								)}}{[_&2&3_]} + (\\textcolor{${get(color2)}}{[_&2&3_]})^2 \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -17585,8 +19156,16 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-                (\\textcolor{${color1}}{[_&2&3_]} - \\textcolor{${color2}}{&1})^2 \
-              &=  (\\textcolor{${color1}}{[_&2&3_]})^2 - 2 \\times \\textcolor{${color1}}{[_&2&3_]} \\times \\textcolor{${color2}}{&1} + \\textcolor{${color2}}{&1}^2 \\\\ \
+                (\\textcolor{${get(color1)}}{[_&2&3_]} - \\textcolor{${get(
+									color2,
+								)}}{&1})^2 \
+              &=  (\\textcolor{${get(
+								color1,
+							)}}{[_&2&3_]})^2 - 2 \\times \\textcolor{${get(
+									color1,
+								)}}{[_&2&3_]} \\times \\textcolor{${get(
+									color2,
+								)}}{&1} + \\textcolor{${get(color2)}}{&1}^2 \\\\ \
               &= &sol  \
               \\end{align}$$`,
 							},
@@ -18261,8 +19840,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-                \\textcolor{${color1}}{&2}x = \\frac{[_&2*&3_]}{&1} \
-              & \\quad \\lrArr \\quad x = \\frac{[_&2*&3_]}{&1} \\textcolor{${color1}}{\\div &2} \\\\ \
+                \\textcolor{${get(color1)}}{&2}x = \\frac{[_&2*&3_]}{&1} \
+              & \\quad \\lrArr \\quad x = \\frac{[_&2*&3_]}{&1} \\textcolor{${get(
+								color1,
+							)}}{\\div &2} \\\\ \
               & \\quad \\lrArr \\quad x = \\frac{[_&2*&3_] \\div &2 }{&1} \\\\ \
               & \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$`,
@@ -18271,8 +19852,12 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-                x \\textcolor{${color1}}{\\times &2} = \\frac{[_&2*&3_]}{&1} \
-              & \\quad \\lrArr \\quad x = \\frac{[_&2*&3_]}{&1} \\textcolor{${color1}}{\\div &2} \\\\ \
+                x \\textcolor{${get(
+									color1,
+								)}}{\\times &2} = \\frac{[_&2*&3_]}{&1} \
+              & \\quad \\lrArr \\quad x = \\frac{[_&2*&3_]}{&1} \\textcolor{${get(
+								color1,
+							)}}{\\div &2} \\\\ \
               & \\quad \\lrArr \\quad x = \\frac{[_&2*&3_] \\div &2 }{&1} \\\\ \
               & \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$`,
@@ -18281,8 +19866,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-                \\textcolor{${color1}}{&2}x=\\frac{&1}{&3} \
-              & \\quad \\lrArr \\quad x = \\frac{&1}{&3} \\textcolor{${color1}}{\\times \\frac{1}{&2}} \\\\ \
+                \\textcolor{${get(color1)}}{&2}x=\\frac{&1}{&3} \
+              & \\quad \\lrArr \\quad x = \\frac{&1}{&3} \\textcolor{${get(
+								color1,
+							)}}{\\times \\frac{1}{&2}} \\\\ \
               & \\quad \\lrArr \\quad x = \\frac{&1}{&3 \\times &2} \\\\ \
               & \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$`,
@@ -18291,8 +19878,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-                x \\textcolor{${color1}}{\\times &2} = \\frac{&1}{&3} \
-              & \\quad \\lrArr \\quad x = \\frac{&1}{&3} \\textcolor{${color1}}{\\times \\frac{1}{&2}} \\\\ \
+                x \\textcolor{${get(color1)}}{\\times &2} = \\frac{&1}{&3} \
+              & \\quad \\lrArr \\quad x = \\frac{&1}{&3} \\textcolor{${get(
+								color1,
+							)}}{\\times \\frac{1}{&2}} \\\\ \
               & \\quad \\lrArr \\quad x = \\frac{&1}{&3 \\times &2} \\\\ \
               & \\quad \\lrArr \\quad  x= &sol1  \
               \\end{align}$$`,
@@ -18301,18 +19890,20 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-                x \\textcolor{${color1}}{\\times &1} = &2\
+                x \\textcolor{${get(color1)}}{\\times &1} = &2\
                 @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
-                @@ pgcd(&2;&1) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{&2}{\\textcolor{${color1}}{&1}} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
+                @@ pgcd(&2;&1) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{&2}{\\textcolor{${get(
+									color1,
+								)}}{&1}} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
                 \\end{align}$$`,
 							},
 						],
 						[
 							{
 								text: '$$\\begin{align} \
-                \\textcolor{${color1}}{&1}x = &2\
+                \\textcolor{${get(color1)}}{&1}x = &2\
                 @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
-                @@ pgcd(&2;&1) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{&2}{\\textcolor{${color1}}{&1}} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
+                @@ pgcd(&2;&1) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{&2}{\\textcolor{${get(color1)}}{&1}} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
                 \\end{align}$$',
 							},
 						],
@@ -18338,8 +19929,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-                \\frac{x}{\\textcolor{${color1}}{&2}}=\\frac{&3}{&1} \
-              & \\quad \\lrArr \\quad x = \\frac{&3}{&1} \\textcolor{${color1}}{\\times &2} \\\\ \
+                \\frac{x}{\\textcolor{${get(color1)}}{&2}}=\\frac{&3}{&1} \
+              & \\quad \\lrArr \\quad x = \\frac{&3}{&1} \\textcolor{${get(
+								color1,
+							)}}{\\times &2} \\\\ \
               & \\quad \\lrArr \\quad x = \\frac{&3 \\times &2}{&1} \\\\ \
               @@ pgcd(&2*&3;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
               @@ pgcd(&2*&3;&1) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{[_&2*&3_]}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
@@ -18373,8 +19966,12 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
                 \\frac{&2}{x}=\\frac{&3}{&1} \
-              & \\quad \\lrArr \\quad \\frac{x}{\\textcolor{${color1}}{&2}} = \\frac{&1}{&3} \\\\ \
-              & \\quad \\lrArr \\quad x = \\frac{&1}{&3} \\times \\textcolor{${color1}}{&2} \\\\ \
+              & \\quad \\lrArr \\quad \\frac{x}{\\textcolor{${get(
+								color1,
+							)}}{&2}} = \\frac{&1}{&3} \\\\ \
+              & \\quad \\lrArr \\quad x = \\frac{&1}{&3} \\times \\textcolor{${get(
+								color1,
+							)}}{&2} \\\\ \
               & \\quad \\lrArr \\quad x = \\frac{&1 \\times &2}{&3} \\\\ \
               @@ pgcd(&2*&1;&3) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
               @@ pgcd(&2*&1;&3) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{[_&2*&1_]}{&3} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
@@ -18386,8 +19983,12 @@ const questions: Questions = {
 							{
 								text: `$$\\begin{align} \
                 \\frac{&2}{x}=&1 \
-              & \\quad \\lrArr \\quad \\frac{x}{\\textcolor{${color1}}{&2}} = \\frac{1}{&1} \\\\ \
-              & \\quad \\lrArr \\quad x = \\frac{1}{&1} \\times \\textcolor{${color1}}{&2} \\\\ \
+              & \\quad \\lrArr \\quad \\frac{x}{\\textcolor{${get(
+								color1,
+							)}}{&2}} = \\frac{1}{&1} \\\\ \
+              & \\quad \\lrArr \\quad x = \\frac{1}{&1} \\times \\textcolor{${get(
+								color1,
+							)}}{&2} \\\\ \
               @@ pgcd(&1;&2) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
               @@ pgcd(&1;&2) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
              \\end{align}$$`,
@@ -18417,9 +20018,13 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-                &1x\\textcolor{${color1}}{+&2}=0 \
-              & \\quad \\lrArr \\quad \\textcolor{${color2}}{&1}x = \\textcolor{${color1}}{-&2}\\\\ \
-              & \\quad \\lrArr \\quad x = \\frac{-&2}{\\textcolor{${color2}}{&1}}\\\\ \
+                &1x\\textcolor{${get(color1)}}{+&2}=0 \
+              & \\quad \\lrArr \\quad \\textcolor{${get(
+								color2,
+							)}}{&1}x = \\textcolor{${get(color1)}}{-&2}\\\\ \
+              & \\quad \\lrArr \\quad x = \\frac{-&2}{\\textcolor{${get(
+								color2,
+							)}}{&1}}\\\\ \
               @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
               @@ pgcd(&2;&1) != 1 ?? & \\quad \\lrArr \\quad  x= -\\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
              \\end{align}$$`,
@@ -18428,9 +20033,13 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-                \\textcolor{${color1}}{&2+}&1x=0 \
-              & \\quad \\lrArr \\quad \\textcolor{${color2}}{&1}x = \\textcolor{${color1}}{-&2}\\\\ \
-              & \\quad \\lrArr \\quad x = \\frac{-&2}{\\textcolor{${color2}}{&1}}\\\\ \
+                \\textcolor{${get(color1)}}{&2+}&1x=0 \
+              & \\quad \\lrArr \\quad \\textcolor{${get(
+								color2,
+							)}}{&1}x = \\textcolor{${get(color1)}}{-&2}\\\\ \
+              & \\quad \\lrArr \\quad x = \\frac{-&2}{\\textcolor{${get(
+								color2,
+							)}}{&1}}\\\\ \
               @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
               @@ pgcd(&2;&1) != 1 ?? & \\quad \\lrArr \\quad  x= -\\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
              \\end{align}$$`,
@@ -18476,9 +20085,13 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              &1x\\textcolor{${color1}}{+&2}=0 \
-              & \\quad \\lrArr \\quad  \\textcolor{${color2}}{&1}x = \\textcolor{${color1}}{-&2} \\\\ \
-              & \\quad \\lrArr \\quad  x = \\frac{-&2}{\\textcolor{${color2}}{&1}} \\\\ \
+              &1x\\textcolor{${get(color1)}}{+&2}=0 \
+              & \\quad \\lrArr \\quad  \\textcolor{${get(
+								color2,
+							)}}{&1}x = \\textcolor{${get(color1)}}{-&2} \\\\ \
+              & \\quad \\lrArr \\quad  x = \\frac{-&2}{\\textcolor{${get(
+								color2,
+							)}}{&1}} \\\\ \
               @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
             @@ pgcd(&2;&1) != 1 ?? & \\quad \\lrArr \\quad  x= -\\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
            \\end{align}$$`,
@@ -18487,9 +20100,13 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-            \\textcolor{${color1}}{&2}+&1x=0 \
-            & \\quad \\lrArr \\quad  \\textcolor{${color2}}{&1}x = \\textcolor{${color1}}{-&2} \\\\ \
-            & \\quad \\lrArr \\quad  x = \\frac{-&2}{\\textcolor{${color2}}{&1}} \\\\ \
+            \\textcolor{${get(color1)}}{&2}+&1x=0 \
+            & \\quad \\lrArr \\quad  \\textcolor{${get(
+							color2,
+						)}}{&1}x = \\textcolor{${get(color1)}}{-&2} \\\\ \
+            & \\quad \\lrArr \\quad  x = \\frac{-&2}{\\textcolor{${get(
+							color2,
+						)}}{&1}} \\\\ \
             @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
           @@ pgcd(&2;&1) != 1  ?? & \\quad \\lrArr \\quad  x= -\\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
          \\end{align}$$`,
@@ -18498,8 +20115,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              &1x\\textcolor{${color1}}{-&2}=0 \
-              & \\quad \\lrArr \\quad  \\textcolor{${color2}}{&1}x = \\textcolor{${color1}}{&2} \\\\ \
+              &1x\\textcolor{${get(color1)}}{-&2}=0 \
+              & \\quad \\lrArr \\quad  \\textcolor{${get(
+								color2,
+							)}}{&1}x = \\textcolor{${get(color1)}}{&2} \\\\ \
               @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
             @@ pgcd(&2;&1) != 1  ?? & \\quad \\lrArr \\quad  x= \\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
            \\end{align}$$`,
@@ -18508,8 +20127,10 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-            \\textcolor{${color1}}{-&2}+&1x=0 \
-            & \\quad \\lrArr \\quad  \\textcolor{${color2}}{&1}x = \\textcolor{${color1}}{&2} \\\\ \
+            \\textcolor{${get(color1)}}{-&2}+&1x=0 \
+            & \\quad \\lrArr \\quad  \\textcolor{${get(
+							color2,
+						)}}{&1}x = \\textcolor{${get(color1)}}{&2} \\\\ \
             @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
           @@ pgcd(&2;&1) != 1  ?? & \\quad \\lrArr \\quad  x= \\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
          \\end{align}$$`,
@@ -18519,9 +20140,13 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              -&1x\\textcolor{${color1}}{+&2}=0 \
-              & \\quad \\lrArr \\quad  \\textcolor{${color2}}{-&1}x = \\textcolor{${color1}}{-&2} \\\\ \
-              & \\quad \\lrArr \\quad  x = \\frac{-&2}{\\textcolor{${color2}}{-&1}} \\\\ \
+              -&1x\\textcolor{${get(color1)}}{+&2}=0 \
+              & \\quad \\lrArr \\quad  \\textcolor{${get(
+								color2,
+							)}}{-&1}x = \\textcolor{${get(color1)}}{-&2} \\\\ \
+              & \\quad \\lrArr \\quad  x = \\frac{-&2}{\\textcolor{${get(
+								color2,
+							)}}{-&1}} \\\\ \
               @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol  @@ \
             @@ pgcd(&2;&1) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol  @@ \
            \\end{align}$$`,
@@ -18530,9 +20155,13 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-            \\textcolor{${color1}}{&2}-&1x=0 \
-            & \\quad \\lrArr \\quad  \\textcolor{${color2}}{-&1}x = \\textcolor{${color1}}{-&2} \\\\ \
-            & \\quad \\lrArr \\quad  x = \\frac{-&2}{\\textcolor{${color2}}{-&1}} \\\\ \
+            \\textcolor{${get(color1)}}{&2}-&1x=0 \
+            & \\quad \\lrArr \\quad  \\textcolor{${get(
+							color2,
+						)}}{-&1}x = \\textcolor{${get(color1)}}{-&2} \\\\ \
+            & \\quad \\lrArr \\quad  x = \\frac{-&2}{\\textcolor{${get(
+							color2,
+						)}}{-&1}} \\\\ \
             @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
           @@ pgcd(&2;&1) != 1  ?? & \\quad \\lrArr \\quad  x= \\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
          \\end{align}$$`,
@@ -18541,9 +20170,13 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              -&1x\\textcolor{${color1}}{-&2}=0 \
-              & \\quad \\lrArr \\quad  \\textcolor{${color2}}{-&1}x = \\textcolor{${color1}}{&2} \\\\ \
-              & \\quad \\lrArr \\quad  x = \\frac{&2}{\\textcolor{${color2}}{-&1}} \\\\ \
+              -&1x\\textcolor{${get(color1)}}{-&2}=0 \
+              & \\quad \\lrArr \\quad  \\textcolor{${get(
+								color2,
+							)}}{-&1}x = \\textcolor{${get(color1)}}{&2} \\\\ \
+              & \\quad \\lrArr \\quad  x = \\frac{&2}{\\textcolor{${get(
+								color2,
+							)}}{-&1}} \\\\ \
               @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
             @@ pgcd(&2;&1) != 1  ?? & \\quad \\lrArr \\quad  x= -\\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
            \\end{align}$$`,
@@ -18552,9 +20185,13 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              \\textcolor{${color1}}{-&2}-&1x=0 \
-              & \\quad \\lrArr \\quad  \\textcolor{${color2}}{-&1}x = \\textcolor{${color1}}{&2} \\\\ \
-              & \\quad \\lrArr \\quad  x = \\frac{&2}{\\textcolor{${color2}}{-&1}} \\\\ \
+              \\textcolor{${get(color1)}}{-&2}-&1x=0 \
+              & \\quad \\lrArr \\quad  \\textcolor{${get(
+								color2,
+							)}}{-&1}x = \\textcolor{${get(color1)}}{&2} \\\\ \
+              & \\quad \\lrArr \\quad  x = \\frac{&2}{\\textcolor{${get(
+								color2,
+							)}}{-&1}} \\\\ \
               @@ pgcd(&2;&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
             @@ pgcd(&2;&1) != 1  ?? & \\quad \\lrArr \\quad  x= -\\frac{&2}{&1} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
            \\end{align}$$`,
@@ -18583,11 +20220,17 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-                &3x\\textcolor{${color1}}{+&2}=&1 \
-              & \\quad \\lrArr \\quad &3x = &1\\textcolor{${color1}}{-&2} \\\\ \
-              & \\quad \\lrArr \\quad \\textcolor{${color2}}{&3}x = [_&1-&2_] \\\\ \
+                &3x\\textcolor{${get(color1)}}{+&2}=&1 \
+              & \\quad \\lrArr \\quad &3x = &1\\textcolor{${get(
+								color1,
+							)}}{-&2} \\\\ \
+              & \\quad \\lrArr \\quad \\textcolor{${get(
+								color2,
+							)}}{&3}x = [_&1-&2_] \\\\ \
               @@ pgcd(&1-&2;&3) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
-              @@ pgcd(&1-&2;&3) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{[_&1-&2_]}{\\textcolor{${color2}}{&3}} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
+              @@ pgcd(&1-&2;&3) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{[_&1-&2_]}{\\textcolor{${get(
+								color2,
+							)}}{&3}} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
              \\end{align}$$`,
 							},
 						],
@@ -18615,10 +20258,16 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              &1x\\textcolor{${color1}}{[+_&2_]}=&3 \
-              & \\quad \\lrArr \\quad  &1x = &3\\textcolor{${color1}}{[+_-(&2)_]} \\\\  \
-              & \\quad \\lrArr \\quad  \\textcolor{${color2}}{&1}x = [_&3-(&2)_] \\\\ \
-              & \\quad \\lrArr \\quad  x = \\frac{[_&3-(&2)_]}{\\textcolor{${color2}}{&1}} \\\\ \
+              &1x\\textcolor{${get(color1)}}{[+_&2_]}=&3 \
+              & \\quad \\lrArr \\quad  &1x = &3\\textcolor{${get(
+								color1,
+							)}}{[+_-(&2)_]} \\\\  \
+              & \\quad \\lrArr \\quad  \\textcolor{${get(
+								color2,
+							)}}{&1}x = [_&3-(&2)_] \\\\ \
+              & \\quad \\lrArr \\quad  x = \\frac{[_&3-(&2)_]}{\\textcolor{${get(
+								color2,
+							)}}{&1}} \\\\ \
               @@ pgcd(abs(&3-(&2));&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
             @@ pgcd(abs(&3-(&2));&1) != 1 && (&3-(&2))*(&1)>0  ?? & \\quad \\lrArr \\quad  x= \\frac{[_abs(&3-(&2))_]}{[_abs(&1)_]} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
             @@ pgcd(abs(&3-(&2));&1) != 1 && (&3-(&2))*(&1)<0  ?? & \\quad \\lrArr \\quad  x= -\\frac{[_abs(&3-(&2))_]}{[_abs(&1)_]} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
@@ -18628,10 +20277,10 @@ const questions: Questions = {
 						[
 							{
 								text: '$$\\begin{align} \
-              \\textcolor{${color1}}{&2}[+_&1_]x=&3 \
-              & \\quad \\lrArr \\quad  &1x = &3\\textcolor{${color1}}{[+_-(&2)_]} \\\\  \
-              & \\quad \\lrArr \\quad  \\textcolor{${color2}}{&1}x = [_&3-(&2)_] \\\\ \
-              & \\quad \\lrArr \\quad  x = \\frac{[_&3-(&2)_]}{\\textcolor{${color2}}{&1}} \\\\ \
+              \\textcolor{${get(color1)}}{&2}[+_&1_]x=&3 \
+              & \\quad \\lrArr \\quad  &1x = &3\\textcolor{${get(color1)}}{[+_-(&2)_]} \\\\  \
+              & \\quad \\lrArr \\quad  \\textcolor{${get(color2)}}{&1}x = [_&3-(&2)_] \\\\ \
+              & \\quad \\lrArr \\quad  x = \\frac{[_&3-(&2)_]}{\\textcolor{${get(color2)}}{&1}} \\\\ \
               @@ pgcd(abs(&3-(&2));&1) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
             @@ pgcd(abs(&3-(&2));&1) != 1 && (&3-(&2))*(&1)>0  ?? & \\quad \\lrArr \\quad  x= \\frac{[_abs(&3-(&2))_]}{[_abs(&1)_]} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
             @@ pgcd(abs(&3-(&2));&1) != 1 && (&3-(&2))*(&1)<0  ?? & \\quad \\lrArr \\quad  x= -\\frac{[_abs(&3-(&2))_]}{[_abs(&1)_]} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
@@ -18662,8 +20311,12 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-                &3x\\textcolor{${color1}}{+&2}=\\textcolor{${color2}}{[_&4x_]}+&1 \
-              & \\quad \\lrArr \\quad &3x \\textcolor{${color2}}{-[_&4x_]} = &1\\textcolor{${color1}}{-&2} \\\\ \
+                &3x\\textcolor{${get(color1)}}{+&2}=\\textcolor{${get(
+									color2,
+								)}}{[_&4x_]}+&1 \
+              & \\quad \\lrArr \\quad &3x \\textcolor{${get(
+								color2,
+							)}}{-[_&4x_]} = &1\\textcolor{${get(color1)}}{-&2} \\\\ \
               & \\quad \\lrArr \\quad \\textcolor{violet}{[_&3-&4_]}x = [_&1-&2_] \\\\ \
               @@ pgcd(&3-&4;&1-&2) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
               @@ pgcd(&3-&4;&1-&2) != 1 ?? & \\quad \\lrArr \\quad  x= \\frac{[_&1-&2_]}{\\textcolor{violet}{[_&3-&4_]}} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
@@ -18694,10 +20347,20 @@ const questions: Questions = {
 						[
 							{
 								text: `$$\\begin{align} \
-              &3x\\textcolor{${color1}}{[+_&2_]}=\\textcolor{${color2}}{&4x}[+_&1_] \
-              & \\quad \\lrArr \\quad &3x \\textcolor{${color2}}{[+_-(&4)x_]} = &1\\textcolor{${color1}}{[+_-(&2)_]} \\\\ \
-              & \\quad \\lrArr \\quad  \\textcolor{${color3}}{[_(&3-(&4))x_]} = [_&1-(&2)_] \\\\  \
-              & \\quad \\lrArr \\quad  x = \\frac{[_&1-(&2)_]}{\\textcolor{${color3}}{[_&3-(&4)_]}} \\\\ \
+              &3x\\textcolor{${get(color1)}}{[+_&2_]}=\\textcolor{${get(
+									color2,
+								)}}{&4x}[+_&1_] \
+              & \\quad \\lrArr \\quad &3x \\textcolor{${get(
+								color2,
+							)}}{[+_-(&4)x_]} = &1\\textcolor{${get(
+									color1,
+								)}}{[+_-(&2)_]} \\\\ \
+              & \\quad \\lrArr \\quad  \\textcolor{${get(
+								color3,
+							)}}{[_(&3-(&4))x_]} = [_&1-(&2)_] \\\\  \
+              & \\quad \\lrArr \\quad  x = \\frac{[_&1-(&2)_]}{\\textcolor{${get(
+								color3,
+							)}}{[_&3-(&4)_]}} \\\\ \
               @@ pgcd(abs(&1-(&2));abs(&3-(&4))) = 1 ?? & \\quad \\lrArr \\quad  x= &sol1  @@ \
             @@ pgcd(abs(&1-(&2));abs(&3-(&4))) != 1 && (&1-(&2))*(&3-(&4))>0  ?? & \\quad \\lrArr \\quad  x= \\frac{[_abs(&1-(&2))_]}{[_abs(&3-(&4))_]} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
             @@ pgcd(abs(&1-(&2));abs(&3-(&4))) != 1 && (&1-(&2))*(&3-(&4))<0  ?? & \\quad \\lrArr \\quad  x= -\\frac{[_abs(&1-(&2))_]}{[_abs(&3-(&4))_]} \\\\ & \\quad \\lrArr \\quad  x= &sol1  @@ \
@@ -19190,12 +20853,32 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `$$f(\\bold{\\textcolor{${color1}}{&3}})=&1 \\times \\bold{\\textcolor{${color1}}{[(_&3_]}} [+_&2_]= \\bold{\\textcolor{${color2}}{[_&4_]}}$$ donc le point $$A(\\bold{\\textcolor{${color1}}{&3}};\\bold{\\textcolor{${color2}}{[_&4_]}})$$ appartient à la courbe représentative de la fonction affine &expression.`,
+								text: `$$f(\\bold{\\textcolor{${get(
+									color1,
+								)}}{&3}})=&1 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{[(_&3_]}} [+_&2_]= \\bold{\\textcolor{${get(
+									color2,
+								)}}{[_&4_]}}$$ donc le point $$A(\\bold{\\textcolor{${get(
+									color1,
+								)}}{&3}};\\bold{\\textcolor{${get(
+									color2,
+								)}}{[_&4_]}})$$ appartient à la courbe représentative de la fonction affine &expression.`,
 							},
 						],
 						[
 							{
-								text: `$$f(\\bold{\\textcolor{${color1}}{&3}})=&1 \\times \\bold{\\textcolor{${color1}}{[(_&3_]}} [+_&2_]= [_&1*(&3)+(&2)_] \\bold{\\textcolor{red}{\\ne}} \\bold{\\textcolor{${color2}}{[_&4_]}}$$ donc le point $$A(\\bold{\\textcolor{${color1}}{&3}};\\bold{\\textcolor{${color2}}{[_&4_]}})$$ n'appartient pas à la courbe représentative de la fonction affine &expression.`,
+								text: `$$f(\\bold{\\textcolor{${get(
+									color1,
+								)}}{&3}})=&1 \\times \\bold{\\textcolor{${get(
+									color1,
+								)}}{[(_&3_]}} [+_&2_]= [_&1*(&3)+(&2)_] \\bold{\\textcolor{red}{\\ne}} \\bold{\\textcolor{${get(
+									color2,
+								)}}{[_&4_]}}$$ donc le point $$A(\\bold{\\textcolor{${get(
+									color1,
+								)}}{&3}};\\bold{\\textcolor{${get(
+									color2,
+								)}}{[_&4_]}})$$ n'appartient pas à la courbe représentative de la fonction affine &expression.`,
 							},
 						],
 					],
@@ -20396,17 +22079,23 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `L'expression est sous la forme développée. Le coefficient du terme de degré 2 se lit directement dans $$\\bold{\\textcolor{${color1}}{&1}}x^2[+_&2x_][+_&3_]$$. C'est donc &solution`,
+								text: `L'expression est sous la forme développée. Le coefficient du terme de degré 2 se lit directement dans $$\\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}x^2[+_&2x_][+_&3_]$$. C'est donc &solution`,
 							},
 						],
 						[
 							{
-								text: `L'expression est sous la forme factorisée. Le coefficient du terme de degré 2 se lit directement dans $$\\bold{\\textcolor{${color1}}{&1}}(x[+_&2_])(x[+_&3_])$$. C'est donc &solution`,
+								text: `L'expression est sous la forme factorisée. Le coefficient du terme de degré 2 se lit directement dans $$\\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}(x[+_&2_])(x[+_&3_])$$. C'est donc &solution`,
 							},
 						],
 						[
 							{
-								text: `L'expression est sous la forme canonique. Le coefficient du terme de degré 2 se lit directement dans $$\\bold{\\textcolor{${color1}}{&1}}(x[+_&2_])^2[+_&3_]$$. C'est donc &solution`,
+								text: `L'expression est sous la forme canonique. Le coefficient du terme de degré 2 se lit directement dans $$\\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}(x[+_&2_])^2[+_&3_]$$. C'est donc &solution`,
 							},
 						],
 						[
@@ -20414,7 +22103,11 @@ const questions: Questions = {
 								text: `Attention, l'expression n'est pas complètement sous la forme factorisée. `,
 							},
 							{
-								text: `Le coefficient du terme de degré 2 s'obtient en multipliant les coefficients des termes de degré 1 dans l'expression $$(\\bold{\\textcolor{${color1}}{[_&4x_]}[+_&2_])(\\bold{\\textcolor{${color1}}{[_&5x_]}[+_&3_])$$.`,
+								text: `Le coefficient du terme de degré 2 s'obtient en multipliant les coefficients des termes de degré 1 dans l'expression $$(\\bold{\\textcolor{${get(
+									color1,
+								)}}{[_&4x_]}[+_&2_])(\\bold{\\textcolor{${get(
+									color1,
+								)}}{[_&5x_]}[+_&3_])$$.`,
 							},
 							{
 								text: "C'est donc $$&4 \\times [(_&5_]=$$&solution",
@@ -20425,7 +22118,13 @@ const questions: Questions = {
 								text: `Attention, l'expression n'est pas complètement sous la forme factorisée. `,
 							},
 							{
-								text: `Le coefficient du terme de degré 2 s'obtient en multipliant le coefficient devant la parenthèse et les coefficients des termes de degré 1 dans l'expression $$\\bold{\\textcolor{${color1}}{&1}}(\\bold{\\textcolor{${color1}}{[_&4x_]}}[+_&2_])(\\bold{\\textcolor{${color1}}{[_&5x_]}}[+_&3_])$$.`,
+								text: `Le coefficient du terme de degré 2 s'obtient en multipliant le coefficient devant la parenthèse et les coefficients des termes de degré 1 dans l'expression $$\\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}(\\bold{\\textcolor{${get(
+									color1,
+								)}}{[_&4x_]}}[+_&2_])(\\bold{\\textcolor{${get(
+									color1,
+								)}}{[_&5x_]}}[+_&3_])$$.`,
 							},
 							{
 								text: "C'est donc $$&1 \\times [(_&4_] \\times [(_&5_]=$$&solution",
@@ -20476,21 +22175,14 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `@@ &1>0 ??  Le coefficient du terme de degré 2 est $$\\bold{\\textcolor{${color1}}{&1}}$$ qui est positif. @@`,
+								text: `@@ &1>0 ??  Le coefficient du terme de degré 2 est $$\\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}$$ qui est positif. @@`,
 							},
 							{
-								text: `@@ &1<0 ??  Le coefficient du terme de degré 2 est $$\\bold{\\textcolor{${color1}}{&1}}$$ qui est négatif. @@`,
-							},
-							{
-								text: 'Le polynôme admet donc &solution.',
-							},
-						],
-						[
-							{
-								text: `@@ &1>0 ??  Le coefficient du terme de degré 2 est $$\\bold{\\textcolor{${color1}}{&1}}$$ qui est positif. @@`,
-							},
-							{
-								text: `@@ &1<0 ??  Le coefficient du terme de degré 2 est $$\\bold{\\textcolor{${color1}}{&1}}$$ qui est négatif. @@`,
+								text: `@@ &1<0 ??  Le coefficient du terme de degré 2 est $$\\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}$$ qui est négatif. @@`,
 							},
 							{
 								text: 'Le polynôme admet donc &solution.',
@@ -20498,10 +22190,29 @@ const questions: Questions = {
 						],
 						[
 							{
-								text: `@@ &1>0 ??  Le coefficient du terme de degré 2 est $$\\bold{\\textcolor{${color1}}{&1}}$$ qui est positif. @@`,
+								text: `@@ &1>0 ??  Le coefficient du terme de degré 2 est $$\\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}$$ qui est positif. @@`,
 							},
 							{
-								text: `@@ &1<0 ??  Le coefficient du terme de degré 2 est $$\\bold{\\textcolor{${color1}}{&1}}$$ qui est négatif. @@`,
+								text: `@@ &1<0 ??  Le coefficient du terme de degré 2 est $$\\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}$$ qui est négatif. @@`,
+							},
+							{
+								text: 'Le polynôme admet donc &solution.',
+							},
+						],
+						[
+							{
+								text: `@@ &1>0 ??  Le coefficient du terme de degré 2 est $$\\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}$$ qui est positif. @@`,
+							},
+							{
+								text: `@@ &1<0 ??  Le coefficient du terme de degré 2 est $$\\bold{\\textcolor{${get(
+									color1,
+								)}}{&1}}$$ qui est négatif. @@`,
 							},
 							{
 								text: 'Le polynôme admet donc &solution.',
@@ -20554,8 +22265,16 @@ const questions: Questions = {
 						[
 							{
 								text: `\
-								@@ &2 <0 ?? L'expression $$&1(x-\\textcolor{${color1}}{[_-(&2)_]})^2\\textcolor{${color1}}{[+_&3_]}$$ est déjà sous forme canonique, ce qui nous donne directement les coordonnées du sommet $$S\\left( \\, &sol1 \\, ; \\, &sol2 \\, \\right)$$ @@\
-								@@ &2 >0 ?? L'expression &expression se met sous la forme canonique $$&1(x-\\textcolor{${color1}}{[(_-(&2)_]})^2\\textcolor{${color1}}{[+_&3_]}$$ , ce qui nous donne  les coordonnées du sommet $$S\\left( \\, &sol1 \\, ; \\, &sol2 \\, \\right)$$ @@ \
+								@@ &2 <0 ?? L'expression $$&1(x-\\textcolor{${get(
+									color1,
+								)}}{[_-(&2)_]})^2\\textcolor{${get(
+									color1,
+								)}}{[+_&3_]}$$ est déjà sous forme canonique, ce qui nous donne directement les coordonnées du sommet $$S\\left( \\, &sol1 \\, ; \\, &sol2 \\, \\right)$$ @@\
+								@@ &2 >0 ?? L'expression &expression se met sous la forme canonique $$&1(x-\\textcolor{${get(
+									color1,
+								)}}{[(_-(&2)_]})^2\\textcolor{${get(
+									color1,
+								)}}{[+_&3_]}$$ , ce qui nous donne  les coordonnées du sommet $$S\\left( \\, &sol1 \\, ; \\, &sol2 \\, \\right)$$ @@ \
 								`,
 							},
 						],
@@ -20583,8 +22302,12 @@ const questions: Questions = {
 						[
 							{
 								text: `\
-								@@ &2 <0 ?? L'expression $$&1(x-\\textcolor{${color1}}{[_-(&2)_]})^2[+_&3_]$$ est déjà sous forme canonique, ce qui nous donne directement l'équation &solution @@\
-								@@ &2 >0 ?? L'expression &expression se met sous la forme canonique $$&1(x-\\textcolor{${color1}}{[(_-(&2)_]})^2[+_&3_]$$ , ce qui nous donne l'équation &solution @@ \
+								@@ &2 <0 ?? L'expression $$&1(x-\\textcolor{${get(
+									color1,
+								)}}{[_-(&2)_]})^2[+_&3_]$$ est déjà sous forme canonique, ce qui nous donne directement l'équation &solution @@\
+								@@ &2 >0 ?? L'expression &expression se met sous la forme canonique $$&1(x-\\textcolor{${get(
+									color1,
+								)}}{[(_-(&2)_]})^2[+_&3_]$$ , ce qui nous donne l'équation &solution @@ \
 								`,
 							},
 						],
@@ -20792,10 +22515,12 @@ const questions: Questions = {
 								text: "&solution, $$&3$$ n'est pas une racine du polynôme &expression car :",
 							},
 							{
-								text: `$$  \\textcolor{${color1}}{[(_&3_]}^2 \
-								@@ &2 + (&1) != 0  && &2 + (&1) != 1 && &2 + (&1) != -1 ?? [+_-(&1+(&2))_] \\times \\textcolor{${color1}}{[(_&3_]} @@ \
-								@@   &2 + (&1) = 1 ?? -\\textcolor{${color1}}{[(_&3_]} @@ \
-								@@   &2 + (&1) = -1 ?? +\\textcolor{${color1}}{[(_&3_]} @@ \
+								text: `$$  \\textcolor{${get(color1)}}{[(_&3_]}^2 \
+								@@ &2 + (&1) != 0  && &2 + (&1) != 1 && &2 + (&1) != -1 ?? [+_-(&1+(&2))_] \\times \\textcolor{${get(
+									color1,
+								)}}{[(_&3_]} @@ \
+								@@   &2 + (&1) = 1 ?? -\\textcolor{${get(color1)}}{[(_&3_]} @@ \
+								@@   &2 + (&1) = -1 ?? +\\textcolor{${get(color1)}}{[(_&3_]} @@ \
 								[+_(&1)*(&2)_] = \
 								[_(&3)^2_]\
 								@@ &2 + (&1) != 0  && &2 + (&1) != 1 && &2 + (&1) != -1 ?? [+_-(&1+(&2))*(&3)_]  @@ \
@@ -20809,10 +22534,12 @@ const questions: Questions = {
 								text: '&solution, $$&3$$ est une racine du polynôme  &expression car :',
 							},
 							{
-								text: `$$\\textcolor{${color1}}{[(_&3_]}^2 \
-									@@ &2 + (&1) != 0  && &2 + (&1) != 1 && &2 + (&1) != -1 ?? [+_-(&1+(&2))_] \\times \\textcolor{${color1}}{[(_&3_]} @@ \
-										@@   &2 + (&1) = 1 ?? -\\textcolor{${color1}}{[(_&3_]} @@ \
-										@@   &2 + (&1) = -1 ?? +\\textcolor{${color1}}{[(_&3_]} @@ \
+								text: `$$\\textcolor{${get(color1)}}{[(_&3_]}^2 \
+									@@ &2 + (&1) != 0  && &2 + (&1) != 1 && &2 + (&1) != -1 ?? [+_-(&1+(&2))_] \\times \\textcolor{${get(
+										color1,
+									)}}{[(_&3_]} @@ \
+										@@   &2 + (&1) = 1 ?? -\\textcolor{${get(color1)}}{[(_&3_]} @@ \
+										@@   &2 + (&1) = -1 ?? +\\textcolor{${get(color1)}}{[(_&3_]} @@ \
 									[+_(&1)*(&2)_] = \
 									[_(&3)^2_]\
 									@@ &2 + (&1) != 0  && &2 + (&1) != 1 && &2 + (&1) != -1 ?? [+_-(&1+(&2))*(&3)_]  @@ \
@@ -20845,10 +22572,12 @@ const questions: Questions = {
 								text: '&solution est une racine évidente du polynôme &expression car :',
 							},
 							{
-								text: `$$  \\textcolor{${color1}}{[(_&1_]}^2 \
-								@@ &2 + (&1) != 0  && &2 + (&1) != 1 && &2 + (&1) != -1 ?? [+_-(&1+(&2))_] \\times \\textcolor{${color1}}{[(_&1_]} @@ \
-								@@   &2 + (&1) = 1 ?? -\\textcolor{${color1}}{[(_&1_]} @@ \
-								@@   &2 + (&1) = -1 ?? +\\textcolor{${color1}}{[(_&1_]} @@ \
+								text: `$$  \\textcolor{${get(color1)}}{[(_&1_]}^2 \
+								@@ &2 + (&1) != 0  && &2 + (&1) != 1 && &2 + (&1) != -1 ?? [+_-(&1+(&2))_] \\times \\textcolor{${get(
+									color1,
+								)}}{[(_&1_]} @@ \
+								@@   &2 + (&1) = 1 ?? -\\textcolor{${get(color1)}}{[(_&1_]} @@ \
+								@@   &2 + (&1) = -1 ?? +\\textcolor{${get(color1)}}{[(_&1_]} @@ \
 								[+_(&1)*(&2)_] = \
 								[_(&1)^2_]\
 								@@ &2 + (&1) != 0  && &2 + (&1) != 1 && &2 + (&1) != -1 ?? [+_-(&1+(&2))*(&1)_]  @@ \
@@ -21086,17 +22815,25 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `Avec $$u_n=&2n[+_&3_]$$, $$u_\\textcolor{${color1}}{&1}=&2 \\times \\textcolor{${color1}}{&1} [+_&3_]=&sol$$`,
+								text: `Avec $$u_n=&2n[+_&3_]$$, $$u_\\textcolor{${get(
+									color1,
+								)}}{&1}=&2 \\times \\textcolor{${get(
+									color1,
+								)}}{&1} [+_&3_]=&sol$$`,
 							},
 						],
 						[
 							{
-								text: `Avec $$u_n=&2n^2$$, $$u_\\textcolor{${color1}}{&1}=&2 \\times \\textcolor{${color1}}{&1}^2=&sol$$`,
+								text: `Avec $$u_n=&2n^2$$, $$u_\\textcolor{${get(
+									color1,
+								)}}{&1}=&2 \\times \\textcolor{${get(color1)}}{&1}^2=&sol$$`,
 							},
 						],
 						[
 							{
-								text: `Avec $$u_n=(-1)^&1$$, $$u_\\textcolor{${color1}}{&1}=(-1)^\\textcolor{${color1}}{&1}=&sol$$`,
+								text: `Avec $$u_n=(-1)^&1$$, $$u_\\textcolor{${get(
+									color1,
+								)}}{&1}=(-1)^\\textcolor{${get(color1)}}{&1}=&sol$$`,
 							},
 						],
 					],
@@ -21155,10 +22892,14 @@ const questions: Questions = {
 								text: `Avec $$u_0=&1$$ et $$u_{n+1}=&2u_n[+_&3_]$$`,
 							},
 							{
-								text: `$$u_1=&2u_0[+_&3_]= &2 \\times [(_&1_] [+_&3_]=\\textcolor{${color1}}{&4}$$`,
+								text: `$$u_1=&2u_0[+_&3_]= &2 \\times [(_&1_] [+_&3_]=\\textcolor{${get(
+									color1,
+								)}}{&4}$$`,
 							},
 							{
-								text: `$$u_2=&2u_1[+_&3_]= &2 \\times \\textcolor{${color1}}{[(_&4_]} [+_&3_]=$$&solution`,
+								text: `$$u_2=&2u_1[+_&3_]= &2 \\times \\textcolor{${get(
+									color1,
+								)}}{[(_&4_]} [+_&3_]=$$&solution`,
 							},
 						],
 					],
@@ -21795,7 +23536,11 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `Si la raison est $$\\textcolor{${color1}}{&3}$$ et $$u_&1=[_&1*(&3)_]$$, alors $$u_&2=u_&1\\textcolor{${color1}}{[+_&3_]} \\times [_&2-&1_]=u_&1[+_(&2-&1)*(&3)_]=&sol$$`,
+								text: `Si la raison est $$\\textcolor{${get(
+									color1,
+								)}}{&3}$$ et $$u_&1=[_&1*(&3)_]$$, alors $$u_&2=u_&1\\textcolor{${get(
+									color1,
+								)}}{[+_&3_]} \\times [_&2-&1_]=u_&1[+_(&2-&1)*(&3)_]=&sol$$`,
 							},
 						],
 					],
@@ -21821,7 +23566,11 @@ const questions: Questions = {
 					correctionDetailss: [
 						[
 							{
-								text: `Si la raison est $$\\textcolor{${color1}}{&3}$$ et $$u_&1=[_&1*(&3)_]$$, alors $$u_&2=u_&1\\textcolor{${color1}}{[+_&3_]} \\times [_&2-&1_]=u_&1[+_(&2-&1)*(&3)_]=&sol$$`,
+								text: `Si la raison est $$\\textcolor{${get(
+									color1,
+								)}}{&3}$$ et $$u_&1=[_&1*(&3)_]$$, alors $$u_&2=u_&1\\textcolor{${get(
+									color1,
+								)}}{[+_&3_]} \\times [_&2-&1_]=u_&1[+_(&2-&1)*(&3)_]=&sol$$`,
 							},
 						],
 					],

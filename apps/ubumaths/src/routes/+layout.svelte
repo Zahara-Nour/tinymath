@@ -1,8 +1,13 @@
 <script lang="ts">
 	// import '@skeletonlabs/skeleton/themes/theme-hamlindigo.css';
 
-	import { Modal, Toast, toastStore } from '@skeletonlabs/skeleton'
-	import { prepareMathlive, touchDevice, user } from '$lib/stores'
+	import { Modal, Toast, modeCurrent, toastStore } from '@skeletonlabs/skeleton'
+	import {
+		incorrect_color,
+		prepareMathlive,
+		touchDevice,
+		user,
+	} from '$lib/stores'
 	import { onMount } from 'svelte'
 	import { getLogger } from '$lib/utils'
 	import { invalidate } from '$app/navigation'
@@ -21,6 +26,7 @@
 	import { defaultPlayerProfile, playersManager } from './navadra/js/player'
 	import { monstersManager } from './navadra/js/monsters'
 	import { get } from 'svelte/store'
+	import { mdc_colors } from '$lib/colors'
 
 	export let data
 
@@ -103,6 +109,12 @@
 			}
 		}
 		user.set(createUser(data.userProfile))
+	}
+
+	$: if ($modeCurrent) {
+		incorrect_color.set(mdc_colors['red-400'])
+	} else {
+		incorrect_color.set(mdc_colors['red-200'])
 	}
 </script>
 

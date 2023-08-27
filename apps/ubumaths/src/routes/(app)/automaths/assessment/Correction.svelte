@@ -1,7 +1,7 @@
 <script lang="ts">
 	import CorrectionListItems from './CorrectionListItems.svelte'
 	import { onMount } from 'svelte'
-	import { correct_color, incorrect_color, unoptimal_color } from '$lib/colors'
+	import { correct_color, incorrect_color, unoptimal_color } from '$lib/stores'
 	import { Confetti } from 'svelte-confetti'
 	import { getLogger } from '$lib/utils'
 	import math from 'tinycas'
@@ -30,9 +30,9 @@
 	let displayDetails = false
 	const toggleDetails = () => (displayDetails = !displayDetails)
 	let colorResult:
-		| typeof correct_color
-		| typeof incorrect_color
-		| typeof unoptimal_color
+		| typeof $correct_color
+		| typeof $incorrect_color
+		| typeof $unoptimal_color
 	let messageResult: string
 
 	let total = 0
@@ -75,16 +75,16 @@
 			percent = score / total
 
 			if (percent === 1) {
-				colorResult = correct_color
+				colorResult = $correct_color
 				messageResult = 'Perfect !'
 			} else if (percent >= 0.8) {
-				colorResult = correct_color
+				colorResult = $correct_color
 				messageResult = 'Good Job !'
 			} else if (percent >= 0.5) {
-				colorResult = unoptimal_color
+				colorResult = $unoptimal_color
 				messageResult = 'Keep on !'
 			} else {
-				colorResult = incorrect_color
+				colorResult = $incorrect_color
 				messageResult = 'Try again !'
 			}
 		}

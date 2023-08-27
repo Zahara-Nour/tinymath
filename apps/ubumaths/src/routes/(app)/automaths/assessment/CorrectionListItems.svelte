@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { correct_color, incorrect_color, unoptimal_color } from '$lib/colors'
+	import { correct_color, incorrect_color, unoptimal_color } from '$lib/stores'
 	import {
 		STATUS_CORRECT,
 		STATUS_UNOPTIMAL_FORM,
@@ -13,10 +13,10 @@
 {#each items as item}
 	{@const color =
 		item.status === STATUS_CORRECT
-			? correct_color
+			? $correct_color
 			: item.status === STATUS_UNOPTIMAL_FORM
-			? unoptimal_color
-			: incorrect_color}
+			? $unoptimal_color
+			: $incorrect_color}
 	<div class="w-full flex justify-start items-start mb-5">
 		<div
 			class="relative mr-0"

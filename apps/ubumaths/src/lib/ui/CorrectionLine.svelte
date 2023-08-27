@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { correct_color } from '$lib/colors'
+	import { correct_color } from '$lib/stores'
 	import type { Line } from '../../types/type'
 	export let line: Line
 

@@ -2,7 +2,7 @@
 	// import Spinner from './Spinner.svelte'
 	import math from 'tinycas'
 	import { formatLatexToHtml } from '$lib/stores'
-	import { correct_color } from '$lib/colors'
+	import { correct_color } from '$lib/stores'
 	import CorrectionLine from './CorrectionLine.svelte'
 	import {
 		isQuestionChoice,
@@ -35,7 +35,7 @@
 		function replaceSol() {
 			nSol += 1
 			return (
-				`\\textcolor{${correct_color}}{` +
+				`\\textcolor{${$correct_color}}{` +
 				math(card.solutions![nSol]).latex +
 				'}'
 			)
@@ -49,7 +49,7 @@
 			card.choices.forEach((choice, i) => {
 				let color = 'grey'
 				if (card.solutions.includes(i)) {
-					color = correct_color
+					color = $correct_color
 				}
 
 				s += `<span
@@ -74,7 +74,7 @@
 				s =
 					`<span
 					class="rounded-lg  m-2 p-1"
-					style="border: 4px solid ${correct_color}"
+					style="border: 4px solid ${$correct_color}"
 				>` +
 					s.text +
 					'</span>'
@@ -94,7 +94,7 @@
 				console.log('s', s)
 			} else {
 				s =
-					`$$\\textcolor{${correct_color}}{` +
+					`$$\\textcolor{${$correct_color}}{` +
 					math(card.solutions![0]).latex +
 					'}$$'
 			}

@@ -7,7 +7,17 @@ import { getLogger } from '$lib/utils'
 let { info, fail, warn } = getLogger('store', 'info')
 import { browser, building, dev, version } from '$app/environment'
 import { guest } from './users'
+import { mdc_colors } from './colors'
 
+// let correct_color = mdc_colors['lime-500']
+export const correct_color = writable('#a3d651')
+// let unoptimal_color = mdc_colors['amber-300']
+export const unoptimal_color = writable('#ffc400')
+export const incorrect_color = writable(mdc_colors['red-200'])
+// let incorrect_color = '#ff6171'
+export const color1 = writable(mdc_colors['orange-300'])
+export const color2 = writable(mdc_colors['teal-400'])
+export const color3 = writable(mdc_colors['pink-300'])
 export const fullScreen = writable(false)
 export const user: Writable<User> = writable(guest)
 export const connected = writable(false)
