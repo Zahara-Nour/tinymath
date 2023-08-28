@@ -1,4 +1,8 @@
 <script lang="ts">
+	import { mdc_colors } from '$lib/colors'
+	import { modeCurrent } from '@skeletonlabs/skeleton'
+	import { get } from 'svelte/store'
+
 	export let number: number
 	export let percentage: number
 	export let pulse = false
@@ -63,10 +67,12 @@
 
 	$: color = gradient[Math.floor(((100 - percentage) / 100) * 40)]
 	$: strokeWidth = size / 9
+
+	$: pulseColor = $modeCurrent ? mdc_colors['red-500'] : mdc_colors['red-100']
 </script>
 
 <div
-	style="position: relative;display: inline-block;text-align: center;color:black;"
+	style="position: relative;display: inline-block;text-align: center;color:black;--pulse-color:{pulseColor};"
 >
 	<svg width={`${size}em`} height={`${size}em`}>
 		<circle
@@ -119,7 +125,7 @@
 	}
 
 	.pulse {
-		fill: red;
+		fill: var(--pulse-color);
 		animation: pulse 1.5s infinite cubic-bezier(0.66, 0, 0, 1);
 		transform-origin: 50% 50%;
 		/*animation-duration: 1.5s;
