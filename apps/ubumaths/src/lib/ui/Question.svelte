@@ -512,10 +512,14 @@
 		/* background: rgba(251, 187, 182, 0.1); */
 	}
 
+	math-field::part(virtual-keyboard-toggle) {
+		display: none;
+	}
+
 	/* pour n'afficher le bouton toggle du clavier virtuel que sur les touch devices */
-	@media not (pointer: coarse) {
+	/* @media not (pointer: coarse) {
 		math-field::part(virtual-keyboard-toggle) {
 			display: none;
 		}
-	}
+	} */
 </style>
