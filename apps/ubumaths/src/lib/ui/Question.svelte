@@ -63,7 +63,10 @@
 
 	onMount(initMathField)
 	afterUpdate(initMathField)
-	onDestroy(removeListeners)
+	onDestroy(() => {
+		window.mathVirtualKeyboard.hide()
+		removeListeners()
+	})
 
 	$: initQuestion(question)
 
@@ -137,7 +140,6 @@
 			mathField.removeEventListener('change', onChange)
 			mathField.removeEventListener('keyup', onKeystroke)
 			mathField.removeEventListener('input', onInput)
-			window.mathVirtualKeyboard.hide()
 		}
 	}
 
