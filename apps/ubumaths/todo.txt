@@ -4,7 +4,7 @@
 
 
 output : parenthèses dans les fraction : entiers - decomposition - niveau 2
-mauvais contraste de couloeur en dark mode avec error color
+// mauvais contraste de couloeur en dark mode avec error color
 ajouter badge pour le niveau dans les exercices
 replacer le stamp "correction"
 mise en valeur d'une expression mal écrite

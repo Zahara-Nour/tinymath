@@ -286,6 +286,7 @@
 
 	function initMathField() {
 		if (!masked && mathField && !initialized) {
+			mathField.mathVirtualKeyboardPolicy = 'auto'
 			mathField.mathModeSpace = '\\,'
 			mathField.addEventListener('keypress', onKeystroke)
 			mathField.addEventListener('input', onInput)
@@ -495,5 +496,12 @@
 		outline: none;
 		border-radius: 4px;
 		/* background: rgba(251, 187, 182, 0.1); */
+	}
+
+	/* pour n'afficher le bouton toggle du clavier virtuel que sur les touch devices */
+	@media not (pointer: coarse) {
+		math-field::part(virtual-keyboard-toggle) {
+			display: none;
+		}
 	}
 </style>
