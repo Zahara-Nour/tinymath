@@ -137,6 +137,7 @@
 			mathField.removeEventListener('change', onChange)
 			mathField.removeEventListener('keyup', onKeystroke)
 			mathField.removeEventListener('input', onInput)
+			window.mathVirtualKeyboard.hide()
 		}
 	}
 
