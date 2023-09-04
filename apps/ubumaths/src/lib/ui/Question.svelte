@@ -63,10 +63,7 @@
 
 	onMount(initMathField)
 	afterUpdate(initMathField)
-	onDestroy(() => {
-		window.mathVirtualKeyboard.hide()
-		removeListeners()
-	})
+	onDestroy(removeListeners)
 
 	$: initQuestion(question)
 
@@ -253,6 +250,7 @@
 
 	function commitAnswers() {
 		// pour prévenir un update de question
+		window.mathVirtualKeyboard.hide()
 		const q = question
 		q.answers = answers
 		q.answers_latex = answers_latex
