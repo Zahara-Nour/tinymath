@@ -1,5 +1,10 @@
 <script lang="ts">
-	import { toMarkup, formatLatexToHtml, prepareMathlive } from '$lib/stores'
+	import {
+		toMarkup,
+		formatLatexToHtml,
+		prepareMathlive,
+		virtualKeyboardMode,
+	} from '$lib/stores'
 	import { afterUpdate, onDestroy, onMount, tick } from 'svelte'
 	import { getLogger, formatToLatex, magnify_2xl } from '$lib/utils'
 	import virtualKeyboard from '$lib/mathlive/virtualKeyboard'
@@ -200,6 +205,8 @@
 	}
 
 	function manageFocus(ev: FocusEvent) {
+		if (mathField.hasFocus() && $virtualKeyboardMode) {
+		}
 		// mathField.virtualKeyboardState =
 		// 	mathField.hasFocus() && $virtualKeyboardMode ? 'visible' : 'hidden'
 		// console.log('focus event', ev)
@@ -291,8 +298,15 @@
 			mathField.addEventListener('keypress', onKeystroke)
 			mathField.addEventListener('input', onInput)
 			mathField.addEventListener('change', onChange)
-			mathField.addEventListener('focus', manageFocus)
-			mathField.addEventListener('blur', manageFocus)
+			// mathField.addEventListener('focus', manageFocus)
+			// mathField.addEventListener('blur', manageFocus)
+			mathField.mathVirtualKeyboardPolicy = 'manual'
+			mathField.addEventListener('focusin', () => {
+				if ($virtualKeyboardMode) window.mathVirtualKeyboard.show()
+			})
+			mathField.addEventListener('focusout', () =>
+				window.mathVirtualKeyboard.hide(),
+			)
 			mathField.setValue(field!)
 			console.log('initMathfield', answers_latex)
 			// need to copy answers which can be overrided during onIput Call

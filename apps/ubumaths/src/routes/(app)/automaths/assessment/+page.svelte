@@ -419,7 +419,7 @@
 							>
 						</div>
 					{/if}
-					{#if !classroom && card.type !== 'choice' && card.type !== 'choices'}
+					{#if !classroom && !$touchDevice && card.type !== 'choice' && card.type !== 'choices'}
 						<button
 							on:click={() => {
 								virtualKeyboardMode.update(
