@@ -30,9 +30,10 @@ export const GET = (async ({ locals: { supabaseService }, url }) => {
 		const beginning = Today.startOf('week').minus({ days: 1 })
 		const end = Today.startOf('week').plus({ days: 4 })
 		console.log('begining', beginning.toISODate(), 'end', end.toISODate())
+		const winners: Array<string> = []
 		data
 			.map((profile) => cleanProfile(profile) as StudentProfile)
-			.forEach(async ({ id: student_id, gidouilles, firstname }) => {
+			.forEach(async ({ id: student_id, gidouilles, firstname, lastname }) => {
 				try {
 					const { error: err, data } =
 						await DB_fetchStudentWarningsFromDateToDate(
@@ -61,14 +62,16 @@ export const GET = (async ({ locals: { supabaseService }, url }) => {
 							).length <= 1
 						if (granted) {
 							console.log('student', firstname, 'is granted 1 gidouille')
-							const { error: errorUpdate } = await supabaseService
-								.from('users')
-								.update({ gidouilles: gidouilles + 1 })
-								.eq('id', student_id)
-							if (errorUpdate) {
-								console.log(errorUpdate.message)
-								throw error(500, errorUpdate.message)
-							}
+							winners.push(firstname + ' ' + lastname)
+							console.log('winners', winners)
+							// const { error: errorUpdate } = await supabaseService
+							// 	.from('users')
+							// 	.update({ gidouilles: gidouilles + 1 })
+							// 	.eq('id', student_id)
+							// if (errorUpdate) {
+							// 	console.log(errorUpdate.message)
+							// 	throw error(500, errorUpdate.message)
+							// }
 						} else {
 							console.log('student', firstname, 'is NOT granted ', warningss)
 						}
@@ -95,7 +98,7 @@ export const GET = (async ({ locals: { supabaseService }, url }) => {
 		// 		return json(rows)
 		// 	}
 		// } else return json('no rows')
-		console.log('gidouilles granted')
-		return json('gidouilles granted')
+		console.log('gidouilles granted', winners)
+		return json(winners)
 	}
 }) satisfies RequestHandler

@@ -36,8 +36,18 @@
 	let selectedCard = cards.filter((c) => c.name === 'batman')[0]
 	let pending = false
 	let modalComponent: ModalComponent
+	let granting = false
 
 	const dispatch = createEventDispatcher()
+
+	async function grantGidouilles() {
+		granting = true
+		const data = await fetch('/api/grant-gidouilles')
+		const json = await data.json()
+		console.log('grant-gidouilles', json)
+		granting = false
+		students = students
+	}
 
 	async function addGidouille(student: StudentProfile) {
 		console.log('adding gidouille')
@@ -164,6 +174,17 @@
 </script>
 
 <PageHeader title="Récompenses" />
+
+<div>
+	Gidouilles de la semaine
+	<button
+		class="btn-icon variant-filled-primary"
+		disabled={granting}
+		on:click={grantGidouilles}
+	>
+		<Gidouille />
+	</button>
+</div>
 
 <div class="container mx-auto p-4 max-w-screen-md">
 	<label class="label">

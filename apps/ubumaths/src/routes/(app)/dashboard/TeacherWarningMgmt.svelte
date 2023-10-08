@@ -211,7 +211,7 @@
 													{#each warningCasesShort as warning}
 														{@const disabled =
 															pendingWarning ||
-															(warnings[student.id].includes('Absent') &&
+															(warnings[student.id]?.includes('Absent') &&
 																warning !== 'Absent')}
 														<div class="flex items-center">
 															<input
