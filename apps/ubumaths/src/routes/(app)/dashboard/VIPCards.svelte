@@ -12,7 +12,12 @@
 	import VipCardUI from '$lib/vips/VipCard.svelte'
 	import DrawnCards from './DrawnCards.svelte'
 	import { createEventDispatcher } from 'svelte'
-	import type { CardWallet, StudentProfile, User } from '../../../types/type'
+	import {
+		isTeacher,
+		type CardWallet,
+		type StudentProfile,
+		type User,
+	} from '../../../types/type'
 
 	export let student: StudentProfile
 	export let db: SupabaseClient<Database>
@@ -79,13 +84,15 @@
 		<h3 class="card-title">
 			{`cartes VIP de ${student.firstname}`}
 		</h3>
-		<button
-			class="btn-icon variant-filled-primary"
-			disabled={disabled || student.gidouilles < 3}
-			on:click={onDrawCard}
-		>
-			<IconCards />
-		</button>
+		{#if isTeacher(user)}
+			<button
+				class="btn-icon variant-filled-primary"
+				disabled={disabled || student.gidouilles < 3}
+				on:click={onDrawCard}
+			>
+				<IconCards />
+			</button>
+		{/if}
 	</header>
 	<section class="p-4 flex flex-col w-full max-w-full shadow-md">
 		{#if Object.keys(commons).length}
