@@ -31,9 +31,9 @@ export const GET = (async ({ locals: { supabaseService }, url }) => {
 		const end = Today.startOf('week').plus({ days: 4 })
 		console.log('begining', beginning.toISODate(), 'end', end.toISODate())
 		const winners: Array<string> = []
-		data
+		const promises = data
 			.map((profile) => cleanProfile(profile) as StudentProfile)
-			.forEach(async ({ id: student_id, gidouilles, firstname, lastname }) => {
+			.map(async ({ id: student_id, gidouilles, firstname, lastname }) => {
 				try {
 					const { error: err, data } =
 						await DB_fetchStudentWarningsFromDateToDate(
@@ -63,17 +63,21 @@ export const GET = (async ({ locals: { supabaseService }, url }) => {
 						if (granted) {
 							console.log('student', firstname, 'is granted 1 gidouille')
 							winners.push(firstname + ' ' + lastname)
-							console.log('winners', winners)
-							// const { error: errorUpdate } = await supabaseService
-							// 	.from('users')
-							// 	.update({ gidouilles: gidouilles + 1 })
-							// 	.eq('id', student_id)
-							// if (errorUpdate) {
-							// 	console.log(errorUpdate.message)
-							// 	throw error(500, errorUpdate.message)
-							// }
+							const promise = supabaseService
+								.from('users')
+								.update({ gidouilles: gidouilles + 1 })
+								.eq('id', student_id)
+
+							const { error: errorUpdate } = await promise
+							if (errorUpdate) {
+								console.log(errorUpdate.message)
+								throw error(500, errorUpdate.message)
+							} else {
+								return promise
+							}
 						} else {
 							console.log('student', firstname, 'is NOT granted ', warningss)
+							return Promise.resolve()
 						}
 					}
 				} catch (e) {
@@ -98,7 +102,9 @@ export const GET = (async ({ locals: { supabaseService }, url }) => {
 		// 		return json(rows)
 		// 	}
 		// } else return json('no rows')
+		await Promise.all(promises)
 		console.log('gidouilles granted', winners)
+		console.log('winners json', json(winners))
 		return json(winners)
 	}
 }) satisfies RequestHandler

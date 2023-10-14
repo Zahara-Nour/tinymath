@@ -38,7 +38,6 @@
 		</div>
 	</svelte:fragment>
 	<svelte:fragment slot="trail">
-		{$modeCurrent}
 		<LightSwitch />
 		<UserAvatar />
 

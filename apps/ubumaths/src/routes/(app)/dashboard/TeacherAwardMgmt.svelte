@@ -46,6 +46,7 @@
 		const json = await data.json()
 		console.log('grant-gidouilles', json)
 		granting = false
+		// todo mettre a jour students avec les nouvelles gidouilles
 		students = students
 	}
 
